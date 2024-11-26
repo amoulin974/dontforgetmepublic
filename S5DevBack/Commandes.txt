@@ -1,0 +1,5 @@
+Commande pour créer un projet :
+composer create-project laravel/laravel testLarav --ignore-platform-req=ext-fileinfo --prefer-dist --no-dev
+
+Commande pour la récupération du projet :
+composer install
