@@ -18,9 +18,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'numTel',
+        'nom',
+        'prenom',
+        'typeNotif',
+        'delaiAvantNotif',
+        'superadmin',
     ];
 
     /**
@@ -43,6 +48,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'delaiAvantNotif' => 'datetime',
+            'superadmin' => 'integer',
         ];
     }
 }

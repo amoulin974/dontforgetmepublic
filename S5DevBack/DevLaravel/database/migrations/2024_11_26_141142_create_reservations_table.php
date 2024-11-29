@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->datetime('dateRdv');
+            $table->time('heureDeb'); 
+            $table->time('heureFin'); 
+            $table->integer('nbPersonnes');
             $table->timestamps();
         });
     }
