@@ -16,12 +16,14 @@ class EntrepriseFactory extends Factory
         return [
             'nom' => $this->faker->words(1, true),
             'prenom' => $this->faker->words(1, true),
-            'manufacturer' => $this->faker->company,
+            'libelle' => $this->faker->company,
             'description' => $this->faker->sentences(4, true),
-            'mainPepper' => $this->faker->word,
-            'imageUrl' => $this->faker->imageUrl(),
-            'heat' => $this->faker->numberBetween(1, 10),
-            'userId' => 1,
+            'adresse' => $this->faker->sentences(1, true),
+            'metier' => $this->faker->word,
+            'numTel' => $this->faker->numberBetween(1, 10),
+            'type' => $this->faker->numberBetween(1, 3),
+            'publier' => $this->faker->numberBetween(0, 1),
+            'email' => fake()->unique()->safeEmail(),
         ];
     }
 }

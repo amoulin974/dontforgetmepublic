@@ -14,13 +14,10 @@ class ReservationFactory extends Factory
     public function definition(): array
     {
         return [
-            'nom' => $this->faker->words(1, true),
-            'prenom' => $this->faker->words(1, true),
-            'manufacturer' => $this->faker->company,
-            'description' => $this->faker->sentences(4, true),
-            'mainPepper' => $this->faker->word,
-            'imageUrl' => $this->faker->imageUrl(),
-            'heat' => $this->faker->numberBetween(1, 10),
+/*             'dateRdv' ,
+            'heureDeb',
+            'heureFin', */
+            'nbPersonnes' => $this->faker->numberBetween(1, 5),
         ];
     }
 }
