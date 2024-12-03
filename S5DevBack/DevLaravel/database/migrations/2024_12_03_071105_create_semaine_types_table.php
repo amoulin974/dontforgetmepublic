@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('semaine_types', function (Blueprint $table) {
             $table->id();
+            $table->string('libelle');
+            $table->array('planning');
             $table->timestamps();
         });
     }
