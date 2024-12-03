@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('journee_types', function (Blueprint $table) {
             $table->id();
+            $table->string('libelle');
+            $table->json('planning');
             $table->timestamps();
         });
     }
