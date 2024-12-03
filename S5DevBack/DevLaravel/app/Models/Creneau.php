@@ -5,25 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Entreprise extends Model
+class Creneau extends Model
 {
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
-     *
+     * 
      * @var array<int, string>
      */
     protected $fillable = [
-        'libelle',
-        'siren',
-        'adresse',
-        'metier',
-        'description',
-        'type',
-        'numTel',
-        'email',
-        'publier',
+        'dateC',
+        'heureDeb',
+        'heureFin'
     ];
 
     /**
@@ -32,6 +26,8 @@ class Entreprise extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'publier' => 'integer',
+        'dateC' => 'datetime',
+        'heureDeb' => 'datetime:H:i:s',
+        'heureFin' => 'datetime:H:i:s'
     ];
 }

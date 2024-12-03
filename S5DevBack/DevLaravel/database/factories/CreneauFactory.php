@@ -4,20 +4,22 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ReservationFactory extends Factory
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Creneau>
+ */
+class CreneauFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
-            'dateRdv' => fake()->date(),
+            'dateC' => fake()->date(),
             'heureDeb' => fake()->time('H:i:s'),
-            'heureFin' => fake()->time('H:i:s'), 
-            'nbPersonnes' => fake()->numberBetween(1, 5),
+            'heureFin' => fake()->time('H:i:s')
         ];
     }
 }

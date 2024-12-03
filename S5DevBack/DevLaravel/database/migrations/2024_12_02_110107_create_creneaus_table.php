@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
+        Schema::create('creneaus', function (Blueprint $table) {
             $table->id();
-            $table->datetime('dateRdv');
-            $table->time('heureDeb')->check('heureDeb < heureFin'); 
-            $table->time('heureFin')->check('heureFin < heureDeb'); 
-            $table->integer('nbPersonnes');
+            $table->date('dateC');
+            $table->time('heureDeb')->check('heureDeb > heureFin');
+            $table->time('heureFin')->check('heureFin < heureDeb');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('creneaus');
     }
 };
