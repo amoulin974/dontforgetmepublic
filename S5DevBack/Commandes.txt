@@ -3,3 +3,10 @@ composer create-project laravel/laravel testLarav --ignore-platform-req=ext-file
 
 Commande pour la récupération du projet :
 composer install
+composer update --ignore-platform-req=ext-fileinfo --no-dev
+
+Créer un nouveau model-migration :
+php artisan make:model Nom -m
+
+Créer un Factory
+php artisan make:factory NomFactory
