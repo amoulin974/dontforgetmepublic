@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Entreprise;
 use App\Models\Reservation;
 use App\Models\Creneau;
+use App\Models\Notification;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -34,5 +35,7 @@ class DatabaseSeeder extends Seeder
         Reservation::factory(2)->create();
 
         Creneau::factory(2)->create();
+
+        Notification::factory(1)->create();
     }
 }

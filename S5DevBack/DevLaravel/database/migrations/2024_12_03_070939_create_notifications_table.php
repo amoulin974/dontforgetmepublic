@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->string('categorie');
+            $table->time('delai');
+            $table->integer('etat')->check('etat == 0 || etat == 1');
+            $table->string('contenu');
             $table->timestamps();
         });
     }
