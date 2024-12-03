@@ -20,8 +20,9 @@ class EntrepriseFactory extends Factory
             'metier' => fake()->word,
             'numTel' => fake()->numberBetween(1, 10),
             'type' => fake()->numberBetween(1, 3),
-            'publier' => fake()->numberBetween(0, 1),
             'email' => fake()->unique()->safeEmail(),
+            'cheminImage' => json_encode(['https://static.thenounproject.com/png/1584264-200.png']),
+            'publier' => fake()->numberBetween(0, 1)
         ];
     }
 }

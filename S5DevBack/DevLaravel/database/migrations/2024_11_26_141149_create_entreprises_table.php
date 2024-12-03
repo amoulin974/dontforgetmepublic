@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('numTel');
             $table->string('email');
+            $table->json('cheminImg')->nullable();
             $table->integer('publier')->default(0);
             $table->timestamps();
         });
