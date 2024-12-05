@@ -43,6 +43,18 @@ class Entreprise extends Model
     // METHODES
 
     /**
+     * Define a one-to-many relationship with the Activite model.
+     *
+     * Each Entreprise can be associated with zero or more Activite entries.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activite(): HasMany
+    {
+        return $this->hasMany(Activite::class);
+    }
+
+    /**
      * Define a one-to-many relationship with the JourneeType model.
      *
      * Each Entreprise can be associated with zero or more JourneeType entries.

@@ -9,6 +9,8 @@ class Activite extends Model
 {
     use HasFactory;
 
+    // VARIABLES
+
     /**
      * The attributes that are mass assignable.
      * 
@@ -27,4 +29,19 @@ class Activite extends Model
     protected $casts = [
         'duree' => 'datetime:H:i:s'
     ];
+
+
+    // METHODES 
+    
+    /**
+     * Define a one-to-one relationship with the Entreprise model.
+     *
+     * Each Activite is associated with exactly one Enreprise.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function entreprise(): BelongsTo
+    {
+        return $this->belongsTo(Entreprise::class);
+    }
 }
