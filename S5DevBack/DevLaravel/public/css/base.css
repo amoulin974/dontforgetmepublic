@@ -6,7 +6,7 @@ body, h1, h2, h3, p, ul, li {
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #9fccff; /* Couleur de fond pour le body */
+    background-color: #eeeeff; /* Couleur de fond pour le body */
 }
 
 .active {
@@ -22,7 +22,7 @@ body {
 
 header {
     background-color: #1dacff; /* Couleur primaire */
-    color: #9fccff; /* Couleur secondaire */
+    color: #eeeeff; /* Couleur secondaire */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -42,7 +42,7 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #9fccff;
+    color: #eeeeff;
     transition: color 0.3s;
 }
 
@@ -76,7 +76,7 @@ nav ul li a:hover {
 }
 
 .auth a {
-    color: #9fccff;
+    color: #eeeeff;
     text-decoration: none;
     margin-left: 20px;
     cursor: pointer;
@@ -161,7 +161,7 @@ nav ul li a:hover {
 .primary-button {
     display: inline-block; /* Utilisation de display inline-block pour s'aligner correctement */
     background-color: #1dacff ; /* Couleur primaire */
-    color: #9fccff;
+    color: #eeeeff;
     text-align: center;
     border: none;
     border-radius: 5px;
@@ -187,7 +187,7 @@ nav ul li a:hover {
 /* Styles pour le bouton "secondaire" */
 .secondary-button {
     display: inline-block; /* Utilisation de display inline-block pour s'aligner correctement */
-    background-color: #9fccff; /* Couleur primaire */
+    background-color: #eeeeff; /* Couleur primaire */
     color: #1dacff;
     text-align: center;
     border: none;
@@ -203,7 +203,7 @@ nav ul li a:hover {
 .secondary-button:hover,
 .secondary-button:focus { /* Ajout de :focus pour assurer la cohérence des styles au focus */
     background-color: #1dacff; /* Couleur primaire légèrement plus foncée au survol */
-    color: #9fccff;
+    color: #eeeeff;
     text-decoration: none;
     transition: color 0.3s;
 }
@@ -507,7 +507,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .card-header {
     background-color: #1dacff; /* Couleur primaire */
-    color: #9fccff; /* Couleur du texte */
+    color: #eeeeff; /* Couleur du texte */
 }
 
 .card-body {

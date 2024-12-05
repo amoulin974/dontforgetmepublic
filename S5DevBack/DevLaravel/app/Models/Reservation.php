@@ -39,6 +39,6 @@ class Reservation extends Model
      */
     public function notifs(): HasMany
     {
-        return $this->hasMany(Notification::class,'reserv_id');
+        return $this->hasMany(Notification::class);
     }
 }

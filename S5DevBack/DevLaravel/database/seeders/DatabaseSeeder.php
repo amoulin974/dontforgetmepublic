@@ -32,11 +32,11 @@ class DatabaseSeeder extends Seeder
 
         Entreprise::factory(2)->create();
 
-        Reservation::factory(2)->create();
+        Reservation::factory(8)->create();
 
         Creneau::factory(2)->create();
 
-        Notification::factory(1)->create();
+        Notification::factory(10)->create();
 
         Reservation::factory()->create([
             'dateRdv' => '2000-01-01T00:00:00Z',
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'delai' => fake()->time('H:i:s'),
             'etat' => 0,
             'contenu' => 'UnContenuTest',
-            'reserv_id' => 1,
+            'reservation_id' => 1,
         ]);
     }
 }

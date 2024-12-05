@@ -21,7 +21,7 @@ class NotificationFactory extends Factory
             'delai' => fake()->time('H:i:s'),
             'etat' => fake()->numberBetween(0,1),
             'contenu' => fake()->sentence(1),
-            'reserv_id' => fake()->numberBetween(1, 10),
+            'reservation_id' => fake()->numberBetween(1, 10),
         ];
     }
 }

@@ -22,7 +22,7 @@ class Notification extends Model
         'delai',
         'etat',
         'contenu',
-        'reserv_id',
+        'reservation_id',
     ];
 
     /**
@@ -33,7 +33,7 @@ class Notification extends Model
     protected $casts = [
         'delai' => 'datetime:H:i:s',
         'etat' => 'integer',
-        'reserv_id' => 'integer',
+        'reservation_id' => 'integer',
     ];
 
     // MÉTHODES
@@ -43,6 +43,6 @@ class Notification extends Model
      */
     public function reservation(): BelongsTo
     {
-        return $this->belongsTo(Reservation::class,'reserv_id');
+        return $this->belongsTo(Reservation::class);
     }
 }
