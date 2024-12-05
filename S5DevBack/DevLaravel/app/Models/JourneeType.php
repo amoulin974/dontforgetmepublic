@@ -9,6 +9,8 @@ class JourneeType extends Model
 {
     use HasFactory;
 
+    // VARIABLES
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,4 +29,36 @@ class JourneeType extends Model
     protected $casts = [
         'planning' => 'array'
     ];
+
+
+    // METHODES
+
+    /**
+     * Define a one-to-one relationship with the Entreprise model.
+     *
+     * Each JourneeType is associated with exactly one Entreprise.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function entreprise(): BelongsTo
+    {
+        return $this->belongsTo(Entreprise::class);
+    }
+
+    /**
+     * Define a many-to-many relationship with the SemaineType model.
+     *
+     * Each JourneeType is associated with zero to or more SemaineType entries.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function semaineTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            SemaineType::class,
+            'constituer',
+            'idJourneeType',
+            'idSemaineType'
+        );
+    }
 }

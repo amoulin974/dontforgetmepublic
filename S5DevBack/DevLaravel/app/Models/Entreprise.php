@@ -9,6 +9,8 @@ class Entreprise extends Model
 {
     use HasFactory;
 
+    // VARIABLES
+
     /**
      * The attributes that are mass assignable.
      *
@@ -36,4 +38,31 @@ class Entreprise extends Model
         'publier' => 'integer',
         'cheminImg' => 'array',
     ];
+
+
+    // METHODES
+
+    /**
+     * Define a one-to-many relationship with the JourneeType model.
+     *
+     * Each Entreprise can be associated with zero or more JourneeType entries.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function journeeTypes(): HasMany
+    {
+        return $this->hasMany(JourneeType::class);
+    }
+
+    /**
+     * Define a one-to-many relationship with the SemaineType model.
+     *
+     * Each Entreprise can be associated with zero or more SemaineType entries.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function semaineTypes(): HasMany
+    {
+        return $this->hasMany(JourneeType::class);
+    }
 }
