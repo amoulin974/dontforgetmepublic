@@ -17,6 +17,7 @@ return new class extends Migration
             $table->time('delai');
             $table->integer('etat')->check('etat == 0 || etat == 1');
             $table->string('contenu');
+            $table->integer('reserv_id');
             $table->timestamps();
         });
     }

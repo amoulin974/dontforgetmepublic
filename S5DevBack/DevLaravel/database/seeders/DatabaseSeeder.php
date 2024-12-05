@@ -37,5 +37,20 @@ class DatabaseSeeder extends Seeder
         Creneau::factory(2)->create();
 
         Notification::factory(1)->create();
+
+        Reservation::factory()->create([
+            'dateRdv' => '2000-01-01T00:00:00Z',
+            'heureDeb' => fake()->time('H:i:s'),
+            'heureFin' => fake()->time('H:i:s'),
+            'nbPersonnes' => 3,
+        ]);
+
+        Notification::factory()->create([
+            'categorie' => 'UneCatNotif',
+            'delai' => fake()->time('H:i:s'),
+            'etat' => 0,
+            'contenu' => 'UnContenuTest',
+            'reserv_id' => 1,
+        ]);
     }
 }

@@ -20,7 +20,8 @@ class NotificationFactory extends Factory
             'categorie' => fake()->word(1),
             'delai' => fake()->time('H:i:s'),
             'etat' => fake()->numberBetween(0,1),
-            'contenu' => fake()->sentence(1)
+            'contenu' => fake()->sentence(1),
+            'reserv_id' => fake()->numberBetween(1, 10),
         ];
     }
 }

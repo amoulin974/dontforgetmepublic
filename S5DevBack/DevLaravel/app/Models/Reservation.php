@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Reservation extends Model
 {
@@ -32,4 +33,12 @@ class Reservation extends Model
         'heureFin' => 'datetime:H:i:s',
         'nbPersonnes' => 'integer',
     ];
+
+    /**
+     * Get the comments for the blog post.
+     */
+    public function notifs(): HasMany
+    {
+        return $this->hasMany(Notification::class,'reserv_id');
+    }
 }

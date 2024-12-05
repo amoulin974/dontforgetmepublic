@@ -10,6 +10,8 @@ class Notification extends Model
 {
     use HasFactory;
 
+    // VARIABLES
+
     /**
      * The attributes that are mass assignable.
      * 
@@ -20,6 +22,7 @@ class Notification extends Model
         'delai',
         'etat',
         'contenu',
+        'reserv_id',
     ];
 
     /**
@@ -30,13 +33,16 @@ class Notification extends Model
     protected $casts = [
         'delai' => 'datetime:H:i:s',
         'etat' => 'integer',
+        'reserv_id' => 'integer',
     ];
 
+    // MÉTHODES
+
     /**
-     * Get the phone associated with the user.
+     * Get the reservation associated with this notification.
      */
-    public function reserv(): BelongsTo
+    public function reservation(): BelongsTo
     {
-        return $this->belongsTo(Reservation::class);
+        return $this->belongsTo(Reservation::class,'reserv_id');
     }
 }

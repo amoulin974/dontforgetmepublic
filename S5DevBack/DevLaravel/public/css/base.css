@@ -1,0 +1,572 @@
+/* Réinitialisation des styles et style de base */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5eddf; /* Couleur de fond pour le body */
+}
+
+.active {
+    color: #1c1b19;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #f54728; /* Couleur primaire */
+    color: #f5eddf; /* Couleur secondaire */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #f5eddf;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #1c1b19;
+    transition: color 0.3s;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.logo img {
+    width: 150px;
+    margin-right: 10px;
+    transition: transform 0.3s;
+}
+
+.logo img:hover {
+    animation: shake 0.5s ease-in-out infinite;
+}
+
+@keyframes shake {
+    0% { transform: translateX(-1px) rotate(0deg); }
+    25% { transform: translateX(1px) rotate(2deg); }
+    50% { transform: translateX(-1px) rotate(-2deg); }
+    75% { transform: translateX(1px) rotate(2deg); }
+    100% { transform: translateX(-1px) rotate(0deg); }
+}
+
+.auth a {
+    color: #f5eddf;
+    text-decoration: none;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.auth a:hover {
+    color: #1c1b19;
+    transition: color 0.3s;
+}
+
+.success-message {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+/* Styles pour le conteneur flex */
+.res-container {
+    display: flex;
+    flex-wrap: wrap; /* Permet aux cartes de passer à la ligne si l'espace est insuffisant */
+    justify-content: center; /* Centre les cartes horizontalement */
+    align-items: center; /* Centre les cartes verticalement */
+}
+
+/* Styles pour les cartes de ress */
+.res {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    margin: 0 10px 20px 10px; /* Espacement entre les cartes */
+    transition: transform 0.3s; /* Animation de levée au survol */
+}
+
+.res:hover {
+    transform: translateY(-5px); /* Animation de levée au survol */
+}
+
+.res h2 {
+    color: #f54728; /* Couleur primaire */
+    margin-bottom: 10px;
+}
+
+.res p {
+    margin-bottom: 5px;
+}
+
+.res-header a {
+    position: relative;
+    top: -20px;
+    left: 260px;
+}
+
+.trash{
+    margin-left: 10px;
+}
+
+.reactions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    text-decoration: none;
+}
+
+.like,
+.dislike {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1c1b19;
+}
+
+.like i:hover,
+.dislike i:hover {
+    color: #1c1b19;
+    filter: brightness(1.1);
+    transition: color 0.3s;
+    transform: scale(1.1);
+}
+
+.like i,
+.dislike i {
+    margin-right: 5px;
+}
+
+.like i {
+    color: #4caf50; /* Couleur verte pour les likes */
+}
+
+.dislike i {
+    color: #f44336; /* Couleur rouge pour les dislikes */
+}
+
+.like-active,
+.dislike-active {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1c1b19;
+}
+
+.like-active i,
+.dislike-active i {
+    margin-right: 5px;
+}
+
+/* Styles pour le niveau de chaleur (heat) */
+.heat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px; /* Espacement du bas */
+}
+
+.heat span {
+    margin-right: 5px;
+    font-size: 18px; /* Taille de police */
+}
+
+/* Styles pour le bouton "primaire" */
+.primary-button {
+    display: inline-block; /* Utilisation de display inline-block pour s'aligner correctement */
+    background-color: #f54728 ; /* Couleur primaire */
+    color: #f5eddf;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    width: 80%;
+    padding: 10px 20px;
+    margin: 10px; /* Espacement du bas */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.primary-button:hover,
+.primary-button:focus { /* Ajout de :focus pour assurer la cohérence des styles au focus */
+    text-decoration: none; 
+    filter: brightness(1.1);
+    color: #1c1b19;
+    transition: color 0.3s;
+}
+.primary-button:active {
+    transform: translateY(1px); /* Décale le bouton vers le bas au clic */
+}
+
+/* Styles pour le bouton "secondaire" */
+.secondary-button {
+    display: inline-block; /* Utilisation de display inline-block pour s'aligner correctement */
+    background-color: #f5eddf; /* Couleur primaire */
+    color: #f54728;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    width: 80%;
+    padding: 10px 20px;
+    margin: 10px; /* Espacement du bas */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.secondary-button:hover,
+.secondary-button:focus { /* Ajout de :focus pour assurer la cohérence des styles au focus */
+    background-color: #f54728; /* Couleur primaire légèrement plus foncée au survol */
+    color: #f5eddf;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.secondary-button:active {
+    transform: translateY(1px); /* Décale le bouton vers le bas au clic */
+}
+
+.image {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.image img {
+    max-width: 100%; /* Image responsive */
+    height: auto; /* Hauteur automatique pour conserver les proportions */
+    border-radius: 5px; /* Bordures arrondies pour l'image */
+    max-height: 200px; /* Taille maximale de l'image */
+}
+
+/* Styles pour les détails de la res */
+.res-details {
+    background-color: white; /* Couleur de fond */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.res-details h1 {
+    text-align: center;
+    color: #f54728; /* Couleur primaire */
+}
+
+.res-details-content {
+    display: flex;
+    flex-wrap: wrap; /* Permet aux éléments de s'adapter à la taille de leur conteneur */
+}
+
+.res-details-header {
+    display: flex;
+    flex-wrap: wrap; /* Permet aux éléments de s'adapter à la taille de leur conteneur */
+}
+
+.res-details-header h1 {
+    flex: 1; /* Prend autant d'espace que possible */
+    margin-right: 20px; /* Espacement entre les informations et le Heat */
+}
+
+.res-details-header span {
+    margin-right: 5px; /* Espacement entre les informations et le Heat */
+}
+
+.primary-button-link {
+    text-decoration: none;
+    color: #f54728; /* Couleur primaire */
+}
+
+.primary-button-link:hover,
+.primary-button-link:focus {
+    text-decoration: none;
+    color: #1c1b19;
+    transition: color 0.3s;
+}
+.primary-button-link:active {
+    transform: translateY(1px); /* Décale le bouton vers le bas au clic */
+}
+
+.res-details-info {
+    flex: 1; /* Prend autant d'espace que possible */
+    margin: 0; /* Espacement entre les informations et le Heat */
+}
+
+.res-details-info p {
+    margin-bottom: 5px;
+}
+
+.res-details-heat {
+    display: flex;
+    align-items: center;
+}
+
+.res-details-heat span {
+    margin-right: 10px;
+}
+
+.res-details-heat-rating {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px; /* Taille du Heat */
+    display: flex;
+    align-items: center; /* Centrage vertical */
+}
+
+.res-details-heat-rating i {
+    margin-right: 5px;
+}
+
+.res-details-image {
+    flex: 1; /* Prend autant d'espace que possible */
+    text-align: center;
+    margin-top: 20px; /* Espacement du haut */
+}
+
+.res-details-image img {
+    max-width: 100%; /* Image responsive */
+    height: auto; /* Hauteur automatique pour conserver les proportions */
+    border-radius: 5px; /* Bordures arrondies pour l'image */
+    max-height: 400px;
+}
+
+.res-details-reactions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Espacement du haut */
+    font-size: 30px;
+}
+
+.res-details-reactions .res-details-like,
+.res-details-reactions .res-details-dislike {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1c1b19;
+}
+
+.res-details-like i:hover,
+.res-details-dislike i:hover {
+    color: #1c1b19;
+    filter: brightness(1.1);
+    transition: color 0.3s;
+    transform: scale(1.1);
+}
+
+
+.res-details-reactions .res-details-like i,
+.res-details-reactions .res-details-dislike i {
+    margin-right: 5px;
+}
+
+.res-details-like i {
+    color: #4caf50; /* Couleur verte */
+}
+
+.res-details-dislike i {
+    color: #f44336; /* Couleur rouge */
+}
+
+.res-details-like-active,
+.res-details-dislike-active {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1c1b19;
+}
+
+.res-details-like-active i,
+.res-details-dislike-active i {
+    margin-right: 5px;
+}
+
+.res-details-like-bar {
+    width: 60%; /* Largeur de la barre de likes */
+    height: 10px; /* Hauteur de la barre de likes */
+    background-color: #f44336; /* Couleur de fond de la barre de likes */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.res-details-like-fill {
+    height: 10px; /* Hauteur de la barre de remplissage */
+    border-radius: 5px;
+}
+
+/* Styles pour le formulaire de res */
+.res-form {
+    max-width: 500px; /* Largeur maximale du formulaire */
+    margin: 0 auto; /* Centre le formulaire horizontalement */
+}
+
+/* Styles pour les champs de formulaire */
+.form-group {
+    margin-bottom: 20px; /* Espacement entre les champs */
+}
+
+.form-group label {
+    display: block; /* Affiche les labels sur une ligne séparée */
+    margin-bottom: 5px; /* Espacement entre le label et le champ */
+    color: black; /* Couleur du texte */
+    font-weight: bold; /* Texte en gras */
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%; /* Prend toute la largeur du conteneur parent */
+    padding: 10px; /* Espacement intérieur */
+    border: 1px solid #ddd; /* Bordure */
+    border-radius: 5px; /* Coins arrondis */
+}
+
+.form-group textarea {
+    height: 100px; /* Hauteur de la zone de texte */
+}
+
+.error-message {
+    color: #f44336; /* Couleur du message d'erreur */
+    margin: 2px;
+}
+
+.form-button {
+    text-align: center;
+}
+
+/* Style pour afficher la valeur à côté du slider */
+#heat-value {
+    margin-left: 10px;
+    font-weight: bold;
+    color: #f54728;
+}
+
+/* Styles pour le slider */
+input[type="range"] {
+    -webkit-appearance: none; /* Masquer l'apparence par défaut */
+    appearance: none;
+    width: 100%; /* Ajuster la largeur */
+    height: 1em; /* Hauteur du trait */
+    background: #fff; /* Couleur du trait */
+    border-radius: 20px; /* Arrondi des bords */
+    outline: none; /* Supprimer la bordure */
+}
+
+/* Style pour le curseur */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Masquer l'apparence par défaut */
+    appearance: none;
+    width: 30px; /* Largeur du curseur */
+    height: 30px; /* Hauteur du curseur */
+    background: #f54728; /* Couleur du curseur */
+    border-radius: 50%; /* Arrondi des bords pour créer un cercle */
+    cursor: pointer; /* Curseur de type pointer */
+}
+
+/* CSS pour la page de connexion */
+#remember {
+    margin-top: 3px;
+}
+
+.form-check-input:checked {
+    background-color: #f54728;
+    border-color: #f54728;
+}
+
+.label-color {
+    color: black;
+}
+
+.form-title {
+    color: #f54728; /* Couleur primaire */
+    text-align: center;
+}
+
+.login-forgot {
+    color: #f54728;
+}
+
+.custom-checkbox {
+    display: none; /* Masquer la checkbox par défaut */
+}
+
+.custom-checkbox + label::before {
+    content: '\f0c8'; /* Utilisation de l'icône Font Awesome */
+    font-family: "Font Awesome 5 Free";
+    font-size: 1.2em;
+    color: #f54728; /* Couleur de l'icône pour la checkbox non cochée */
+    margin-right: 0.3rem;
+}
+
+.custom-checkbox:checked + label::before {
+    content: '\f14a'; /* Changement de l'icône lorsque la checkbox est cochée */
+    color: #f54728; /* Couleur de l'icône pour la checkbox cochée */
+}
+
+/* CSS pour la page d'enregistrement */
+
+/* Ajustements spécifiques pour le formulaire d'enregistrement */
+
+#password-confirm {
+    margin-bottom: 20px; /* Espacement entre le champ de confirmation du mot de passe et le bouton d'envoi */
+}
+
+.register-title {
+    color: #f54728; /* Couleur primaire */
+    text-align: center;
+}
+
+
+/* Styles pour la page d'accueil */
+.card {
+    margin-top: 50px; /* Espacement du haut de la carte */
+}
+
+.card-header {
+    background-color: #f54728; /* Couleur primaire */
+    color: #f5eddf; /* Couleur du texte */
+}
+
+.card-body {
+    color: #1c1b19; /* Couleur du texte */
+}
+
+.card-body p {
+    margin-bottom: 20px; /* Espacement entre les paragraphes */
+}
+
+
+
+
+
+
+
+
+
+
+
