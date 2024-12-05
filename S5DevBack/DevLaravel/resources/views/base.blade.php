@@ -11,6 +11,12 @@
 <body>
 
 <header>
+    <nav>
+        <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="{{ route('reservation.index') }}">Réservation</a></li>
+        </ul>
+    </nav>
     <a href="/" class="logo">
         <img src="{{ asset('favicon.ico') }}" alt="Logo">
     </a>

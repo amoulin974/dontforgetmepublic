@@ -21,4 +21,17 @@ class reservationController extends Controller
             'reservations' => Reservation::simplePaginate(9)
         ]);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Illuminate\View\View
+     */
+    public function show(Reservation $reservation) : View
+    {
+        return view('reservation.show', [
+            'reservation' => $reservation
+        ]);
+    }
 }

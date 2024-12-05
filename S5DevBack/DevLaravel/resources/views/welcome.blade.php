@@ -7,5 +7,7 @@
 </head>
 <body>
     <h1>Hello</h1>
+    <br/>
+    <a href="{{ route('reservation.index') }}">Réservation</a>
 </body>
 </html>
