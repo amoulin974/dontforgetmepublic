@@ -7,6 +7,7 @@ use App\Models\Entreprise;
 use App\Models\Reservation;
 use App\Models\Creneau;
 use App\Models\Notification;
+use App\Models\Plage;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -30,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'superadmin' => 1,
         ]);
 
-        Entreprise::factory(2)->create();
+        Entreprise::factory(3)->create();
 
         Reservation::factory(8)->create();
 
@@ -52,5 +53,7 @@ class DatabaseSeeder extends Seeder
             'contenu' => 'UnContenuTest',
             'reservation_id' => 1,
         ]);
+
+        Plage::factory(10)->create();
     }
 }

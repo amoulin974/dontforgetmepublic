@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Notification>
  */
-class NotificationFactory extends Factory
+class PlageFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,11 +17,11 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'categorie' => fake()->word(1),
-            'delai' => fake()->time('H:i:s'),
-            'etat' => fake()->numberBetween(0,1),
-            'contenu' => fake()->sentence(1),
-            'reservation_id' => fake()->numberBetween(1, 5),
+            'heureDeb' => fake()->time('H:i:s'),
+            'heureFin'=> fake()->time('H:i:s'),
+            'intervalle' => fake()->time('H:i:s'),
+            'planTables' => json_encode(['Test']),
+            'entreprise_id' => fake()->numberBetween(1, 3),
         ];
     }
 }
