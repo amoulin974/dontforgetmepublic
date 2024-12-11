@@ -24,5 +24,9 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.app');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

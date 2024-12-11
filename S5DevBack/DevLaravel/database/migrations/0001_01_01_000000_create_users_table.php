@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('numTel');
             $table->string('nom');
             $table->string('prenom');
-            $table->string('typeNotif');
-            $table->datetime('delaiAvantNotif');
-            $table->integer('superadmin');
+            $table->string('typeNotif')->nullable();
+            $table->datetime('delaiAvantNotif')->nullable();
+            $table->integer('superadmin')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
