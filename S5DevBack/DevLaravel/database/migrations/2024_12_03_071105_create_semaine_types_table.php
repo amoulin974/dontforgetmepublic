@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('libelle');
             $table->json('planning');
             $table->timestamps();
+            $table->unsignedBigInteger('idEntreprise');
+            $table->foreign('idEntreprise')->references('id')->on('entreprises');
         });
     }
 
