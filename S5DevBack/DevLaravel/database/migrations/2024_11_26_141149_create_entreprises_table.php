@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('numTel');
             $table->string('email');
-            $table->json('cheminImg')->nullable();
+            $table->json('cheminImg')->nullable(); // ->default(json_encode(['https://static.thenounproject.com/png/1584264-200.png']));
             $table->integer('publier')->default(0);
             $table->timestamps();
         });

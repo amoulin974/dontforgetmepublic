@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Entreprise extends Model
 {
@@ -92,5 +93,13 @@ class Entreprise extends Model
     public function semaineTypes(): HasMany
     {
         return $this->hasMany(JourneeType::class);
+    }
+
+    /**
+     * Get the comments for the blog post.
+     */
+    public function plages(): HasMany
+    {
+        return $this->hasMany(Plage::class);
     }
 }
