@@ -7,6 +7,7 @@ use App\Models\Entreprise;
 use App\Models\Reservation;
 use App\Models\Creneau;
 use App\Models\Notification;
+use App\Models\Plage;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -30,12 +31,42 @@ class DatabaseSeeder extends Seeder
             'superadmin' => 1,
         ]);
 
-        Entreprise::factory(2)->create();
+        Entreprise::factory(3)->create();
 
-        Reservation::factory(2)->create();
+        Entreprise::factory()->create([
+            'libelle' => fake()->company,
+            'siren' => fake()->numerify('######### #####'),
+            'adresse' => fake()->address(),
+            'metier' => fake()->city(),
+            'description' => fake()->state(),
+            'type' => fake()->postcode(),
+            'numTel' => fake()->phoneNumber(),
+            'email' => fake()->unique()->companyEmail(),
+            'cheminImg' => json_encode(['https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg']),
+            'publier' => 1,
+        ]);
+
+        Reservation::factory(10)->create();
 
         Creneau::factory(2)->create();
 
-        Notification::factory(1)->create();
+        Notification::factory(10)->create();
+
+        Reservation::factory()->create([
+            'dateRdv' => '2000-01-01T00:00:00Z',
+            'heureDeb' => fake()->time('H:i:s'),
+            'heureFin' => fake()->time('H:i:s'),
+            'nbPersonnes' => 3,
+        ]);
+
+        Notification::factory()->create([
+            'categorie' => 'UneCatNotif',
+            'delai' => fake()->time('H:i:s'),
+            'etat' => 0,
+            'contenu' => 'UnContenuTest',
+            'reservation_id' => 1,
+        ]);
+
+        Plage::factory(10)->create();
     }
 }
