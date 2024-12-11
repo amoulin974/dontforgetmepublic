@@ -23,7 +23,6 @@ class Plage extends Model
         'heureFin',
         'intervalle',
         'planTables',
-        'entreprise_id',
     ];
 
     /**
@@ -36,7 +35,6 @@ class Plage extends Model
         'heureFin' => 'datetime:H:i:s',
         'intervalle' => 'datetime:H:i:s',
         'planTables' => 'array',
-        'reservation_id' => 'integer',
     ];
 
     // MÉTHODES
