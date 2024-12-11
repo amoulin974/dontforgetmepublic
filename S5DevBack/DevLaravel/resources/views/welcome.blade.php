@@ -1,6 +1,7 @@
 @extends('base')
 
 @section('home_active', 'active')
+@section('title', 'Don\'t Forget Me')
 
 @section('content')
     <div class="container">
