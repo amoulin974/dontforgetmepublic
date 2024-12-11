@@ -24,7 +24,7 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
 });
 
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('welcome');
 });
 
 Auth::routes();
