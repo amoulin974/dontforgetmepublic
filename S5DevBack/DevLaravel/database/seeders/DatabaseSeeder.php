@@ -33,7 +33,20 @@ class DatabaseSeeder extends Seeder
 
         Entreprise::factory(3)->create();
 
-        Reservation::factory(8)->create();
+        Entreprise::factory()->create([
+            'libelle' => fake()->company,
+            'siren' => fake()->numerify('######### #####'),
+            'adresse' => fake()->address(),
+            'metier' => fake()->city(),
+            'description' => fake()->state(),
+            'type' => fake()->postcode(),
+            'numTel' => fake()->phoneNumber(),
+            'email' => fake()->unique()->companyEmail(),
+            'cheminImg' => json_encode(['https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg']),
+            'publier' => 1,
+        ]);
+
+        Reservation::factory(10)->create();
 
         Creneau::factory(2)->create();
 
