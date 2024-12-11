@@ -55,6 +55,22 @@ class Entreprise extends Model
     }
 
     /**
+     * Define a many-to-many relationship with the Activite and the User model by Travailler.
+     *
+     * Each Entreprise is associated with many Activite and many User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function travailler_activites(): BelongsToMany
+    {
+        return $this->belongsToMany(Activite::class, 'travailler', 'idEntreprise', 'idActivite')->withPivot('idUser', 'statut')->withTimestamps();
+    }
+    public function travailler_users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'travailler', 'idEntreprise', 'idUser')->withPivot('idActivite', 'statut')->withTimestamps();
+    }
+
+    /**
      * Define a one-to-many relationship with the JourneeType model.
      *
      * Each Entreprise can be associated with zero or more JourneeType entries.
