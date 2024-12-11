@@ -18,7 +18,7 @@ class JourneeTypeFactory extends Factory
     {
         return [
             'libelle' => fake()->string(),
-            'cheminImage' => json_encode(['Test'])
+            'planning' => json_encode(['Test'])
         ];
     }
 }

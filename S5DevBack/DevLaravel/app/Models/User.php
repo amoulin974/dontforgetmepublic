@@ -12,6 +12,8 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    // ATTRIBUTS
+
     /**
      * The attributes that are mass assignable.
      *
@@ -51,5 +53,23 @@ class User extends Authenticatable
             'delaiAvantNotif' => 'datetime',
             'superadmin' => 'integer',
         ];
+    }
+
+    // METHODES
+
+    /**
+     * Define a many-to-many relationship with the Entreprise and the Activite model by Travailler.
+     *
+     * Each User is associated with many Entreprise and many Activite.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function travailler_activites(): BelongsToMany
+    {
+        return $this->belongsToMany(Activite::class, 'travailler', 'idUser', 'idActivite')->withPivot('idEntreprise', 'statut')->withTimestamps();
+    }
+    public function travailler_entreprises(): BelongsToMany
+    {
+        return $this->belongsToMany(Entreprise::class, 'travailler', 'idUser', 'idEntreprise')->withPivot('idActivite', 'statut')->withTimestamps();
     }
 }

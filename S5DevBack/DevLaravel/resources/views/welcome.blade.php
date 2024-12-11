@@ -1,3 +1,23 @@
+@extends('base')
+
+@section('home_active', 'active')
+
+@section('content')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <h1 class="form-title">Bienvenue sur Don't Forget Me</h1>
+
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+{{--
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -42,3 +62,4 @@
         </header>
     </body>
 </html>
+--}}

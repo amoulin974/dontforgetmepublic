@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Notification extends Model
+class Plage extends Model
 {
     use HasFactory;
 
@@ -18,11 +19,10 @@ class Notification extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'categorie',
-        'delai',
-        'etat',
-        'contenu',
-        /* 'reservation_id', */
+        'heureDeb',
+        'heureFin',
+        'intervalle',
+        'planTables',
     ];
 
     /**
@@ -31,9 +31,10 @@ class Notification extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'delai' => 'datetime:H:i:s',
-        'etat' => 'integer',
-        /* 'reservation_id' => 'integer', */
+        'heureDeb' => 'datetime:H:i:s',
+        'heureFin' => 'datetime:H:i:s',
+        'intervalle' => 'datetime:H:i:s',
+        'planTables' => 'array',
     ];
 
     // MÉTHODES
@@ -41,8 +42,16 @@ class Notification extends Model
     /**
      * Get the reservation associated with this notification.
      */
-    public function reservation(): BelongsTo
+    public function entreprise(): BelongsTo
     {
-        return $this->belongsTo(Reservation::class);
+        return $this->belongsTo(Entreprise::class);
+    }
+
+    /**
+     * Get the reservation associated with this notification.
+     */
+    public function activites(): HasMany
+    {
+        return $this->hasMany(Activite::class);
     }
 }

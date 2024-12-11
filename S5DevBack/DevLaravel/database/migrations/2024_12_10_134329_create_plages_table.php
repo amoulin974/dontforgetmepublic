@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('journee_types', function (Blueprint $table) {
+        Schema::create('plages', function (Blueprint $table) {
             $table->id();
-            $table->string('libelle');
-            $table->json('planning');
+            $table->time('heureDeb')->check('heureDeb > heureFin');
+            $table->time('heureFin')->check('heureFin < heureDeb');
+            $table->time('intervalle');
+            $table->json('planTables');
+            $table->foreignId('entreprise_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-            $table->unsignedBigInteger('idEntreprise');
-            $table->foreign('idEntreprise')->references('id')->on('entreprises');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('journee_types');
+        Schema::dropIfExists('plages');
     }
 };
