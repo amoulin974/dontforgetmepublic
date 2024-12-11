@@ -5,10 +5,33 @@
 
 @section('content')
 
+<a href="{{ route('reservation.create') }}" class="@yield('add_res_active')">Ajouter une sauce</a>
     <div class="res-container">
         @foreach ($reservations as $reservation)
             <div class="res">
-                <h2>{{ $reservation->id }}</h2>
+                <div class="res-header" >
+                    @if (session('status'))
+                        <div class="success-message" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    @auth
+                        @if(Auth::user()->id)
+                            <h2 style="max-height: 8px;">{{ $reservation->name }}</h2>
+                            <a class="primary-button-link" href="{{ route('reservation.edit', $reservation->id) }}" >
+                                <i class="fa fa-edit"></i>
+                            </a>           
+                            <a class="primary-button-link trash" href="{{ route('reservation.delete', $reservation->id) }}" >
+                                <i class="fas fa-trash-alt"></i>
+                            </a>   
+                        @else 
+                        <h2>{{ $reservation->id }}</h2>                                     
+                        @endif
+                    @else 
+                    <h2>{{ $reservation->id }}</h2>
+                    @endauth
+                </div>
                 <div class="info">
                     <p><strong>dateRdv:</strong> {{ $reservation->dateRdv }}</p>
                     <p><strong>heureDeb:</strong> {{ $reservation->heureDeb }}</p>

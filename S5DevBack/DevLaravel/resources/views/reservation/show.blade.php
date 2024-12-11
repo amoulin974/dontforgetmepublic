@@ -9,7 +9,19 @@
      | 
     <a href="{{ route('reservation.show', ['reservation' => $reservation->id+1]) }}"><strong>></p></strong></a>
         <div class="res-details-header"> 
-            <h1>Id réservation : {{ $reservation->id }}</h1> 
+            <h1>Id réservation : {{ $reservation->id }}</h1>
+            @auth
+                @if(Auth::user()->id)               
+                    <a class="primary-button-link" href="{{ route('reservation.edit', $reservation->id) }}" >
+                        <span>Modifier la réservation</span>
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a class="primary-button-link trash" href="{{ route('reservation.delete', $reservation->id) }}" >
+                        <span>Supprimer la réservation</span>
+                        <i class="fas fa-trash-alt"></i>
+                    </a>      
+                    @endif                                         
+            @endauth
         </div>
         <div class="res-details-content">
             <div class="res-details-info">

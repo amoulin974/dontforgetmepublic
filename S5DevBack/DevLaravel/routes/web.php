@@ -12,6 +12,17 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     Route::get('/{reservation}', 'show')->where([
         'id' => '[0-9]+',
     ])->name('show');
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/new', 'create')->name('create');
+        Route::post('/new', 'store');
+
+        Route::get('/{reservation}/edit', 'edit')->name('edit');
+        Route::post('/{reservation}/edit', 'update');
+
+        Route::get('/{reservation}/delete', 'destroy')->name('delete');
+
+    });
 });
 
 Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){

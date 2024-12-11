@@ -7,6 +7,9 @@ use Illuminate\Http\Response;
 use App\Models\Reservation;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
+//use App\Http\Requests\FormPostRequest;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class reservationController extends Controller
 {
@@ -33,5 +36,84 @@ class reservationController extends Controller
         return view('reservation.show', [
             'reservation' => $reservation
         ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return View
+     */
+    public function create(): View
+    {
+        $reservation = new Reservation();
+
+        return view('reservation.create', [
+            'reservation' => $reservation
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  App\Http\Requests\FormPostRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(/* FormPostRequest */FormRequest $request)
+    {
+        $reservation = new Reservation($request->validated());
+        $reservation->save();
+
+        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La reservation a été ajoutée avec succès.');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  Reservation $reservation
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Reservation $reservation)
+    {
+        // À modifier
+        if((Auth::user()->id) || (Auth::user()->superadmin)) {
+            return view('reservation.edit' , ['reservation' => $reservation]);        
+        }
+        else {
+            return redirect()->route('reservation.index');
+        }  
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param FormPostRequest  $request
+     * @param  Reservation  $reservation
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Reservation $reservation, /* FormPostRequest */FormRequest $request)
+    {
+        $reservation->update($request->validated());
+
+        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La reservation a été modifiée avec succès.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Reservation  $reservation
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Reservation $reservation)
+    {
+        $reservation = Reservation::findOrFail($reservation->id);
+
+        if((Auth::user()->id) || (Auth::user()->superadmin)) {
+            $reservation->delete();
+
+            return redirect()->route('reservation.index')->with('success', 'Reservation supprimée avec succès');
+        }
+        else {
+            return redirect()->route('reservation.index');
+        }  
     }
 }
