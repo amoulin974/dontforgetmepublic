@@ -67,6 +67,11 @@
                     {{ __('You are logged in!') }}
                 </div> -->
 <div class="container">  
+@if (session('status'))
+    <div class="success-message" role="alert">
+        {{ session('status') }}
+    </div>
+@endif
     @yield('content')
 </div>
 

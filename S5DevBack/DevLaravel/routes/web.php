@@ -15,13 +15,14 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/new', 'create')->name('create');
-        Route::post('/new', 'store');
+        Route::post('/new', 'store')->name('store');
 
         Route::get('/{reservation}/edit', 'edit')->name('edit');
-        Route::post('/{reservation}/edit', 'update');
+        Route::post('/{reservation}/edit', 'update')->name('update');
 
         Route::get('/{reservation}/delete', 'destroy')->name('delete');
 
+        // Route::resources
     });
 });
 

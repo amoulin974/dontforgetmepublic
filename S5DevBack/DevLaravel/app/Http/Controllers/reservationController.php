@@ -7,7 +7,7 @@ use Illuminate\Http\Response;
 use App\Models\Reservation;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
-//use App\Http\Requests\FormPostRequest;
+use App\Http\Requests\FormPostRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,12 +58,12 @@ class reservationController extends Controller
      * @param  App\Http\Requests\FormPostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(/* FormPostRequest */FormRequest $request)
+    public function store(Request $request)
     {
         $reservation = new Reservation($request->validated());
         $reservation->save();
 
-        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La reservation a été ajoutée avec succès.');
+        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La réservation a été ajoutée avec succès.');
     }
 
     /**
@@ -90,11 +90,11 @@ class reservationController extends Controller
      * @param  Reservation  $reservation
      * @return \Illuminate\Http\Response
      */
-    public function update(Reservation $reservation, /* FormPostRequest */FormRequest $request)
+    public function update(Reservation $reservation, Request $request)
     {
         $reservation->update($request->validated());
 
-        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La reservation a été modifiée avec succès.');
+        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La réservation a été modifiée avec succès.');
     }
 
     /**
@@ -110,7 +110,7 @@ class reservationController extends Controller
         if((Auth::user()->id) || (Auth::user()->superadmin)) {
             $reservation->delete();
 
-            return redirect()->route('reservation.index')->with('success', 'Reservation supprimée avec succès');
+            return redirect()->route('reservation.index')->with('success', 'Réservation supprimée avec succès');
         }
         else {
             return redirect()->route('reservation.index');

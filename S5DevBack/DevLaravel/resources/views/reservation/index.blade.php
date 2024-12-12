@@ -4,21 +4,22 @@
 @section('catalogue_active', 'active')
 
 @section('content')
+@if (session('success'))
+    <div class="success-message" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
+<div class="res-container"><div class="res"><a href="{{ route('reservation.create') }}" class="@yield('add_res_active')"><h2>Ajouter une réservation</h2></a></div></div>
 
-<a href="{{ route('reservation.create') }}" class="@yield('add_res_active')">Ajouter une sauce</a>
     <div class="res-container">
         @foreach ($reservations as $reservation)
             <div class="res">
                 <div class="res-header" >
-                    @if (session('status'))
-                        <div class="success-message" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    
 
                     @auth
                         @if(Auth::user()->id)
-                            <h2 style="max-height: 8px;">{{ $reservation->name }}</h2>
+                            <h2 style="max-height: 8px;">{{ $reservation->id }}</h2>
                             <a class="primary-button-link" href="{{ route('reservation.edit', $reservation->id) }}" >
                                 <i class="fa fa-edit"></i>
                             </a>           
