@@ -48,7 +48,7 @@ class SemaineType extends Model
     /**
      * Define a many-to-many relationship with the JourneeType model.
      *
-     * Each SemaineType is associated with zero to or more JourneeType entries.
+     * Each SemaineType is associated with zero or more JourneeType entries.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */

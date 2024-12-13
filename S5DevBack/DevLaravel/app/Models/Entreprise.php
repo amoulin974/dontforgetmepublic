@@ -102,4 +102,16 @@ class Entreprise extends Model
     {
         return $this->hasMany(Plage::class);
     }
+
+    /**
+     * Define a one-to-many relationship with the Creneau model.
+     *
+     * Each Entreprise can be associated with one or more Creneau entries.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function creneaux(): hasMany
+    {
+        return $this->hasMany(Creneau::class);
+    }
 }

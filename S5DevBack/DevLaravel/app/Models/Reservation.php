@@ -10,6 +10,8 @@ class Reservation extends Model
 {
     use HasFactory;
 
+    // ATTRIBUTS
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,11 +36,41 @@ class Reservation extends Model
         'nbPersonnes' => 'integer',
     ];
 
+    // METHODES
+
     /**
      * Get the comments for the blog post.
      */
-    public function notifs(): HasMany
+    public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Define a one-to-many relationship with the Creneau model.
+     *
+     * Each Reservation can be associated with one or more Creneau entries.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function creneaux(): HasMany
+    {
+        return $this->hasMany(Creneau::class);
+    }
+
+    /**
+     * Define a zero-to-many relationship with the User and Creneau model by Affecter.
+     *
+     * Each Reservation is associated with zero or more User and Creneau.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function affecter_users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'affecter', 'idReservation','idUser')->withPivot('idCreneau')->withTimestamps();
+    }
+    public function affecter_creneaux(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'affecter', 'idReservation','idCreneau')->withPivot('idUser')->withTimestamps();
     }
 }

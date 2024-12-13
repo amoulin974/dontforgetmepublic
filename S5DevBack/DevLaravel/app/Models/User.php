@@ -72,4 +72,48 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Entreprise::class, 'travailler', 'idUser', 'idEntreprise')->withPivot('idActivite', 'statut')->withTimestamps();
     }
+
+    /**
+     * Define a zero-to-many relationship with the Creneau by Etre Disponible.
+     *
+     * Each User is associated with zero or more Creneau.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function disponible_creneaux(): BelongsToMany
+    {
+        return $this->belongsToMany(Creneau::class, 'etre_disponible')->withTimestamps();
+    }
+
+    /**
+     * Define a one-to-many relationship with the Creneau and Reservation model by Affecter.
+     *
+     * Each User is associated with one or more Creneau and Reservation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function affecter_creneaux(): BelongsToMany
+    {
+        return $this->belongsToMany(Creneau::class, 'affecter', 'idUser', 'idCreneau')->withPivot('idReservation')->withTimestamps();
+    }
+    public function affecter_reservations(): BelongsToMany
+    {
+        return $this->belongsToMany(Reservation::class, 'affecter', 'idUser', 'idReservation')->withPivot('idCreneau')->withTimestamps();
+    }
+
+    /**
+     * Define a one-to-many relationship with the Creneau and Reservation model by Affecter.
+     *
+     * Each User is associated with one or more Creneau and Reservation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function effectuer_reservations(): BelongsToMany
+    {
+        return $this->belongsToMany(Reservation::class, 'effectuer', 'idUser', 'idReservation')->withPivot('idReservation', 'dateReservation', 'typeNotif', 'numTel')->withTimestamps();
+    }
+    public function effectuer_activites(): BelongsToMany
+    {
+        return $this->belongsToMany(Activite::class, 'effectuer', 'idUser', 'idActivite')->withPivot('idCreneau', 'dateReservation', 'typeNotif', 'numTel')->withTimestamps();
+    }
 }
