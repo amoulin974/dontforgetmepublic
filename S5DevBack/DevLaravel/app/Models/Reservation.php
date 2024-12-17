@@ -39,7 +39,11 @@ class Reservation extends Model
     // METHODES
 
     /**
-     * Get the comments for the blog post.
+     * Define a one-to-many relationship with the Notification model.
+     *
+     * Each Reservation can be associated with one or more Notifications.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function notifications(): HasMany
     {
@@ -47,21 +51,19 @@ class Reservation extends Model
     }
 
     /**
-     * Define a one-to-many relationship with the Creneau model.
+     * Define a many-to-many relationship with the Creneau model.
      *
-     * Each Reservation can be associated with one or more Creneau entries.
+     * Each Reservation can be associated with one or more Creneaux.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function creneaux(): HasMany
+    public function creneaux(): BelongsToMany
     {
-        return $this->hasMany(Creneau::class);
+        return $this->belongsToMany(Creneau::class, 'decomposer', 'idReservation', 'idCreneau')->withTimestamps();
     }
 
     /**
-     * Define a zero-to-many relationship with the User and Creneau model by Affecter.
-     *
-     * Each Reservation is associated with zero or more User and Creneau.
+     * Get the users associated with the reservation via Affecter.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -69,8 +71,38 @@ class Reservation extends Model
     {
         return $this->belongsToMany(User::class, 'affecter', 'idReservation','idUser')->withPivot('idCreneau')->withTimestamps();
     }
+
+    /**
+     * Get the creneaux associated with the reservation via Affecter.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function affecter_creneaux(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'affecter', 'idReservation','idCreneau')->withPivot('idUser')->withTimestamps();
+    }
+
+    /**
+     * Define a many-to-many relationship with the User model via Effectuer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function effectuer_users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'effectuer', 'idReservation', 'idUser')
+                    ->withPivot('idActivite', 'dateReservation', 'typeNotif', 'numTel')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Define a many-to-many relationship with the Activite model via Effectuer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function effectuer_activites(): BelongsToMany
+    {
+        return $this->belongsToMany(Activite::class, 'effectuer', 'idReservation', 'idActivite')
+                    ->withPivot('idUser', 'dateReservation', 'typeNotif', 'numTel')
+                    ->withTimestamps();
     }
 }

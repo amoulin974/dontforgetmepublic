@@ -35,45 +35,43 @@ class Creneau extends Model
 
     // METHODES
     /**
-     * Define a zero-to-many relationship with the Entreprise model.
+     * Define a many-to-many relationship with the Entreprise model.
      *
-     * Each Creneau can be associated with zero or more Entreprise entries.
+     * Each creneau can be associated with zero or more entreprises.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function entreprises(): belongsTo
+    public function entreprises(): BelongsToMany
     {
-        return $this->belongsTo(Entreprise::class);
+        return $this->belongsToMany(Entreprise::class, 'ouvrir', 'idCreneau', 'idEntreprise')->withTimestamps();
     }
 
     /**
-     * Define a zero-to-many relationship with the Reservation model.
+     * Define a many-to-many relationship with the Reservation model.
      *
-     * Each Creneau can be associated with zero or more Reservation entries.
+     * Each creneau can be associated with zero or more reservations.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function reservations(): belongsTo
+    public function reservations(): BelongsToMany
     {
-        return $this->belongsTo(reservation::class);
+        return $this->belongsToMany(Reservation::class, 'decomposer', 'idCreneau', 'idReservation')->withTimestamps();
     }
 
     /**
-     * Define a zero-to-many relationship with the User model by Etre Disponible.
+     * Define a many-to-many relationship with the User model via Etre Disponible.
      *
-     * Each Creneau is associated with zero or more User.
+     * Each user can be associated with zero or more creneaux.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function disponible_users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'etre_disponible')->withTimestamps();
+        return $this->belongsToMany(User::class, 'etre_disponible', 'idCreneau', 'idUser')->withTimestamps();
     }
 
     /**
-     * Define a zero-to-many relationship with the User and Reservation model by Affecter.
-     *
-     * Each Creneau is associated with zero or more User.
+     * Get the users associated with the creneau via Affecter.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -81,6 +79,12 @@ class Creneau extends Model
     {
         return $this->belongsToMany(User::class, 'affecter', 'idCreneau','idUser')->withPivot('idReservation')->withTimestamps();
     }
+
+    /**
+     * Get the users associated with the creneau via Affecter.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function affecter_reservations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'affecter', 'idCreneau','idReservation')->withPivot('idUser')->withTimestamps();

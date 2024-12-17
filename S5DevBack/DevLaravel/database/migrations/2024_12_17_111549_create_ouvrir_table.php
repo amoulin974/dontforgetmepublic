@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('affecter', function (Blueprint $table) {
-            $table->unsignedBigInteger('idUser');
+        Schema::create('ouvrir', function (Blueprint $table) {
             $table->unsignedBigInteger('idCreneau');
-            $table->unsignedBigInteger('idReservation');
+            $table->unsignedBigInteger('idEntreprise');
             $table->timestamps();
 
-            $table->foreign('idUser')->references('id')->on('users');
             $table->foreign('idCreneau')->references('id')->on('creneaus');
-            $table->foreign('idReservation')->references('id')->on('reservations');
-
-            $table->primary(['idUser', 'idCreneau', 'idReservation']);
+            $table->foreign('idEntreprise')->references('id')->on('entreprises');
+        
+            $table->primary(['idCreneau', 'idEntreprise']);
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('affecter');
+        Schema::dropIfExists('ouvrir');
     }
 };

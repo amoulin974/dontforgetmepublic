@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('affecter', function (Blueprint $table) {
-            $table->unsignedBigInteger('idUser');
-            $table->unsignedBigInteger('idCreneau');
+        Schema::create('decomposer', function (Blueprint $table) {
             $table->unsignedBigInteger('idReservation');
+            $table->unsignedBigInteger('idCreneau');
             $table->timestamps();
 
-            $table->foreign('idUser')->references('id')->on('users');
-            $table->foreign('idCreneau')->references('id')->on('creneaus');
             $table->foreign('idReservation')->references('id')->on('reservations');
+            $table->foreign('idCreneau')->references('id')->on('creneaus');
 
-            $table->primary(['idUser', 'idCreneau', 'idReservation']);
+            $table->primary(['idReservation', 'idCreneau']);
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('affecter');
+        Schema::dropIfExists('decomposer');
     }
 };
