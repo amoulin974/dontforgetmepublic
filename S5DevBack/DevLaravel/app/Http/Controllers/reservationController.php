@@ -93,7 +93,6 @@ class reservationController extends Controller
     public function update(Reservation $reservation, FormPostRequest $request)
     {
         $reservation->update($request->validated());
-        dd($request);
 
         return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La réservation a été modifiée avec succès.');
     }
