@@ -9,10 +9,6 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
 
     Route::get('/', 'index')->name('index');
 
-    Route::get('/{reservation}', 'show')->where([
-        'id' => '[0-9]+',
-    ])->name('show');
-
     Route::middleware(['auth'])->group(function () {
         Route::get('/new', 'create')->name('create');
         Route::post('/new', 'store')->name('store');
@@ -24,6 +20,10 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
 
         // Route::resources
     });
+
+    Route::get('/{reservation}', 'show')->where([
+        'id' => '[0-9]+',
+    ])->name('show');
 });
 
 Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){
