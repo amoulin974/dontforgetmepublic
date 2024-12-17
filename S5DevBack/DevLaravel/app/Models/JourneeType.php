@@ -34,7 +34,7 @@ class JourneeType extends Model
     // METHODES
 
     /**
-     * Define a one-to-one relationship with the Entreprise model.
+     * Define a many-to-one relationship with the Entreprise model.
      *
      * Each JourneeType is associated with exactly one Entreprise.
      *
@@ -54,11 +54,6 @@ class JourneeType extends Model
      */
     public function semaineTypes(): BelongsToMany
     {
-        return $this->belongsToMany(
-            SemaineType::class,
-            'constituer',
-            'idJourneeType',
-            'idSemaineType'
-        );
+        return $this->belongsToMany(SemaineType::class, 'constituer', 'idJourneeType', 'idSemaineType');
     }
 }

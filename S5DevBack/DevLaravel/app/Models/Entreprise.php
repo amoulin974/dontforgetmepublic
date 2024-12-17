@@ -50,25 +50,9 @@ class Entreprise extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function activite(): HasMany
+    public function activites(): HasMany
     {
         return $this->hasMany(Activite::class);
-    }
-
-    /**
-     * Define a many-to-many relationship with the Activite and the User model by Travailler.
-     *
-     * Each Entreprise is associated with many Activite and many User.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function travailler_activites(): BelongsToMany
-    {
-        return $this->belongsToMany(Activite::class, 'travailler', 'idEntreprise', 'idActivite')->withPivot('idUser', 'statut')->withTimestamps();
-    }
-    public function travailler_users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'travailler', 'idEntreprise', 'idUser')->withPivot('idActivite', 'statut')->withTimestamps();
     }
 
     /**
@@ -92,14 +76,50 @@ class Entreprise extends Model
      */
     public function semaineTypes(): HasMany
     {
-        return $this->hasMany(JourneeType::class);
+        return $this->hasMany(SemaineType::class);
     }
 
     /**
-     * Get the comments for the blog post.
+     * Define a one-to-many relationship with the Plage model.
+     *
+     * Each Entreprise can be associated with zero or more Plage entries.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function plages(): HasMany
     {
         return $this->hasMany(Plage::class);
+    }
+
+    /**
+     * Define a many-to-many relationship with the Creneau model.
+     *
+     * Each entreprise can be associated with one or more creneaux.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function creneaux(): BelongsToMany
+    {
+        return $this->belongsToMany(Creneau::class, 'ouvrir', 'idEntreprise', 'idCreneau')->withTimestamps();
+    }
+
+    /**
+     * Get the activites associated with the entreprise via Travailler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function travailler_activites(): BelongsToMany
+    {
+        return $this->belongsToMany(Activite::class, 'travailler', 'idEntreprise', 'idActivite')->withPivot('idUser', 'statut')->withTimestamps();
+    }
+
+    /**
+     * Get the users associated with the entreprise via Travailler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function travailler_users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'travailler', 'idEntreprise', 'idUser')->withPivot('idActivite', 'statut')->withTimestamps();
     }
 }

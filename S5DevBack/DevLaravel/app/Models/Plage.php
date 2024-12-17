@@ -40,7 +40,11 @@ class Plage extends Model
     // MÉTHODES
 
     /**
-     * Get the reservation associated with this notification.
+     * Define a many-to-one relationship with the Entreprise model.
+     *
+     * Each Plage is associated with exactly one Entreprise.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function entreprise(): BelongsTo
     {
@@ -48,10 +52,12 @@ class Plage extends Model
     }
 
     /**
-     * Get the reservation associated with this notification.
+     * Define a many-to-many relationship with the Activite model via Composer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function activites(): HasMany
+    public function activites(): BelongsToMany
     {
-        return $this->hasMany(Activite::class);
+        return $this->belongsToMany(Activite::class, 'composer', 'idPlage', 'idActivite')->withTimestamps();
     }
 }
