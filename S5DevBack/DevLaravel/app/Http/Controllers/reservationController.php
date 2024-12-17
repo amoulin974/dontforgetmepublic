@@ -58,7 +58,7 @@ class reservationController extends Controller
      * @param  App\Http\Requests\FormPostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FormPostRequest $request)
     {
         $reservation = new Reservation($request->validated());
         $reservation->save();
@@ -90,7 +90,7 @@ class reservationController extends Controller
      * @param  Reservation  $reservation
      * @return \Illuminate\Http\Response
      */
-    public function update(Reservation $reservation, Request $request)
+    public function update(Reservation $reservation, FormPostRequest $request)
     {
         $reservation->update($request->validated());
 

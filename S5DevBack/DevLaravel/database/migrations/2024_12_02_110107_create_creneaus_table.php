@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('creneaux', function (Blueprint $table) {
+        Schema::create('creneaus', function (Blueprint $table) {
             $table->id();
             $table->date('dateC');
             $table->time('heureDeb')->check('heureDeb > heureFin');
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('creneaux');
+        Schema::dropIfExists('creneaus');
     }
 };
