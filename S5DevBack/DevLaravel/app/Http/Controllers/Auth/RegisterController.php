@@ -73,4 +73,28 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    /**
+     * Show the page for the choice of the account type
+     * 
+     */
+    public function showChoicePage() {
+        return view('auth.choose-account-type');
+    }
+
+    public function showUserRegisterPage() {
+        return view('auth.user-register');
+    }
+
+    public function showCompanyRegisterPage() {
+        return view('auth.company-register');
+    }
+
+    public function showTypeRdvPage() {
+        return view('auth.company-type-rdv');
+    }
+
+    public function showRecapPage() {
+        return view('auth.company-recap');
+    }
 }
