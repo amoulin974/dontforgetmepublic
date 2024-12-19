@@ -30,7 +30,8 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
 Route::prefix('/creneau')->name('creneau.')->controller(creneauController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('/', 'index')->name('index');
+        Route::get('/calendrier', 'index')->name('index');
+        Route::post('/ajax', 'ajax')->name('ajax');
     });
     
 });
