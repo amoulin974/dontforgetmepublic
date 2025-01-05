@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -96,5 +97,28 @@ class RegisterController extends Controller
 
     public function showRecapPage() {
         return view('auth.company-recap');
+    }
+
+
+    public function storeResponses(Request $request)
+    {
+        // Validez les données envoyées
+        $validated = $request->validate([
+            '*' => 'required|string|max:255', // Adaptez les règles à vos besoins
+        ]);
+
+        // Traitez les réponses (par exemple, en les enregistrant dans la base de données)
+        // Exemple : Enregistrement des réponses
+        // foreach ($validated as $stepId => $answer) {
+            // Logique pour sauvegarder chaque réponse
+        // }
+
+        session(['appointment' => $validated]);
+
+        // Réponse de succès
+        return response()->json([
+            'message' => 'Réponses enregistrées avec succès.',
+            'responses' => $validated,
+        ], 200);
     }
 }

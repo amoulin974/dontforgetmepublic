@@ -62,5 +62,7 @@ Route::prefix('/register')->name('register.')->controller(RegisterController::cl
 
     Route::get('/company/recap', [RegisterController::class, 'showRecapPage'])->name('company.register.recap');
     //Route::get('/company/typeRdv', [RegisterController::class, 'showTypeRdvPage'])->name('company.register.typeRdv');
+
+    Route::post('/submit-responses', [RegisterController::class, 'storeResponses'])->name('submit.responses');
 });
 
