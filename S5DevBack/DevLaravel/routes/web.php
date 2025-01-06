@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\reservationController;
 use App\Http\Controllers\entrepriseController;
-use App\Http\Controllers\creneauController;
+use App\Http\Controllers\calendrierController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -27,10 +27,10 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     ])->name('show');
 });
 
-Route::prefix('/creneau')->name('creneau.')->controller(creneauController::class)->group(function(){
+Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('/calendrier', 'index')->name('index');
+        Route::get('/', 'index')->name('index');
         Route::post('/ajax', 'ajax')->name('ajax');
     });
     
