@@ -29,12 +29,29 @@
     <!-- Production -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <!-- Pour les popups -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@simondmc/popup-js@1.4.3/popup.min.js"></script> -->
+    <link href='https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' rel='stylesheet' />
+    <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
 </head>
 <body>
   
 <div class="containerCalendar">
     <h1>Calendrier des créneaux</h1>
     <div id='calendar'></div>
+
+    <!-- Popup Dialog -->
+    <div id="dialog" title="Ajout d'un évènement" style="display:none;">
+        <form>
+            <label for="eventTitle">Titre de l'évènement :</label>
+            <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
+            <label for="startDate">Heure de début:</label>
+            <input type="text" id="startDate" name="startDate" class="text ui-widget-content ui-corner-all" placeholder="08:00:00"><br><br>
+            <label for="endDate">Heure de fin :</label>
+            <input type="text" id="endDate" name="endDate" class="text ui-widget-content ui-corner-all" placeholder="20:00:00">
+        </form>
+    </div>
 </div>
    
 <script>
@@ -133,7 +150,61 @@ var calendar = $('#calendar').fullCalendar({
             start = start.add(8, 'hours');
             end = end.add(20, 'hours');
         }
-        // Vérifiez si l'événement dépasse une journée
+
+        // Cas où month view donc popup pour définir les heures
+        if($('#calendar').fullCalendar('getView').type == 'month') {
+            if (moment(start).isSame(end, 'day')) {
+                // Afficher la popup avec les inputs
+                $('#dialog').dialog({
+                        modal: true,
+                        buttons: {
+                            "Ajouter": function() {
+                                var title = $('#eventTitle').val();
+                                var heureStart = $('#startDate').val();
+                                var heureEnd = $('#endDate').val();
+                                if (title && heureStart && heureEnd) {
+                                    var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD");
+                                    $.ajax({
+                                        url: SITEURL + "/ajax",
+                                        data: {
+                                            dateRdv: start,
+                                            heureDeb: heureStart,
+                                            heureFin: heureEnd,
+                                            type: 'add'
+                                        },
+                                        type: "POST",
+                                        success: function (data) {
+                                            displaySuccess("Évènement ajouté avec succès");
+
+                                            /* calendar.fullCalendar('renderEvent', // eventRender
+                                                {
+                                                    id: data.id,
+                                                    dateRdv: start,
+                                                    heureDeb: start.split(' ')[1],
+                                                    heureFin: end.split(' ')[1],
+                                                },true); */
+
+                                            // Désélectionner après la sélection
+                                            $('#calendar').fullCalendar('unselect');
+
+                                            // Rafraîchir l'affichage du calendrier
+                                            $('#calendar').fullCalendar('refetchEvents');
+                                        }
+                                    });
+                                }
+                                $(this).dialog("close");
+                            },
+                            "Annuler": function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+            } else {
+                displayError("Impossible de créer un évènement sur plusieurs jours");
+            }
+        }
+        else {
+        // Vérifiez si l'événement est sur la même journée
         if (moment(start).isSame(end, 'day')) {
             var title = prompt('Titre de l\'évènement:');
             if (title) {
@@ -170,6 +241,7 @@ var calendar = $('#calendar').fullCalendar({
         } else {
             displayError("Impossible de créer un évènement sur plusieurs jours");
         }
+    }
     },
     eventDrop: function (event, delta) {
         // Vérifiez si l'événement dépasse une journée
