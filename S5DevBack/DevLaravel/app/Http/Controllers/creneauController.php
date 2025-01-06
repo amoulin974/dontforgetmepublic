@@ -18,13 +18,10 @@ class creneauController extends Controller
      */
     public function index(Request $request)
     {
-  
         if($request->ajax()) {
-       
-             $data = Creneau::whereDate('heureDeb', '>=', $request->heureFin)
+             $data = Creneau::/* whereDate('heureDeb', '>=', $request->heureFin)
                        ->whereDate('heureFin',   '<=', $request->heureDeb)
-                       ->get(['id', 'heureDeb', 'heureFin', 'dateC']);
-  
+                       -> */get(['id', 'heureDeb', 'heureFin', 'dateC']);
              return response()->json($data);
         }
   
@@ -40,7 +37,6 @@ class creneauController extends Controller
      */
     public function ajax(Request $request)
     {
- 
         switch ($request->type) {
            case 'add':
               $event = Creneau::create([
@@ -48,7 +44,6 @@ class creneauController extends Controller
                   'heureFin' => $request->heureFin,
                   'dateC' => $request->dateC,
               ]);
- 
               return response()->json($event);
              break;
   
@@ -67,6 +62,13 @@ class creneauController extends Controller
   
               return response()->json($event);
              break;
+
+           /* case 'get':
+                $data = Creneau::whereDate('heureDeb', '>=', $request->heureFin)
+                       ->whereDate('heureFin',   '<=', $request->heureDeb)
+                       ->get(['id', 'heureDeb', 'heureFin', 'dateC']);
+                return response()->json($data);
+             break; */
              
            default:
              # code...

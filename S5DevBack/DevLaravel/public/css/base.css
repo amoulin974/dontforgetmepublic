@@ -527,13 +527,15 @@ input[type="range"]::-webkit-slider-thumb {
     margin-bottom: 20px; /* Espacement entre les paragraphes */
 }
 
+/* Pour le container concernant le calendrier */
+.container {
+    background-color: #ffffff; /* Couleur de fond */
+}
 
-
-
-
-
-
-
-
-
+/* Pour la customisation du calendrier */
+/* https://fullcalendar.io/docs/css-customization */
+:root {
+    --fc-border-color: black;
+    --fc-daygrid-event-dot-width: 5px;
+ }
 
