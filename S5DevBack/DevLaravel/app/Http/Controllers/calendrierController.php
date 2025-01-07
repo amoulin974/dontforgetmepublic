@@ -78,6 +78,14 @@ class calendrierController extends Controller
               return response()->json($event);
              break;
 
+           case 'modify':
+              $event = Reservation::find($request->id)->update([
+                'nbPersonnes' => $request->nbPersonnes,
+              ]);
+ 
+              return response()->json($event);
+             break;
+
            /* case 'get':
                 $data = reservation::whereDate('heureDeb', '>=', $request->heureFin)
                        ->whereDate('heureFin',   '<=', $request->heureDeb)

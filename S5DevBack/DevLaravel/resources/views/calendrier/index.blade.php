@@ -34,6 +34,11 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/@simondmc/popup-js@1.4.3/popup.min.js"></script> -->
     <link href='https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' rel='stylesheet' />
     <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
+
+    <!-- Pour les multimonth -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-multimonth/1.0.0/fullcalendar-multimonth.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-multimonth/1.0.0/fullcalendar-multimonth.min.js"></script> -->
+
 </head>
 <body>
   
@@ -64,6 +69,21 @@
             <input type="number" id="nbPers" name="nbPers" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
         </form>
     </div>
+
+    <!-- Popup Dialog Modif -->
+    <div id="dialogModif" title="Ajout d'un évènement" style="display:none;">
+        <form>
+            <label for="eventTitleModif">Titre de l'évènement :</label>
+            <input type="text" id="eventTitleModif" name="eventTitleModif" class="text ui-widget-content ui-corner-all"><br><br>
+            <label for="nbPersModif">Nombre de personnes :</label>
+            <input type="number" id="nbPersModif" name="nbPersModif" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
+        </form>
+    </div>
+
+    <!-- Popup Dialog Suppression -->
+    <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cet évènement sera définitivement supprimé. Voulez-vous continuer ?</p>
+    </div>
 </div>
    
 <script>
@@ -89,6 +109,13 @@ var calendar = $('#calendar').fullCalendar({
       center: 'title',
       right: 'month,agendaWeek,agendaDay,listMonth'
     },
+    /* views: {
+        multiMonthYear: {
+            type: 'multiMonth',
+            duration: { months: 12 },
+            buttonText: 'Year'
+        }
+    }, */
     buttonIcons: false, // show the prev/next text
     locale: 'fr',
     editable: true,
@@ -207,6 +234,7 @@ var calendar = $('#calendar').fullCalendar({
                                         },
                                         type: "POST",
                                         success: function (data) {
+                                            $('#dialogSelect').dialog('close');
                                             displaySuccess("Évènement ajouté avec succès");
 
                                             /* calendar.fullCalendar('renderEvent', // eventRender
@@ -216,8 +244,6 @@ var calendar = $('#calendar').fullCalendar({
                                                     heureDeb: start.split(' ')[1],
                                                     heureFin: end.split(' ')[1],
                                                 },true); */
-                                            
-                                            $('#dialogSelect').dialog('close');
 
                                             // Désélectionner après la sélection
                                             $('#calendar').fullCalendar('unselect');
@@ -276,17 +302,8 @@ var calendar = $('#calendar').fullCalendar({
                                 },
                                 type: "POST",
                                 success: function (data) {
-                                    displaySuccess("Évènement ajouté avec succès");
-
-                                    /* calendar.fullCalendar('renderEvent', // eventRender
-                                        {
-                                            id: data.id,
-                                            dateRdv: start,
-                                            heureDeb: start.split(' ')[1],
-                                            heureFin: end.split(' ')[1],
-                                        },true); */
-
                                     $('#dialogTitre').dialog('close');
+                                    displaySuccess("Évènement ajouté avec succès");
 
                                     // Désélectionner après la sélection
                                     $('#calendar').fullCalendar('unselect');
@@ -342,21 +359,86 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
-        var deleteMsg = confirm("Voulez-vous vraiment supprimer cet évènement ?");
-        if (deleteMsg) {
-            $.ajax({
-                type: "POST",
-                url: SITEURL + '/ajax',
-                data: {
-                        id: event.id,
-                        type: 'delete'
+        var eventAct = event;
+        $('#dialogModif').dialog({
+            modal: true,
+            closeOnEscape: true,
+                    open: function(event, ui) {
+                        $('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'évènement');
+                        $('#nbPersModif').val(eventAct.nbPersonnes ? eventAct.nbPersonnes : 1);
+                        $('.ui-widget-overlay').bind('click', function(){
+                            $('#dialogModif').dialog('close');
+                        });
+                    },
+            buttons: {
+                "Modifier": function() {
+                    var title = $('#eventTitleModif').val();
+                    var nbPers = $('#nbPersModif').val();
+                    console.log(eventAct);
+                    if (title && nbPers) {
+                        $.ajax({
+                            url: SITEURL + "/ajax",
+                            data: {
+                                id: eventAct.id,
+                                nbPersonnes: nbPers,
+                                type: 'modify'
+                            },
+                            type: "POST",
+                            success: function (data) {
+                                $('#dialogModif').dialog('close');
+
+                                displaySuccess("Évènement modifié avec succès");
+
+                                // Désélectionner après la sélection
+                                $('#calendar').fullCalendar('unselect');
+
+                                // Rafraîchir l'affichage du calendrier
+                                $('#calendar').fullCalendar('refetchEvents');
+                            },
+                            error: function() {
+                                $('#dialogTitre').dialog('close');
+                                displayErrorWithButton("Erreur lors de la modification de l'évènement. Réssayez...");
+                            }
+                        });
+                    }
+                    else {
+                        displayWarning("Informations manquantes");
+                    }
                 },
-                success: function (response) {
-                    calendar.fullCalendar('removeEvents', event.id);
-                    displayMessage("Évènement supprimé avec succès");
+                "Supprimer": function() {
+                    $(this).dialog("close");
+                    $( "#dialog-confirm" ).dialog({
+                        resizable: false,
+                        modal: true,
+                        buttons: {
+                            "Confirmer la suppression": function() {
+                                $.ajax({
+                                    type: "POST",
+                                    url: SITEURL + '/ajax',
+                                    data: {
+                                            id: eventAct.id,
+                                            type: 'delete'
+                                    },
+                                    success: function (response) {
+                                        calendar.fullCalendar('removeEvents', eventAct.id);
+                                        displayMessage("Évènement supprimé avec succès");
+                                    }
+                                });
+                                $( this ).dialog( "close" );
+                                $('#dialogModif').dialog("close");
+                            },
+                            "Annuler": function() {
+                                $( this ).dialog( "close" );
+                                $('#dialogModif').dialog("open");
+                            }
+                        }
+                    });
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
                 }
-            });
-        }
+            }
+        });
     },
     eventResize: function(event, delta, revertFunc) {
         // Vérifiez si l'événement dépasse une journée
@@ -491,6 +573,18 @@ function displayWarning(message) {
         "progressBar": true
     }
     toastr.warning(message, 'Attention...');
+}
+
+function displayErrorWithButton(message) {
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": true,
+        "progressBar": true
+    }
+    toastr.error(message, '! Erreur !', {
+        timeOut: 0,
+        extendedTimeOut: 0
+    });
 }
   
 </script>
