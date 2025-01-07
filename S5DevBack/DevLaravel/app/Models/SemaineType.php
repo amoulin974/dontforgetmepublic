@@ -34,13 +34,13 @@ class SemaineType extends Model
     // METHODES 
 
     /**
-     * Define a one-to-one relationship with the Entreprise model.
+     * Define a many-to-one relationship with the Entreprise model.
      *
      * Each SemaineType is associated with exactly one Entreprise.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function entreprise(): BelongsTo 
+    public function entreprise(): BelongsTo
     {
         return $this->belongsTo(Entreprise::class);
     }
@@ -48,17 +48,12 @@ class SemaineType extends Model
     /**
      * Define a many-to-many relationship with the JourneeType model.
      *
-     * Each SemaineType is associated with zero to or more JourneeType entries.
+     * Each SemaineType is associated with zero or more JourneeType entries.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function journeeTypes(): BelongsToMany
     {
-        return $this->belongsToMany(
-            JourneeType::class,
-            'constituer',
-            'idSemaineType',
-            'idJourneeType'        
-        );
+        return $this->belongsToMany(JourneeType::class, 'constituer', 'idSemaineType', 'idJourneeType');
     }
 }

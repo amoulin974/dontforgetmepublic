@@ -34,9 +34,9 @@ class Activite extends Model
     // METHODES 
     
     /**
-     * Define a one-to-one relationship with the Entreprise model.
+     * Define a many-to-one relationship with the Entreprise model.
      *
-     * Each Activite is associated with exactly one Enreprise.
+     * Each Activite is associated with exactly one Entreprise.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -45,11 +45,18 @@ class Activite extends Model
         return $this->belongsTo(Entreprise::class);
     }
 
+    /**
+     * Define a many-to-many relationship with the Plage model via Composer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function plages(): BelongsToMany
+    {
+        return $this->belongsToMany(Plage::class, 'composer', 'idActivite', 'idPlage')->withTimestamps();
+    }
 
     /**
-     * Define a many-to-many relationship with the Entreprise and the User model by Travailler.
-     *
-     * Each Activite is associated with many Entreprise and many User.
+     * Get the entreprises associated with the activite via Travailler.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -57,8 +64,38 @@ class Activite extends Model
     {
         return $this->belongsToMany(Entreprise::class, 'travailler', 'idActivite', 'idEntreprise')->withPivot('idUser', 'statut')->withTimestamps();
     }
+
+    /**
+     * Get the users associated with the activite via Travailler.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function travailler_users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'travailler', 'idActivite', 'idUser')->withPivot('idEntreprise', 'statut')->withTimestamps();
+    }
+
+    /**
+     * Define a many-to-many relationship with the User model via Effectuer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function effectuer_users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'effectuer', 'idActivite', 'idUser')
+                    ->withPivot('idReservation', 'dateReservation', 'typeNotif', 'numTel')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Define a many-to-many relationship with the Reservation model via Effectuer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function effectuer_reservations(): BelongsToMany
+    {
+        return $this->belongsToMany(Reservation::class, 'effectuer', 'idActivite', 'idReservation')
+                    ->withPivot('idUser', 'dateReservation', 'typeNotif', 'numTel')
+                    ->withTimestamps();
     }
 }

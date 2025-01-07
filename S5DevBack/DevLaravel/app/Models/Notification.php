@@ -39,9 +39,13 @@ class Notification extends Model
     // MÉTHODES
 
     /**
-     * Get the reservation associated with this notification.
+     * Define a many-to-one relationship with the Reservation model.
+     *
+     * Each notification is associated with a single reservation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function reservation(): BelongsTo
+    public function reservations(): BelongsTo
     {
         return $this->belongsTo(Reservation::class);
     }
