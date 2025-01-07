@@ -50,6 +50,12 @@ class DatabaseSeeder extends Seeder
 
         Creneau::factory(2)->create();
 
+        Creneau::factory()->create([
+            'dateC' => '2024-12-19T00:00:00Z',
+            'heureDeb' => fake()->time('H:i:s'),
+            'heureFin' => fake()->time('H:i:s'),
+        ]);
+
         Notification::factory(10)->create();
 
         Reservation::factory()->create([

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\reservationController;
 use App\Http\Controllers\entrepriseController;
+use App\Http\Controllers\calendrierController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -24,6 +25,15 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     Route::get('/{reservation}', 'show')->where([
         'id' => '[0-9]+',
     ])->name('show');
+});
+
+Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/ajax', 'ajax')->name('ajax');
+    });
+    
 });
 
 Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){
