@@ -9,7 +9,7 @@
         {{ session('success') }}
     </div>
 @endif
-<div class="res-container"><div class="res"><a href="{{ route('reservation.create') }}" class="@yield('add_res_active')"><h2>Ajouter une réservation</h2></a></div></div>
+<div class="res-container"><div class="res"><a href="{{ route('entreprise.index') }}" class="@yield('add_res_active')"><h2>Ajouter une réservation</h2></a></div></div>
 
     <div class="res-container">
         @foreach ($reservations as $reservation)

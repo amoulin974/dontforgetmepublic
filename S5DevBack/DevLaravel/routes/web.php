@@ -10,7 +10,7 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     Route::get('/', 'index')->name('index');
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('/new', 'create')->name('create');
+        Route::get('/new/{entreprise}', 'create')->name('create');
         Route::post('/new', 'store')->name('store');
 
         Route::get('/{reservation}/edit', 'edit')->name('edit');

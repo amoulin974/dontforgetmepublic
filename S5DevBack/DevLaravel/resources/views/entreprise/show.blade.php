@@ -20,9 +20,9 @@
                 <p><strong>Type :</strong> {{ $entreprise->type }}</p>
                 <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
                 <p><strong>email :</strong> {{ $entreprise->email }}</p>
-                <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="300vh" width="300vh">
                 @if($entreprise->publier)
                 <p><strong>Publié !</strong></p>
+                <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id]) }}" class="@yield('add_res_active')">Ajouter une réservation</a>
                 @endif
             </div>
             @if (count($entreprise->plages) >= 1)

@@ -17,7 +17,6 @@
                     <p><strong>Type :</strong> {{ $entreprise->type }}</p>
                     <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
                     <p><strong>email :</strong> {{ $entreprise->email }}</p>
-                    <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="300vh" width="300vh">
                     @if($entreprise->publier)
                     <p><strong>Publié !</strong></p>
                     @endif

@@ -10,6 +10,7 @@ use Illuminate\View\View;
 use App\Http\Requests\FormPostRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Entreprise;
 
 class reservationController extends Controller
 {
@@ -43,11 +44,12 @@ class reservationController extends Controller
      *
      * @return View
      */
-    public function create(): View
+    public function create(Entreprise $entreprise): View
     {
         $reservation = new Reservation();
 
         return view('reservation.create', [
+            'entreprise' => $entreprise,
             'reservation' => $reservation
         ]);
     }
