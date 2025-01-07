@@ -21,7 +21,7 @@ class calendrierController extends Controller
         if($request->ajax()) {
              $data = Reservation::/* whereDate('heureDeb', '>=', $request->heureFin)
                        ->whereDate('heureFin',   '<=', $request->heureDeb)
-                       -> */get(['id', 'heureDeb', 'heureFin', 'dateRdv']);
+                       -> */get(['id', 'heureDeb', 'heureFin', 'dateRdv', 'nbPersonnes']);
              return response()->json($data);
         }
   
@@ -39,12 +39,26 @@ class calendrierController extends Controller
     {
         switch ($request->type) {
            case 'add':
-              $event = Reservation::create([
-                  'heureDeb' => $request->heureDeb,
-                  'heureFin' => $request->heureFin,
-                  'dateRdv' => $request->dateRdv,
-                  'nbPersonnes' => 1,
-              ]);
+              /* if ($request->heureDeb > $request->heureFin) {
+                  return response()->json('error');
+              } */
+              if (!$request->nbPersonnes){
+                $event = Reservation::create([
+                    'heureDeb' => $request->heureDeb,
+                    'heureFin' => $request->heureFin,
+                    'dateRdv' => $request->dateRdv,
+                    'nbPersonnes' => 1,
+                ]);
+              }
+              else {
+                $event = Reservation::create([
+                    'heureDeb' => $request->heureDeb,
+                    'heureFin' => $request->heureFin,
+                    'dateRdv' => $request->dateRdv,
+                    'nbPersonnes' => $request->nbPersonnes,
+                ]);
+              }
+              
               return response()->json($event);
              break;
   

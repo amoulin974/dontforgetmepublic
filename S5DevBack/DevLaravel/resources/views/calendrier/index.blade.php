@@ -41,15 +41,27 @@
     <h1>Calendrier des créneaux</h1>
     <div id='calendar'></div>
 
-    <!-- Popup Dialog -->
-    <div id="dialog" title="Ajout d'un évènement" style="display:none;">
+    <!-- Popup Dialog Select -->
+    <div id="dialogSelect" title="Ajout d'un évènement" style="display:none;">
+        <form>
+            <label for="eventTitleSelect">Titre de l'évènement :</label>
+            <input type="text" id="eventTitleSelect" name="eventTitleSelect" class="text ui-widget-content ui-corner-all" placeholder="Titre"><br><br>
+            <label for="startDateSelect">Heure de début:</label>
+            <input type="time" id="startDateSelect" name="startDateSelect" class="text ui-widget-content ui-corner-all" placeholder="08:00:00"><br><br>
+            <label for="endDateSelect">Heure de fin :</label>
+            <input type="time" id="endDateSelect" name="endDateSelect" class="text ui-widget-content ui-corner-all" placeholder="20:00:00"><br><br>
+            <label for="nbPersSelect">Nombre de personnes :</label>
+            <input type="number" id="nbPersSelect" name="nbPersSelect" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
+        </form>
+    </div>
+
+    <!-- Popup Dialog Titre -->
+    <div id="dialogTitre" title="Ajout d'un évènement" style="display:none;">
         <form>
             <label for="eventTitle">Titre de l'évènement :</label>
             <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="startDate">Heure de début:</label>
-            <input type="text" id="startDate" name="startDate" class="text ui-widget-content ui-corner-all" placeholder="08:00:00"><br><br>
-            <label for="endDate">Heure de fin :</label>
-            <input type="text" id="endDate" name="endDate" class="text ui-widget-content ui-corner-all" placeholder="20:00:00">
+            <label for="nbPers">Nombre de personnes :</label>
+            <input type="number" id="nbPers" name="nbPers" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
         </form>
     </div>
 </div>
@@ -99,6 +111,7 @@ var calendar = $('#calendar').fullCalendar({
                         title: this.id,
                         start: start_datetime,
                         end: end_datetime,
+                        nbPersonnes: this.nbPersonnes,
                     });
                 });
                 callback(events);
@@ -140,6 +153,13 @@ var calendar = $('#calendar').fullCalendar({
             element.css('background-color', couleurAjd); // Couleur pour les événements futurs
             element.css('border-color', couleurAjd);
         }
+        /* if () { // Si c'est toute la journéee
+
+        } */
+        if (event.nbPersonnes) { // Si le nombre de personnes est renseigné
+            element.find('.fc-title').after("<br/><span class=\"nbPersEvent\">" + event.nbPersonnes + "</span>");
+        }
+        
     },
     selectable: true,
     selectHelper: true,
@@ -154,22 +174,35 @@ var calendar = $('#calendar').fullCalendar({
         // Cas où month view donc popup pour définir les heures
         if($('#calendar').fullCalendar('getView').type == 'month') {
             if (moment(start).isSame(end, 'day')) {
+                var dateStart = $.fullCalendar.formatDate(start, "YYYY-MM-DD");
                 // Afficher la popup avec les inputs
-                $('#dialog').dialog({
+                $('#dialogSelect').dialog({
                         modal: true,
+                        closeOnEscape: true,
+                        open: function(event, ui) {
+                            $('.ui-widget-overlay').bind('click', function(){
+                                $('#dialogSelect').dialog('close');
+                            });
+                        },
                         buttons: {
                             "Ajouter": function() {
-                                var title = $('#eventTitle').val();
-                                var heureStart = $('#startDate').val();
-                                var heureEnd = $('#endDate').val();
-                                if (title && heureStart && heureEnd) {
-                                    var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD");
+                                var title = $('#eventTitleSelect').val();
+                                var heureStart = $('#startDateSelect').val();
+                                var heureEnd = $('#endDateSelect').val();
+                                var nbPers = $('#nbPersSelect').val();
+                                console.log(title);
+                                console.log(nbPers);
+                                console.log(typeof nbPers);
+                                if (title && heureStart && heureEnd && nbPers) {
+                                    heureStart = heureStart + ':00';
+                                    heureEnd = heureEnd + ':00';
                                     $.ajax({
                                         url: SITEURL + "/ajax",
                                         data: {
-                                            dateRdv: start,
+                                            dateRdv: dateStart,
                                             heureDeb: heureStart,
                                             heureFin: heureEnd,
+                                            nbPersonnes: nbPers,
                                             type: 'add'
                                         },
                                         type: "POST",
@@ -183,16 +216,24 @@ var calendar = $('#calendar').fullCalendar({
                                                     heureDeb: start.split(' ')[1],
                                                     heureFin: end.split(' ')[1],
                                                 },true); */
+                                            
+                                            $('#dialogSelect').dialog('close');
 
                                             // Désélectionner après la sélection
                                             $('#calendar').fullCalendar('unselect');
 
                                             // Rafraîchir l'affichage du calendrier
                                             $('#calendar').fullCalendar('refetchEvents');
+                                        },
+                                        error: function() {
+                                            displayError("Erreur lors de l'ajout de l'évènement. Résseayez...");
                                         }
                                     });
                                 }
-                                $(this).dialog("close");
+                                else {
+                                    displayWarning("Informations manquantes");
+                                }
+                                //$(this).dialog("close");
                             },
                             "Annuler": function() {
                                 $(this).dialog("close");
@@ -201,45 +242,77 @@ var calendar = $('#calendar').fullCalendar({
                     });
             } else {
                 displayError("Impossible de créer un évènement sur plusieurs jours");
+                // Désélectionner après la sélection
+                $('#calendar').fullCalendar('unselect');
             }
         }
         else {
         // Vérifiez si l'événement est sur la même journée
         if (moment(start).isSame(end, 'day')) {
-            var title = prompt('Titre de l\'évènement:');
-            if (title) {
-                var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
-                var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
-                $.ajax({
-                    url: SITEURL + "/ajax",
-                    data: {
-                        dateRdv: start.split(' ')[0],
-                        heureDeb: start.split(' ')[1],
-                        heureFin: end.split(' ')[1],
-                        type: 'add'
+            var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
+            var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
+            // Afficher la popup avec les inputs
+            $('#dialogTitre').dialog({
+                modal: true,
+                closeOnEscape: true,
+                        open: function(event, ui) {
+                            $('.ui-widget-overlay').bind('click', function(){
+                                $('#dialogTitre').dialog('close');
+                            });
+                        },
+                buttons: {
+                    "Ajouter": function() {
+                        var title = $('#eventTitle').val();
+                        var nbPers = $('#nbPers').val();
+                        if (title && nbPers) {
+                            $.ajax({
+                                url: SITEURL + "/ajax",
+                                data: {
+                                    dateRdv: start.split(' ')[0],
+                                    heureDeb: start.split(' ')[1],
+                                    heureFin: end.split(' ')[1],
+                                    nbPersonnes: nbPers,
+                                    type: 'add'
+                                },
+                                type: "POST",
+                                success: function (data) {
+                                    displaySuccess("Évènement ajouté avec succès");
+
+                                    /* calendar.fullCalendar('renderEvent', // eventRender
+                                        {
+                                            id: data.id,
+                                            dateRdv: start,
+                                            heureDeb: start.split(' ')[1],
+                                            heureFin: end.split(' ')[1],
+                                        },true); */
+
+                                    $('#dialogTitre').dialog('close');
+
+                                    // Désélectionner après la sélection
+                                    $('#calendar').fullCalendar('unselect');
+
+                                    // Rafraîchir l'affichage du calendrier
+                                    $('#calendar').fullCalendar('refetchEvents');
+                                },
+                                error: function() {
+                                    displayError("Erreur lors de l'ajout de l'évènement. Réssayez...");
+                                }
+                            });
+                        }
+                        else {
+                            displayWarning("Informations manquantes");
+                        }
+                        //$(this).dialog("close");
                     },
-                    type: "POST",
-                    success: function (data) {
-                        displaySuccess("Évènement ajouté avec succès");
-
-                        calendar.fullCalendar('renderEvent', // eventRender
-                            {
-                                id: data.id,
-                                dateRdv: start,
-                                heureDeb: start.split(' ')[1],
-                                heureFin: end.split(' ')[1],
-                            },true);
-
-                        // Désélectionner après la sélection
-                        $('#calendar').fullCalendar('unselect');
-
-                        // Rafraîchir l'affichage du calendrier
-                        $('#calendar').fullCalendar('refetchEvents');
+                    "Annuler": function() {
+                        $(this).dialog("close");
                     }
-                });
-            }
+                }
+            });
         } else {
             displayError("Impossible de créer un évènement sur plusieurs jours");
+            // Désélectionner après la sélection
+            $('#calendar').fullCalendar('unselect');
         }
     }
     },
@@ -264,6 +337,8 @@ var calendar = $('#calendar').fullCalendar({
             });
         } else {
             displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+            // Désélectionner après la sélection
+            $('#calendar').fullCalendar('unselect');
         }
     },
     eventClick: function (event) {
@@ -310,6 +385,8 @@ var calendar = $('#calendar').fullCalendar({
         } else {
             revertFunc(); // Revert the change if the update fails
             displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+            // Désélectionner après la sélection
+            $('#calendar').fullCalendar('unselect');
         }
     },
 });
@@ -405,6 +482,15 @@ function displayMessage(message) {
         "progressBar": true
     }
     toastr.info(message, 'Information :');
+}
+
+function displayWarning(message) {
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": true,
+        "progressBar": true
+    }
+    toastr.warning(message, 'Attention...');
 }
   
 </script>
