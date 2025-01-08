@@ -31,116 +31,85 @@
         <h1 >Les entreprises dans lesquels vous travaillez</h1>
         <br/>
     </div>
+    <div class="containerEntreprise">
     @foreach (Auth::user()->travailler_entreprises as $entreprise)
+    <div class="entreprise" id="entreprise{{$entreprise->id}}">
         <h2>{{ $entreprise->libelle }}</h2>
         <p><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
-        <a class="btn btn-primary" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
-        <br/>
+        {{-- @if (Auth::user()->id == $entreprise->user_id) // Cas créateur
+            <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
+        @endif --}}
+        @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
+            <a class="btn btn-primary" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
+        @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
+            <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
+        @else
+            <p ><i>Vous êtes invité dans cette entreprise :</i></p>
+            <a onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
+            <a onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
+        @endif
+    </div>
     @endforeach
+    </div>
 <div>
-   
-{{-- <script>
-$(document).ready(function () {
 
-// VARIABLES GLOBALES
-// URL dans le site
-var SITEURL = "{{ url('/parametrage/plage/') }}";
 
-var tippyPrev = tippy('.fc-prev-button', {
-    content: 'Précédent',
-    placement: 'top',
-    theme: 'light-border',
-});
+    <script>
+        /* document.addEventListener('DOMContentLoaded', function() { */
+            // VARIABLES GLOBALES
+        // URL dans le site
+        var SITEURL = "{{ url('/parametrage/invit') }}";
 
-var tippyNext = tippy('.fc-next-button', {
-    content: 'Suivant',
-    placement: 'top',
-    theme: 'light-border',
-});
-
-var tippyToday = tippy('.fc-today-button', {
-    content: 'Revenir à aujourd\'hui',
-    placement: 'top',
-    theme: 'light-border',
-});
-
-var tippyMonth = tippy('.fc-month-button', {
-    content: 'Vision Mensuelle',
-    placement: 'top',
-    theme: 'light-border',
-});
-
-var tippyWeek = tippy('.fc-agendaWeek-button', {
-    content: 'Vision Hebdomadaire',
-    placement: 'top',
-    theme: 'light-border',
-});
-
-var tippyDay = tippy('.fc-agendaDay-button', {
-    content: 'Vision Journalière',
-    placement: 'top',
-    theme: 'light-border',
-});
-
-var tippyList = tippy('.fc-listMonth-button', {
-    content: 'Vision Globale',
-    placement: 'top',
-    theme: 'light-border',
-});
-
-});
-
-/* https://codeseven.github.io/toastr/demo.html */
-
-function displaySuccess(message) {
-    toastr.options = {
-        "closeButton": true,
-        "newestOnTop": true,
-        "progressBar": true
+// Mise en place du setup du ajax avec le token CSRF
+$.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-    toastr.success(message, 'Succés !');
-}
+});
 
-function displayError(message) {
-    toastr.options = {
-        "closeButton": true,
-        "newestOnTop": true,
-        "progressBar": true
-    }
-    toastr.error(message, '! Erreur !');
-}
-
-function displayMessage(message) {
-    toastr.options = {
-        "closeButton": true,
-        "newestOnTop": true,
-        "progressBar": true
-    }
-    toastr.info(message, 'Information :');
-}
-
-function displayWarning(message) {
-    toastr.options = {
-        "closeButton": true,
-        "newestOnTop": true,
-        "progressBar": true
-    }
-    toastr.warning(message, 'Attention...');
-}
-
-function displayErrorWithButton(message) {
-    toastr.options = {
-        "closeButton": true,
-        "newestOnTop": true,
-        "progressBar": true
-    }
-    toastr.error(message, '! Erreur !', {
-        timeOut: 0,
-        extendedTimeOut: 0
+function accepterInvit(eId, eLib) {
+    $.ajax({
+        type: "POST",
+        url: SITEURL + "/",
+        data: {
+            id: {{ Auth::user()->id }},
+            type: 'accept',
+            idEntreprise: eId,
+        },
+        success: function (data) {
+            displaySuccess('Vous avez accepté l\'invitation.\nVous travaillez maintenant pour ' + eLib);
+            // Transformer la possibilité d'accepter en la possibilité de visualiser
+            $("#entreprise" + eId + " a").remove();
+            $("#entreprise" + eId + " i").remove();
+            $("#entreprise" + eId).append('<a class="btn btn-primary light" href="/parametrage/plage/'+eId+'">Visualiser vos plages</a>'); {{-- {{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }} --}}
+        },
+        error: function (data) {
+            displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');
+        }
     });
 }
-  
-</script> --}}
-  
+
+function refuserInvit(eId, eLib) {
+    $.ajax({
+        type: "POST",
+        url: SITEURL + "/",
+        data: {
+            id: {{ Auth::user()->id }},
+            type: 'reject',
+            idEntreprise: eId,
+        },
+        success: function (data) {
+            displayMessage('Vous avez refusé l\'invitation de ' + eLib);
+            // Retirer l'entreprise de la liste
+            $("#entreprise" + eId).remove();
+        },
+        error: function (data) {
+            displayError('Erreur lors du refus de l\'invitation. Réessayez...');
+        }
+    });
+}
+        /* }); */
+    </script>
+   
 </body>
 @endsection

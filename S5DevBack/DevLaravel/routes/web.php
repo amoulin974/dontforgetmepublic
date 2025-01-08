@@ -42,6 +42,8 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
     Route::middleware(['auth'])->group(function () {
 
         Route::get('/', 'index')->name('index');
+
+        Route::post('/invit', 'invit')->name('invit');
         
         Route::prefix('/plage')->name('plage.')->group(function(){
             Route::post('/', 'ajax')->name('ajax');

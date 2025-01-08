@@ -189,6 +189,56 @@
             {{ __('You are logged in!') }}
         </div> --}}
 
+<script>
+function displaySuccess(message) {
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": true,
+        "progressBar": true
+    }
+    toastr.success(message, 'Succés !');
+}
+
+function displayError(message) {
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": true,
+        "progressBar": true
+    }
+    toastr.error(message, '! Erreur !');
+}
+
+function displayMessage(message) {
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": true,
+        "progressBar": true
+    }
+    toastr.info(message, 'Information :');
+}
+
+function displayWarning(message) {
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": true,
+        "progressBar": true
+    }
+    toastr.warning(message, 'Attention...');
+}
+
+function displayErrorWithButton(message) {
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": true,
+        "progressBar": true
+    }
+    toastr.error(message, '! Erreur !', {
+        timeOut: 0,
+        extendedTimeOut: 0
+    });
+}
+</script>
+
 @if (session('success'))
     <script>
         toastr.success("{{ session('success') }}");
@@ -198,10 +248,10 @@
         toastr.error("{{ session('error') }}");
     </script>
 @endif
-
-<div class="container">  
-    @yield('content')
-</div>
+{{-- 
+<div class="container">   --}}
+    @yield('content'){{-- 
+</div> --}}
 
 </body>
 </html>

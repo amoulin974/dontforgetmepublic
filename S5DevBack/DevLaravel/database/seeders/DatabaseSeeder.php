@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'superadmin' => 1,
         ]);
 
-        Entreprise::factory(3)->create();
+        Entreprise::factory(10)->create();
 
         Entreprise::factory()->create([
             'libelle' => fake()->company,
