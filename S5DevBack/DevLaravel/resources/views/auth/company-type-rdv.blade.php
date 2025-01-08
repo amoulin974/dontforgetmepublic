@@ -2,16 +2,18 @@
 
 @section('content')
 
-<div class="container d-flex flex-column align-items-center" style="min-height: 100vh;">        
-        <a class="btn btn-outline-secondary align-self-start mb-3" id="retour" redirectUrl="{{ route('register.company.register.company') }}">
+<div class="container d-flex flex-column align-items-center" style="min-height: 100vh;">
+    <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">        
+        <a class="btn btn-outline-secondary mt-5 mb-5" id="retour" redirectUrl="{{ route('register.company.register.company') }}" style="position: absolute; left: 0;">
             <i class="bi bi-arrow-left"></i>
         </a>
 
-        <div class="d-flex justify-content-center mb-4">
-            <span class="me-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
-            <span class="mx-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
-            <span class="ms-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
+        <div class="d-flex justify-content-center align-items-center w-100 mt-5 mb-5">
+            <span class="me-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
+            <span class="mx-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
+            <span class="ms-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
         </div>
+    </div>
 
         <!-- Barre de progression -->
         <div class="progress mb-4" style="height: 20px; width: 100%;">

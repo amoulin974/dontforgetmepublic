@@ -3,11 +3,12 @@
 @section('content')
 <!-- <div class="container my-5" style="border: 2px solid blue; padding: 20px; border-radius: 10px;"> -->
 <div class="container my-5">
-    <div class="d-flex justify-content-center mb-4">
+    <div class="d-flex justify-content-center mb-5">
         <span class="me-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
         <span class="mx-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
         <span class="ms-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
     </div>
+
     <!-- Titre principal -->
     <div class="text-center">
         <h3 style="font-weight: bold;">Récapitulatif</h3>

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\reservationController;
 use App\Http\Controllers\entrepriseController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\calendrierController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -25,6 +26,15 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     Route::get('/{reservation}', 'show')->where([
         'id' => '[0-9]+',
     ])->name('show');
+});
+
+Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/ajax', 'ajax')->name('ajax');
+    });
+    
 });
 
 Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){
@@ -51,7 +61,6 @@ Route::prefix('/register')->name('register.')->controller(RegisterController::cl
     
     Route::get('/company/userAccount', [RegisterController::class, 'showUserRegisterPage'])->name('company.register.user');
 
-    //Route::post('/company/companyAccount', [RegisterController::class, 'showCompanyRegisterPage'])->name('company.register.company');
     Route::match(['get', 'post'], '/company/companyAccount', [RegisterController::class, 'showCompanyRegisterPage'])->name('company.register.company');
 
     Route::post('/company/typeRdv', [RegisterController::class, 'showTypeRdvPage'])->name('company.register.typeRdv');

@@ -18,9 +18,9 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <body>
+    <div id="app" style="min-height: 100vh; display: flex; flex-direction: column">
+        {{---<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <!-- {{ config('app.name', 'DFM') }} --> DFM
@@ -72,11 +72,11 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav>---}}
 
-        <main class="py-4">
+        <!-- <main class="py-4" style="display: flex; flex: 1"> -->
             @yield('content')
-        </main>
+        <!-- </main> -->
     </div>
 </body>
 </html>

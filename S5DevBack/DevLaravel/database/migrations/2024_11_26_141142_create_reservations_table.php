@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->datetime('dateRdv');
+            $table->date('dateRdv');
             $table->time('heureDeb')->check('heureDeb < heureFin'); 
             $table->time('heureFin')->check('heureFin > heureDeb'); 
             $table->integer('nbPersonnes');

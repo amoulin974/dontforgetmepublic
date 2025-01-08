@@ -37,14 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
     
             if (!previousStep) {
-                // console.log("Aucune étape précédente trouvée.");
-                // window.history.back();
-                //retourButton.setAttribute("href", "{{ route('register.company.register.company') }}");
                 window.location.href = retourButton.getAttribute('redirectUrl');
                 return;
             }
-    
-            // retourButton.removeAttribute("href");
     
             const stepsToKeep = [];
             let tempStep = previousStep;

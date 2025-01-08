@@ -1,20 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container d-flex flex-column align-items-center" style="min-height: 100vh;">
+<!-- <div class="container d-flex flex-column align-items-center" style="min-height: 100vh;"> -->
+<div class="container d-flex flex-column" style="min-height: 100vh;">
+    <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">
         <!-- Bouton retour -->
-        <a class="btn btn-outline-secondary align-self-start mb-3" href="{{ route('register.company.register.user') }}">
+        <a class="btn btn-outline-secondary mt-4 mb-4" href="{{ route('register.company.register.user') }}" style="position: absolute; left: 0;">
             <i class="bi bi-arrow-left"></i>
         </a>
 
-        <div class="d-flex justify-content-center mb-4">
-            <span class="me-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
-            <span class="mx-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
-            <span class="ms-2 bg-secondary rounded-circle" style="width: 10px; height: 10px;"></span>
+        <!-- Points de progression -->
+        <div class="d-flex justify-content-center align-items-center w-100 mt-4 mb-4">
+            <span class="mx-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
+            <span class="mx-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
+            <span class="mx-2 bg-secondary rounded-circle" style="width: 12px; height: 12px;"></span>
         </div>
+    </div>
 
+        
+    
+        
         <!-- Titre -->
-        <h3 class="text-center mb-4">Créer le profil de votre entreprise</h3>
+        <h3 class="text-center mb-3">Créer le profil de votre entreprise</h3>
 
         <form method="POST" action="{{ route('register.company.register.typeRdv') }}">
             @csrf
@@ -103,7 +110,7 @@
             </div>
 
             <!-- Bouton Créer un compte -->
-            <div class="d-grid">
+            <div class="d-grid mt-3">
                 <button type="submit" class="btn btn-dark">
                     Créer le profil entreprise
                 </button>

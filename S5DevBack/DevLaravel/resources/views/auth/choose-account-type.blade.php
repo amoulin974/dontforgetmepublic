@@ -1,29 +1,9 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-<!-- <div class="step active" id="step1">
-    <h2 class="mb-4">Êtes-vous un client ou souhaitez-vous créer votre entreprise ?</h2>
-    <div class="row">
-        <div class="col-6">
-            <a class="btn btn-outline-primary w-100 py-4" data-next="step2-client" href="{{ route('register.user.register') }}">
-                Je souhaite créer mon compte client
-            </a>
-        </div>
-        <div class="col-6">
-            <a class="btn btn-outline-primary w-100 py-4" data-next="step2-enterprise" href="{{ route('register.company.register.user') }}">
-                Je souhaite créer mon compte entreprise
-            </a>
-        </div>
-    </div>
-</div> -->
-@endsection --}}
-
 @extends('layouts.app')
 
 @section('content')
 <div class="container d-flex flex-column align-items-center" style="min-height: 100vh;">
     <!-- Bouton retour -->
-    <a href="/" class="btn btn-outline-secondary align-self-start mb-3">
+    <a href="/" class="btn btn-outline-secondary align-self-start mt-4 mb-4">
         <i class="bi bi-arrow-left"></i>
     </a>
 
@@ -58,13 +38,6 @@
                 </div>
             </a>
         </div>
-    </div>
-
-    <!-- Lien vers l'accueil -->
-    <div class="mt-4">
-        <a href="/" class="text-decoration-none text-dark">
-            <i class="bi bi-arrow-left"></i> Retour à l'accueil
-        </a>
     </div>
 </div>
 @endsection
