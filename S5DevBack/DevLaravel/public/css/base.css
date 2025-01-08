@@ -203,6 +203,7 @@ nav ul li a:hover {
     flex-wrap: wrap; /* Permet aux cartes de passer à la ligne si l'espace est insuffisant */
     justify-content: center; /* Centre les cartes horizontalement */
     align-items: center; /* Centre les cartes verticalement */
+    margin: 2vh auto;
 }
 
 /* Styles pour les cartes de ress */

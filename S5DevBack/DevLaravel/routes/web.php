@@ -57,7 +57,11 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
 
 Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){
 
-    Route::get('/', 'index')->name('index');
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/my', 'indexUser')->name('indexUser');
+    });
+    
+    //Route::get('/', 'index')->name('index');
 
     Route::get('/{entreprise}', 'show')->where([
         'id' => '[0-9]+',
