@@ -15,5 +15,5 @@ Route::get('/user', function (Request $request) {
 // Groupe de routes sécurisées par Sanctum
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/details', [notificationController::class, 'getDetails']);
-    Route::patch('/details/{id}', [notificationController::class, 'updateNotification']);
+    Route::patch('/details/{id}', [notificationController::class, 'updateNotificationState']);
 });
