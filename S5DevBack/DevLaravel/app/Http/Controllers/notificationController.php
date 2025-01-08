@@ -23,7 +23,6 @@ class notificationController extends Controller
                 'entreprises.libelle AS entrepriseNom',
                 'reservations.dateRdv AS heureRendezVous',
 
-                // Sous-requête : récupère l’ID de la première notification liée à la réservation
                 DB::raw('(SELECT n.id
                   FROM notifications n
                   WHERE n.reservation_id = reservations.id
@@ -31,7 +30,6 @@ class notificationController extends Controller
                   LIMIT 1
         ) AS notifId'),
 
-                // Sous-requête : récupère l’état de cette même notification
                 DB::raw('(SELECT n.etat
                   FROM notifications n
                   WHERE n.reservation_id = reservations.id
@@ -39,7 +37,6 @@ class notificationController extends Controller
                   LIMIT 1
         ) AS notifEtat'),
 
-                // Sous-requête : récupère le délai
                 DB::raw('(SELECT n.delai
                   FROM notifications n
                   WHERE n.reservation_id = reservations.id
