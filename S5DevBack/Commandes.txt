@@ -11,5 +11,7 @@ php artisan make:model Nom -m
 Créer un Factory
 php artisan make:factory NomFactory
 
+Installer Vite :
+npm install && npm run build
 Pour installer sanctum :
 composer require laravel/sanctum --ignore-platform-req=ext-fileinfo

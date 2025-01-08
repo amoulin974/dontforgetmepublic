@@ -29,6 +29,8 @@ class Entreprise extends Model
         'email',
         'cheminImg',
         'publier',
+        'typeRdv',
+        'idCreateur'
     ];
 
     /**
@@ -39,6 +41,7 @@ class Entreprise extends Model
     protected $casts = [
         'publier' => 'integer',
         'cheminImg' => 'array',
+        'typeRdv' => 'array'
     ];
 
 
