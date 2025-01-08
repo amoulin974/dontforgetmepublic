@@ -17,9 +17,10 @@ class PlageFactory extends Factory
     public function definition(): array
     {
         return [
+            'datePlage' => fake()->date(),
             'heureDeb' => fake()->time('H:i:s'),
             'heureFin'=> fake()->time('H:i:s'),
-            'intervalle' => fake()->time('H:i:s'),
+            'interval' => fake()->time('H:i:s'),
             'planTables' => json_encode(['Test']),
             'entreprise_id' => fake()->numberBetween(1, 3),
         ];
