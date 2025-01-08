@@ -157,9 +157,7 @@
             @endif
 
             @if (Route::has('register'))
-                <li class="nav-item">
                     <a class="nav-link" href="{{ route('register.choose.account.type') }}">{{ __('Register') }}</a>
-                </li>
             @endif
         @else
             <a class="nameProfil" href="#">{{-- href="{{ route('profil.index') }}" --}}

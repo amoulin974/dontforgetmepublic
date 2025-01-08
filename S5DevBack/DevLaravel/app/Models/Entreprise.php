@@ -41,7 +41,8 @@ class Entreprise extends Model
     protected $casts = [
         'publier' => 'integer',
         'cheminImg' => 'array',
-        'typeRdv' => 'array'
+        'typeRdv' => 'array',
+        'idCreateur' => 'integer'
     ];
 
 

@@ -32,6 +32,18 @@ class DatabaseSeeder extends Seeder
             'superadmin' => 1,
         ]);
 
+        // Pour les tests
+        User::factory()->create([
+            'nom' => 'test',
+            'prenom' => 'test',
+            'email' => 'test@test.test',
+            'numTel' => '01234567',
+            'password' => 'testtest',
+            'typeNotif' => 'test',
+            'delaiAvantNotif' => '2000-01-01T00:00:00Z',
+            'superadmin' => 1,
+        ]);
+
         Entreprise::factory(10)->create();
 
         Entreprise::factory()->create([
@@ -45,6 +57,8 @@ class DatabaseSeeder extends Seeder
             'email' => fake()->unique()->companyEmail(),
             'cheminImg' => json_encode(['https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg']),
             'publier' => 1,
+            'typeRdv' => json_encode(['Test']),
+            'idCreateur' => 1,
         ]);
 
         Reservation::factory(10)->create();
@@ -77,17 +91,5 @@ class DatabaseSeeder extends Seeder
         Plage::factory(10)->create();
 
         Activite::factory(10)->create();
-
-        // Pour les tests
-        User::factory()->create([
-            'nom' => 'test',
-            'prenom' => 'test',
-            'email' => 'test@test.test',
-            'numTel' => '01234567',
-            'password' => 'testtest',
-            'typeNotif' => 'test',
-            'delaiAvantNotif' => '2000-01-01T00:00:00Z',
-            'superadmin' => 1,
-        ]);
     }
 }
