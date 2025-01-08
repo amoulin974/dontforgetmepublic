@@ -46,23 +46,20 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('/register')->name('register.')->controller(RegisterController::class)->group(function() {
     Route::get('/choose-account-type', [RegisterController::class, 'showChoicePage'])->name('choose.account.type');
-    //Route::post('/choose-account-type', [RegisterController::class, 'showChoicePage']);
-
+    
     Route::get('/user', [RegisterController::class, 'showUserRegisterPage'])->name('user.register');
-    //Route::get('/user', [RegisterController::class, 'showUserRegisterPage']);
     
     Route::get('/company/userAccount', [RegisterController::class, 'showUserRegisterPage'])->name('company.register.user');
-    //Route::get('/entreprise/userAccount', [RegisterController::class, 'showUserRegisterPage'])->name('entreprise.register.user');
 
-    Route::get('/company/companyAccount', [RegisterController::class, 'showCompanyRegisterPage'])->name('company.register.company');
-    //Route::get('/company/companyAccount', [RegisterController::class, 'showCompanyRegisterPage'])->name('company.register.company');
+    //Route::post('/company/companyAccount', [RegisterController::class, 'showCompanyRegisterPage'])->name('company.register.company');
+    Route::match(['get', 'post'], '/company/companyAccount', [RegisterController::class, 'showCompanyRegisterPage'])->name('company.register.company');
 
-    Route::get('/company/typeRdv', [RegisterController::class, 'showTypeRdvPage'])->name('company.register.typeRdv');
-    //Route::get('/company/typeRdv', [RegisterController::class, 'showTypeRdvPage'])->name('company.register.typeRdv');
+    Route::post('/company/typeRdv', [RegisterController::class, 'showTypeRdvPage'])->name('company.register.typeRdv');
 
     Route::get('/company/recap', [RegisterController::class, 'showRecapPage'])->name('company.register.recap');
-    //Route::get('/company/typeRdv', [RegisterController::class, 'showTypeRdvPage'])->name('company.register.typeRdv');
 
     Route::post('/submit-responses', [RegisterController::class, 'storeResponses'])->name('submit.responses');
+
+    Route::post('/company/submit', [RegisterController::class, 'submit'])->name('company.register.submit');
 });
 
