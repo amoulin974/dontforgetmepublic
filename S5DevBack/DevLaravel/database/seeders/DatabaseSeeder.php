@@ -8,6 +8,7 @@ use App\Models\Reservation;
 use App\Models\Creneau;
 use App\Models\Notification;
 use App\Models\Plage;
+use App\Models\Activite;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'superadmin' => 1,
         ]);
 
-        Entreprise::factory(3)->create();
+        Entreprise::factory(10)->create();
 
         Entreprise::factory()->create([
             'libelle' => fake()->company,
@@ -74,5 +75,19 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Plage::factory(10)->create();
+
+        Activite::factory(10)->create();
+
+        // Pour les tests
+        User::factory()->create([
+            'nom' => 'test',
+            'prenom' => 'test',
+            'email' => 'test@test.test',
+            'numTel' => '01234567',
+            'password' => 'testtest',
+            'typeNotif' => 'test',
+            'delaiAvantNotif' => '2000-01-01T00:00:00Z',
+            'superadmin' => 1,
+        ]);
     }
 }

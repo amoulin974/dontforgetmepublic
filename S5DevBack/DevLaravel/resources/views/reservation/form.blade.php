@@ -44,5 +44,5 @@
                 Créer la réservation
             @endif
         </button>
-    <div class="form-group">
+    </div>
 </form>
