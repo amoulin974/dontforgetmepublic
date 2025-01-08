@@ -18,7 +18,8 @@ class ActiviteFactory extends Factory
     {
         return [
             'libelle' => fake()->sentences(1, true),
-            'duree' => fake()->time('H:i:s')
+            'duree' => fake()->time('H:i:s'),
+            'idEntreprise' => fake()->numberBetween(1, 3),
         ];
     }
 }

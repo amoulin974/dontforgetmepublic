@@ -9,22 +9,45 @@ class notificationController extends Controller
 {
     public function getDetails()
     {
-        $data = DB::table('users')
-            ->join('reservations', 'users.id', '=', 'reservations.id')
-            ->join('notifications', 'reservations.id', '=', 'notifications.reservation_id')
-            ->join('entreprises', 'reservations.id', '=', 'entreprises.id')
+        $data = DB::table('effectuer')
+            ->join('users', 'effectuer.idUser', '=', 'users.id')
+            ->join('reservations', 'effectuer.idReservation', '=', 'reservations.id')
+            ->join('activites', 'effectuer.idActivite', '=', 'activites.id')
+            ->join('entreprises', 'activites.idEntreprise', '=', 'entreprises.id')
             ->select(
-                'notifications.id AS notifId',
                 'users.nom AS userNom',
                 'users.prenom AS userPrenom',
                 'users.numTel AS userNumTel',
                 'users.email AS userEmail',
-                'notifications.etat AS notifEtat',
-                'notifications.delai AS notifDelaiAvantNotif',
+                'effectuer.typeNotif AS typeNotification',
                 'entreprises.libelle AS entrepriseNom',
-                'reservations.dateRdv AS heureRendezVous'
+                'reservations.dateRdv AS heureRendezVous',
+
+                DB::raw('(SELECT n.id
+                  FROM notifications n
+                  WHERE n.reservation_id = reservations.id
+                  ORDER BY n.id ASC
+                  LIMIT 1
+        ) AS notifId'),
+
+                DB::raw('(SELECT n.etat
+                  FROM notifications n
+                  WHERE n.reservation_id = reservations.id
+                  ORDER BY n.id ASC
+                  LIMIT 1
+        ) AS notifEtat'),
+
+                DB::raw('(SELECT n.delai
+                  FROM notifications n
+                  WHERE n.reservation_id = reservations.id
+                  ORDER BY n.id ASC
+                  LIMIT 1
+        ) AS notifDelaiAvantNotif')
             )
             ->get();
+
+
+
 
         return response()->json($data);
     }

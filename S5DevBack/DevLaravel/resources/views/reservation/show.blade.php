@@ -30,9 +30,9 @@
                 <p><strong>heureFin:</strong> {{ $reservation->heureFin }}</p>
                 <p><strong>nbPersonnes:</strong> {{ $reservation->nbPersonnes }}</p>
             </div>
-            @if (count($reservation->notifs) >= 1)
+            @if (count($reservation->notifications) >= 1)
             <ul>
-            @foreach ($reservation->notifs as $notif)
+            @foreach ($reservation->notifications as $notif)
             <li>
                 <br/>
                 <p>Id notif : <strong>{{ $notif->id }}</strong></p><br/>

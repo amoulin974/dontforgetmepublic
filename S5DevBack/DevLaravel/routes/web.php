@@ -6,6 +6,7 @@ use App\Http\Controllers\reservationController;
 use App\Http\Controllers\entrepriseController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\calendrierController;
+use App\Http\Controllers\parametrageController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -33,6 +34,23 @@ Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierControll
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/ajax', 'ajax')->name('ajax');
+    });
+    
+});
+
+Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageController::class)->group(function(){
+
+    Route::middleware(['auth'])->group(function () {
+
+        Route::get('/', 'index')->name('index');
+
+        Route::post('/invit', 'invit')->name('invit');
+        
+        Route::prefix('/plage')->name('plage.')->group(function(){
+            Route::post('/', 'ajax')->name('ajax');
+            Route::get('/{entreprise}', 'indexPlage')->name('idEntreprise');
+        });
+
     });
     
 });
