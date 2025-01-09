@@ -12,6 +12,12 @@
     <!-- Pour les notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- JQuery -->
+
+    <!-- Pour les carousel -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </head>
 <body>
 
@@ -20,7 +26,7 @@
         <ul>
             <li><a href="/" class="@yield('home_active')">Accueil</a></li>
             <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')">Réservations</a></li>
-            <li><a href="{{ route('entreprise.index') }}" class="@yield('entreprises_active')">Entreprises</a></li>
+            <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')">Entreprises</a></li>
             <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li>
             @guest
             @else
@@ -29,7 +35,7 @@
         </ul>
     </nav>
 
-    <!-- <div class="burger-menu">
+    {{-- <div class="burger-menu">
         <button class="hamburger hamburger--collapse" type="button">
             <span class="hamburger-box">
                 <span class="hamburger-inner"></span>
@@ -147,7 +153,7 @@
             [i].classList.remove("show-menu");
         }
       });
-    </script> -->
+    </script> --}}
 
 
     <div class="profileInfo">
