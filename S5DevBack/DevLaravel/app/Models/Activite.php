@@ -20,7 +20,8 @@ class Activite extends Model
      */
     protected $fillable = [
         'libelle',
-        'duree'
+        'duree',
+        'idEntreprise'
     ];
 
     /**

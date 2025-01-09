@@ -54,7 +54,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
-            'numTel' => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
+            'numTel' => ['nullable', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -106,15 +106,10 @@ class RegisterController extends Controller
         if ($request->isMethod('post')) {
             // Valider les données Utilisateur
             $validated = $request->validate([
-                //'nom' => ['required|string|max:255'],
                 'nom' => ['required', 'string', 'max:255'],
-                //'prenom' => 'required|string|max:255',
                 'prenom' => ['required', 'string', 'max:255'],
-                'numTel' => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
-                //'numTel' => 'required|string|max:15|regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/',
-                //'email' => 'required|email|unique:users,email|max:255',
+                'numTel' => ['nullable', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
                 'email' => ['required', 'email', 'unique:users,email', 'max:255'],
-                //'password' => 'required|string|min:8|confirmed',
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]);
     
@@ -126,7 +121,6 @@ class RegisterController extends Controller
         }
     
         // Afficher le formulaire pour l'étape utilisateur
-        // return view('auth.user-register');
         return view('auth.company-register');
     }
 
@@ -141,13 +135,6 @@ class RegisterController extends Controller
         if ($request->isMethod('post')) {
             // Valider les données Entreprise
             $validated = $request->validate([
-                /*'nomEntreprise' => 'required|string|max:255',
-                'siren' => 'required|string|max:14|regex:/^(\d{9}|\d{3} \d{3} \d{3})$/', 
-                'numTel' => 'required|string|max:15|regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/', // Format : ** ** ** ** ** ou **********
-                'email' => 'required|email|max:255',
-                'rue' => 'required|string|max:255',
-                'codePostal' => 'required|string|max:5|regex:/^\d{5}$/', 
-                'ville' => 'required|string|max:255',*/
                 'nomEntreprise' => ['required', 'string', 'max:255'],
                 'siren' => ['required', 'string', 'max:14', 'unique:entreprises,siren', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'], 
                 'numTel' => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'], // Format : ** ** ** ** ** ou **********
