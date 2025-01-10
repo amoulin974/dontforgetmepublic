@@ -13,8 +13,8 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/new/{entreprise}', 'create')->name('create');
-        Route::post('/new', 'store')->name('store');
+        Route::get('/{entreprise}/new/{activite}', 'create')->name('create');
+        Route::post('/{entreprise}/new/{activite}', 'store')->name('store');
 
         Route::get('/{reservation}/edit', 'edit')->name('edit');
         Route::post('/{reservation}/edit', 'update')->name('update');

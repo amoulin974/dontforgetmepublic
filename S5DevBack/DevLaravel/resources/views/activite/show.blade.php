@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@include('base')
+
 @section('content')
 <div class="container">
     <h2 class="mb-4">Mes Services</h2>
@@ -21,12 +23,13 @@
                     <td>{{ $service->libelle }}</td>
                     <td>{{ $service->duree }}</td>
                     <td>
-                        <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id]) }}" class="btn primary-btn">Réserver</a>
+                        <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-primary">Réserver</a>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     @endif
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Retour</a>
 </div>
 @endsection
