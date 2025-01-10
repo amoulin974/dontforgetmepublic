@@ -7,6 +7,7 @@ use App\Http\Controllers\entrepriseController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\calendrierController;
 use App\Http\Controllers\parametrageController;
+use App\Http\Controllers\ActiviteController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -98,3 +99,12 @@ Route::prefix('/register')->name('register.')->controller(RegisterController::cl
     Route::post('/company/submit', [RegisterController::class, 'submit'])->name('company.register.submit');
 });
 
+Route::prefix('/services')->name('services.')->controller(ActiviteController::class)->group(function() {
+    Route::get('/', 'index')->name('index'); 
+    Route::get('/create', 'create')->name('create');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/{id}', 'show')->name('show'); 
+    Route::get('/{id}/edit', 'edit')->name('edit');
+    Route::put('/{id}', 'update')->name('update');
+    Route::delete('/{id}', 'destroy')->name('destroy');
+});
