@@ -35,23 +35,44 @@ class entrepriseController extends Controller
         // Vérifier si l'utilisateur est admin dans au moins une entreprise
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->count() > 0;
 
+        $isEmploye = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Employé')->count() > 0;
+
         // Vérifier si l'utilisateur a créé au moins une entreprise
         $isCreator = Entreprise::where('idCreateur', Auth::user()->id);
 
         // Si l'utilisateur est admin ou créateur d'au moins une entreprise
-        if ($isAdmin || $isCreator) {
-            if(!$isAdmin) {
+        if ($isAdmin || $isCreator || $isEmploye) {
+            if(!$isAdmin && !$isEmploye) {
                 return view('entreprise.index', [
                     'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
                         ->simplePaginate(9)
                 ]);
             }
-            return view('entreprise.index', [
-                'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
-                    ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
-                    ->distinct() // Supprimer les doublons (pas nécessaire)
-                    ->simplePaginate(9)
-            ]);
+            elseif(!$isEmploye){
+                return view('entreprise.index', [
+                    'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
+                        ->distinct() // Supprimer les doublons (pas nécessaire)
+                        ->simplePaginate(9)
+                ]);
+            }
+            elseif(!$isAdmin){
+                return view('entreprise.index', [
+                    'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Employé')->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
+                        ->distinct() // Supprimer les doublons (pas nécessaire)
+                        ->simplePaginate(9)
+                ]);
+            }
+            else {
+                return view('entreprise.index', [
+                    'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->pluck('idEntreprise'))
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Employé')->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
+                        ->distinct() // Supprimer les doublons (pas nécessaire)
+                        ->simplePaginate(9)
+                ]);
+            }
         }
         else {
             return redirect()->route('home');

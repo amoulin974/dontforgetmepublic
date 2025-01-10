@@ -3,5 +3,5 @@
 @section('title', "Modifier " . $entreprise->libelle)
 
 @section('content')
-    @include('reservation.form')
+    @include('reservation.form') {{-- Lien à modifier --}}
 @endsection

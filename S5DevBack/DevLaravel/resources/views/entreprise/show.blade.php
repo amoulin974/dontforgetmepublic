@@ -38,20 +38,28 @@
                         <p><strong>Utilisateur :</strong> {{ $user->nom }}</p>
                         <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->pluck('statut')[0] }}</p>
                         <p><strong><i>Vous</i></strong></p>
+                        @if ($user->id == $entreprise->idCreateur)
+                            <p><strong>Créateur</strong></p>
+                        @endif
+                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Quitter l'entreprise</a>
+                    </div>
                     @else
                         <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
                             <p><strong>Utilisateur :</strong> {{ $user->nom }}</p>
                             <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->pluck('statut')[0] }}</p>
-                        
-                        @if ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
-                                <a onclick="retrograder({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Rétrograder</a>
-                                <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
-                            @elseif ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
-                                <a onclick="promouvoir({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary accept">Promouvoir</a>
-                                <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
+                            @if ($user->id == $entreprise->idCreateur)
+                            <p><strong>Créateur</strong></p>
                             @else
-                                <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Annuler l'invitation</a>
-                        @endif
+                                @if ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
+                                        <a onclick="retrograder({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Rétrograder</a>
+                                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
+                                    @elseif ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
+                                        <a onclick="promouvoir({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary accept">Promouvoir</a>
+                                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
+                                    @else
+                                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Annuler l'invitation</a>
+                                @endif
+                            @endif
                         </div>
                     @endif
                 @endforeach
@@ -87,7 +95,7 @@
                     $("#user" + uId + " a").remove();
                     $("#user" + uId).append('<a onclick="retrograder('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">Rétrograder</a>');
                     $("#user" + uId).append('<a onclick="supprimer('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">Supprimer</a>');
-                    displaySuccess('Vous avez promu ' +  uName +' ' + uPrenom + '.\nIl est maintenant administrateur.');
+                    displaySuccess('Vous avez promu ' +  uName +' ' + uPrenom + '. Il est maintenant administrateur.');
                 },
                 error: function (data) {
                     displayError('Erreur lors de la promotion. Réessayez...');
@@ -109,7 +117,7 @@
                     $("#user" + uId + " a").remove();
                     $("#user" + uId).append('<a onclick="promouvoir('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary accept">Promouvoir</a>');
                     $("#user" + uId).append('<a onclick="supprimer('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">Supprimer</a>');
-                    displayMessage('Vous avez rétrogrdé ' +  uName +' ' + uPrenom + '.\nIl est maintenant employé.');
+                    displayMessage('Vous avez rétrogrdé ' +  uName +' ' + uPrenom + '. Il est maintenant employé.');
                 },
                 error: function (data) {
                     displayError('Erreur lors du rétrogradage. Réessayez...');
@@ -129,7 +137,7 @@
                 success: function (data) {
                     // Transformer la possibilité d'accepter en la possibilité de visualiser
                     $("#user" + uId).remove();
-                    displayMessage('Vous avez supprimé ' +  uName +' ' + uPrenom + '.\nIl ne peut plus accéder à votre entreprise.');
+                    displayMessage('Vous avez supprimé ' +  uName +' ' + uPrenom + '. Il ne peut plus accéder à votre entreprise.');
                 },
                 error: function (data) {
                     displayError('Erreur lors de la suppression. Réessayez...');
