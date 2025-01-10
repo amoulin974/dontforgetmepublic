@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 <body>
-
 <header>
     <nav>
         <ul>
@@ -76,6 +74,11 @@
     </div>
 @endif
     @yield('content')
+    <!-- Scripts Bootstrap 5 + Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Permet d'insérer la section 'scripts' de vos vues -->
+    @yield('scripts')
 </div>
 
 </body>

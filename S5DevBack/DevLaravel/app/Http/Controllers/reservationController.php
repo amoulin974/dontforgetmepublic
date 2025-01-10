@@ -11,6 +11,7 @@ use App\Http\Requests\FormPostRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Entreprise;
+use App\Models\Notification;
 
 class reservationController extends Controller
 {
@@ -47,6 +48,7 @@ class reservationController extends Controller
     public function create(Entreprise $entreprise): View
     {
         $reservation = new Reservation();
+        $notification = new Notification();
 
         return view('reservation.create', [
             'entreprise' => $entreprise,
@@ -60,13 +62,54 @@ class reservationController extends Controller
      * @param  App\Http\Requests\FormPostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(FormPostRequest $request)
-    {
-        $reservation = new Reservation($request->validated());
-        $reservation->save();
+    public function store(Request $request)
+{
+    // Validation des données du formulaire
+    $validated = $request->validate([
+        'dateRdv' => 'required|date_format:Y-m-d H:i:s', // Exemple : "2025-01-09 00:00:00"
+        'horaire' => 'required|string', // Exemple : "09:00 - 10:00"
+        'nbPersonnes' => 'required|integer|min:1', // Nombre de personnes
+        'notifications' => 'required|array', // Notifications doivent être un tableau
+        'notifications.*.typeNotification' => 'required|string|in:SMS,Mail', // Type : SMS ou Mail
+        'notifications.*.contenu' => 'required|string', // Contenu : email ou numéro
+        'notifications.*.duree' => 'required|string|in:1jour,2jours,1semaine', // Durée : "1jour", "2jours", "1semaine"
+    ]);
 
-        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La réservation a été ajoutée avec succès.');
+    // Extraction des heures à partir de 'horaire'
+    [$heureDeb, $heureFin] = explode(' - ', $validated['horaire']);
+
+    // Création de la réservation
+    $reservation = Reservation::create([
+        'dateRdv' => $validated['dateRdv'], // Date de la plage choisie
+        'heureDeb' => $heureDeb, // Heure de début
+        'heureFin' => $heureFin, // Heure de fin
+        'nbPersonnes' => $validated['nbPersonnes'], // Nombre de personnes
+    ]);
+
+    // Parcourir les notifications et les associer à la réservation
+    foreach ($validated['notifications'] as $notificationData) {
+        $notification = new Notification([
+            'categorie' => $notificationData['typeNotification'], // Type : SMS ou Mail
+            'contenu' => $notificationData['contenu'], // Email ou numéro de téléphone
+            'delai' => match ($notificationData['duree']) { // Calcul du délai de rappel
+                '1jour' => now()->addDay(),
+                '2jours' => now()->addDays(2),
+                '1semaine' => now()->addWeek(),
+            },
+            'etat' => 1, // Actif par défaut
+        ]);
+
+        // Associer la notification à la réservation via la relation notifications()
+        $reservation->notifications()->save($notification);
     }
+
+    // Rediriger avec un message de succès
+    return redirect()
+        ->route('reservation.show', ['reservation' => $reservation->id])
+        ->with('success', 'La réservation et les notifications ont été ajoutées avec succès.');
+}
+
+
 
     /**
      * Show the form for editing the specified resource.
