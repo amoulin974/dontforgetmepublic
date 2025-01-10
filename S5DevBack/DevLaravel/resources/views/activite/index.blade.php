@@ -5,8 +5,8 @@
     <h2 class="mb-4">Mes Services</h2>
 
     @if($services->isEmpty())
-        <p>Aucun service n'a été créé pour cette entreprise.</p>
-        <a href="{{ route('services.create') }}" class="btn btn-dark">Créer un service</a>
+        <p>Aucun service n'a été créé pour {{ $entreprise->libelle }}.</p>
+        <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Créer un service</a>
     @else
         <table class="table table-striped">
             <thead>
@@ -22,10 +22,10 @@
                     <td>{{ $service->libelle }}</td>
                     <td>{{ $service->duree }}</td>
                     <td>
-                        <a href="{{ route('services.edit', $service->id) }}" class="btn btn-link">
+                        <a href="{{ route('entreprise.services.edit', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
                             <i class="fa fa-pencil-alt"></i> Modifier
                         </a>
-                        <form action="{{ route('services.destroy', $service->id) }}" method="POST" class="d-inline">
+                        <form action="{{ route('entreprise.services.destroy', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-link text-danger">
@@ -40,7 +40,7 @@
     @endif
 
     <div class="mt-4">
-        <a href="{{ route('services.create') }}" class="btn btn-dark">Ajouter un service</a>
+        <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Ajouter un service</a>
     </div>
 </div>
 @endsection

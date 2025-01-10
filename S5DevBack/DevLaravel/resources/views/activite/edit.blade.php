@@ -4,7 +4,7 @@
 <div class="container">
     <h2 class="mb-4">Modifier un service</h2>
 
-    <form action="{{ route('services.update', $service->id) }}" method="POST">
+    <form action="{{ route('entreprise.services.update', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -24,26 +24,26 @@
             @enderror
         </div>
 
-        <div class="form-group mb-3">
+        {{-- <!-- <div class="form-group mb-3">
             <label for="employes">Attribuer le service à :</label>
             <div class="form-check">
                 <input type="checkbox" name="attribuer_tous" id="attribuer_tous" class="form-check-input" {{ old('attribuer_tous', $service->attribuer_tous) ? 'checked' : '' }} onclick="toggleEmployes(this)">
                 <label class="form-check-label" for="attribuer_tous">Tous</label>
             </div>
             <select name="employes[]" id="employes" class="form-control @error('employes') is-invalid @enderror" multiple {{ old('attribuer_tous', $service->attribuer_tous) ? 'disabled' : '' }}>
-                {{-- @foreach($employes as $employe)
+                @foreach($employes as $employe)
                     <option value="{{ $employe->id }}" {{ in_array($employe->id, old('employes', $service->employes->pluck('id')->toArray())) ? 'selected' : '' }}>
                         {{ $employe->nom }} {{ $employe->prenom }}
                     </option>
-                @endforeach --}}
+                @endforeach
             </select>
-            {{-- @error('employes')
+            @error('employes')
                 <div class="invalid-feedback">{{ $message }}</div>
-            @enderror --}}
-        </div>
+            @enderror
+        </div> --}}
 
         <div class="d-flex justify-content-between">
-            <a href="{{ route('services.index') }}" class="btn btn-light">Annuler</a>
+            <a href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" class="btn btn-light">Annuler</a>
             <button type="submit" class="btn btn-dark">Valider</button>
         </div>
     </form>

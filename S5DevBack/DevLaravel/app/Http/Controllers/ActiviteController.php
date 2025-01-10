@@ -4,25 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Activite;
+use App\Models\Entreprise;
 
 class ActiviteController extends Controller
 {
-    public function index()
+    public function index(Entreprise $entreprise)
     {
         //$entrepriseActuelle = session('entreprise');
-        $entrepriseIdTest = 1;
         /*if (!$entrepriseActuelle) {
             return redirect()->route('dashboard')->with('error', 'Aucune entreprise active sélectionnée.');
         }*/
 
         //$services = Activite::where('entreprise_id', $entrepriseActuelle->id)->get();
-        $services = Activite::where('idEntreprise', $entrepriseIdTest)->get();
-        return view('activite.index', compact('services'));
+        $services = Activite::where('idEntreprise', $entreprise->id)->get();
+        return view('activite.index', ['entreprise' => $entreprise], compact('services'));
     }
 
-    public function create()
+    public function create(Entreprise $entreprise)
     {
-        return view('activite.create');
+        return view('activite.create', ['entreprise' => $entreprise]);
     }
 
     /* public function store(Request $request)
@@ -36,7 +36,7 @@ class ActiviteController extends Controller
 
         return redirect()->route('activite.index')->with('success', 'Service créé avec succès.');
     } */
-    public function store(Request $request)
+    public function store(Request $request, Entreprise $entreprise)
     {
         // \Log::info('Méthode HTTP utilisée : ' . $request->method());
 
@@ -51,10 +51,12 @@ class ActiviteController extends Controller
         Activite::create([
             'libelle' => $request->libelle,
             'duree' => $dureeInTimeFormat,
-            'idEntreprise' => 1
+            'idEntreprise' => $entreprise->id
         ]);
+
+        
     
-        return redirect()->route('services.index')->with('success', 'Service créé avec succès.');
+        return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service créé avec succès.');
     } 
     
     
@@ -66,10 +68,13 @@ class ActiviteController extends Controller
         return view('services.show', compact('service'));
     }*/
 
-    public function edit($id)
+    public function edit(Entreprise $entreprise, $id)
     {
-        $service = Activite::findOrFail($id);
-        return view('activite.edit', compact('service'));
+        //$entreprise = Entreprise::findOrFail($entreprise);
+        /* $service = Activite::findOrFail($id);
+        return view('activite.edit', ['entreprise' => $entreprise], compact('service')); */
+        $service = Activite::where('id', $id)->where('idEntreprise', $entreprise->id)->firstOrFail();
+        return view('activite.edit', ['entreprise' => $entreprise, 'service' => $service]);
     }
 
     /*public function update(Request $request, $id)
@@ -85,7 +90,7 @@ class ActiviteController extends Controller
         return redirect()->route('services.index')->with('success', 'Service mis à jour avec succès.');
     }*/
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, Entreprise $entreprise)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
@@ -102,15 +107,15 @@ class ActiviteController extends Controller
             'duree' => $dureeInTimeFormat,
         ]);
 
-        return redirect()->route('services.index')->with('success', 'Service mis à jour avec succès.');
+        return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service mis à jour avec succès.');
     }
 
 
-    public function destroy($id)
+    public function destroy(Entreprise $entreprise, $id)
     {
         $service = Activite::findOrFail($id);
         $service->delete();
 
-        return redirect()->route('services.index')->with('success', 'Service supprimé avec succès.');
+        return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service supprimé avec succès.');
     }
 }
