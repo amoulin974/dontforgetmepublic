@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@include('base')
+
 @section('content')
 <div class="container">
     @if($services->isEmpty())
@@ -47,5 +49,6 @@
             <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Ajouter un service</a>
         </div>
     @endif
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Retour</a>
 </div>
 @endsection

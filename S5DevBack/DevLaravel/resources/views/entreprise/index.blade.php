@@ -73,10 +73,10 @@
                     @endif
                     @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
                         <a class="btn btn-primary" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
-                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
+                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
                         <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button">Voir plus</a>
                     @elseif ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Employé')->first() != null)
-                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
+                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
                     @endif
                 </div>
             </div>

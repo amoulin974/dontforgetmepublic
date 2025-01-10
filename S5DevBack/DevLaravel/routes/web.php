@@ -49,6 +49,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
         Route::prefix('/plage')->name('plage.')->group(function(){
             Route::post('/', 'ajax')->name('ajax');
             Route::get('/{entreprise}', 'indexPlage')->name('idEntreprise');
+            Route::get('/{entreprise}/look', 'indexPlageAsEmploye')->name('idEntrepriseAsEmploye');
         });
 
     });
@@ -78,6 +79,8 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::get('/{id}/plage', 'createPlage')->name('createPlage');
+            Route::post('/{id}/plage', 'ajaxPlage')->name('ajaxPlage');
         });
         
     });

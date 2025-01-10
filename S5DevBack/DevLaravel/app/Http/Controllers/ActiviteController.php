@@ -135,4 +135,83 @@ class ActiviteController extends Controller
             return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service supprimé avec succès.');
         }
     }
+
+    public function createPlage(Request $request, Entreprise $entreprise, $id)
+    {
+        // Pour récupérer les données
+        if($request->ajax()) {
+        // Cas employé
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
+          // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
+          $data = Activite::where('entreprise_id', $entreprise->id)
+          ->plages()->wherePivot('idActivite', $id)
+          ->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+          return response()->json($data);
+        }
+        else {
+            $service = Activite::findOrFail($id);
+            return view('plage.create', ['entreprise' => $entreprise, 'activite' => $service]);
+        }
+      }
+        $service = Activite::findOrFail($id);
+        return view('plage.create', ['entreprise' => $entreprise, 'activite' => $service]);
+    }
+
+    public function ajaxPlage(Request $request, Entreprise $entreprise, $id)
+    {
+        switch ($request->type) {
+            case 'add':
+               if (!$request->interval){
+                 $event = Plage::create([
+                     'heureDeb' => $request->heureDeb,
+                     'heureFin' => $request->heureFin,
+                     'datePlage' => $request->datePlage,
+                     'interval' => '00:05:00',
+                     'planTables' => json_encode(['UnTest']),
+                     'entreprise_id' => $request->entreprise_id,
+                 ]);
+               }
+               else {
+                 $event = Plage::create([
+                     'heureDeb' => $request->heureDeb,
+                     'heureFin' => $request->heureFin,
+                     'datePlage' => $request->datePlage,
+                     'interval' => $request->interval,
+                     'planTables' => json_encode(['UnPlanDeTables']),
+                     'entreprise_id' => $request->entreprise_id,
+                 ]);
+               }
+               
+               return response()->json($event);
+              break;
+   
+            case 'update':
+               $event = Plage::find($request->id)->update([
+                 'heureDeb' => $request->heureDeb,
+                 'heureFin' => $request->heureFin,
+                 'datePlage' => $request->datePlage,
+               ]);
+  
+               return response()->json($event);
+              break;
+   
+            case 'delete':
+               $event = Plage::find($request->id)->delete();
+   
+               return response()->json($event);
+              break;
+ 
+            case 'modify':
+               $event = Plage::find($request->id)->update([
+                 'interval' => $request->interval,
+               ]);
+  
+               return response()->json($event);
+              break;
+              
+            default:
+              # code...
+              break;
+         }
+    }
 }

@@ -41,8 +41,9 @@
         @endif --}}
         @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
             <a class="btn btn-primary" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
+            <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
         @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
-            <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
+            <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
         @else
             <p ><i>Vous êtes invité dans cette entreprise :</i></p>
             <a onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
