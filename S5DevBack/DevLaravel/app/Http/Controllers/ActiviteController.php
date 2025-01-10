@@ -27,7 +27,6 @@ class ActiviteController extends Controller
         else {
             return redirect()->route('entreprise.index');
         }
-        
     }
 
     public function create(Entreprise $entreprise)
@@ -40,17 +39,6 @@ class ActiviteController extends Controller
         }
     }
 
-    /* public function store(Request $request)
-    {
-        $request->validate([
-            'libelle' => 'required|string|max:255',
-            'duree' => 'nullable|integer|min:1',
-        ]);
-
-        Activite::create($request->all());
-
-        return redirect()->route('activite.index')->with('success', 'Service créé avec succès.');
-    } */
     public function store(Request $request, Entreprise $entreprise)
     {
         // \Log::info('Méthode HTTP utilisée : ' . $request->method());
@@ -61,31 +49,30 @@ class ActiviteController extends Controller
         }
         else{
             $request->validate([
-                'libelle' => 'required|string|max:255',
-                'duree' => 'required|integer|min:1', // Durée en minutes
-            ]);
-        
-            // Conversion de la durée en format H:i:s
-            $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
-        
-            Activite::create([
-                'libelle' => $request->libelle,
-                'duree' => $dureeInTimeFormat,
-                'idEntreprise' => $entreprise->id
-            ]);
+              'libelle' => 'required|string|max:255',
+              'duree' => 'required|integer|min:1', 
+          ]);
+
+          $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
+
+          $activite = Activite::create([
+              'libelle' => $request->libelle,
+              'duree' => $dureeInTimeFormat,
+              'idEntreprise' => $entreprise->id
+          ]);
+
+          $activite->travailler_users()->attach(auth()->id(), [
+              'idEntreprise' => $entreprise->id,
+              'statut' => 'Admin',
+          ]);
+
+          if ($entreprise->activites()->count() === 1) {
+              $entreprise->update(['publier' => 1]);
+          }
     
             return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service créé avec succès.');
         }
     } 
-    
-    
-
-    /*
-    public function show($id)
-    {
-        $service = Activite::findOrFail($id);
-        return view('services.show', compact('service'));
-    }*/
 
     public function edit(Entreprise $entreprise, $id)
     {
@@ -102,19 +89,6 @@ class ActiviteController extends Controller
         return view('activite.edit', ['entreprise' => $entreprise, 'service' => $service]);
         }
     }
-
-    /*public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'duree' => 'required|integer|min:1',
-        ]);
-
-        $service = Activite::findOrFail($id);
-        $service->update($request->all());
-
-        return redirect()->route('services.index')->with('success', 'Service mis à jour avec succès.');
-    }*/
 
     public function update(Request $request, $id, Entreprise $entreprise)
     {
@@ -143,7 +117,6 @@ class ActiviteController extends Controller
         }
     }
 
-
     public function destroy(Entreprise $entreprise, $id)
     {
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
@@ -153,6 +126,11 @@ class ActiviteController extends Controller
         else{
             $service = Activite::findOrFail($id);
             $service->delete();
+            $service->travailler_users()->detach();
+
+            if ($entreprise->activites()->count() === 0) {
+                $entreprise->update(['publier' => 0]); 
+            }
 
             return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service supprimé avec succès.');
         }

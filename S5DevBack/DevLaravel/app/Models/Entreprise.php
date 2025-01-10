@@ -57,7 +57,7 @@ class Entreprise extends Model
      */
     public function activites(): HasMany
     {
-        return $this->hasMany(Activite::class);
+        return $this->hasMany(Activite::class, 'idEntreprise');
     }
 
     /**

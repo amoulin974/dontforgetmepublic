@@ -30,7 +30,8 @@ class Activite extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'duree' => 'datetime:H:i:s'
+        //'duree' => 'datetime:H:i:s'
+        'duree' => 'string'
     ];
 
 
@@ -45,7 +46,7 @@ class Activite extends Model
      */
     public function entreprise(): BelongsTo
     {
-        return $this->belongsTo(Entreprise::class);
+        return $this->belongsTo(Entreprise::class, 'idEntreprise');
     }
 
     /**
@@ -101,4 +102,21 @@ class Activite extends Model
                     ->withPivot('idUser', 'dateReservation', 'typeNotif', 'numTel')
                     ->withTimestamps();
     }
+
+
+    public function getFormattedDureeAttribute()
+    {
+        $timeParts = explode(':', $this->duree);
+        $hours = intval($timeParts[0]);
+        $minutes = intval($timeParts[1]);
+
+        if ($hours > 0 && $minutes > 0) {
+            return "{$hours} heure" . ($hours > 1 ? 's' : '') . " {$minutes} minutes";
+        } elseif ($hours > 0) {
+            return "{$hours} heure" . ($hours > 1 ? 's' : '');
+        } else {
+            return "{$minutes} minutes";
+        }
+    }
+
 }
