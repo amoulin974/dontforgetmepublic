@@ -4,7 +4,7 @@
 <div class="container">
     <!-- Navigation de retour -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="/" class="btn btn-outline-secondary">
+        <a href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i>
         </a>
         <h1 class="text-center flex-grow-1">{{ $entreprise->libelle }}</h1>
@@ -12,7 +12,7 @@
 
     <!-- Tableau des disponibilités -->
     <div class="availability">
-        <h4 class="text-center mb-4">Disponibilités de la semaine</h4>
+        <h4 class="text-center mb-4">Disponibilités de la semaine pour {{ $activite->libelle }}</h4>
 
         <!-- Liste des jours de la semaine -->
         @php
@@ -22,41 +22,46 @@
 
         <ul class="list-unstyled">
             @for ($date = $today; $date <= $endOfWeek; $date->addDay())
-                @if (!$date->isSunday()) <!-- Exclut le dimanche -->
+                {{-- @if (!$date->isSunday())  --}}<!-- Exclut le dimanche -->
                     <li class="mb-4">
                         <h5 class="text-primary">{{ $date->isoFormat('dddd D MMMM YYYY') }}</h5>
 
                         <!-- Plages horaires disponibles -->
                         <div class="d-flex flex-wrap gap-2">
+                            <!-- Récupérer les plages de l'entreprise uniquement pour l'activité concernée -->
                             @if ($entreprise->plages->isNotEmpty())
                                 @foreach ($entreprise->plages as $plage)
-                                    @php
-                                        $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                        $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                        $interval = \Carbon\Carbon::parse($plage->interval)->minute;
-                                    @endphp
+                                    @foreach ($plage->activites as $activiteAct)
+                                        @if ($activiteAct->id == $activite->id)
+                                            @php
+                                                $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
+                                                $heureFin = \Carbon\Carbon::parse($plage->heureFin);
+                                                $interval = \Carbon\Carbon::parse($plage->interval)->minute;
+                                            @endphp
 
-                                    <script>console.log('{{$plage}}');</script>
-
-                                    @while ($heureDeb->lessThan($heureFin))
-                                        <button 
-                                            class="btn btn-outline-primary flex-grow-1 horaire-btn" 
-                                            data-horaire="{{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}"
-                                            data-date="{{ $date->format('Y-m-d') }}"
-                                        >
-                                            {{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}
-                                        </button>
-                                        @php
-                                            $heureDeb->addMinutes($interval);
-                                        @endphp
-                                    @endwhile 
+                                            @while ($heureDeb->lessThan($heureFin))
+                                                <button 
+                                                    class="btn btn-outline-primary flex-grow-1 horaire-btn" 
+                                                    data-horaire="{{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}"
+                                                    data-date="{{ $date->format('Y-m-d') }}"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#reservationModal"
+                                                >
+                                                    {{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}
+                                                </button>
+                                                @php
+                                                    $heureDeb->addMinutes($interval);
+                                                @endphp
+                                            @endwhile 
+                                        @endif
+                                    @endforeach
                                 @endforeach
                             @else
                                 <p>Aucune plage horaire disponible.</p>
                             @endif
                         </div>
                     </li>
-                @endif
+                {{-- @endif --}}
             @endfor
         </ul>
     </div>
@@ -64,7 +69,7 @@
     <!-- MODAL 1 : Réservation -->
     <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('reservation.store') }}" method="POST" id="reservationForm">
+            <form action="{{ route('reservation.store', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}" method="POST" id="reservationForm">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -164,6 +169,7 @@
                             placeholder="exemple@domaine.com" 
                             value="{{ Auth::user()->email }}"
                         >
+                    </div>
                     </div>
 
                     <!-- Durée avant rappel -->

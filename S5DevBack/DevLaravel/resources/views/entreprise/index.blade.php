@@ -6,6 +6,9 @@
 @section('content')
 
     <div class="res-container">
+        @if($entreprises->count() == 0)
+            <h1>Vous ne travaillez ou n'avez créé aucune entreprise</h1>
+        @else
         @foreach ($entreprises as $entreprise)
             <div class="res">
                 <h2>{{ $entreprise->libelle }}</h2>
@@ -78,6 +81,7 @@
                 </div>
             </div>
         @endforeach
+        @endif
     </div>
 
     {{ $entreprises -> links() }}

@@ -12,6 +12,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Entreprise;
 use App\Models\Notification;
+use App\Models\Activite;
 
 class reservationController extends Controller
 {
@@ -22,9 +23,17 @@ class reservationController extends Controller
      */
     public function index() : View
     {
-        return view('reservation.index', [
-            'reservations' => Reservation::simplePaginate(9)
-        ]);
+        if (Auth::user()->effectuer_reservations()->count() > 0) {
+            return view('reservation.index', [
+                'reservations' => Reservation::where('id',Auth::user()->effectuer_reservations()->pluck('idReservation')) // Récupérer les réservations effectuées par l'utilisateur
+                ->simplePaginate(9)
+            ]);
+        }
+        else{
+            return view('reservation.index', [
+                'reservations' => []
+            ]);
+        }
     }
 
     /**
@@ -45,14 +54,11 @@ class reservationController extends Controller
      *
      * @return View
      */
-    public function create(Entreprise $entreprise): View
+    public function create(Entreprise $entreprise, Activite $activite): View
     {
-        $reservation = new Reservation();
-        $notification = new Notification();
-
         return view('reservation.create', [
             'entreprise' => $entreprise,
-            'reservation' => $reservation
+            'activite' => $activite,
         ]);
     }
 
@@ -62,7 +68,7 @@ class reservationController extends Controller
      * @param  App\Http\Requests\FormPostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Entreprise $entreprise, Activite $activite)
 {
     // Validation des données du formulaire
     $validated = $request->validate([
@@ -101,11 +107,13 @@ class reservationController extends Controller
 
         // Associer la notification à la réservation via la relation notifications()
         $reservation->notifications()->save($notification);
+
+        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);  
     }
 
     // Rediriger avec un message de succès
     return redirect()
-        ->route('reservation.show', ['reservation' => $reservation->id])
+        ->route('reservation.index')
         ->with('success', 'La réservation et les notifications ont été ajoutées avec succès.');
 }
 
