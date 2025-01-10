@@ -33,11 +33,11 @@
                                     @php
                                         $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
                                         $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                        $interval = \Carbon\Carbon::parse($plage->interval);
+                                        $interval = \Carbon\Carbon::parse($plage->interval)->minute;
                                     @endphp
 
                                     <script>console.log('{{$plage}}');</script>
-{{--
+
                                     @while ($heureDeb->lessThan($heureFin))
                                         <button 
                                             class="btn btn-outline-primary flex-grow-1 horaire-btn" 
@@ -49,7 +49,7 @@
                                         @php
                                             $heureDeb->addMinutes($interval);
                                         @endphp
-                                    @endwhile --}}
+                                    @endwhile 
                                 @endforeach
                             @else
                                 <p>Aucune plage horaire disponible.</p>
