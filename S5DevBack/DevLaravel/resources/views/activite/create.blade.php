@@ -4,7 +4,7 @@
 <div class="container">
     <h2 class="mb-4">Nouveau service</h2>
 
-    <form action="{{ route('entreprise.services.store') }}" method="POST">
+    <form action="{{ route('entreprise.services.store', ['entreprise' => $entreprise->id]) }}" method="POST">
         @csrf
 
         <div class="form-group mb-3">
@@ -40,7 +40,7 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <a href="{{ route('entreprise.services.index', ['entreprise' => $entreprise]) }}" class="btn btn-light">Annuler</a>
+            <a href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" class="btn btn-light">Annuler</a>
             <button type="submit" class="btn btn-dark">Valider</button>
         </div>
     </form>
