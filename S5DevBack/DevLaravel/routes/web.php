@@ -11,9 +11,8 @@ use App\Http\Controllers\ActiviteController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
-    Route::get('/', 'index')->name('index');
-
     Route::middleware(['auth'])->group(function () {
+        Route::get('/', 'index')->name('index');
         Route::get('/new/{entreprise}', 'create')->name('create');
         Route::post('/new', 'store')->name('store');
 
@@ -66,6 +65,10 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
         Route::get('/{entreprise}', 'show')->where([
             'id' => '[0-9]+',
         ])->name('show');
+
+        Route::get('/{entreprise}/activites', 'showActivites')->where([
+            'id' => '[0-9]+',
+        ])->name('activites');
 
         Route::prefix('{entreprise}/services')->name('services.')->controller(ActiviteController::class)->group(function() {
             Route::get('/', 'index')->name('index');

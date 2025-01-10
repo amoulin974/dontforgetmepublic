@@ -29,7 +29,8 @@
                 @endif
                 @if($entreprise->publier)
                 <p><strong>Publié !</strong></p>
-                <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id]) }}" class="@yield('add_res_active')">Ajouter une réservation</a>
+                <a class="btn btn-primary" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" class="@yield('add_res_active')">Réserver une activité</a>
+                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" class="@yield('add_res_active')">Gérer les activités</a>
                 @endif
             </div>
             <div style="overflow:scroll; max-height:400px;">

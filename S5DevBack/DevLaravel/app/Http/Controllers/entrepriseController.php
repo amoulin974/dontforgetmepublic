@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Entreprise;
+use App\Models\Activite;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
@@ -95,6 +96,17 @@ class entrepriseController extends Controller
         else {
             return redirect()->route('entreprise.indexUser');
         }
+    }
+
+    /**
+     * Fonction pour voir les activités et réserver
+     * 
+     * @return Illuminate\View\View
+     */
+    public function showActivites(Entreprise $entreprise)
+    {
+        $services = Activite::where('idEntreprise', $entreprise->id)->get();
+        return view('activite.show', ['entreprise' => $entreprise], compact('services'));
     }
 
     /**

@@ -4,7 +4,7 @@
 <div class="container">
     <!-- Navigation de retour -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="/" class="btn btn-outline-secondary">
+        <a href="/entreprise/{{$entreprise->id}}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i>
         </a>
         <h1 class="text-center flex-grow-1">{{ $entreprise->libelle }}</h1>

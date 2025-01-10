@@ -22,9 +22,17 @@ class reservationController extends Controller
      */
     public function index() : View
     {
-        return view('reservation.index', [
-            'reservations' => Reservation::simplePaginate(9)
-        ]);
+        if (Auth::user()->effectuer_reservations()->count() > 0) {
+            return view('reservation.index', [
+                'reservations' => Reservation::where('id',Auth::user()->effectuer_reservations()->pluck('idReservation')) // Récupérer les réservations effectuées par l'utilisateur
+                ->simplePaginate(9)
+            ]);
+        }
+        else{
+            return view('reservation.index', [
+                'reservations' => []
+            ]);
+        }
     }
 
     /**
