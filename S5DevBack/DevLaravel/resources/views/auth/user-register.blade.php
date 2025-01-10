@@ -1,21 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    <div class="col-md-6">
-        <!-- Bouton retour -->
-        <a href="/" class="btn btn-outline-secondary mb-3">
+<div class="container d-flex flex-column" style="min-height: 100vh;">
+    <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">
+        <a href="/" class="btn btn-outline-secondary mt-5 mb-4" style="position: absolute; left: 0;">
             <i class="bi bi-arrow-left"></i>
         </a>
 
+        <div class="d-flex justify-content-center align-items-center w-100 mt-4 mb-4">
+        @if (Route::currentRouteName() === 'register.company.register.user')
+            <span class="me-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
+            <span class="mx-2 bg-secondary rounded-circle" style="width: 12px; height: 12px;"></span>
+            <span class="ms-2 bg-secondary rounded-circle" style="width: 12px; height: 12px;"></span>
+        @endif
+        </div>
+    </div>
         <!-- Titre -->
-        <h3 class="text-center mb-4">Créer un compte</h3>
+        <h3 class="text-center mb-4">{{ __('Register') }}</h3>
 
-        <form method="POST" action="{{ route('register') }}">
+        @if (Route::currentRouteName() === 'register.company.register.user')
+            <form method="POST" action="{{ route('register.company.register.company') }}">
+        @else
+            <form method="POST" action="{{ route('register') }}">
+        @endif
             @csrf
 
             <!-- Champ Nom -->
-            <div class="mb-3 mt-5">
+            <div class="mb-3 mt-1">
                 <label for="nom" class="form-label">Nom</label>
                 <input id="nom" type="text" class="form-control @error('nom') is-invalid @enderror" 
                        name="nom" value="{{ old('nom') }}" placeholder="Entrez votre nom" required>
@@ -82,19 +93,19 @@
             </div>
 
             <!-- Bouton Créer un compte -->
-            <div class="d-grid mt-5">
+            <div class="d-grid">
                 <button type="submit" class="btn btn-dark">
                     Créer son compte
                 </button>
             </div>
 
             <!-- Liens supplémentaires -->
-            <div class="text-center mt-4">
+            <div class="text-center mt-3">
                 <p class="mb-1">
                     Vous avez déjà un compte ? <a href="{{ route('login') }}">Se connecter</a>
                 </p>
             </div>
         </form>
-    </div>
+    <!-- </div> -->
 </div>
 @endsection

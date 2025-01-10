@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('plages', function (Blueprint $table) {
             $table->id();
+            $table->date('datePlage');
             $table->time('heureDeb')->check('heureDeb > heureFin');
             $table->time('heureFin')->check('heureFin < heureDeb');
-            $table->time('intervalle');
+            $table->time('interval');
             $table->json('planTables');
             $table->foreignId('entreprise_id')->constrained()->onDelete('cascade');
             $table->timestamps();

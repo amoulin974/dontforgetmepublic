@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Plage extends Model
 {
@@ -19,10 +19,12 @@ class Plage extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'datePlage',
         'heureDeb',
         'heureFin',
-        'intervalle',
+        'interval',
         'planTables',
+        'entreprise_id', // Pour permettre l'insertion
     ];
 
     /**
@@ -31,10 +33,12 @@ class Plage extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'datePlage' => 'datetime',
         'heureDeb' => 'datetime:H:i:s',
         'heureFin' => 'datetime:H:i:s',
-        'intervalle' => 'datetime:H:i:s',
+        'interval' => 'datetime:H:i:s',
         'planTables' => 'array',
+        'entreprise_id' => 'integer',
     ];
 
     // MÉTHODES

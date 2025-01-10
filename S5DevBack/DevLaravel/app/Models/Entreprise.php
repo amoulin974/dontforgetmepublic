@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Entreprise extends Model
 {
@@ -28,6 +29,8 @@ class Entreprise extends Model
         'email',
         'cheminImg',
         'publier',
+        'typeRdv',
+        'idCreateur'
     ];
 
     /**
@@ -38,6 +41,8 @@ class Entreprise extends Model
     protected $casts = [
         'publier' => 'integer',
         'cheminImg' => 'array',
+        'typeRdv' => 'array',
+        'idCreateur' => 'integer'
     ];
 
 
