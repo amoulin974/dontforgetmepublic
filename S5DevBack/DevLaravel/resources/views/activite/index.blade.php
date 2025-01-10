@@ -2,6 +2,9 @@
 
 @section('content')
 <div class="container">
+    @if($services->isEmpty())
+        <h1>Créez votre premier service</h1>
+    @endif
     <h2 class="mb-4">Mes Services</h2>
 
     @if($services->isEmpty())
@@ -20,7 +23,7 @@
                 @foreach($services as $service)
                 <tr>
                     <td>{{ $service->libelle }}</td>
-                    <td>{{ $service->duree }}</td>
+                    <td>{{ $service->formatted_duree }}</td>
                     <td>
                         <a href="{{ route('entreprise.services.edit', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
                             <i class="fa fa-pencil-alt"></i> Modifier
@@ -39,8 +42,10 @@
         </table>
     @endif
 
-    <div class="mt-4">
-        <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Ajouter un service</a>
-    </div>
+    @if(!$services->isEmpty())
+        <div class="mt-4">
+            <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Ajouter un service</a>
+        </div>
+    @endif
 </div>
 @endsection
