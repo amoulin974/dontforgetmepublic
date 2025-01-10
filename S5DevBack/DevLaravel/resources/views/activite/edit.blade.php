@@ -4,7 +4,7 @@
 <div class="container">
     <h2 class="mb-4">Modifier un service</h2>
 
-    <form action="{{ route('services.update', $service->id) }}" method="POST">
+    <form action="{{ route('entreprise.services.update', $service->id) }}" method="POST">
         @csrf
         @method('PUT')
 

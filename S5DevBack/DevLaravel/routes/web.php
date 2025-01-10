@@ -66,6 +66,17 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
         Route::get('/{entreprise}', 'show')->where([
             'id' => '[0-9]+',
         ])->name('show');
+
+        Route::prefix('{entreprise}/services')->name('services.')->controller(ActiviteController::class)->group(function() {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/{id}', 'show')->name('show'); 
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+        });
+        
     });
     
     //Route::get('/', 'index')->name('index');
@@ -97,14 +108,4 @@ Route::prefix('/register')->name('register.')->controller(RegisterController::cl
     Route::post('/submit-responses', [RegisterController::class, 'storeResponses'])->name('submit.responses');
 
     Route::post('/company/submit', [RegisterController::class, 'submit'])->name('company.register.submit');
-});
-
-Route::prefix('/services')->name('services.')->controller(ActiviteController::class)->group(function() {
-    Route::get('/', 'index')->name('index'); 
-    Route::get('/create', 'create')->name('create');
-    Route::post('/store', 'store')->name('store');
-    Route::get('/{id}', 'show')->name('show'); 
-    Route::get('/{id}/edit', 'edit')->name('edit');
-    Route::put('/{id}', 'update')->name('update');
-    Route::delete('/{id}', 'destroy')->name('destroy');
 });
