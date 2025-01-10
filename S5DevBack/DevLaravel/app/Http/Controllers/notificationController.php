@@ -21,7 +21,7 @@ class notificationController extends Controller
                 'users.email AS userEmail',
                 'effectuer.typeNotif AS typeNotification',
                 'entreprises.libelle AS entrepriseNom',
-                'reservations.dateRdv AS heureRendezVous',
+                'reservations.heureDeb AS heureRendezVous',
 
                 DB::raw('(SELECT n.id
                   FROM notifications n
