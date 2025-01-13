@@ -4,7 +4,7 @@
 <div class="container">
     <!-- Navigation de retour -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="/" class="btn btn-outline-secondary">
+        <a href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i>
         </a>
         <h1 class="text-center flex-grow-1">{{ $entreprise->libelle }}</h1>
@@ -12,6 +12,7 @@
 
     <!-- Tableau des disponibilités -->
     <div class="availability">
+
         <h4 class="text-center mb-4">Disponibilités</h4>
 
         <ul class="list-unstyled">
@@ -52,7 +53,7 @@
     <!-- MODAL 1 : Réservation -->
     <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('reservation.store') }}" method="POST" id="reservationForm">
+            <form action="{{ route('reservation.store', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}" method="POST" id="reservationForm">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -150,6 +151,7 @@
                             placeholder="exemple@domaine.com" 
                             value="{{ Auth::user()->email }}"
                         >
+                    </div>
                     </div>
 
                     <!-- Durée avant rappel -->

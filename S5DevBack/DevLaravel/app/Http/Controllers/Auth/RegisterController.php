@@ -236,6 +236,6 @@ class RegisterController extends Controller
         
         session()->forget(['user', 'company', 'appointment']);
 
-        return redirect()->route('home')->with('success', 'Inscription réussie.'); 
+        return redirect()->route('entreprise.services.index', ['entreprise' => $newCompany->id])->with('success', 'Inscription réussie.'); 
     }
 }

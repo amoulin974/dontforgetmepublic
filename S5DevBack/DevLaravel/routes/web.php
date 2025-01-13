@@ -12,11 +12,10 @@ use App\Http\Controllers\ReserverController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
-    Route::get('/', 'index')->name('index');
-
     Route::middleware(['auth'])->group(function () {
-        Route::get('/new/{entreprise}', 'create')->name('create');
-        Route::post('/new', 'store')->name('store');
+        Route::get('/', 'index')->name('index');
+        Route::get('/{entreprise}/new/{activite}', 'create')->name('create');
+        Route::post('/{entreprise}/new/{activite}', 'store')->name('store');
 
         Route::get('/{reservation}/edit', 'edit')->name('edit');
         Route::post('/{reservation}/edit', 'update')->name('update');
@@ -67,6 +66,10 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
         Route::get('/{entreprise}', 'show')->where([
             'id' => '[0-9]+',
         ])->name('show');
+
+        Route::get('/{entreprise}/activites', 'showActivites')->where([
+            'id' => '[0-9]+',
+        ])->name('activites');
 
         Route::prefix('{entreprise}/services')->name('services.')->controller(ActiviteController::class)->group(function() {
             Route::get('/', 'index')->name('index');
