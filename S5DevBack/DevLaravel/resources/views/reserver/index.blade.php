@@ -11,6 +11,9 @@
             <input type="text" id="search-input" placeholder="Rechercher une entreprise par libellé..." 
                    style="width: 50%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px;">
         </div>
+    </div>
+
+    <div class="res-container">
 
         @foreach ($entreprises as $entreprise)
         @if($entreprise->publier)
@@ -30,7 +33,7 @@
                                 <div class="swiper-wrapper">
                                     @foreach (json_decode($entreprise->cheminImg) as $img)
                                         <div class="swiper-slide">
-                                            <img src="{{ $img }}" alt="{{ $img }}" height="300vh" width="300vh">
+                                            <img src="{{ $img }}" alt="{{ $img }}" height="250vh" width="250vh">
                                         </div>
                                     @endforeach
                                 </div>
@@ -48,11 +51,11 @@
                             </script>
                         </div>
                     @elseif($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1)
-                        <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="300vh" width="300vh">
+                        <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                     @else
-                        <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="300vh" width="300vh">
+                        <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                     @endif
-                    <a class="secondary-button" href="{{ route('reservation.create', ['entreprise' => $entreprise->id]) }}">Réserver</a>
+                    <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}">Réserver une activité</a>
                 </div>
             </div>
         @endif

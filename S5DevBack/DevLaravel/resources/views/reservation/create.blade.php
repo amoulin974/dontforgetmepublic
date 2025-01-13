@@ -1,10 +1,12 @@
-@extends('base')
+@extends('layouts.app')
+
+@include('base')
 
 @section('content')
 <div class="container">
     <!-- Navigation de retour -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" class="btn btn-outline-secondary">
+        <a href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" class="btn btn-outline-secondary mt-4 mb-4">
             <i class="bi bi-arrow-left"></i>
         </a>
         <h1 class="text-center flex-grow-1">{{ $entreprise->libelle }}</h1>
@@ -13,24 +15,30 @@
     <!-- Tableau des disponibilités -->
     <div class="availability">
 
-        <h4 class="text-center mb-4">Disponibilités</h4>
+        <h4 class="text-center mb-4">Disponibilités pour {{ $activite->libelle}}</h4>
 
         <ul class="list-unstyled">
-            @if ($entreprise->plages->isNotEmpty())
-                @foreach ($entreprise->plages->groupBy('datePlage') as $date => $plages)
+            @if ($activite->plages->count() > 0)
+                @foreach ($activite->plages->groupBy('datePlage') as $date => $plages)
                     <li class="mb-4">
                         <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
                         <div class="d-flex flex-wrap gap-2">
                             @foreach ($plages as $plage)
                                 @php
-                                    $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                    $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                    $interval = intval(explode(':', $plage->interval)[1]); // Convertit en minutes
+                                    try {
+                                        $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
+                                        $heureFin = \Carbon\Carbon::parse($plage->heureFin);
+                                        $interval = intval(explode(':', $plage->interval)[1]); // Convertit en minutes
+                                    } catch (\Exception $e) {
+                                        displayWarning('Erreur de formatage des plages horaires.');
+                                        continue;
+                                    }
                                 @endphp
-
                                 @while ($heureDeb->lessThan($heureFin))
                                     <button 
                                         class="btn btn-outline-primary flex-grow-1 horaire-btn" 
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#reservationModal"
                                         data-horaire="{{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}"
                                         data-date="{{ $date }}"
                                     >
@@ -65,7 +73,7 @@
                     <div class="modal-body">
                         <p>
                             Vous êtes sur le point de réserver pour la plage horaire suivante :
-                            <strong id="selectedHoraire" class="text-success"></strong>.
+                            <strong id="selectedHoraire" class="text-success"></strong>
                         </p>
 
                         <!-- Champs cachés pour la date et l'horaire -->
@@ -93,7 +101,8 @@
                         <ul id="notificationsList" class="list-group"></ul>
 
                         <!-- Bouton : Ajouter une nouvelle notification -->
-                        <button type="button" class="btn btn-success w-100 mt-3" id="addNotificationBtn">
+                        <button type="button" class="btn btn-success w-100 mt-3" id="addNotificationBtn" data-bs-toggle="modal" 
+                        data-bs-target="#notificationModal">
                             <i class="bi bi-plus-circle"></i> Ajouter une notification
                         </button>
                     </div>
