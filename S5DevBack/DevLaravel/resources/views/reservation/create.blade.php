@@ -1,10 +1,12 @@
-@extends('base')
+@extends('layouts.app')
+
+@include('base')
 
 @section('content')
 <div class="container">
     <!-- Navigation de retour -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="/" class="btn btn-outline-secondary">
+        <a href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" class="btn btn-outline-secondary mt-4 mb-4">
             <i class="bi bi-arrow-left"></i>
         </a>
         <h1 class="text-center flex-grow-1">{{ $entreprise->libelle }}</h1>
@@ -12,59 +14,54 @@
 
     <!-- Tableau des disponibilités -->
     <div class="availability">
-        <h4 class="text-center mb-4">Disponibilités de la semaine</h4>
 
-        <!-- Liste des jours de la semaine -->
-        @php
-            $today = \Carbon\Carbon::today();
-            $endOfWeek = $today->copy()->addDays(6); // Jusqu'à samedi
-        @endphp
+        <h4 class="text-center mb-4">Disponibilités pour {{ $activite->libelle}}</h4>
 
         <ul class="list-unstyled">
-            @for ($date = $today; $date <= $endOfWeek; $date->addDay())
-                @if (!$date->isSunday()) <!-- Exclut le dimanche -->
+            @if ($activite->plages->count() > 0)
+                @foreach ($activite->plages->groupBy('datePlage') as $date => $plages)
                     <li class="mb-4">
-                        <h5 class="text-primary">{{ $date->isoFormat('dddd D MMMM YYYY') }}</h5>
-
-                        <!-- Plages horaires disponibles -->
+                        <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
                         <div class="d-flex flex-wrap gap-2">
-                            @if ($entreprise->plages->isNotEmpty())
-                                @foreach ($entreprise->plages as $plage)
-                                    @php
+                            @foreach ($plages as $plage)
+                                @php
+                                    try {
                                         $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
                                         $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                        $interval = \Carbon\Carbon::parse($plage->interval)->minute;
+                                        $interval = intval(explode(':', $plage->interval)[1]); // Convertit en minutes
+                                    } catch (\Exception $e) {
+                                        displayWarning('Erreur de formatage des plages horaires.');
+                                        continue;
+                                    }
+                                @endphp
+                                @while ($heureDeb->lessThan($heureFin))
+                                    <button 
+                                        class="btn btn-outline-primary flex-grow-1 horaire-btn" 
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#reservationModal"
+                                        data-horaire="{{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}"
+                                        data-date="{{ $date }}"
+                                    >
+                                        {{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}
+                                    </button>
+                                    @php
+                                        $heureDeb->addMinutes($interval);
                                     @endphp
-
-                                    <script>console.log('{{$plage}}');</script>
-
-                                    @while ($heureDeb->lessThan($heureFin))
-                                        <button 
-                                            class="btn btn-outline-primary flex-grow-1 horaire-btn" 
-                                            data-horaire="{{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}"
-                                            data-date="{{ $date->format('Y-m-d') }}"
-                                        >
-                                            {{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}
-                                        </button>
-                                        @php
-                                            $heureDeb->addMinutes($interval);
-                                        @endphp
-                                    @endwhile 
-                                @endforeach
-                            @else
-                                <p>Aucune plage horaire disponible.</p>
-                            @endif
+                                @endwhile
+                            @endforeach
                         </div>
                     </li>
-                @endif
-            @endfor
+                @endforeach
+            @else
+                <p>Aucune plage horaire disponible.</p>
+            @endif
         </ul>
     </div>
 
     <!-- MODAL 1 : Réservation -->
     <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('reservation.store') }}" method="POST" id="reservationForm">
+            <form action="{{ route('reservation.store', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}" method="POST" id="reservationForm">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -76,7 +73,7 @@
                     <div class="modal-body">
                         <p>
                             Vous êtes sur le point de réserver pour la plage horaire suivante :
-                            <strong id="selectedHoraire" class="text-success"></strong>.
+                            <strong id="selectedHoraire" class="text-success"></strong>
                         </p>
 
                         <!-- Champs cachés pour la date et l'horaire -->
@@ -101,12 +98,11 @@
 
                         <!-- Liste des notifications ajoutées -->
                         <h5 class="mt-4">Notifications ajoutées :</h5>
-                        <ul id="notificationsList" class="list-group">
-                            <!-- Les notifications ajoutées s'afficheront ici -->
-                        </ul>
+                        <ul id="notificationsList" class="list-group"></ul>
 
                         <!-- Bouton : Ajouter une nouvelle notification -->
-                        <button type="button" class="btn btn-success w-100 mt-3" id="addNotificationBtn">
+                        <button type="button" class="btn btn-success w-100 mt-3" id="addNotificationBtn" data-bs-toggle="modal" 
+                        data-bs-target="#notificationModal">
                             <i class="bi bi-plus-circle"></i> Ajouter une notification
                         </button>
                     </div>
@@ -165,6 +161,7 @@
                             value="{{ Auth::user()->email }}"
                         >
                     </div>
+                    </div>
 
                     <!-- Durée avant rappel -->
                     <label for="duree" class="form-label mt-3">Durée avant rappel :</label>
@@ -189,14 +186,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     let selectedHoraire = '';
     let selectedDate = '';
-    const notificationsList = document.getElementById('notificationsList');
-    const reservationForm = document.getElementById('reservationForm');
 
-    // Clic sur un horaire
-    document.querySelectorAll('.horaire-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            selectedDate = this.getAttribute('data-date') + ' 00:00:00';
-            selectedHoraire = this.getAttribute('data-horaire');
+    // Gestion des clics sur les horaires
+    document.body.addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('horaire-btn')) {
+            const button = event.target;
+
+            selectedDate = button.getAttribute('data-date');
+            selectedHoraire = button.getAttribute('data-horaire');
 
             document.getElementById('hiddenHoraire').value = selectedHoraire;
             document.getElementById('hiddenDateRdv').value = selectedDate;
@@ -204,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
             reservationModal.show();
-        });
+        }
     });
 
     // Ajouter une notification
@@ -228,8 +225,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Validation d'une notification
     document.getElementById('saveNotificationBtn').addEventListener('click', function () {
         const typeNotification = document.querySelector('input[name="typeNotification"]:checked').value;
-        const contenu = typeNotification === 'SMS' 
-            ? document.getElementById('smsInput').value 
+        const contenu = typeNotification === 'SMS'
+            ? document.getElementById('smsInput').value
             : document.getElementById('mailInput').value;
         const duree = document.getElementById('duree').value;
 
@@ -238,42 +235,17 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Ajouter une notification à la liste
+        const notificationsList = document.getElementById('notificationsList');
         const notificationItem = document.createElement('li');
         notificationItem.className = 'list-group-item';
         notificationItem.textContent = `${typeNotification} - ${contenu} - Rappel : ${duree}`;
         notificationsList.appendChild(notificationItem);
-
-        // Ajouter un input caché pour chaque notification
-        ['typeNotification', 'contenu', 'duree'].forEach((key) => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = `notifications[${notificationsList.children.length - 1}][${key}]`;
-            input.value = key === 'contenu' ? contenu : key === 'typeNotification' ? typeNotification : duree;
-            reservationForm.appendChild(input);
-        });
 
         const notificationModal = bootstrap.Modal.getInstance(document.getElementById('notificationModal'));
         notificationModal.hide();
 
         const reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
         reservationModal.show();
-    });
-
-    // Gestion des champs conditionnels (SMS/Email)
-    const smsOption = document.getElementById('smsOption');
-    const mailOption = document.getElementById('mailOption');
-    const smsField = document.getElementById('smsField');
-    const mailField = document.getElementById('mailField');
-
-    smsOption.addEventListener('change', () => {
-        smsField.style.display = 'block';
-        mailField.style.display = 'none';
-    });
-
-    mailOption.addEventListener('change', () => {
-        mailField.style.display = 'block';
-        smsField.style.display = 'none';
     });
 });
 </script>

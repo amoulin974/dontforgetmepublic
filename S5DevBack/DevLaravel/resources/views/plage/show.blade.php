@@ -44,28 +44,11 @@
   
 <div class="containerCalendar">
     <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+    <h2>{{ Auth::user()->nom }} {{ Auth::user()->prneom }}</h2>
     <div id='calendar'></div>
 
-    <!-- Popup Dialog Titre -->
-    <div id="dialogTitre" title="Ajout d'un évènement" style="display:none;">
-        <form>
-            <label for="eventTitle">Titre de l'évènement :</label>
-            <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="interv">Interval de début d'activités :</label>
-        </form>
-    </div>
-
-    <!-- Popup Dialog Modif -->
-    <div id="dialogModif" title="Ajout d'un évènement" style="display:none;">
-        <form>
-            <label for="eventTitleModif">Titre de l'évènement :</label>
-            <input type="text" id="eventTitleModif" name="eventTitleModif" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="intervModif">Interval de débuts d'activités :</label>
-        </form>
-    </div>
-
     <!-- Popup Dialog Suppression -->
-    <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
+    <div id="dialog-confirm" title="Voulez-vous signaler votre indisponibilité ?" style="display:none;">
         <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cet évènement sera définitivement supprimé. Voulez-vous continuer ?</p>
     </div>
 </div>
@@ -96,7 +79,7 @@ var calendar = $('#calendar').fullCalendar({
     buttonIcons: false, // show the prev/next text
     locale: 'fr',
     /* initialView: 'agendaWeek', */
-    editable: true,
+    editable: false,
     events: function(start, end, timezone, callback) {
         $.ajax({
             url: SITEURL + "/" + {{ $entreprise->id }},
@@ -141,208 +124,37 @@ var calendar = $('#calendar').fullCalendar({
         }
         
     },
-    selectable: true,
-    selectHelper: true,
-    select: function (start, end, allDay) {
-        // Vérifiez si l'événement est sur la même journée
-        if (moment(start).isSame(end, 'day')) {
-            var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
-            var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
-            // Afficher la popup avec les inputs
-            $('#dialogTitre').dialog({
-                modal: true,
-                closeOnEscape: true,
-                        open: function(event, ui) {
-                            $('.ui-widget-overlay').bind('click', function(){
-                                $('#interv').val('00:05:00');
-                                $('#dialogTitre').dialog('close');
-                            });
-                        },
-                buttons: {
-                    "Ajouter": function() {
-                        var title = $('#eventTitle').val();
-                        var interv = $('#interv').val();
-                        if (title && interv) {
-                            $.ajax({
-                                url: SITEURL + "/",
-                                data: {
-                                    datePlage: start.split(' ')[0],
-                                    heureDeb: start.split(' ')[1],
-                                    heureFin: end.split(' ')[1],
-                                    interval: interv,
-                                    entreprise_id: {{ $entreprise->id }},
-                                    type: 'add'
-                                },
-                                type: "POST",
-                                success: function (data) {
-                                    $('#dialogTitre').dialog('close');
-                                    displaySuccess("Évènement ajouté avec succès");
-
-                                    // Désélectionner après la sélection
-                                    $('#calendar').fullCalendar('unselect');
-
-                                    // Rafraîchir l'affichage du calendrier
-                                    $('#calendar').fullCalendar('refetchEvents');
-                                },
-                                error: function() {
-                                    displayError("Erreur lors de l'ajout de l'évènement. Réssayez...");
-                                }
-                            });
-                        }
-                        else {
-                            displayWarning("Informations manquantes");
-                        }
-                        //$(this).dialog("close");
-                    },
-                    "Annuler": function() {
-                        $('#interv').val('00:05:00');
-                        $(this).dialog("close");
-                    }
-                }
-            });
-        } else {
-            displayError("Impossible de créer un évènement sur plusieurs jours");
-            // Désélectionner après la sélection
-            $('#calendar').fullCalendar('unselect');
-        }
-    },
-    eventDrop: function (event, delta) {
-        // Vérifiez si l'événement dépasse une journée
-        if (moment(event.start).isSame(event.end, 'day')) {
-            var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
-            var end = event.end ? $.fullCalendar.formatDate(event.end, "YYYY-MM-DD HH:mm:ss") : start;
-            $.ajax({
-                url: SITEURL + '/',
-                data: {
-                    datePlage: start.split(' ')[0],
-                    heureDeb: start.split(' ')[1],
-                    heureFin: end.split(' ')[1],
-                    id: event.id,
-                    type: 'update'
-                },
-                type: "POST",
-                success: function (response) {
-                    displayMessage("Évènement modifié avec succès");
-                }
-            });
-        } else {
-            displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
-            // Désélectionner après la sélection
-            $('#calendar').fullCalendar('unselect');
-        }
-    },
+    selectable: false,
+    selectHelper: false,
     eventClick: function (event) {
         var eventAct = event;
-        $('#dialogModif').dialog({
+        $( "#dialog-confirm" ).dialog({
+            resizable: false,
             modal: true,
-            closeOnEscape: true,
-                    open: function(event, ui) {
-                        $('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'évènement');
-                        $('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
-                        $('.ui-widget-overlay').bind('click', function(){
-                            $('#dialogModif').dialog('close');
-                        });
-                    },
             buttons: {
-                "Modifier": function() {
-                    var title = $('#eventTitleModif').val();
-                    var interv = $('#intervModif').val();
-                    console.log(eventAct);
-                    if (title && interv) {
-                        $.ajax({
-                            url: SITEURL + "/",
-                            data: {
+                "Confirmer la suppression": function() {
+                    $.ajax({
+                        type: "POST",
+                        url: SITEURL + '/',
+                        data: {
                                 id: eventAct.id,
-                                interval: interv,
-                                type: 'modify'
-                            },
-                            type: "POST",
-                            success: function (data) {
-                                $('#dialogModif').dialog('close');
-
-                                displaySuccess("Évènement modifié avec succès");
-
-                                // Désélectionner après la sélection
-                                $('#calendar').fullCalendar('unselect');
-
-                                // Rafraîchir l'affichage du calendrier
-                                $('#calendar').fullCalendar('refetchEvents');
-                            },
-                            error: function() {
-                                $('#dialogTitre').dialog('close');
-                                displayErrorWithButton("Erreur lors de la modification de l'évènement. Réssayez...");
-                            }
-                        });
-                    }
-                    else {
-                        displayWarning("Informations manquantes");
-                    }
-                },
-                "Supprimer": function() {
-                    $(this).dialog("close");
-                    $( "#dialog-confirm" ).dialog({
-                        resizable: false,
-                        modal: true,
-                        buttons: {
-                            "Confirmer la suppression": function() {
-                                $.ajax({
-                                    type: "POST",
-                                    url: SITEURL + '/',
-                                    data: {
-                                            id: eventAct.id,
-                                            type: 'delete'
-                                    },
-                                    success: function (response) {
-                                        calendar.fullCalendar('removeEvents', eventAct.id);
-                                        displayMessage("Évènement supprimé avec succès");
-                                    }
-                                });
-                                $( this ).dialog( "close" );
-                                $('#dialogModif').dialog("close");
-                            },
-                            "Annuler": function() {
-                                $( this ).dialog( "close" );
-                                $('#dialogModif').dialog("open");
-                            }
+                                type: 'delete'
+                        },
+                        success: function (response) {
+                            calendar.fullCalendar('removeEvents', eventAct.id);
+                            displayMessage("Évènement supprimé avec succès");
+                        },
+                        error: function() {
+                            displayError("Erreur lors de la suppression de la disponibilité");
                         }
                     });
+                    $( this ).dialog( "close" );
                 },
                 "Annuler": function() {
-                    $(this).dialog("close");
+                    $( this ).dialog( "close" );
                 }
             }
         });
-    },
-    eventResize: function(event, delta, revertFunc) {
-        // Vérifiez si l'événement dépasse une journée
-        if (moment(event.start).isSame(event.end, 'day')) {
-            var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
-            var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
-
-            $.ajax({
-                url: SITEURL + '/',
-                data: {
-                    datePlage: start.split(' ')[0],
-                    heureDeb: start.split(' ')[1],
-                    heureFin: end.split(' ')[1],
-                    id: event.id,
-                    type: 'update'
-                },
-                type: "POST",
-                success: function(response) {
-                    displayMessage("Évènement modifié avec succès");
-                },
-                error: function() {
-                    revertFunc(); // Revert the change if the update fails
-                    displayError("Erreur lors de la modification de l'évènement");
-                }
-            });
-        } else {
-            revertFunc(); // Revert the change if the update fails
-            displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
-            // Désélectionner après la sélection
-            $('#calendar').fullCalendar('unselect');
-        }
     },
 });
 

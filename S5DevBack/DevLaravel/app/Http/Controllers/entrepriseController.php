@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Entreprise;
+use App\Models\Activite;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
@@ -67,8 +68,8 @@ class entrepriseController extends Controller
             else {
                 return view('entreprise.index', [
                     'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
-                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->pluck('idEntreprise'))
-                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Employé')->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->distinct()->pluck('idEntreprise'))
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Employé')->distinct()->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
                         ->distinct() // Supprimer les doublons (pas nécessaire)
                         ->simplePaginate(9)
                 ]);
@@ -98,6 +99,17 @@ class entrepriseController extends Controller
     }
 
     /**
+     * Fonction pour voir les activités et réserver
+     * 
+     * @return Illuminate\View\View
+     */
+    public function showActivites(Entreprise $entreprise)
+    {
+        $services = Activite::where('idEntreprise', $entreprise->id)->get();
+        return view('activite.show', ['entreprise' => $entreprise], compact('services'));
+    }
+
+    /**
      * Méthode ajax pour ajouter, modifier, mettre à jour ou supprimer un employé
      *
      * @return response()
@@ -106,7 +118,7 @@ class entrepriseController extends Controller
     {
         switch ($request->type) {
            case 'invite':
-                $event = User::where('email',$request->email)->first()->travailler_entreprises()->attach($request->idEntreprise, ['statut' => 'Invité']);  
+                $event = User::where('email',$request->email)->first()->travailler_entreprises()->attach($request->idEntreprise, [1,'statut' => 'Invité']);  /* à modifier mettre activité récupérée de $request */
 
               return response()->json($event);
              break;
@@ -128,7 +140,7 @@ class entrepriseController extends Controller
                 break;
   
            case 'delete':
-              $event = User::where('id',$request->idEmploye)->first()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->delete();;
+              $event = User::where('id',$request->idEmploye)->first()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->delete();
   
               return response()->json($event);
              break;

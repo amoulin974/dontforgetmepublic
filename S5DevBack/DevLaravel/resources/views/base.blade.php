@@ -26,13 +26,14 @@
 <nav>
         <ul>
             <li><a href="/" class="@yield('home_active')">Accueil</a></li>
-            <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')">Réservations</a></li>
-            <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')">Entreprises</a></li>
-            <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li>
+            <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')">Mes Réservations</a></li>
+            <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')">Mes Entreprises</a></li>
+            {{-- <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li> --}}
             @guest
             @else
               <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')">Paramétrer vos plannings</a></li>
             @endguest
+            <li><a href="{{ route('reserver.index') }}" class="@yield('reserver_active')">Réserver</a></li>
         </ul>
     </nav>
 
@@ -185,6 +186,7 @@
 
     
 </header>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {{-- <div class="card-header">{{ __('Dashboard') }}</div>
         <div class="card-body">
             @if (session('status'))

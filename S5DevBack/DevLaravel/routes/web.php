@@ -8,14 +8,14 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\calendrierController;
 use App\Http\Controllers\parametrageController;
 use App\Http\Controllers\ActiviteController;
+use App\Http\Controllers\ReserverController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
-    Route::get('/', 'index')->name('index');
-
     Route::middleware(['auth'])->group(function () {
-        Route::get('/new/{entreprise}', 'create')->name('create');
-        Route::post('/new', 'store')->name('store');
+        Route::get('/', 'index')->name('index');
+        Route::get('/{entreprise}/new/{activite}', 'create')->name('create');
+        Route::post('/{entreprise}/new/{activite}', 'store')->name('store');
 
         Route::get('/{reservation}/edit', 'edit')->name('edit');
         Route::post('/{reservation}/edit', 'update')->name('update');
@@ -30,14 +30,14 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     ])->name('show');
 });
 
-Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
+/* Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/ajax', 'ajax')->name('ajax');
     });
     
-});
+}); */
 
 Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageController::class)->group(function(){
 
@@ -50,6 +50,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
         Route::prefix('/plage')->name('plage.')->group(function(){
             Route::post('/', 'ajax')->name('ajax');
             Route::get('/{entreprise}', 'indexPlage')->name('idEntreprise');
+            Route::get('/{entreprise}/look', 'indexPlageAsEmploye')->name('idEntrepriseAsEmploye');
         });
 
     });
@@ -67,6 +68,10 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
             'id' => '[0-9]+',
         ])->name('show');
 
+        Route::get('/{entreprise}/activites', 'showActivites')->where([
+            'id' => '[0-9]+',
+        ])->name('activites');
+
         Route::prefix('{entreprise}/services')->name('services.')->controller(ActiviteController::class)->group(function() {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -75,6 +80,8 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::get('/{id}/plage', 'createPlage')->name('createPlage');
+            Route::post('/{id}/plage', 'ajaxPlage')->name('ajaxPlage');
         });
         
     });
@@ -82,6 +89,11 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
     //Route::get('/', 'index')->name('index');
 
     
+});
+
+Route::prefix('/reserver')->name('reserver.')->controller(ReserverController::class)->group(function(){
+
+    Route::get('/', 'index')->name('index');
 });
 
 Route::get('/', function () {

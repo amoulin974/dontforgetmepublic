@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Display resa')
+@section('title', 'Mes réservations')
 @section('catalogue_active', 'active')
 
 @section('content')
@@ -9,8 +9,13 @@
         {{ session('success') }}
     </div>
 @endif
-<div class="res-container"><div class="res"><a href="{{ route('entreprise.indexUser') }}" class="@yield('add_res_active')"><h2>Ajouter une réservation</h2></a></div></div>
+<div class="res-container"><a href="{{ route('reserver.index') }}" class="btn btn-primary"><h2>Ajouter une réservation</h2></a></div></div>{{-- Lien à modifier --}}
 
+    @if($reservations == [])
+    <div class="res-container">
+        <p>Aucune réservation n'a été créée.</p>
+    </div>
+    @else
     <div class="res-container">
         @foreach ($reservations as $reservation)
             <div class="res">
@@ -45,5 +50,7 @@
     </div>
 
     {{ $reservations -> links() }}
+
+    @endif
     
 @endsection

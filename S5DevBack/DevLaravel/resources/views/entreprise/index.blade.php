@@ -6,6 +6,9 @@
 @section('content')
 
     <div class="res-container">
+        @if($entreprises->count() == 0)
+            <h1>Vous ne travaillez ou n'avez créé aucune entreprise</h1>
+        @else
         @foreach ($entreprises as $entreprise)
             <div class="res">
                 <h2>{{ $entreprise->libelle }}</h2>
@@ -69,15 +72,19 @@
                     <p><strong>Publié !</strong></p>
                     @endif
                     @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
-                        <a class="btn btn-primary" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
-                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
+                    <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button">Voir plus</a>
+                    @endif
+                    {{-- @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
+                        <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
+                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
                         <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button">Voir plus</a>
                     @elseif ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Employé')->first() != null)
-                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
-                    @endif
+                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
+                    @endif --}}
                 </div>
             </div>
         @endforeach
+        @endif
     </div>
 
     {{ $entreprises -> links() }}
