@@ -14,13 +14,12 @@ class ActiviteController extends Controller
 {
     public function index(Entreprise $entreprise)
     {
-        //$entrepriseActuelle = session('entreprise');
-        /*if (!$entrepriseActuelle) {
-            return redirect()->route('dashboard')->with('error', 'Aucune entreprise active sélectionnée.');
-        }*/
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
+        $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
-        if($isAdmin){
+        $isAllow = $isAdmin || $isCreator;
+
+        if($isAllow){
             //$services = Activite::where('entreprise_id', $entrepriseActuelle->id)->get();
             $services = Activite::where('idEntreprise', $entreprise->id)->get();
             return view('activite.index', ['entreprise' => $entreprise], compact('services'));
@@ -33,7 +32,10 @@ class ActiviteController extends Controller
     public function create(Entreprise $entreprise)
     {
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
-        if(!$isAdmin){
+        $isCreator = $entreprise->idCreateur == Auth::user()->id;
+
+        $isAllow = $isAdmin || $isCreator;
+        if(!$isAllow){
             return redirect()->route('entreprise.index');
         }else {
             return view('activite.create', ['entreprise' => $entreprise]);
@@ -44,8 +46,11 @@ class ActiviteController extends Controller
     {
         // \Log::info('Méthode HTTP utilisée : ' . $request->method());
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
+        $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
-        if(!$isAdmin){
+        $isAllow = $isAdmin || $isCreator;
+
+        if(!$isAllow){
             return redirect()->route('entreprise.index');
         }
         else{
@@ -81,8 +86,10 @@ class ActiviteController extends Controller
         /* $service = Activite::findOrFail($id);
         return view('activite.edit', ['entreprise' => $entreprise], compact('service')); */
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
+        $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
-        if(!$isAdmin){
+        $isAllow = $isAdmin || $isCreator;
+        if(!$isAllow){
             return redirect()->route('entreprise.index');
         }
         else{
@@ -94,8 +101,10 @@ class ActiviteController extends Controller
     public function update(Request $request, $id, Entreprise $entreprise)
     {
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
+        $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
-        if(!$isAdmin){
+        $isAllow = $isAdmin || $isCreator;
+        if(!$isAllow){
             return redirect()->route('entreprise.index');
         }
         else{
@@ -121,7 +130,10 @@ class ActiviteController extends Controller
     public function destroy(Entreprise $entreprise, $id)
     {
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
-        if(!$isAdmin){
+        $isCreator = $entreprise->idCreateur == Auth::user()->id;
+
+        $isAllow = $isAdmin || $isCreator;
+        if(!$isAllow){
             return redirect()->route('entreprise.index');
         }
         else{
