@@ -40,7 +40,7 @@
             <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
         @endif --}}
         @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
-            <a class="btn btn-primary" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
+            <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
             <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
         @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
             <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>

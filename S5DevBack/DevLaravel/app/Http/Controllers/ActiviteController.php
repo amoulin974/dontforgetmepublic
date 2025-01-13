@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Activite;
 use App\Models\Entreprise;
+use App\Models\Plage;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -143,10 +144,16 @@ class ActiviteController extends Controller
         // Cas employé
         if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
           // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
-          $data = Activite::where('entreprise_id', $entreprise->id)
-          ->plages()->wherePivot('idActivite', $id)
-          ->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
-          return response()->json($data);
+          $activite = Activite::where('id', $id)->where('idEntreprise', $entreprise->id)->first();
+
+            if ($activite) {
+                $plageIds = $activite->plages()->pluck('idPlage');
+                $data = Plage::whereIn('id', $plageIds)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+                return response()->json($data);
+            } else {
+                // Handle the case where the activite is not found
+                return response()->json(['error' => 'Activite not found'], 404);
+            }
         }
         else {
             $service = Activite::findOrFail($id);
@@ -181,6 +188,10 @@ class ActiviteController extends Controller
                      'entreprise_id' => $request->entreprise_id,
                  ]);
                }
+
+               //Auth::user()->travailler_activites()->attach($id, ['idEntreprise'=>$entreprise->id,'statut' => 'Admin']);
+
+               $event->activites()->attach($id);
                
                return response()->json($event);
               break;
@@ -196,7 +207,10 @@ class ActiviteController extends Controller
               break;
    
             case 'delete':
+                Activite::findOrFail($id)->plages()->detach($request->id);
                $event = Plage::find($request->id)->delete();
+
+               
    
                return response()->json($event);
               break;

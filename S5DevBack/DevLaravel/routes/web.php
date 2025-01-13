@@ -29,14 +29,14 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     ])->name('show');
 });
 
-Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
+/* Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/ajax', 'ajax')->name('ajax');
     });
     
-});
+}); */
 
 Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageController::class)->group(function(){
 

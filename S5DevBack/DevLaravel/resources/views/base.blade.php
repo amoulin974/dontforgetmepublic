@@ -28,7 +28,7 @@
             <li><a href="/" class="@yield('home_active')">Accueil</a></li>
             <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')">Mes Réservations</a></li>
             <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')">Mes Entreprises</a></li>
-            <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li>
+            {{-- <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li> --}}
             @guest
             @else
               <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')">Paramétrer vos plannings</a></li>

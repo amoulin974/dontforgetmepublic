@@ -68,8 +68,8 @@ class entrepriseController extends Controller
             else {
                 return view('entreprise.index', [
                     'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
-                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->pluck('idEntreprise'))
-                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Employé')->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->distinct()->pluck('idEntreprise'))
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Employé')->distinct()->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
                         ->distinct() // Supprimer les doublons (pas nécessaire)
                         ->simplePaginate(9)
                 ]);
@@ -140,7 +140,7 @@ class entrepriseController extends Controller
                 break;
   
            case 'delete':
-              $event = User::where('id',$request->idEmploye)->first()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->delete();;
+              $event = User::where('id',$request->idEmploye)->first()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->delete();
   
               return response()->json($event);
              break;

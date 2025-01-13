@@ -37,6 +37,9 @@
                                 <i class="fa fa-trash"></i> Supprimer
                             </button>
                         </form>
+                        <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
+                            <i class="fa fa-calendar"></i> Gérer les plages
+                        </a>
                     </td>
                 </tr>
                 @endforeach
