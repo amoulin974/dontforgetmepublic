@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\calendrierController;
 use App\Http\Controllers\parametrageController;
 use App\Http\Controllers\ActiviteController;
+use App\Http\Controllers\ReserverController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -82,6 +83,11 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
     //Route::get('/', 'index')->name('index');
 
     
+});
+
+Route::prefix('/reserver')->name('reserver.')->controller(ReserverController::class)->group(function(){
+
+    Route::get('/', 'index')->name('index');
 });
 
 Route::get('/', function () {

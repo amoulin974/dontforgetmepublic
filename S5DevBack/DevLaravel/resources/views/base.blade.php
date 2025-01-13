@@ -33,6 +33,7 @@
             @else
               <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')">Paramétrer vos plannings</a></li>
             @endguest
+            <li><a href="{{ route('reserver.index') }}" class="@yield('reserver_active')">Réserver</a></li>
         </ul>
     </nav>
 
@@ -185,6 +186,7 @@
 
     
 </header>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {{-- <div class="card-header">{{ __('Dashboard') }}</div>
         <div class="card-body">
             @if (session('status'))
