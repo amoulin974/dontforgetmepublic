@@ -30,6 +30,6 @@
             </tbody>
         </table>
     @endif
-    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Retour</a>
+    <a href="{{ route('reserver.index') }}" class="btn btn-primary">Retour</a>
 </div>
 @endsection
