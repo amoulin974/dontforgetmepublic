@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@include('base')
+
 @section('content')
 <div class="container">
     @if($services->isEmpty())
@@ -35,6 +37,9 @@
                                 <i class="fa fa-trash"></i> Supprimer
                             </button>
                         </form>
+                        <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
+                            <i class="fa fa-calendar"></i> Gérer les plages
+                        </a>
                     </td>
                 </tr>
                 @endforeach
@@ -47,5 +52,6 @@
             <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Ajouter un service</a>
         </div>
     @endif
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Retour</a>
 </div>
 @endsection

@@ -85,6 +85,49 @@ class parametrageController extends Controller
     }
 
     /**
+     * Méthode index pour afficher la vue principale (planification des plages)
+     *
+     * @return response()
+     */
+    public function indexPlageAsEmploye(Request $request, Entreprise $entreprise)
+    {
+      // Pour récupérer les données
+      if($request->ajax()) {
+        // Cas employé
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé') {
+          // Requête pour récupérer les plages
+          $data = Plage::where('entreprise_id', $entreprise->id)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+          return response()->json($data);
+        }
+        elseif(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {
+          // Requête pour récupérer les plages
+          $data = Plage::where('entreprise_id', $entreprise->id)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+          return response()->json($data);
+        }
+      }
+      // Vérification utilisateur travaille
+      if (!Auth::check()) {
+          return redirect()->route('login');
+      }
+      else if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->isEmpty()) {
+        return redirect()->route('parametrage.index');
+      }
+      else {
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé' || Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {
+          // Sinon on renvoie la vue admin
+          return view('plage.show', [
+              'user' => Auth::user(),
+              'entreprise' => $entreprise,
+          ]);
+        }
+        else {
+          // Sinon erreur normalement non atteint
+          return redirect()->route('parametrage.index');
+        }
+      }
+    }
+
+    /**
      * Méthode invit qui traite la réponse à une invitation
      *
      * @return response()
