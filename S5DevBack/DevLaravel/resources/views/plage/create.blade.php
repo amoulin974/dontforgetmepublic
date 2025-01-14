@@ -52,7 +52,7 @@
         <form>
             <label for="employe">Quel employé chosir ?</label>
             <select name="employe" id="employe" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->nom }}(Vous)</option>
+                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }}(Vous)</option>
                 @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
                     <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                 @endforeach
@@ -80,7 +80,7 @@
         <form>
             <label for="employeModif">Quel employé chosir ?</label>
             <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->nom }} (Vous)</option>
+                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</option>
                 @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
                     <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                 @endforeach

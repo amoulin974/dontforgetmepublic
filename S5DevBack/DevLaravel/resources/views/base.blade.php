@@ -161,13 +161,13 @@
     <div class="profileInfo">
     @guest
             @if (Route::has('login'))
-                    <i class="fa fa-sign-in"></i> 
-                    <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                    
+                    <a href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right"></i> {{ __('Login') }}</a>
             @endif
 
             @if (Route::has('register'))
-                    <i class="fa fa-user-plus"></i>
-                    <a class="nav-link" href="{{ route('register.choose.account.type') }}">{{ __('Register') }}</a>
+                    
+                    <a class="nav-link" href="{{ route('register.choose.account.type') }}"><i class="fa fa-user-plus"></i> {{ __('Register') }}</a>
             @endif
         @else
             <a class="nameProfil @yield('profile_active')" href="{{ route('profile.index') }}">
@@ -175,7 +175,7 @@
               {{ Auth::user()->nom }}
             </a>
             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fa fa-sign-out"></i>
+                <i class="bi bi-box-arrow-right"></i>
                   {{ __('Logout') }}
             </a>
 

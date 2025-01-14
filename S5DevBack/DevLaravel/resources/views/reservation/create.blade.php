@@ -2,6 +2,8 @@
 
 @include('base')
 
+<title>Réserver l'activité {{ $activite->libelle }}</title>
+
 @section('content')
 <div class="container">
     <!-- Navigation de retour -->
