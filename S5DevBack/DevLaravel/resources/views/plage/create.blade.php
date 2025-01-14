@@ -281,6 +281,8 @@ var calendar = $('#calendar').fullCalendar({
         } else {
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
+            // Rafraîchir l'affichage du calendrier
+            $('#calendar').fullCalendar('refetchEvents');
         }
     },
     eventClick: function (event) {
