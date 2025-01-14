@@ -202,6 +202,13 @@ nav ul li a:hover {
   border-radius: 3px; /* Bords arrondis des éléments */
 }
 
+.containerEntreprise .entreprise img,.containerEntreprise .entreprise a#reserver {
+  /* Centrer l'image */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Styles pour le conteneur flex */
 .res-container {
     display: flex;

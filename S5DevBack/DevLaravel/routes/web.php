@@ -51,7 +51,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
         Route::prefix('/plage')->name('plage.')->group(function(){
             Route::post('/', 'ajax')->name('ajax');
             Route::get('/{entreprise}', 'indexPlage')->name('idEntreprise');
-            Route::get('/{entreprise}/look', 'indexPlageAsEmploye')->name('idEntrepriseAsEmploye');
+            Route::get('/{entreprise}/look/{activite}', 'indexPlageAsEmploye')->name('idEntrepriseAsEmploye');
         });
 
     });
