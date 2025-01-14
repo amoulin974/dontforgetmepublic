@@ -25,15 +25,15 @@
 <header>
 <nav>
         <ul>
-            <li><a href="/" class="@yield('home_active')">Accueil</a></li>
-            <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')">Mes Réservations</a></li>
-            <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')">Mes Entreprises</a></li>
+            <li><a href="/" class="@yield('home_active')"><i class="fa fa-home"></i> Accueil</a></li>
+            <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')"><i class="fa fa-book"></i> Mes Réservations</a></li>
+            <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
             {{-- <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li> --}}
             @guest
             @else
-              <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')">Paramétrer vos plannings</a></li>
+              <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
             @endguest
-            <li><a href="{{ route('reserver.index') }}" class="@yield('reserver_active')">Réserver</a></li>
+            <li><a href="{{ route('reserver.index') }}" class="@yield('reserver_active')"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
         </ul>
     </nav>
 
@@ -161,17 +161,21 @@
     <div class="profileInfo">
     @guest
             @if (Route::has('login'))
-                    <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                    
+                    <a href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right"></i> {{ __('Login') }}</a>
             @endif
 
             @if (Route::has('register'))
-                    <a class="nav-link" href="{{ route('register.choose.account.type') }}">{{ __('Register') }}</a>
+                    
+                    <a class="nav-link" href="{{ route('register.choose.account.type') }}"><i class="fa fa-user-plus"></i> {{ __('Register') }}</a>
             @endif
         @else
-            <a class="nameProfil" href="#">{{-- href="{{ route('profil.index') }}" --}}
+            <a class="nameProfil @yield('profile_active')" href="{{ route('profile.index') }}">
+              <i class="fa fa-user"></i>
               {{ Auth::user()->nom }}
             </a>
             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-right"></i>
                   {{ __('Logout') }}
             </a>
 

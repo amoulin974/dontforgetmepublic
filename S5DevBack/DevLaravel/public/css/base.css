@@ -14,6 +14,11 @@ body {
     font-weight: bold;
 }
 
+.nameProfil.active{
+    color: #1c1b19;
+    font-weight: bold;
+}
+
 .container {
     max-width: 90vh;
     margin: 2vh auto;
@@ -411,13 +416,6 @@ nav ul li a:hover {
 
 .form-button {
     text-align: center;
-}
-
-/* Style pour afficher la valeur à côté du slider */
-#heat-value {
-    margin-left: 10px;
-    font-weight: bold;
-    color: #1dacff;
 }
 
 /* Styles pour le slider */

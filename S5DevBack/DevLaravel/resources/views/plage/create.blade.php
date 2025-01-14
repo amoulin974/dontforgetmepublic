@@ -52,7 +52,7 @@
         <form>
             <label for="employe">Quel employé chosir ?</label>
             <select name="employe" id="employe" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->nom }}(Vous)</option>
+                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }}(Vous)</option>
                 @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
                     <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                 @endforeach
@@ -80,7 +80,7 @@
         <form>
             <label for="employeModif">Quel employé chosir ?</label>
             <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->nom }} (Vous)</option>
+                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</option>
                 @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
                     <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                 @endforeach
@@ -184,7 +184,7 @@ var calendar = $('#calendar').fullCalendar({
     selectHelper: true,
     select: function (start, end, allDay) {
         // Vérifiez si l'événement est sur la même journée
-        if (selectable(start,end,allDay)) {
+        if (selectable(start,end,true)) {
             if (moment(start).isSame(end, 'day')) {
                 var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
                 var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
@@ -254,26 +254,31 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventDrop: function (event, delta) {
-        // Vérifiez si l'événement dépasse une journée
-        if (moment(event.start).isSame(event.end, 'day')) {
-            var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
-            var end = event.end ? $.fullCalendar.formatDate(event.end, "YYYY-MM-DD HH:mm:ss") : start;
-            $.ajax({
-                url: SITEURL + '/',
-                data: {
-                    datePlage: start.split(' ')[0],
-                    heureDeb: start.split(' ')[1],
-                    heureFin: end.split(' ')[1],
-                    id: event.id,
-                    type: 'update'
-                },
-                type: "POST",
-                success: function (response) {
-                    displayMessage("Évènement modifié avec succès");
-                }
-            });
+        if(selectable(event.start,event.end,event.id)){
+            // Vérifiez si l'événement dépasse une journée
+            if (moment(event.start).isSame(event.end, 'day')) {
+                var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
+                var end = event.end ? $.fullCalendar.formatDate(event.end, "YYYY-MM-DD HH:mm:ss") : start;
+                $.ajax({
+                    url: SITEURL + '/',
+                    data: {
+                        datePlage: start.split(' ')[0],
+                        heureDeb: start.split(' ')[1],
+                        heureFin: end.split(' ')[1],
+                        id: event.id,
+                        type: 'update'
+                    },
+                    type: "POST",
+                    success: function (response) {
+                        displayMessage("Évènement modifié avec succès");
+                    }
+                });
+            } else {
+                displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+                // Désélectionner après la sélection
+                $('#calendar').fullCalendar('unselect');
+            }
         } else {
-            displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
@@ -362,39 +367,45 @@ var calendar = $('#calendar').fullCalendar({
         });
     },
     eventResize: function(event, delta, revertFunc) {
-        // Vérifiez si l'événement dépasse une journée
-        if (moment(event.start).isSame(event.end, 'day')) {
-            var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
-            var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
+        if(selectable(event.start,event.end,event.id)){
+            // Vérifiez si l'événement dépasse une journée
+            if (moment(event.start).isSame(event.end, 'day')) {
+                var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
+                var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
 
-            $.ajax({
-                url: SITEURL + '/',
-                data: {
-                    datePlage: start.split(' ')[0],
-                    heureDeb: start.split(' ')[1],
-                    heureFin: end.split(' ')[1],
-                    id: event.id,
-                    type: 'update'
-                },
-                type: "POST",
-                success: function(response) {
-                    displayMessage("Évènement modifié avec succès");
-                },
-                error: function() {
-                    revertFunc(); // Revert the change if the update fails
-                    displayError("Erreur lors de la modification de l'évènement");
-                }
-            });
+                $.ajax({
+                    url: SITEURL + '/',
+                    data: {
+                        datePlage: start.split(' ')[0],
+                        heureDeb: start.split(' ')[1],
+                        heureFin: end.split(' ')[1],
+                        id: event.id,
+                        type: 'update'
+                    },
+                    type: "POST",
+                    success: function(response) {
+                        displayMessage("Évènement modifié avec succès");
+                    },
+                    error: function() {
+                        revertFunc(); // Revert the change if the update fails
+                        displayError("Erreur lors de la modification de l'évènement");
+                    }
+                });
+            } else {
+                revertFunc(); // Revert the change if the update fails
+                displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+                // Désélectionner après la sélection
+                $('#calendar').fullCalendar('unselect');
+            }
         } else {
             revertFunc(); // Revert the change if the update fails
-            displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
     },
 });
 
-function selectable(start, end, allDay) {
+function selectable(start, end, idEvent) {
     // Vérifiez si la date de début est passée
     if (moment().isAfter(start)) {
         displayWarning("Impossible de créer une plage dans le passé");
@@ -408,7 +419,7 @@ function selectable(start, end, allDay) {
     var events = $('#calendar').fullCalendar('clientEvents');
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
-        if (start.isBefore(event.end) && end.isAfter(event.start)) {
+        if (start.isBefore(event.end) && end.isAfter(event.start) && event.id != idEvent) {
             displayWarning("Impossible de créer une plage en même temps qu'une autre");
             return false;
         }
