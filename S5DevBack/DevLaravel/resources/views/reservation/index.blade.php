@@ -21,7 +21,6 @@
             <div class="res">
                 <div class="res-header" >
                     
-
                     @auth
                         @if(Auth::user()->id)
                             <h2 style="max-height: 8px;">{{ $reservation->id }}</h2>

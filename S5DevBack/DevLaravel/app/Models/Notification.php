@@ -22,7 +22,7 @@ class Notification extends Model
         'delai',
         'etat',
         'contenu',
-        /* 'reservation_id', */
+        'reservation_id',
     ];
 
     /**
@@ -33,7 +33,7 @@ class Notification extends Model
     protected $casts = [
         'delai' => 'datetime:H:i:s',
         'etat' => 'integer',
-        /* 'reservation_id' => 'integer', */
+        'reservation_id' => 'integer',
     ];
 
     // MÉTHODES
