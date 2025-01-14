@@ -74,8 +74,11 @@
                     @if($entreprise->publier)
                     <p><strong>Publié !</strong></p>
                     @endif
+                    @if($entreprise->idCreateur == Auth::user()->id && $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() == null)
+                    <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>
+                    @endif
                     @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
-                    <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button">Voir plus</a>
+                    <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button" style="display:block;margin-left:auto;margin-right:auto;">Voir plus</a>
                     @endif
                     {{-- @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
                         <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>

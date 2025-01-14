@@ -32,7 +32,7 @@
         <br/>
     </div>
     <div class="containerEntreprise">
-    @foreach (Auth::user()->travailler_entreprises as $entreprise)
+    @foreach (Auth::user()->travailler_entreprises->unique() as $entreprise)
     <div class="entreprise" id="entreprise{{$entreprise->id}}">
         <h2>{{ $entreprise->libelle }}</h2>
         <p><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
@@ -41,7 +41,7 @@
         @endif --}}
         <div style="display: inline-flex;">
         @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
-            <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}"><i class="fa fa-wrench"></i> Paramétrer les plages</a>
+            <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="margin:auto;"><i class="fa fa-wrench"></i> Paramétrer les plages</a>
             <div style="overflow: auto; max-height: 150px; margin-left:30px;">
             @foreach ($entreprise->activites as $activite)
             <div style="display: inline-flex;">

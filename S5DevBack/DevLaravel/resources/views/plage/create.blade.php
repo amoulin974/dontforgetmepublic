@@ -57,7 +57,7 @@
                     <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                 @endforeach
               </select><br><br>
-            <label for="interv">Interval de début d'activités :</label>
+            {{--<label for="interv">Interval de début d'activités :</label>
             <select name="interv" id="interv" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
                 <option value="00:10:00">10 min</option>
@@ -71,7 +71,8 @@
                 <option value="00:50:00">50 min</option>
                 <option value="00:55:00">55 min</option>
                 <option value="01:00:00">1 h</option>
-              </select>
+              </select>--}}
+            <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
@@ -85,7 +86,7 @@
                     <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                 @endforeach
               </select><br><br>
-            <label for="intervModif">Interval de débuts d'activités :</label>
+            {{--<label for="intervModif">Interval de débuts d'activités :</label>
             <select name="intervModif" id="intervModif" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
                 <option value="00:10:00">10 min</option>
@@ -99,7 +100,8 @@
                 <option value="00:50:00">50 min</option>
                 <option value="00:55:00">55 min</option>
                 <option value="01:00:00">1 h</option>
-              </select>
+              </select>--}}
+              <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
@@ -194,7 +196,7 @@ var calendar = $('#calendar').fullCalendar({
                     closeOnEscape: true,
                             open: function(event, ui) {
                                 $('.ui-widget-overlay').bind('click', function(){
-                                    $('#interv').val('00:05:00');
+                                    //$('#interv').val('00:05:00');
                                     $('#employe').val('{{ Auth::user()->id }}');
                                     $('#dialogTitre').dialog('close');
                                 });
@@ -202,15 +204,15 @@ var calendar = $('#calendar').fullCalendar({
                     buttons: {
                         "Ajouter": function() {
                             var employe = $('#employe').val();
-                            var interv = $('#interv').val();
-                            if (employe && interv) {
+                            //var interv = $('#interv').val();
+                            if (employe /* && interv */) {
                                 $.ajax({
                                     url: SITEURL + "/",
                                     data: {
                                         datePlage: start.split(' ')[0],
                                         heureDeb: start.split(' ')[1],
                                         heureFin: end.split(' ')[1],
-                                        interval: interv,
+                                        interval: '{{ $activite->duree }}',
                                         entreprise_id: {{ $entreprise->id }},
                                         employe_affecter: employe,
                                         type: 'add'
@@ -291,8 +293,8 @@ var calendar = $('#calendar').fullCalendar({
             modal: true,
             closeOnEscape: true,
                     open: function(event, ui) {
-                        $('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'évènement');
-                        $('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
+                        //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'évènement');
+                        //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
                         $('.ui-widget-overlay').bind('click', function(){
                             $('#dialogModif').dialog('close');
                         });
@@ -300,14 +302,13 @@ var calendar = $('#calendar').fullCalendar({
             buttons: {
                 "Modifier": function() {
                     var employe = $('#employeModif').val();
-                    var interv = $('#intervModif').val();
-                    console.log(eventAct);
-                    if (employe && interv) {
+                    //var interv = $('#intervModif').val();
+                    if (employe/*  && interv */) {
                         $.ajax({
                             url: SITEURL + "/",
                             data: {
                                 id: eventAct.id,
-                                interval: interv,
+                                interval: '{{ $activite->duree }}',
                                 employe_affecter: employe,
                                 type: 'modify'
                             },
