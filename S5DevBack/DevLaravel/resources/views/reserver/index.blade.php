@@ -1,15 +1,16 @@
 @extends('base')
 
-@section('title', 'Mes entreprises')
+@section('title', 'Réserver une activité')
 @section('reserver_active', 'active')
 
 @section('content')
 
     <div class="res-container">
         <!-- Barre de recherche centrée -->
-        <div class="search-bar" style="display: flex; justify-content: center; margin-bottom: 20px;">
+        <div class="search-bar" style="display: flex; justify-content: center; margin-bottom:20px;">
             <input type="text" id="search-input" placeholder="Rechercher une entreprise par libellé..." 
                    style="width: 50%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px;">
+            <i class="fa fa-search" style="display:block;margin-top:auto;margin-bottom:auto;margin-left:15px;"></i>
         </div>
     </div>
 
@@ -17,23 +18,23 @@
 
         @foreach ($entreprises as $entreprise)
         @if($entreprise->publier)
-            <div class="res entreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
+            <div class="res containerEntreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
                 <h2>{{ $entreprise->libelle }}</h2>
-                <div class="info">
-                    <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
+                <div class="entreprise">
                     <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
-                    <p><strong>Métier :</strong> {{ $entreprise->metier }}</p>
-                    <p><strong>Description :</strong> {{ $entreprise->description }}</p>
-                    <p><strong>Type :</strong> {{ $entreprise->type }}</p>
+                    {{-- <p><strong>Métier :</strong> {{ $entreprise->metier }}</p> --}}
+                    <p><strong>Description :</strong>
+                    <div style="overflow:auto; max-height:150px;">
+                    {{ $entreprise->description }}</p>
+                    </div>
                     <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                    <p><strong>Email :</strong> {{ $entreprise->email }}</p>
                     @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
                         <div class="carousel">
                             <div class="swiper-container swiper{{ $entreprise->id }}">
                                 <div class="swiper-wrapper">
                                     @foreach (json_decode($entreprise->cheminImg) as $img)
                                         <div class="swiper-slide">
-                                            <img src="{{ $img }}" alt="{{ $img }}" height="250vh" width="250vh">
+                                            <img src="{{ $img }}" alt="{{ $img }}" height="200vh" width="200vh">
                                         </div>
                                     @endforeach
                                 </div>
@@ -51,11 +52,11 @@
                             </script>
                         </div>
                     @elseif($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1)
-                        <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
+                        <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                     @else
-                        <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
+                        <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                     @endif
-                    <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}">Réserver une activité</a>
+                    <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">Réserver une activité</a>
                 </div>
             </div>
         @endif

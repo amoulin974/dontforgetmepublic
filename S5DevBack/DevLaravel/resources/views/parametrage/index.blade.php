@@ -39,16 +39,32 @@
         {{-- @if (Auth::user()->id == $entreprise->user_id) // Cas créateur
             <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
         @endif --}}
+        <div style="display: inline-flex;">
         @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
             <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}"><i class="fa fa-wrench"></i> Paramétrer les plages</a>
-            <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+            <div style="overflow: auto; max-height: 150px; margin-left:30px;">
+            @foreach ($entreprise->activites as $activite)
+            <div style="display: inline-flex;">
+                <p style="display: block;margin-top:auto;margin-bottom:auto; margin-right:10px;"><strong>Activité :</strong> {{ $activite->libelle }}</p>
+                <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+            </div>
+            @endforeach
+            </div>
         @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
-            <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+            <div style="overflow: auto; max-height: 150px; margin-left:30px;">
+            @foreach ($entreprise->activites as $activite)
+            <div style="display: inline-flex;">
+                <p style="display: block;margin-top:auto;margin-bottom:auto; margin-right:10px;"><strong>Activité :</strong> {{ $activite->libelle }}</p>
+                <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+            </div>
+            @endforeach
+            </div>
         @else
             <p ><i>Vous êtes invité dans cette entreprise :</i></p>
             <a onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
             <a onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
         @endif
+    </div>
     </div>
     @endforeach
     </div>
