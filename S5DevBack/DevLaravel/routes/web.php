@@ -9,6 +9,7 @@ use App\Http\Controllers\calendrierController;
 use App\Http\Controllers\parametrageController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
+use App\Http\Controllers\userController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -94,6 +95,13 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
 Route::prefix('/reserver')->name('reserver.')->controller(ReserverController::class)->group(function(){
 
     Route::get('/', 'index')->name('index');
+});
+
+Route::prefix('/profile')->name('profile.')->controller(userController::class)->group(function(){
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
 });
 
 Route::get('/', function () {

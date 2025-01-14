@@ -32,15 +32,36 @@ class DatabaseSeeder extends Seeder
             'superadmin' => 1,
         ]);
 
-        // Pour les tests
         User::factory()->create([
-            'nom' => 'test',
-            'prenom' => 'test',
-            'email' => 'test@test.test',
+            'nom' => 'GUIHENEUF',
+            'prenom' => 'Mattin',
+            'email' => 'mguiheneuf@iutbayonne.univ-pau.fr',
+            'numTel' => '0000000000',
+            'password' => 'mattinAdmin',
+            'typeNotif' => 'email',
+            'delaiAvantNotif' => '2000-01-01T00:30:00Z',
+            'superadmin' => 1,
+        ]);
+
+        User::factory()->create([
+            'nom' => 'VICTORAS',
+            'prenom' => 'Dylan',
+            'email' => 'dvictoras@iutbayonne.univ-pau.fr',
             'numTel' => '01234567',
-            'password' => 'testtest',
-            'typeNotif' => 'test',
-            'delaiAvantNotif' => '2000-01-01T00:00:00Z',
+            'password' => 'dylanAdmin',
+            'typeNotif' => 'email',
+            'delaiAvantNotif' => '2000-01-01T00:30:00Z',
+            'superadmin' => 1,
+        ]);
+
+        User::factory()->create([
+            'nom' => 'MOURGUE',
+            'prenom' => 'Clément',
+            'email' => 'cmourgue@iutbayonne.univ-pau.fr',
+            'numTel' => '01234567',
+            'password' => 'clementAdmin',
+            'typeNotif' => 'email',
+            'delaiAvantNotif' => '2000-01-01T01:00:00Z',
             'superadmin' => 1,
         ]);
 
