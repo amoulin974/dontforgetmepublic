@@ -52,7 +52,7 @@ class entrepriseController extends Controller
             elseif(!$isEmploye){
                 return view('entreprise.index', [
                     'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
-                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Admin')->distinct()->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
                         ->distinct() // Supprimer les doublons (pas nécessaire)
                         ->simplePaginate(9)
                 ]);
@@ -60,7 +60,7 @@ class entrepriseController extends Controller
             elseif(!$isAdmin){
                 return view('entreprise.index', [
                     'entreprises' => Entreprise::where('idCreateur', Auth::user()->id) // Récupérer les entreprises créées par l'utilisateur
-                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Employé')->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
+                        ->orWhere('id', Auth::user()->travailler_entreprises()->wherePivot('statut','Employé')->distinct()->pluck('idEntreprise')) // Récupérer les entreprises où l'utilisateur est admin
                         ->distinct() // Supprimer les doublons (pas nécessaire)
                         ->simplePaginate(9)
                 ]);

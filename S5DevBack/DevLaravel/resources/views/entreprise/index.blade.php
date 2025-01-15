@@ -7,7 +7,10 @@
 
     <div class="res-container">
         @if($entreprises->count() == 0)
-            <h1>Vous ne travaillez ou n'avez créé aucune entreprise</h1>
+        <br>
+        <br><br>
+        <br>
+            <h3>Vous ne travaillez ou n'avez créé aucune entreprise</h3>
         @else
         @foreach ($entreprises as $entreprise)
             <div class="res">
@@ -32,7 +35,7 @@
                             <div class="swiper-wrapper">
                                 @foreach (json_decode($entreprise->cheminImg) as $img)
                                     <div class="swiper-slide">
-                                        <img src="{{ $img }}" alt="{{ $img }}" height="300vh" width="300vh">
+                                        <img src="{{ $img }}" alt="{{ $img }}" height="250vh" width="250vh">
                                     </div>
                                 @endforeach
                             </div>
@@ -64,15 +67,18 @@
                         </script>
                         </div>
                         @elseif(($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1))
-                            <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="300vh" width="300vh">
+                            <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                         @else
-                                <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="300vh" width="300vh">
+                                <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                         @endif
                     @if($entreprise->publier)
                     <p><strong>Publié !</strong></p>
                     @endif
+                    @if($entreprise->idCreateur == Auth::user()->id && $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() == null)
+                    <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>
+                    @endif
                     @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
-                    <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button">Voir plus</a>
+                    <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button" style="display:block;margin-left:auto;margin-right:auto;">Voir plus</a>
                     @endif
                     {{-- @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
                         <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>

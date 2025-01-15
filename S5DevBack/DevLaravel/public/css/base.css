@@ -14,6 +14,11 @@ body {
     font-weight: bold;
 }
 
+.nameProfil.active{
+    color: #1c1b19;
+    font-weight: bold;
+}
+
 .container {
     max-width: 90vh;
     margin: 2vh auto;
@@ -195,6 +200,13 @@ nav ul li a:hover {
   background-color: #ffffff; /* Couleur de fond des éléments */
   border: 1px solid #dee2e6; /* Bordure des éléments */
   border-radius: 3px; /* Bords arrondis des éléments */
+}
+
+.containerEntreprise .entreprise img,.containerEntreprise .entreprise a#reserver {
+  /* Centrer l'image */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Styles pour le conteneur flex */
@@ -411,13 +423,6 @@ nav ul li a:hover {
 
 .form-button {
     text-align: center;
-}
-
-/* Style pour afficher la valeur à côté du slider */
-#heat-value {
-    margin-left: 10px;
-    font-weight: bold;
-    color: #1dacff;
 }
 
 /* Styles pour le slider */
