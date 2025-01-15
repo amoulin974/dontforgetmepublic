@@ -28,25 +28,11 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <button class="navbar-toggler custom-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse full-page-menu" id="navbarNav">
-            {{-- <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul> --}}
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a href="/" class="@yield('home_active') nav-link"><i class="fa fa-home"></i> Accueil</a></li>
                 <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
@@ -59,6 +45,18 @@
             </ul>
         </div>
     </nav>
+    {{-- <script>
+        $(document).ready(function() {
+            var collapse = $('#navbarNav');
+
+            collapse.on('click', function () {
+                if (collapse.hasClass('show')) {
+                    collapse.removeClass('show');
+                }
+            });
+        });
+    </script> --}}
+
   <div class="profileInfo">
     @guest
             @if (Route::has('login'))
