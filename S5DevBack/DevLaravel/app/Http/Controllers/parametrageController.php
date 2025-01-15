@@ -94,6 +94,8 @@ class parametrageController extends Controller
       // Pour récupérer les données
       if($request->ajax()) {
         if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
+          // à rajouter : récupérer les plages spécifiques à l'utilisateur
+
           // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
           $activites = Activite::where('id', $activite->id)->where('idEntreprise', $entreprise->id)->first();
 
