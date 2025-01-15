@@ -48,7 +48,7 @@
     <div id='calendar'></div>
 
     <!-- Popup Dialog -->
-    <div id="dialogTitre" title="Ajout d'un évènement" style="display:none;">
+    <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
             <label for="employe">Quel employé chosir ?</label>
             <select name="employe" id="employe" class="text ui-widget-content ui-corner-all">
@@ -77,7 +77,7 @@
     </div>
 
     <!-- Popup Dialog Modif -->
-    <div id="dialogModif" title="Ajout d'un évènement" style="display:none;">
+    <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
             <label for="employeModif">Quel employé chosir ?</label>
             <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
@@ -187,65 +187,74 @@ var calendar = $('#calendar').fullCalendar({
     select: function (start, end, allDay) {
         // Vérifiez si l'événement est sur la même journée
         if (selectable(start,end,true)) {
-            if (moment(start).isSame(end, 'day')) {
-                var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
-                var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
-                // Afficher la popup avec les inputs
-                $('#dialogTitre').dialog({
-                    modal: true,
-                    closeOnEscape: true,
-                            open: function(event, ui) {
-                                $('.ui-widget-overlay').bind('click', function(){
-                                    //$('#interv').val('00:05:00');
-                                    $('#employe').val('{{ Auth::user()->id }}');
-                                    $('#dialogTitre').dialog('close');
-                                });
-                            },
-                    buttons: {
-                        "Ajouter": function() {
-                            var employe = $('#employe').val();
-                            //var interv = $('#interv').val();
-                            if (employe /* && interv */) {
-                                $.ajax({
-                                    url: SITEURL + "/",
-                                    data: {
-                                        datePlage: start.split(' ')[0],
-                                        heureDeb: start.split(' ')[1],
-                                        heureFin: end.split(' ')[1],
-                                        interval: '{{ $activite->duree }}',
-                                        entreprise_id: {{ $entreprise->id }},
-                                        employe_affecter: employe,
-                                        type: 'add'
-                                    },
-                                    type: "POST",
-                                    success: function (data) {
+            // Vérifiez que l'événement fait au moins la durée d'une activité
+            let diffTime = (moment(end).diff(moment(start), 'hours').toString().length == 1 ? "0" + moment(end).diff(moment(start), 'hours') : moment(end).diff(moment(start), 'hours')) + ":" + ((moment(end).diff(moment(start), 'minutes')%60).toString().length == 1 ? "0" + (moment(end).diff(moment(start), 'minutes')%60) : moment(end).diff(moment(start), 'minutes')%60) + ":00";
+            if (diffTime >= '{{ $activite->duree }}') {
+                // Vérifiez si l'événement dépasse une journée
+                if (moment(start).isSame(end, 'day')) {
+                    var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
+                    var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
+                    // Afficher la popup avec les inputs
+                    $('#dialogTitre').dialog({
+                        modal: true,
+                        closeOnEscape: true,
+                                open: function(event, ui) {
+                                    $('.ui-widget-overlay').bind('click', function(){
+                                        //$('#interv').val('00:05:00');
+                                        $('#employe').val('{{ Auth::user()->id }}');
                                         $('#dialogTitre').dialog('close');
-                                        displaySuccess("Évènement ajouté avec succès");
+                                    });
+                                },
+                        buttons: {
+                            "Ajouter": function() {
+                                var employe = $('#employe').val();
+                                //var interv = $('#interv').val();
+                                if (employe /* && interv */) {
+                                    $.ajax({
+                                        url: SITEURL + "/",
+                                        data: {
+                                            datePlage: start.split(' ')[0],
+                                            heureDeb: start.split(' ')[1],
+                                            heureFin: end.split(' ')[1],
+                                            interval: '{{ $activite->duree }}',
+                                            entreprise_id: {{ $entreprise->id }},
+                                            employe_affecter: employe,
+                                            type: 'add'
+                                        },
+                                        type: "POST",
+                                        success: function (data) {
+                                            $('#dialogTitre').dialog('close');
+                                            displaySuccess("Évènement ajouté avec succès");
 
-                                        // Désélectionner après la sélection
-                                        $('#calendar').fullCalendar('unselect');
+                                            // Désélectionner après la sélection
+                                            $('#calendar').fullCalendar('unselect');
 
-                                        // Rafraîchir l'affichage du calendrier
-                                        $('#calendar').fullCalendar('refetchEvents');
-                                    },
-                                    error: function() {
-                                        displayError("Erreur lors de l'ajout de l'évènement. Réssayez...");
-                                    }
-                                });
+                                            // Rafraîchir l'affichage du calendrier
+                                            $('#calendar').fullCalendar('refetchEvents');
+                                        },
+                                        error: function() {
+                                            displayError("Erreur lors de l'ajout de l'évènement. Réssayez...");
+                                        }
+                                    });
+                                }
+                                else {
+                                    displayWarning("Informations manquantes");
+                                }
+                                //$(this).dialog("close");
+                            },
+                            "Annuler": function() {
+                                $('#interv').val('00:05:00');
+                                $(this).dialog("close");
                             }
-                            else {
-                                displayWarning("Informations manquantes");
-                            }
-                            //$(this).dialog("close");
-                        },
-                        "Annuler": function() {
-                            $('#interv').val('00:05:00');
-                            $(this).dialog("close");
                         }
-                    }
-                });
+                    });
+                } else {
+                    displayError("Impossible de créer une plage sur plusieurs jours");
+                    // Désélectionner après la sélection
+                    $('#calendar').fullCalendar('unselect');
+                }
             } else {
-                displayError("Impossible de créer un évènement sur plusieurs jours");
+                displayWarning("Impossible de créer une plage de moins de {{ $activite->duree }} minutes");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -371,32 +380,41 @@ var calendar = $('#calendar').fullCalendar({
     },
     eventResize: function(event, delta, revertFunc) {
         if(selectable(event.start,event.end,event.id)){
-            // Vérifiez si l'événement dépasse une journée
-            if (moment(event.start).isSame(event.end, 'day')) {
-                var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
-                var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
+            // Vérifiez que l'événement fait au moins la durée d'une activité
+            let diffTime = (moment(event.end).diff(moment(event.start), 'hours').toString().length == 1 ? "0" + moment(event.end).diff(moment(event.start), 'hours') : moment(event.end).diff(moment(event.start), 'hours')) + ":" + ((moment(event.end).diff(moment(event.start), 'minutes')%60).toString().length == 1 ? "0" + (moment(event.end).diff(moment(event.start), 'minutes')%60) : moment(event.end).diff(moment(event.start), 'minutes')%60) + ":00";
+            if (diffTime >= '{{ $activite->duree }}') {
+                // Vérifiez si l'événement dépasse une journée
+                if (moment(event.start).isSame(event.end, 'day')) {
+                    var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
+                    var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
 
-                $.ajax({
-                    url: SITEURL + '/',
-                    data: {
-                        datePlage: start.split(' ')[0],
-                        heureDeb: start.split(' ')[1],
-                        heureFin: end.split(' ')[1],
-                        id: event.id,
-                        type: 'update'
-                    },
-                    type: "POST",
-                    success: function(response) {
-                        displayMessage("Évènement modifié avec succès");
-                    },
-                    error: function() {
-                        revertFunc(); // Revert the change if the update fails
-                        displayError("Erreur lors de la modification de l'évènement");
-                    }
-                });
+                    $.ajax({
+                        url: SITEURL + '/',
+                        data: {
+                            datePlage: start.split(' ')[0],
+                            heureDeb: start.split(' ')[1],
+                            heureFin: end.split(' ')[1],
+                            id: event.id,
+                            type: 'update'
+                        },
+                        type: "POST",
+                        success: function(response) {
+                            displayMessage("Évènement modifié avec succès");
+                        },
+                        error: function() {
+                            revertFunc(); // Revert the change if the update fails
+                            displayError("Erreur lors de la modification de l'évènement");
+                        }
+                    });
+                } else {
+                    revertFunc(); // Revert the change if the update fails
+                    displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+                    // Désélectionner après la sélection
+                    $('#calendar').fullCalendar('unselect');
+                }
             } else {
                 revertFunc(); // Revert the change if the update fails
-                displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+                displayWarning("Impossible de modifier une plage pour qu'elle ait un interval de moins de {{ $activite->duree }} minutes");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }

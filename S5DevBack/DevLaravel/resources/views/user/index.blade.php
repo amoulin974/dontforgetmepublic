@@ -20,8 +20,8 @@
         @if ($utilisateur->superadmin)
             <h4><strong>Superadmin</strong></h4>
         @endif
-        <a class="btn btn-primary" href="{{ route('register.company.register.company') }}" style="margin:auto;"><i class="fa fa-plus"></i> Créer une entreprise</a>
     </div>
+    <a class="btn btn-primary" href="{{ route('register.company.register.company') }}" style="margin:auto;"><i class="fa fa-plus"></i> Créer une entreprise</a>
     </div>
 <div>
 
