@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
 
         Notification::factory()->create([
             'categorie' => 'UneCatNotif',
-            'delai' => fake()->time('H:i:s'),
+            'delai' => fake()->randomElement([24, 48, 168]),
             'etat' => 0,
             'contenu' => 'UnContenuTest',
             'reservation_id' => 1,
