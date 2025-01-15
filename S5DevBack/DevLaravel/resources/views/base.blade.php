@@ -22,21 +22,43 @@
 
     <!-- Pour les icones -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <header>
-  <nav>
-    <ul>
-        <li><a href="/" class="@yield('home_active')"><i class="fa fa-home"></i> Accueil</a></li>
-        <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')"><i class="fa fa-book"></i> Mes Réservations</a></li>
-        <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
-        @guest
-        @else
-          <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
-        @endguest
-        <li><a href="{{ route('reserver.index') }}" class="@yield('reserver_active')"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
-    </ul>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse full-page-menu" id="navbarNav">
+            {{-- <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul> --}}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a href="/" class="@yield('home_active') nav-link"><i class="fa fa-home"></i> Accueil</a></li>
+                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
+                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
+                @guest
+                @else
+                  <li class="nav-item"><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active') nav-link"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
+                @endguest
+                <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
+            </ul>
+        </div>
+    </nav>
   <div class="profileInfo">
     @guest
             @if (Route::has('login'))
