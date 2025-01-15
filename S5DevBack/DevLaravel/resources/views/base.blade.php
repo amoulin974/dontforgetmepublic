@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -25,142 +25,19 @@
 </head>
 <body>
 <header>
-<nav>
-        <ul>
-            <li><a href="/" class="@yield('home_active')"><i class="fa fa-home"></i> Accueil</a></li>
-            <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')"><i class="fa fa-book"></i> Mes Réservations</a></li>
-            <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
-            {{-- <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li> --}}
-            @guest
-            @else
-              <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
-            @endguest
-            <li><a href="{{ route('reserver.index') }}" class="@yield('reserver_active')"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
-        </ul>
-    </nav>
-
-    {{-- <div class="burger-menu">
-        <button class="hamburger hamburger--collapse" type="button">
-            <span class="hamburger-box">
-                <span class="hamburger-inner"></span>
-            </span>
-        </button>
-        <nav class="menu">
-            <ul>
-                <li><a href="/" class="@yield('home_active')">Accueil</a></li>
-                <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')">Réservations</a></li>
-                <li><a href="{{ route('entreprise.index') }}" class="@yield('entreprises_active')">Entreprises</a></li>
-                <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li>
-            </ul>
-        </nav>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var burger = document.querySelector('.hamburger');
-            var menu = document.querySelector('.menu');
-
-            burger.addEventListener('click', function() {
-                burger.classList.toggle('is-active');
-                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-            });
-        });
-    </script> -->
-
-    <!-- <div class="wrapper">
-      <div class="item menu">
-        <div class="linee linee1"></div>
-        <div class="linee linee2"></div>
-        <div class="linee linee3"></div>
-      </div>
-      <div class="item gallery">
-        <div class="dot dot1"></div>
-        <div class="dot dot2"></div>
-        <div class="dot dot3"></div>
-        <div class="dot dot4"></div>
-        <div class="dot dot5"></div>
-        <div class="dot dot6"></div>
-      </div>
-      <button class="item add">
-        <div class="circle">
-          <div class="close">
-          <div class="line line1"></div>
-          <div class="line line2"></div>
-        </div>
-        </div>
-        <input type="search" placeholder="search" class="search" />
-        
-      </button>
-
-      <div class="nav-items items1">
-        <i class="fas fa-home"></i>
-      </div>
-      <div class="nav-items items2">
-        <i class="fas fa-camera"></i>
-      </div>
-      <div class="nav-items items3">
-        <i class="fas fa-folder"></i>
-      </div>
-      <div class="nav-items items4">
-        <i class="fas fa-heart"></i>
-      </div>
-      <div class="box">
-        <div class="box-line box-line1"></div>
-        <div class="box-line box-line2"></div>
-        <div class="box-line box-line3"></div>
-        <div class="box-line box-line4"></div>
-      </div>
-    </div>
-
-    <div class="effect"></div>
-
-    <script>
-    document.querySelector(".circle").addEventListener("click", () => {
-        for (let i = 0; i <= 3; i++) {
-          document
-            .getElementsByClassName("nav-items")
-            [i].classList.remove("show-menu");
-          document
-            .getElementsByClassName("box-line")
-            [i].classList.remove("box-line-show");
-        }
-        document.querySelector(".box").classList.remove("box-show");
-        document.querySelector(".add").classList.toggle("go");
-        document.querySelector(".search").classList.toggle("search-focus");
-        document.querySelector(".search").focus();
-        document.querySelector(".circle").classList.toggle("color");
-        document.querySelector(".line1").classList.toggle("move");
-        document.querySelector(".line2").classList.toggle("mov");
-        document.querySelector(".effect").classList.toggle("big");
-      });
-      /* menu */
-      document.querySelector(".menu").addEventListener("click", () => {
-        for (let i = 0; i <= 3; i++) {
-          document.querySelector(".box").classList.remove("box-show");
-          document
-            .getElementsByClassName("nav-items")
-            [i].classList.toggle("show-menu");
-          document
-            .getElementsByClassName("box-line")
-            [i].classList.remove("box-line-show");
-        }
-      });
-      /* box */
-      document.querySelector(".gallery").addEventListener("click", () => {
-        document.querySelector(".box").classList.toggle("box-show");
-        for (let i = 0; i <= 3; i++) {
-          document
-            .getElementsByClassName("box-line")
-            [i].classList.toggle("box-line-show");
-          document
-            .getElementsByClassName("nav-items")
-            [i].classList.remove("show-menu");
-        }
-      });
-    </script> --}}
-
-
-    <div class="profileInfo">
+  <nav>
+    <ul>
+        <li><a href="/" class="@yield('home_active')"><i class="fa fa-home"></i> Accueil</a></li>
+        <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')"><i class="fa fa-book"></i> Mes Réservations</a></li>
+        <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
+        @guest
+        @else
+          <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
+        @endguest
+        <li><a href="{{ route('reserver.index') }}" class="@yield('reserver_active')"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
+    </ul>
+  </nav>
+  <div class="profileInfo">
     @guest
             @if (Route::has('login'))
                     
@@ -185,24 +62,14 @@
               @csrf
             </form>
       @endguest
-      <a href="{{ route('home') }}" class="logo">
-        <img src="{{ asset('favicon.ico') }}" alt="Logo">
-      </a>
-      </div>
+    <a href="{{ route('home') }}" class="logo">
+      <img src="{{ asset('favicon.ico') }}" alt="Logo">
+    </a>
+  </div>
 
     
 </header>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-{{-- <div class="card-header">{{ __('Dashboard') }}</div>
-        <div class="card-body">
-            @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
-
-            {{ __('You are logged in!') }}
-        </div> --}}
 
 <script>
 function displaySuccess(message) {
@@ -268,3 +135,216 @@ function displayErrorWithButton(message) {
 
 </body>
 </html>
+ --}}
+
+ <!DOCTYPE html>
+ <html lang="fr">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>@yield('title')</title>
+     
+     <!-- Feuilles de style, scripts, etc. -->
+     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.1.3/hamburgers.min.css">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ 
+     <!-- Swiper, Bootstrap… -->
+     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+ </head>
+ <body>
+ 
+ <header>
+     <!-- Bouton hamburger (mobile) -->
+     <button class="hamburger hamburger--spin" type="button" id="menuToggle">
+         <span class="hamburger-box">
+             <span class="hamburger-inner"></span>
+         </span>
+     </button>
+ 
+     <!-- Logo -->
+     <a href="{{ route('home') }}" class="logo">
+         <img src="{{ asset('favicon.ico') }}" alt="Logo">
+     </a>
+ 
+     <!-- Menu Desktop -->
+     <nav class="menu-desktop">
+         <ul>
+             <li>
+                 <a href="/" class="@yield('home_active')">
+                     <i class="fa fa-home"></i> Accueil
+                 </a>
+             </li>
+             <li>
+                 <a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')">
+                     <i class="fa fa-book"></i> Mes Réservations
+                 </a>
+             </li>
+             <li>
+                 <a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')">
+                     <i class="fa fa-industry"></i> Mes Entreprises
+                 </a>
+             </li>
+             @guest
+             @else
+                 <li>
+                     <a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')">
+                         <i class="fa fa-calendar"></i> Paramétrer vos plannings
+                     </a>
+                 </li>
+             @endguest
+             <li>
+                 <a href="{{ route('reserver.index') }}" class="@yield('reserver_active')">
+                     <i class="fa fa-calendar-plus"></i> Réserver
+                 </a>
+             </li>
+         </ul>
+     </nav>
+ 
+     <!-- Profil (auth) -->
+     <div class="profileInfo">
+         @guest
+             @if (Route::has('login'))
+                 <a href="{{ route('login') }}">
+                     <i class="bi bi-box-arrow-in-right"></i> {{ __('Login') }}
+                 </a>
+             @endif
+ 
+             @if (Route::has('register'))
+                 <a href="{{ route('register.choose.account.type') }}">
+                     <i class="fa fa-user-plus"></i> {{ __('Register') }}
+                 </a>
+             @endif
+         @else
+             <a class="nameProfil @yield('profile_active')" href="{{ route('profile.index') }}">
+                 <i class="fa fa-user"></i>
+                 {{ Auth::user()->nom }}
+             </a>
+             <a href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                 <i class="bi bi-box-arrow-right"></i>
+                 {{ __('Logout') }}
+             </a>
+             <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                 @csrf
+             </form>
+         @endguest
+     </div>
+ 
+     <!-- Menu latéral (mobile) -->
+     <nav id="mobileMenu">
+         <ul>
+             <li>
+                 <a href="/" class="@yield('home_active')">
+                     <i class="fa fa-home"></i> Accueil
+                 </a>
+             </li>
+             <li>
+                 <a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')">
+                     <i class="fa fa-book"></i> Mes Réservations
+                 </a>
+             </li>
+             <li>
+                 <a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')">
+                     <i class="fa fa-industry"></i> Mes Entreprises
+                 </a>
+             </li>
+             @guest
+             @else
+                 <li>
+                     <a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')">
+                         <i class="fa fa-calendar"></i> Paramétrer vos plannings
+                     </a>
+                 </li>
+             @endguest
+             <li>
+                 <a href="{{ route('reserver.index') }}" class="@yield('reserver_active')">
+                     <i class="fa fa-calendar-plus"></i> Réserver
+                 </a>
+             </li>
+         </ul>
+     </nav>
+ </header>
+ 
+ <!-- Contenu dynamique -->
+ <main>
+     @yield('content')
+ </main>
+ 
+ <!-- Scripts -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ 
+ <script>
+     // Gestion hamburger + menu latéral
+     const menuToggle = document.getElementById('menuToggle');
+     const mobileMenu = document.getElementById('mobileMenu');
+ 
+     menuToggle.addEventListener('click', () => {
+         mobileMenu.classList.toggle('open');
+         menuToggle.classList.toggle('is-active');
+     });
+ </script>
+ 
+ <!-- Toastr messages -->
+ <script>
+ function displaySuccess(message) {
+     toastr.options = {
+         closeButton: true,
+         newestOnTop: true,
+         progressBar: true
+     }
+     toastr.success(message, 'Succès !');
+ }
+ function displayError(message) {
+     toastr.options = {
+         closeButton: true,
+         newestOnTop: true,
+         progressBar: true
+     }
+     toastr.error(message, 'Erreur !');
+ }
+ function displayMessage(message) {
+     toastr.options = {
+         closeButton: true,
+         newestOnTop: true,
+         progressBar: true
+     }
+     toastr.info(message, 'Information :');
+ }
+ function displayWarning(message) {
+     toastr.options = {
+         closeButton: true,
+         newestOnTop: true,
+         progressBar: true
+     }
+     toastr.warning(message, 'Attention...');
+ }
+ function displayErrorWithButton(message) {
+     toastr.options = {
+         closeButton: true,
+         newestOnTop: true,
+         progressBar: true
+     }
+     toastr.error(message, 'Erreur !', {
+         timeOut: 0,
+         extendedTimeOut: 0
+     });
+ }
+ 
+ @if (session('success'))
+     toastr.success("{{ session('success') }}");
+ @elseif (session('error'))
+     toastr.error("{{ session('error') }}");
+ @endif
+ </script>
+ 
+ </body>
+ </html>
+ 
