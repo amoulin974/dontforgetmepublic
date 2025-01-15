@@ -26,38 +26,10 @@
                     <li class="mb-4">
                         <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
                         <div class="d-flex flex-wrap gap-2">
-                            {{-- @foreach ($plages as $plage)
-                                @php
-                                    try {
-                                        $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                        $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                        // $interval = intval(explode(':', $plage->interval)[1]); // Convertit en minutes
-                                        $interval = \Carbon\Carbon::parse($plage->interval)->minute;
-                                    } catch (\Exception $e) {
-                                        displayWarning('Erreur de formatage des plages horaires.');
-                                        continue;
-                                    }
-                                @endphp
-                                @while ($heureDeb->lessThan($heureFin))
-                                    <button 
-                                        class="btn btn-outline-primary flex-grow-1 horaire-btn" 
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#reservationModal"
-                                        data-horaire="{{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}"
-                                        data-date="{{ $date }}"
-                                    >
-                                        {{ $heureDeb->format('H:i') }} - {{ $heureDeb->copy()->addMinutes($interval)->format('H:i') }}
-                                    </button>
-                                    @php
-                                        $heureDeb->addMinutes($interval);
-                                    @endphp
-                                @endwhile
-                            @endforeach --}}
                             @foreach ($plages as $plage)
                                 @php
                                     try {
                                         $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                        //dd($heureDeb);
                                         $heureFin = \Carbon\Carbon::parse($plage->heureFin);
                                         $interval = \Carbon\Carbon::parse($plage->interval)->minute;
                                     } catch (\Exception $e) {
@@ -112,7 +84,7 @@
                                             data-bs-toggle="modal"
                                             data-bs-target="#reservationModal"
                                             data-horaire="{{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}"
-                                            data-date="{{ $date }}"
+                                            data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}"
                                         >
                                             {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}
                                         </button>

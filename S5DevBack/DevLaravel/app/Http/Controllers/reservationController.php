@@ -112,9 +112,9 @@ class reservationController extends Controller
                 'categorie' => $notificationData['typeNotification'], // Type : SMS ou Mail
                 'contenu' => $notificationData['contenu'], // Email ou numéro de téléphone
                 'delai' => match ($notificationData['duree']) { // Calcul du délai de rappel
-                    '1jour' => now()->addDay(),
-                    '2jours' => now()->addDays(2),
-                    '1semaine' => now()->addWeek(),
+                    '1jour' => 24,
+                    '2jours' => 48,
+                    '1semaine' => 168,
                 },
                 'etat' => 0, // Non envoyé par défaut
                 'reservation_id' => $reservation->id
