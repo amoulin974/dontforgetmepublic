@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Entreprise;
+use Illuminate\Contracts\Pagination\Paginator;
 
 class HomeController extends Controller
 {
@@ -11,10 +13,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    /* public function __construct()
     {
         $this->middleware('auth');
-    }
+    } // En commentaire car sinon nécessite d'être authentifié pour être utilisé */
 
     /**
      * Show the application dashboard.
@@ -23,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        $entreprises = Entreprise::where('publier', true)->paginate(9);
+        return view('welcome', compact('entreprises'));
     }
 }
