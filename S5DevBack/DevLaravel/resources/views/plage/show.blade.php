@@ -44,7 +44,7 @@
   
 <div class="containerCalendar">
     <h2>Calendrier des plages de {{ $entreprise->libelle }}</h2>
-    <h3>{{ Auth::user()->nom }} {{ Auth::user()->prneom }} pour l'activité <i>{{ $activite->libelle }}</i></h3>
+    <h3>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} pour l'activité <i>{{ $activite->libelle }}</i></h3>
     <div id='calendar'></div>
 
     <!-- Popup Dialog Suppression -->
@@ -138,6 +138,7 @@ var calendar = $('#calendar').fullCalendar({
                         url: SITEURL + '/',
                         data: {
                                 id: eventAct.id,
+                                id_activite: {{ $activite->id }},
                                 type: 'delete'
                         },
                         success: function (response) {

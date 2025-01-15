@@ -14,6 +14,10 @@ body {
   font-weight: bold;
 }
 
+.nav-link.active {
+  font-weight: bold;
+}
+
 .nameProfil.active{
   color: #1c1b19;
   font-weight: bold;
@@ -958,4 +962,75 @@ opacity: 0.5;
 .swiper-pagination-bullet-active {
 opacity: 1;
 background: #007aff; /* Couleur des puces actives */
+}
+
+.navbar {
+  background-color: #1167FC;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+/* Styles par défaut pour le menu */
+.full-page-menu {
+  display: none;
+}
+
+/* Styles pour les écrans de moins de 768px */
+@media (max-width: 992px) {
+  .navbar-collapse {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #1167FC;
+      color: white;
+      z-index: 1050;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+  }
+
+  .navbar-collapse.show {
+      opacity: 1;
+      visibility: visible;
+  }
+
+  .navbar-nav {
+      flex-direction: column;
+  }
+
+  .nav-item {
+      margin: 10px 0;
+  }
+
+  .nav-link {
+      font-size: 24px;
+      color: white;
+  }
+}
+
+.navbar-toggler {
+  border-color: white !important; /* Change the border color */
+  color: white !important; /* Change the color */
+  z-index: 1100 !important; /* Change the z-index */
+}
+
+.navbar-toggler-icon {
+  color: white !important; /* Change the background color */
+}
+
+.navbar-toggler.custom-toggler.collapsed .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Change the icon color */
+}
+
+/* Styles for the cross icon */
+.navbar-toggler.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M6 6l18 18M6 24L24 6'/%3E%3C/svg%3E"); /* Cross icon */
 }

@@ -17,7 +17,7 @@
     <div class="res-container">
 
         @foreach ($entreprises as $entreprise)
-        @if($entreprise->publier)
+        @if($entreprise->publier && $entreprise->activites->count() > 0)
             <div class="res containerEntreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
                 <h2>{{ $entreprise->libelle }}</h2>
                 <div class="entreprise">

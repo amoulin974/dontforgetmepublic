@@ -94,6 +94,8 @@ class parametrageController extends Controller
       // Pour récupérer les données
       if($request->ajax()) {
         if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
+          // à rajouter : récupérer les plages spécifiques à l'utilisateur
+
           // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
           $activites = Activite::where('id', $activite->id)->where('idEntreprise', $entreprise->id)->first();
 
@@ -215,6 +217,8 @@ class parametrageController extends Controller
                     'entreprise_id' => $request->entreprise_id,
                 ]);
               }
+
+              //$event->activites()->attach($idActivites);
               
               return response()->json($event);
              break;
@@ -230,7 +234,12 @@ class parametrageController extends Controller
              break;
   
            case 'delete':
-              $event = Plage::find($request->id)->delete();
+
+              $event = Plage::findOrFail($request->id)->first();
+
+              $event->activites()->detach($request->id_activite);
+
+              $event = $event->delete();
   
               return response()->json($event);
              break;
