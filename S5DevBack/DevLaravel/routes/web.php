@@ -104,9 +104,7 @@ Route::prefix('/profile')->name('profile.')->controller(userController::class)->
     });
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 
 Auth::routes();
 
