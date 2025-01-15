@@ -23,12 +23,19 @@ class notificationController extends Controller
                 'reservations.dateRdv AS dateRendezVous',
                 'reservations.heureDeb AS heureRendezVous',
 
-                DB::raw('(SELECT n.categorie
+                DB::raw('(SELECT n.id
                   FROM notifications n
                   WHERE n.reservation_id = reservations.id
                   ORDER BY n.id ASC
                   LIMIT 1
         ) AS notifId'),
+
+                DB::raw('(SELECT n.categorie
+                  FROM notifications n
+                  WHERE n.reservation_id = reservations.id
+                  ORDER BY n.id ASC
+                  LIMIT 1
+        ) AS notifCategorie'),
 
                 DB::raw('(SELECT n.etat
                   FROM notifications n
