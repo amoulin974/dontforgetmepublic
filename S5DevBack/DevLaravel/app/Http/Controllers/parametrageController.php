@@ -215,6 +215,8 @@ class parametrageController extends Controller
                     'entreprise_id' => $request->entreprise_id,
                 ]);
               }
+
+              //$event->activites()->attach($idActivites);
               
               return response()->json($event);
              break;
@@ -230,7 +232,12 @@ class parametrageController extends Controller
              break;
   
            case 'delete':
-              $event = Plage::find($request->id)->delete();
+
+              $event = Plage::findOrFail($request->id)->first();
+
+              $event->activites()->detach($request->id_activite);
+
+              $event = $event->delete();
   
               return response()->json($event);
              break;
