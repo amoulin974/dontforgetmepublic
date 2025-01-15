@@ -9,9 +9,9 @@
         @method('PUT')
 
         <div class="form-group mb-3">
-            <label for="nom">Libellé du service</label>
-            <input type="text" name="libelle" id="libelle" class="form-control @error('nom') is-invalid @enderror" value="{{ old('libelle', $service->libelle) }}" required>
-            @error('nom')
+            <label for="libelle">Libellé du service</label>
+            <input type="text" name="libelle" id="libelle" class="form-control @error('libelle') is-invalid @enderror" value="{{ old('libelle', $service->libelle) }}" required>
+            @error('libelle')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
