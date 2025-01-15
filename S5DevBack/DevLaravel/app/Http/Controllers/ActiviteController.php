@@ -98,7 +98,7 @@ class ActiviteController extends Controller
         }
     }
 
-    public function update(Request $request, $id, Entreprise $entreprise)
+    public function update(Request $request, Entreprise $entreprise, $id)
     {
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
         $isCreator = $entreprise->idCreateur == Auth::user()->id;
@@ -109,7 +109,7 @@ class ActiviteController extends Controller
         }
         else{
             $request->validate([
-                'nom' => 'required|string|max:255',
+                'libelle' => 'required|string|max:255',
                 'duree' => 'required|integer|min:1', // Durée en minutes
             ]);
     
@@ -117,9 +117,10 @@ class ActiviteController extends Controller
     
             // Convertir la durée (minutes) en format H:i:s
             $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
+            //dd($dureeInTimeFormat);
     
             $service->update([
-                'libelle' => $request->nom,
+                'libelle' => $request->libelle,
                 'duree' => $dureeInTimeFormat,
             ]);
     
