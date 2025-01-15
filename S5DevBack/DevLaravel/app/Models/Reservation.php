@@ -32,8 +32,10 @@ class Reservation extends Model
      */
     protected $casts = [
         'dateRdv' => 'datetime',
-        'heureDeb' => 'datetime:H:i:s',
-        'heureFin' => 'datetime:H:i:s',
+        /*'heureDeb' => 'datetime:H:i:s',
+        'heureFin' => 'datetime:H:i:s',*/
+        'heureDeb' => 'string',
+        'heureFin' => 'string',
         'nbPersonnes' => 'integer',
     ];
 

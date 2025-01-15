@@ -3,6 +3,9 @@
 @include('base')
 
 @section('content')
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <div class="container">
     <!-- Navigation de retour -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -23,12 +26,13 @@
                     <li class="mb-4">
                         <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
                         <div class="d-flex flex-wrap gap-2">
-                            @foreach ($plages as $plage)
+                            {{-- @foreach ($plages as $plage)
                                 @php
                                     try {
                                         $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
                                         $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                        $interval = intval(explode(':', $plage->interval)[1]); // Convertit en minutes
+                                        // $interval = intval(explode(':', $plage->interval)[1]); // Convertit en minutes
+                                        $interval = \Carbon\Carbon::parse($plage->interval)->minute;
                                     } catch (\Exception $e) {
                                         displayWarning('Erreur de formatage des plages horaires.');
                                         continue;
@@ -48,7 +52,81 @@
                                         $heureDeb->addMinutes($interval);
                                     @endphp
                                 @endwhile
+                            @endforeach --}}
+                            @foreach ($plages as $plage)
+                                @php
+                                    try {
+                                        $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
+                                        //dd($heureDeb);
+                                        $heureFin = \Carbon\Carbon::parse($plage->heureFin);
+                                        $interval = \Carbon\Carbon::parse($plage->interval)->minute;
+                                    } catch (\Exception $e) {
+                                        displayWarning('Erreur de formatage des plages horaires.');
+                                        continue;
+                                    }
+                                @endphp
+
+                                @while ($heureDeb->lessThan($heureFin))
+                                    @php
+                                        // On calcule les bornes de l’intervalle courant
+                                        // $currentEnd   = $heureDeb->copy()->addMinutes($interval);
+                                        /*$currentStart = \Carbon\Carbon::createFromFormat(
+                                            'Y-m-d H:i:s',
+                                            $plage->datePlage->format('Y-m-d') . ' ' . $plage->heureDeb
+                                        );
+                                        dd($currentStart);*/
+                                        $currentStart = $plage->datePlage->copy()->setTimeFromTimeString($heureDeb->format('H:i:s'));
+                                        //dd($currentStart);
+                                        $currentEnd = $currentStart->copy()->addMinutes($interval);
+
+                                        // On va déterminer si ce créneau est déjà réservé
+                                        $isReserved = $reservations->contains(function($res) use ($date, $currentStart, $currentEnd) {
+                                            // 1. Vérifier la date
+                                            //    Attention à bien comparer des chaînes identiques
+                                            //dd($res->dateRdv->format('Y-m-d 00:00:00'));
+                                            //dd($date);
+                                            if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
+                                                return false;
+                                            }
+
+                                            // 2. Vérifier le chevauchement d’horaire
+                                            //    On parse l’heureDeb/heureFin de la réservation
+                                            $resStart = \Carbon\Carbon::createFromFormat(
+                                                'Y-m-d H:i:s',
+                                                $res->dateRdv->format('Y-m-d').' '.$res->heureDeb
+                                            );
+                                            $resEnd = \Carbon\Carbon::createFromFormat(
+                                                'Y-m-d H:i:s',
+                                                $res->dateRdv->format('Y-m-d').' '.$res->heureFin
+                                            );
+
+                                            // Condition de chevauchement : (start < resEnd) ET (end > resStart)
+                                            return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
+                                        });
+                                    @endphp
+
+                                    @if (! $isReserved)
+                                        {{-- Si pas réservé, on affiche le bouton --}}
+                                        <button 
+                                            class="btn btn-outline-primary flex-grow-1 horaire-btn" 
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#reservationModal"
+                                            data-horaire="{{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}"
+                                            data-date="{{ $date }}"
+                                        >
+                                            {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}
+                                        </button>
+                                    @endif
+
+                                    {{-- On passe à l’intervalle suivant --}}
+                                    @php
+                                        $heureDeb->addMinutes($interval);
+                                        //dd($heureDeb); 
+                                    @endphp
+                                @endwhile
                             @endforeach
+
+
                         </div>
                     </li>
                 @endforeach
@@ -74,6 +152,7 @@
                         <p>
                             Vous êtes sur le point de réserver pour la plage horaire suivante :
                             <strong id="selectedHoraire" class="text-success"></strong>
+                            le <strong id="selectedDate" class="text-primary"></strong>.
                         </p>
 
                         <!-- Champs cachés pour la date et l'horaire -->
@@ -81,21 +160,22 @@
                         <input type="hidden" name="horaire" id="hiddenHoraire">
 
                         <!-- Nombre de personnes -->
-                        <div class="form-group mb-3">
-                            <label for="nbPersonnes" class="form-label">
-                                <i class="bi bi-people-fill"></i> Nombre de personnes :
-                            </label>
-                            <input 
-                                type="number" 
-                                name="nbPersonnes" 
-                                id="nbPersonnes" 
-                                class="form-control" 
-                                placeholder="Entrez le nombre de personnes" 
-                                min="1" 
-                                required
-                            >
-                        </div>
-
+                        @if ($entreprise->typeRdv[0] == 1)
+                            <div class="form-group mb-3">
+                                <label for="nbPersonnes" class="form-label">
+                                    <i class="bi bi-people-fill"></i> Nombre de personnes :
+                                </label>
+                                <input 
+                                    type="number" 
+                                    name="nbPersonnes" 
+                                    id="nbPersonnes" 
+                                    class="form-control" 
+                                    placeholder="Entrez le nombre de personnes" 
+                                    min="1" 
+                                    required
+                                >
+                            </div>
+                        @endif
                         <!-- Liste des notifications ajoutées -->
                         <h5 class="mt-4">Notifications ajoutées :</h5>
                         <ul id="notificationsList" class="list-group"></ul>
@@ -116,7 +196,7 @@
     </div>
 
     <!-- MODAL 2 : Ajouter une notification -->
-    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -177,76 +257,78 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+
+    <!-- MODAL 2 : Ajouter une notification -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="notificationModalLabel">
+                        <i class="bi bi-bell"></i> Ajouter une notification
+                    </h5>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>
+                        Ajouter une notification pour la plage horaire suivante :
+                        <strong id="horaireSelection" class="text-success"></strong>.
+                    </p>
+
+                    <!-- Type de notification -->
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="typeNotification" id="smsOption" value="SMS" checked>
+                        <label class="form-check-label" for="smsOption">
+                            <i class="bi bi-chat-left-text"></i> SMS
+                        </label>
+                    </div>
+                    <div id="smsField" class="mt-2">
+                        <label for="smsInput" class="form-label">Numéro de téléphone :</label>
+                        <input 
+                            type="tel" 
+                            id="smsInput" 
+                            class="form-control" 
+                            placeholder="+33 6 12 34 56 78"
+                            value="{{ Auth::user()->numTel }}"
+                        >
+                    </div>
+
+                    <div class="form-check mb-3 mt-4">
+                        <input class="form-check-input" type="radio" name="typeNotification" id="mailOption" value="Mail">
+                        <label class="form-check-label" for="mailOption">
+                            <i class="bi bi-envelope"></i> Email
+                        </label>
+                    </div>
+                    <div id="mailField" class="mt-2" style="display: none;">
+                        <label for="mailInput" class="form-label">Adresse email :</label>
+                        <input 
+                            type="email" 
+                            id="mailInput" 
+                            class="form-control" 
+                            placeholder="exemple@domaine.com" 
+                            value="{{ Auth::user()->email }}"
+                        >
+                    </div>
+
+                    <!-- Durée avant rappel -->
+                    <label for="duree" class="form-label mt-3">Durée avant rendez-vous :</label>
+                    <select id="duree" class="form-select">
+                        <option value="1jour">1 jour</option>
+                        <option value="2jours">2 jours</option>
+                        <option value="1semaine">1 semaine</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="goBackBtn">Précédent</button>
+                    <button type="button" class="btn btn-primary" id="saveNotificationBtn">Valider</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script src="{{ asset('js/reservation.js') }}"></script>
 @endsection
 
-@section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    let selectedHoraire = '';
-    let selectedDate = '';
 
-    // Gestion des clics sur les horaires
-    document.body.addEventListener('click', function (event) {
-        if (event.target && event.target.classList.contains('horaire-btn')) {
-            const button = event.target;
-
-            selectedDate = button.getAttribute('data-date');
-            selectedHoraire = button.getAttribute('data-horaire');
-
-            document.getElementById('hiddenHoraire').value = selectedHoraire;
-            document.getElementById('hiddenDateRdv').value = selectedDate;
-            document.getElementById('selectedHoraire').textContent = selectedHoraire;
-
-            const reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
-            reservationModal.show();
-        }
-    });
-
-    // Ajouter une notification
-    document.getElementById('addNotificationBtn').addEventListener('click', function () {
-        const reservationModal = bootstrap.Modal.getInstance(document.getElementById('reservationModal'));
-        reservationModal.hide();
-
-        const notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'));
-        notificationModal.show();
-    });
-
-    // Retour à la modal de réservation
-    document.getElementById('goBackBtn').addEventListener('click', function () {
-        const notificationModal = bootstrap.Modal.getInstance(document.getElementById('notificationModal'));
-        notificationModal.hide();
-
-        const reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
-        reservationModal.show();
-    });
-
-    // Validation d'une notification
-    document.getElementById('saveNotificationBtn').addEventListener('click', function () {
-        const typeNotification = document.querySelector('input[name="typeNotification"]:checked').value;
-        const contenu = typeNotification === 'SMS'
-            ? document.getElementById('smsInput').value
-            : document.getElementById('mailInput').value;
-        const duree = document.getElementById('duree').value;
-
-        if (contenu.trim() === '') {
-            alert('Veuillez renseigner le contenu de la notification.');
-            return;
-        }
-
-        const notificationsList = document.getElementById('notificationsList');
-        const notificationItem = document.createElement('li');
-        notificationItem.className = 'list-group-item';
-        notificationItem.textContent = `${typeNotification} - ${contenu} - Rappel : ${duree}`;
-        notificationsList.appendChild(notificationItem);
-
-        const notificationModal = bootstrap.Modal.getInstance(document.getElementById('notificationModal'));
-        notificationModal.hide();
-
-        const reservationModal = new bootstrap.Modal(document.getElementById('reservationModal'));
-        reservationModal.show();
-    });
-});
-</script>
-@endsection

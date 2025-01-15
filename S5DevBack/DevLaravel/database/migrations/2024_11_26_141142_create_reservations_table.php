@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('dateRdv')/* ->default(now()) */;
             $table->time('heureDeb')->check('heureDeb < heureFin');
             $table->time('heureFin')->check('heureFin > heureDeb'); 
-            $table->integer('nbPersonnes');
+            $table->integer('nbPersonnes')->default(1);
             $table->timestamps();
         });
     }
