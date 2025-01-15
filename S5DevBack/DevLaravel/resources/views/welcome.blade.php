@@ -6,14 +6,12 @@
 
 
 @section('content')
-    <div class="container">
-                <div class="card">
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <h1 class="form-title">Bienvenue sur Don't Forget Me</h1>
-                </div>
+    <div class="container" style="margin-top:0px">
+        <img src="{{ asset('favicon.ico') }}" alt="Logo" style="max-width: 50vh; max-height: 50vh; display:block; margin-top:0px; margin:auto;">
+        <div style="display: inline-flex; width: 100%;">
+        <input class="form-control mr-sm-2" style="display: block; margin-left:30%;" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" style="display: block;margin-right:30%;"><i class="bi bi-search"></i></button>
+        </div>
     </div>
 @endsection
 
