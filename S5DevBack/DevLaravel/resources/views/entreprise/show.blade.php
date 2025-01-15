@@ -42,8 +42,9 @@
                         <p><strong><i>Vous</i></strong></p>
                         @if ($user->id == $entreprise->idCreateur)
                             <p><strong>Créateur</strong></p>
-                        @endif
+                        @else
                         <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Quitter l'entreprise</a>
+                        @endif
                     </div>
                     @else
                         <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
