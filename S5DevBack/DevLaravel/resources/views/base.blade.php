@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -135,8 +135,8 @@ function displayErrorWithButton(message) {
 
 </body>
 </html>
- --}}
 
+{{--
  <!DOCTYPE html>
  <html lang="fr">
  <head>
@@ -347,4 +347,4 @@ function displayErrorWithButton(message) {
  
  </body>
  </html>
- 
+ --}}
