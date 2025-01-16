@@ -184,7 +184,12 @@ var calendar = $('#calendar').fullCalendar({
     },
     //slotDuration: '{{ $activite->duree }}',
     snapDuration: '{{ $activite->duree }}',
+    /* selectConstraint: {
+        start: '00:00',
+        end: '24:00'
+    }, */
     selectable: true,
+    nowIndicator: true,
     selectHelper: true,
     select: function (start, end, allDay) {
         // Vérifiez si l'événement est sur la même journée
