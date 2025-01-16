@@ -43,8 +43,8 @@
 <body>
   
 <div class="containerCalendar">
-    <h2>Calendrier des plages de {{ $entreprise->libelle }}</h2>
-    <h3>Activité : {{ $activite->libelle }}</h3>
+    <h3>Calendrier des plages de {{ $entreprise->libelle }}</h3>
+    <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>
 
     <!-- Popup Dialog -->
@@ -182,6 +182,8 @@ var calendar = $('#calendar').fullCalendar({
         }
         
     },
+    slotDuration: '{{ $activite->duree }}',
+    snapDuration: '{{ $activite->duree }}',
     selectable: true,
     selectHelper: true,
     select: function (start, end, allDay) {

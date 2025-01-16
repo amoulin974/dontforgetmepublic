@@ -260,37 +260,37 @@ class DatabaseSeeder extends Seeder
         $activites = [
             [
                 'libelle' => 'Développement Web Frontend',
-                'duree' => '04:00:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
             ],
             [
                 'libelle' => 'Consultation en Stratégie Digitale',
-                'duree' => '02:30:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 2, // Innovative Solutions
             ],
             [
                 'libelle' => 'Soin Médical (Consultation)',
-                'duree' => '01:00:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 3, // HealthCare Pro
             ],
             [
                 'libelle' => 'Installation de Panneaux Solaires',
-                'duree' => '05:00:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 4, // Green Energy Co.
             ],
             [
                 'libelle' => 'Formation en Programmation Python',
-                'duree' => '03:00:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 5, // TechCorp
             ],
             [
                 'libelle' => 'Réparation Informatique',
-                'duree' => '02:00:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
             ],
             [
                 'libelle' => 'Consultation en Énergie Durable',
-                'duree' => '03:30:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 4, // Green Energy Co.
             ],
             [
@@ -300,12 +300,12 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'libelle' => 'Suivi Préventif Santé',
-                'duree' => '01:15:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 3, // HealthCare Pro
             ],
             [
                 'libelle' => 'Développement d\'Applications Mobiles',
-                'duree' => '04:30:00',
+                'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
             ],
         ];
@@ -328,7 +328,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '09:00:00',
                 'heureFin' => '12:00:00',
-                'interval' => '00:30:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table1', 'table2', 'table3']),
                 'entreprise_id' => 1, // TechCorp
             ],
@@ -336,7 +336,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '14:00:00',
                 'heureFin' => '17:00:00',
-                'interval' => '00:30:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table1', 'table2']),
                 'entreprise_id' => 2, // Innovative Solutions
             ],
@@ -344,7 +344,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '08:00:00',
                 'heureFin' => '12:00:00',
-                'interval' => '01:00:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table1', 'table3']),
                 'entreprise_id' => 3, // HealthCare Pro
             ],
@@ -352,7 +352,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '10:00:00',
                 'heureFin' => '13:00:00',
-                'interval' => '00:45:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table2', 'table4']),
                 'entreprise_id' => 4, // Green Energy Co.
             ],
@@ -360,7 +360,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '15:00:00',
                 'heureFin' => '18:00:00',
-                'interval' => '00:45:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table1', 'table5']),
                 'entreprise_id' => 1, // TechCorp
             ],
@@ -368,7 +368,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '09:30:00',
                 'heureFin' => '12:30:00',
-                'interval' => '00:30:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table1', 'table3']),
                 'entreprise_id' => 2, // Innovative Solutions
             ],
@@ -376,7 +376,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '08:30:00',
                 'heureFin' => '12:00:00',
-                'interval' => '01:00:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table4', 'table6']),
                 'entreprise_id' => 3, // HealthCare Pro
             ],
@@ -384,7 +384,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '13:00:00',
                 'heureFin' => '17:00:00',
-                'interval' => '00:30:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table1', 'table2']),
                 'entreprise_id' => 4, // Green Energy Co.
             ],
@@ -392,7 +392,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '10:00:00',
                 'heureFin' => '14:00:00',
-                'interval' => '01:00:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table3', 'table5']),
                 'entreprise_id' => 1, // TechCorp
             ],
@@ -400,7 +400,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '14:00:00',
                 'heureFin' => '17:30:00',
-                'interval' => '00:45:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table2', 'table6']),
                 'entreprise_id' => 2, // Innovative Solutions
             ],
@@ -408,7 +408,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '08:00:00',
                 'heureFin' => '11:00:00',
-                'interval' => '00:30:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table1']),
                 'entreprise_id' => 3, // HealthCare Pro
             ],
@@ -416,7 +416,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '16:00:00',
                 'heureFin' => '19:00:00',
-                'interval' => '00:45:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table3', 'table4']),
                 'entreprise_id' => 4, // Green Energy Co.
             ],
@@ -424,7 +424,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '11:00:00',
                 'heureFin' => '14:00:00',
-                'interval' => '00:45:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table5', 'table6']),
                 'entreprise_id' => 1, // TechCorp
             ],
@@ -432,7 +432,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '09:00:00',
                 'heureFin' => '12:00:00',
-                'interval' => '00:30:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table1']),
                 'entreprise_id' => 2, // Innovative Solutions
             ],
@@ -440,7 +440,7 @@ class DatabaseSeeder extends Seeder
                 'datePlage' => fake()->dateTimeThisMonth(),
                 'heureDeb' => '10:00:00',
                 'heureFin' => '13:00:00',
-                'interval' => '01:00:00',
+                'interval' => '01:30:00',
                 'planTables' => json_encode(['table2', 'table6']),
                 'entreprise_id' => 3, // HealthCare Pro
             ],

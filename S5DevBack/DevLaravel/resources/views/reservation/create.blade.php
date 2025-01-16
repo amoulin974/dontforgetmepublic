@@ -31,13 +31,12 @@
                                     try {
                                         $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
                                         $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                        $interval = \Carbon\Carbon::parse($plage->interval)->minute;
+                                        $interval = \Carbon\Carbon::parse($plage->interval)->minute + \Carbon\Carbon::parse($plage->interval)->hour * 60;
                                     } catch (\Exception $e) {
                                         displayWarning('Erreur de formatage des plages horaires.');
                                         continue;
                                     }
                                 @endphp
-
                                 @while ($heureDeb->lessThan($heureFin))
                                     @php
                                         // On calcule les bornes de l’intervalle courant
@@ -166,70 +165,6 @@
             </form>
         </div>
     </div>
-
-    <!-- MODAL 2 : Ajouter une notification -->
-    {{-- <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-primary" id="notificationModalLabel">
-                        <i class="bi bi-bell"></i> Ajouter une notification
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        Ajouter une notification pour la plage horaire suivante :
-                        <strong id="horaireSelection" class="text-success"></strong>.
-                    </p>
-
-                    <!-- Type de notification -->
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="typeNotification" id="smsOption" value="SMS" checked>
-                        <label class="form-check-label" for="smsOption"><i class="bi bi-chat-left-text"></i> SMS</label>
-                    </div>
-                    <div id="smsField" class="mt-2">
-                        <label for="smsInput" class="form-label">Numéro de téléphone :</label>
-                        <input 
-                            type="tel" 
-                            id="smsInput" 
-                            class="form-control" 
-                            placeholder="+33 6 50 49 60 22"
-                            value="{{ Auth::user()->numTel }}"
-                        >
-                    </div>
-
-                    <div class="form-check mb-3 mt-4">
-                        <input class="form-check-input" type="radio" name="typeNotification" id="mailOption" value="Mail">
-                        <label class="form-check-label" for="mailOption"><i class="bi bi-envelope"></i> Email</label>
-                    </div>
-                    <div id="mailField" class="mt-2" style="display: none;">
-                        <label for="mailInput" class="form-label">Adresse email :</label>
-                        <input 
-                            type="email" 
-                            id="mailInput" 
-                            class="form-control" 
-                            placeholder="exemple@domaine.com" 
-                            value="{{ Auth::user()->email }}"
-                        >
-                    </div>
-                    </div>
-
-                    <!-- Durée avant rappel -->
-                    <label for="duree" class="form-label mt-3">Durée avant rappel :</label>
-                    <select id="duree" class="form-select">
-                        <option value="1jour">1 jour</option>
-                        <option value="2jours">2 jours</option>
-                        <option value="1semaine">1 semaine</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="goBackBtn">Précédent</button>
-                    <button type="button" class="btn btn-primary" id="saveNotificationBtn">Valider</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
     <!-- MODAL 2 : Ajouter une notification -->
     <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
