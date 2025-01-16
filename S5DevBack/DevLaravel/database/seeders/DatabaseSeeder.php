@@ -243,7 +243,7 @@ class DatabaseSeeder extends Seeder
                 'type' => 'Éducation',
                 'numTel' => '0369123456',
                 'email' => 'contact@edutechsolutions.fr',
-                'cheminImg' => json_encode(['https://wallpaperaccess.com/full/3915891.jpg']),
+                'cheminImg' => json_encode(['https://wallpaperaccess.com/full/3915891.jpg','https://www.cours-gratuit.com/images/480/11327/id-11327-01.png']),
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne']),
                 'idCreateur' => 5,

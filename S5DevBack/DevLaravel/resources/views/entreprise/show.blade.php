@@ -14,7 +14,8 @@
             <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
         </div>
         <div class="entreprise">
-            <div class="res-details-info">
+            <div class="res-details-info" style="display: inline-flex; width: 100%;">
+                <div style="display: block; margin:auto; margin-left: 0px;">
                 <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
                 <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
                 <p><strong>Métier :</strong> {{ $entreprise->metier }}</p>
@@ -22,24 +23,28 @@
                 <p><strong>Type :</strong> {{ $entreprise->type }}</p>
                 <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
                 <p><strong>email :</strong> {{ $entreprise->email }}</p>
+                </div>
+                <div style="display: block; margin:auto;">
                 @if ($entreprise->cheminImg)
-                <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="150vh" width="150vh">
+                <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                 @else
-                <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="150vh" width="150vh">
+                <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                 @endif
-                @if($entreprise->publier)
+                </div>
+            </div>
+            @if($entreprise->publier)
                 <p><strong>Publié !</strong></p>
                 <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
                 <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}"><i class="bi bi-tools"></i> Gérer les activités</a>
-                @endif
-            </div>
-            <div style="overflow:scroll; max-height:400px;">
+            @endif
+            <h3 style="margin-top: 15px;">Liste des employés</h3>
+            <div style="overflow:auto; max-height:400px;">
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
-                    <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
+                    <div class="containerEntreprise" id="user{{$user->id}}" style="width:100%;"> 
                         <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                         <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->pluck('statut')[0] }}</p>
-                        <p><strong><i>Vous</i></strong>
+                        <p style="margin-bottom: 0%;"><strong><i>Vous</i></strong>
                         @if ($user->id == $entreprise->idCreateur)
                             <strong>(Créateur)</strong></p>
                         @else

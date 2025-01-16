@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     @if($services->isEmpty())
-        <h1>Créez votre premier service</h1>
+        <h1 style="text-align:center;">Créez votre premier service</h1>
     @endif
     <h2 class="mb-4">Mes Services</h2>
 

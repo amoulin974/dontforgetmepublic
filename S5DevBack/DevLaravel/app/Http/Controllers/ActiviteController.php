@@ -139,8 +139,10 @@ class ActiviteController extends Controller
         }
         else{
             $service = Activite::findOrFail($id);
-            $service->delete();
             $service->travailler_users()->detach();
+            $service->plages()->detach();
+            $service->travailler_entreprises()->detach();
+            $service->delete();
 
             if ($entreprise->activites()->count() === 0) {
                 $entreprise->update(['publier' => 0]); 

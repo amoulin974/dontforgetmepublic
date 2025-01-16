@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@include('base')
+
 @section('content')
 <div class="container">
     <h2 class="mb-4">Nouveau service</h2>
