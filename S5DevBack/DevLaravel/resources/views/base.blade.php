@@ -45,17 +45,24 @@
             </ul>
         </div>
     </nav>
-    {{-- <script>
+    <script>
         $(document).ready(function() {
-            var collapse = $('#navbarNav');
+            var collapse = $('.navbar-toggler');
+            var ogParam1 = document.documentElement.style.overflow;
+            var ogParam2 = document.body.style.overflow;
 
             collapse.on('click', function () {
-                if (collapse.hasClass('show')) {
-                    collapse.removeClass('show');
+                if (collapse.hasClass('collapsed')) {
+                    document.documentElement.style.overflow = 'hidden';
+                    document.body.style.overflow = 'hidden';
+                }
+                else {
+                    document.documentElement.style.overflow = ogParam1;
+                    document.body.style.overflow = ogParam2;
                 }
             });
         });
-    </script> --}}
+    </script>
 
   <div class="profileInfo">
     @guest
