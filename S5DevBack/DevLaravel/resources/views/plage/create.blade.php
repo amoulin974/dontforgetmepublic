@@ -182,7 +182,7 @@ var calendar = $('#calendar').fullCalendar({
         }
         
     },
-    slotDuration: '{{ $activite->duree }}',
+    //slotDuration: '{{ $activite->duree }}',
     snapDuration: '{{ $activite->duree }}',
     selectable: true,
     selectHelper: true,
