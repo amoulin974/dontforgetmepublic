@@ -46,8 +46,12 @@
                         <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" style="display: block; margin:auto;" alt="{{ $entreprise->libelle }}" height="100vh" width="100vh">
                     @endif
                 </div>
-                <div class="entreprise" style="display: inline-block; margin-left:auto;margin-right:auto">
-                    {{ $entreprise->adresse }}
+                <div style="display: inline-block; margin-left:auto;margin-right:auto; max-width:50vh;">
+                    <p>{{ $entreprise->adresse }}</p>
+                    <div style="margin-bottom:15px;overflow:auto; max-height:5vh;">
+                    <p style="margin-bottom: 0px">{{ $entreprise->description }}</p>
+                    </div>
+                    <p style="margin-bottom: 0px">{{ $entreprise->email }}</p>
                 </div> 
                 <a class="secondary-button" style="display: block; margin: auto; margin-right: 5%; width:auto;" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">Réserver une activité</a>
             </div>

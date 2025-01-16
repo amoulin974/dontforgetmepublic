@@ -7,10 +7,10 @@
 
     <div class="res-container">
         <!-- Barre de recherche centrée -->
-        <div class="search-bar" style="display: flex; justify-content: center; margin-bottom:20px;">
-            <input type="text" id="search-input" placeholder="Rechercher une entreprise par libellé..." 
-                   style="width: 50%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px;">
-            <i class="fa fa-search" style="display:block;margin-top:auto;margin-bottom:auto;margin-left:15px;"></i>
+        <div class="search-bar" style="display: inline-flex; margin-top:10px; margin-bottom:20px; width:50%">
+            <input type="search" id="search-input" placeholder="Rechercher une entreprise par libellé..." 
+                   style="width: 50%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; display:block; margin-left:auto;">
+            <i class="fa fa-search" style="display:block;margin-top:auto;margin-bottom:auto;margin-left:15px;margin-right:auto;"></i>
         </div>
     </div>
 
@@ -66,18 +66,20 @@
     {{ $entreprises->links() }}
 
     <script>
-        document.getElementById('search-input').addEventListener('input', function(e) {
-            const filter = e.target.value.toLowerCase();
-            const entreprises = document.querySelectorAll('.entreprise');
+        $(document).ready(function() {
+            document.getElementById('search-input').addEventListener('input', function(e) {
+                const filter = e.target.value.toLowerCase();
+                const entreprises = document.querySelectorAll('.containerEntreprise');
 
-            entreprises.forEach(entreprise => {
-                const libelle = entreprise.getAttribute('data-libelle');
-                // Vérifie si le libellé commence par le texte saisi
-                if (libelle.startsWith(filter)) {
-                    entreprise.style.display = '';
-                } else {
-                    entreprise.style.display = 'none';
-                }
+                entreprises.forEach(entreprise => {
+                    const libelle = entreprise.getAttribute('data-libelle');
+                    // Vérifie si le libellé commence par le texte saisi
+                    if (libelle.startsWith(filter)) {
+                        entreprise.style.display = 'block';
+                    } else {
+                        entreprise.style.display = 'none';
+                    }
+                });
             });
         });
     </script>
