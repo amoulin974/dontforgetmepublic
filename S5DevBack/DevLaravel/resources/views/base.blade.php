@@ -71,7 +71,7 @@
         @else
             <a class="nameProfil @yield('profile_active')" href="{{ route('profile.index') }}">
               <i class="fa fa-user"></i>
-              {{ Auth::user()->nom }}
+              {{ Auth::user()->prenom }}
             </a>
             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="bi bi-box-arrow-right"></i>

@@ -15,9 +15,9 @@
         @foreach ($entreprises as $entreprise)
         @if($entreprise->publier && $entreprise->activites->count() > 0)
             <div class="containerEntreprise" style="display: inline-flex; width: 100%;"  data-libelle="{{ Str::lower($entreprise->libelle) }}">
-                <div class="headerEntreprise" style="display: block; margin-left:5%;margin-right:5%; height:auto;">
-                <h2>{{ $entreprise->libelle }}</h2>
-                @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
+                <div class="headerEntreprise" style="display: block; margin-left:0%;margin-right:0%; height:auto; width: 30%">
+                <h2 style="text-align: center">{{ $entreprise->libelle }}</h2>
+                {{-- @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
                         <div class="carousel" style="display: block; margin:auto;">
                             <div class="swiper-container swiper{{ $entreprise->id }}">
                                 <div class="swiper-wrapper">
@@ -40,7 +40,7 @@
                                 });
                             </script>
                         </div>
-                    @elseif($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1)
+                    @elseif($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1) --}}@if($entreprise->cheminImg)
                         <img src="{{ json_decode($entreprise->cheminImg)[0] }}" style="display: block; margin:auto;" alt="{{ $entreprise->libelle }}" height="100vh" width="100vh">
                     @else
                         <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" style="display: block; margin:auto;" alt="{{ $entreprise->libelle }}" height="100vh" width="100vh">

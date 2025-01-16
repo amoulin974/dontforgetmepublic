@@ -37,18 +37,19 @@
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
                     <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
-                        <p><strong>Utilisateur :</strong> {{ $user->nom }}</p>
+                        <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                         <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->pluck('statut')[0] }}</p>
-                        <p><strong><i>Vous</i></strong></p>
+                        <p><strong><i>Vous</i></strong>
                         @if ($user->id == $entreprise->idCreateur)
-                            <p><strong>Créateur</strong></p>
+                            <strong>(Créateur)</strong></p>
                         @else
+                        </p>
                         <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Quitter l'entreprise</a>
                         @endif
                     </div>
                     @else
                         <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
-                            <p><strong>Utilisateur :</strong> {{ $user->nom }}</p>
+                            <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                             <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->pluck('statut')[0] }}</p>
                             @if ($user->id == $entreprise->idCreateur)
                             <p><strong>Créateur</strong></p>
