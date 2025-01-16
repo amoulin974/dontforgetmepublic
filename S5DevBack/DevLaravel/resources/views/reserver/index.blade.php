@@ -21,10 +21,10 @@
             <div class="res containerEntreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
                 <h2>{{ $entreprise->libelle }}</h2>
                 <div class="entreprise">
-                    <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
+                    <p style="overflow:auto; max-height:50px; min-height:50px;"><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
                     {{-- <p><strong>Métier :</strong> {{ $entreprise->metier }}</p> --}}
                     <p><strong>Description :</strong>
-                    <div style="overflow:auto; max-height:150px;">
+                    <div style="overflow:auto; max-height:150px; min-height:150px;">
                     {{ $entreprise->description }}</p>
                     </div>
                     <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
