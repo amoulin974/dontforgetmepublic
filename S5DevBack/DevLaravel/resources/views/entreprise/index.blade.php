@@ -14,12 +14,12 @@
         @else
         @foreach ($entreprises as $entreprise)
             <div class="res">
-                <h2>{{ $entreprise->libelle }}</h2>
+                <h2 style="text-align: center">{{ $entreprise->libelle }}</h2>
                 @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->first() != null)
-                    <h3>[ {{ $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->first()->pivot->statut }} ]</h3>
+                    <h4>[ {{ $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->first()->pivot->statut }} ]</h4>
                 @endif
                 @if ($entreprise->idCreateur == Auth::user()->id)
-                    <h3 style="color:blue;">[ Créateur ]</h3>
+                    <h5 style="color:blue;">[ Créateur ]</h5>
                 @endif
                 <div class="info">
                     <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
@@ -72,7 +72,7 @@
                                 <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                         @endif
                     @if($entreprise->publier)
-                    <p><strong>Publié !</strong></p>
+                    <p style="text-align: center"><i><strong>Publié !</strong></i></p>
                     @endif
                     @if($entreprise->idCreateur == Auth::user()->id && $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() == null)
                     <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>

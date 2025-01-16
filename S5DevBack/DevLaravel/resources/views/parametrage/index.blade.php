@@ -44,18 +44,18 @@
             <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="margin:auto;"><i class="fa fa-wrench"></i> Paramétrer les plages</a>
             <div style="overflow: auto; max-height: 150px; margin-left:30px;">
             @foreach ($entreprise->activites as $activite)
-            <div style="display: inline-flex;">
+            <div style="display: inline-flex; width:100%;">
                 <p style="display: block;margin-top:auto;margin-bottom:auto; margin-right:10px;"><strong>Activité :</strong> {{ $activite->libelle }}</p>
-                <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+                <a class="btn btn-primary light" style="margin-left: auto; margin-right:5px;" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
             </div>
             @endforeach
             </div>
         @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
             <div style="overflow: auto; max-height: 150px; margin-left:30px;">
             @foreach ($entreprise->activites as $activite)
-            <div style="display: inline-flex;">
+            <div style="display: inline-flex; width:100%;">
                 <p style="display: block;margin-top:auto;margin-bottom:auto; margin-right:10px;"><strong>Activité :</strong> {{ $activite->libelle }}</p>
-                <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+                <a class="btn btn-primary light" style="margin-left: auto; margin-right:5px;" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
             </div>
             @endforeach
             </div>

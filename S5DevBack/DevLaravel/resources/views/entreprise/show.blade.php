@@ -29,8 +29,8 @@
                 @endif
                 @if($entreprise->publier)
                 <p><strong>Publié !</strong></p>
-                <a class="btn btn-primary" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
-                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}"><i class="bi bi-tools"></i> Gérer les activités</a>
+                <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
+                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}"><i class="bi bi-tools"></i> Gérer les activités</a>
                 @endif
             </div>
             <div style="overflow:scroll; max-height:400px;">

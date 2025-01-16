@@ -170,7 +170,7 @@ color:white; background-color:green; border-color: green;
 }
 
 .btn.accept:hover{
-background-color: rgb(6, 110, 6);
+background-color: rgb(6, 110, 6); border-color: rgb(6, 110, 6);
 }
 
 .btn.reject{
@@ -178,15 +178,15 @@ color:white; background-color:red; border-color: red;
 }
 
 .btn.reject:hover{
-background-color: #e20b0b;
+background-color: #e20b0b; border-color: #e20b0b;
 }
 
 .btn.light {
-color:white; background-color:rgb(65, 137, 245);
+color:white; background-color:rgb(65, 137, 245); border-color: rgb(65, 137, 245);
 }
 
 .btn.light:hover {
-background-color: rgb(61, 124, 219);
+background-color: rgb(61, 124, 219); border-color: rgb(61, 124, 219);
 }
 
 /* Style pour un conteneur personnalisé */
@@ -249,11 +249,11 @@ margin-right: auto;
   margin-bottom: 5px;
 }
 
-.res-header a {
+/* .res-header a {
   position: relative;
   top: -20px;
   left: 260px;
-}
+} */
 
 /* Styles pour le bouton "primaire" */
 .primary-button {
