@@ -68,7 +68,7 @@ class reservationController extends Controller
                   ->from('effectuer')
                   ->where('idActivite', $activite->id);
         })->get();
-    
+
         return view('reservation.create', [
             'entreprise' => $entreprise,
             'activite' => $activite,
@@ -124,7 +124,7 @@ class reservationController extends Controller
             $reservation->notifications()->save($notification);
         }
 
-        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);  
+        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);
 
         // Rediriger avec un message de succès
         return redirect()
@@ -144,11 +144,11 @@ class reservationController extends Controller
     {
         // À modifier
         if((Auth::user()->id) || (Auth::user()->superadmin)) {
-            return view('reservation.edit' , ['reservation' => $reservation]);        
+            return view('reservation.edit' , ['reservation' => $reservation]);
         }
         else {
             return redirect()->route('reservation.index');
-        }  
+        }
     }
 
     /**
@@ -173,15 +173,10 @@ class reservationController extends Controller
      */
     public function destroy(Reservation $reservation)
     {
-        $reservation = Reservation::findOrFail($reservation->id);
-
-        if((Auth::user()->id) || (Auth::user()->superadmin)) {
-            $reservation->delete();
-
-            return redirect()->route('reservation.index')->with('success', 'Réservation supprimée avec succès');
-        }
-        else {
-            return redirect()->route('reservation.index');
-        }  
+        $reservation->notifications()->delete();
+        $reservation->delete();
+        return redirect()
+            ->route('reservation.index')
+            ->with('success', 'Réservation et notifications supprimées avec succès !');
     }
 }
