@@ -21,7 +21,7 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
         Route::get('/{reservation}/edit', 'edit')->name('edit');
         Route::post('/{reservation}/edit', 'update')->name('update');
 
-        Route::delete('/reservation/{reservation}', [ReservationController::class, 'destroy'])
+        Route::delete('/{reservation}', [ReservationController::class, 'destroy'])
             ->name('reservation.destroy');
         // Route::resources
     });
