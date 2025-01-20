@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Reservation;
@@ -168,8 +169,8 @@ class reservationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Reservation  $reservation
-     * @return \Illuminate\Http\Response
+     * @param Reservation $reservation
+     * @return RedirectResponse
      */
     public function destroy(Reservation $reservation)
     {
