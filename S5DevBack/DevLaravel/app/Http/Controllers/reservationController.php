@@ -174,7 +174,9 @@ class reservationController extends Controller
     public function destroy(Reservation $reservation)
     {
         $reservation->notifications()->delete();
+        $reservation->effectuer_activites()->detach();
         $reservation->delete();
+
         return redirect()
             ->route('reservation.index')
             ->with('success', 'Réservation et notifications supprimées avec succès !');
