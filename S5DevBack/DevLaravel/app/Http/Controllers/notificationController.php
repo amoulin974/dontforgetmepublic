@@ -9,8 +9,8 @@ class notificationController extends Controller
 {
     public function getDetails()
     {
-        $data = DB::connection('userLecture')
-            ->table('effectuer')
+        $data = //DB::connection('userLecture')
+            DB::table('effectuer')
             ->join('users', 'effectuer.idUser', '=', 'users.id')
             ->join('reservations', 'effectuer.idReservation', '=', 'reservations.id')
             ->join('activites', 'effectuer.idActivite', '=', 'activites.id')
