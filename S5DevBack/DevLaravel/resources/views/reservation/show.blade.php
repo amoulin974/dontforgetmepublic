@@ -11,13 +11,12 @@
         <i class="fa fa-edit"></i>
     </a>
     {{-- Formulaire pour SUPPRIMER la réservation --}}
-    <form action="{{ route('reservation.destroy', $reservation->id) }}" method="POST" style="margin-right:10%;">
+    <form action="{{ route('reservation.destroy', $reservation->id) }}" method="POST" style="display:inline;">
         @csrf
         @method('DELETE')
-        <button class="btn btn-primary reject" type="submit"
+        <button type="submit" class="btn btn-danger"
                 onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')">
-            <span>Supprimer la réservation</span>
-            <i class="fas fa-trash-alt"></i>
+            Supprimer la réservation
         </button>
     </form>
 </div>

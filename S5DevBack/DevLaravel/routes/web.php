@@ -26,9 +26,10 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
         // Route::resources
     });
 
-    Route::get('/{reservation}', 'show')->where([
-        'id' => '[0-9]+',
-    ])->name('show');
+    Route::get('/{reservation}', 'show')
+        ->where(['reservation' => '[0-9]+']) // ou ->whereNumber('reservation')
+        ->name('show');
+
 });
 
 /* Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
