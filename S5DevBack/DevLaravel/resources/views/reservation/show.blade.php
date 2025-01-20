@@ -10,10 +10,15 @@
         <span>Modifier la réservation</span>
         <i class="fa fa-edit"></i>
     </a>
-    <a class="btn btn-primary reject" style="display: block; margin-right:10%;" href="{{ route('reservation.delete', $reservation->id) }}" >
-        <span>Supprimer la réservation</span>
-        <i class="fas fa-trash-alt"></i>
-    </a>
+    {{-- Formulaire pour SUPPRIMER la réservation --}}
+    <form action="{{ route('reservation.destroy', $reservation->id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger"
+                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')">
+            Supprimer la réservation
+        </button>
+    </form>
 </div>
 @endif
     <div class="containerEntreprise" style="display:block; margin:auto; margin-top:10px; width:80%;">
@@ -22,10 +27,10 @@
                 @if(Auth::user()->id)
                     <h2 style="text-align:center">{{ $reservation->effectuer_activites()->wherePivot('idUser',Auth::user()->id)->first()->libelle }}</h2>
                 <br>
-                @else 
-                <h2>{{ $reservation->id }}</h2>                                     
+                @else
+                <h2>{{ $reservation->id }}</h2>
                 @endif
-            @else 
+            @else
             <h2>{{ $reservation->id }}</h2>
             @endauth
         </div>
@@ -55,7 +60,7 @@
         </div>
             @endif
         </div>
-        
+
     </div>
 
 @endsection
