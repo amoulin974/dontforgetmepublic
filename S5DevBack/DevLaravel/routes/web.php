@@ -27,8 +27,9 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     });
 
     Route::get('/{reservation}', 'show')
-        ->where(['reservation' => '[0-9]+']) // ou ->whereNumber('reservation')
+        ->where(['reservation' => '[0-9]+'])
         ->name('show');
+
 
 });
 

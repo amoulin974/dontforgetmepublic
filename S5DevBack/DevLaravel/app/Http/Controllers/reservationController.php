@@ -40,12 +40,11 @@ class reservationController extends Controller
      * @param  int  $id
      * @return Illuminate\View\View
      */
-    public function show(Reservation $reservation) : View
+    public function show(Reservation $reservation)
     {
-        return view('reservation.show', [
-            'reservation' => $reservation
-        ]);
+        return view('reservation.show', compact('reservation'));
     }
+
 
     /**
      * Show the form for creating a new resource.
