@@ -137,7 +137,7 @@ class RegisterController extends Controller
             $validated = $request->validate([
                 'nomEntreprise' => ['required', 'string', 'max:255'],
                 'siren' => ['required', 'string', 'max:14', 'unique:entreprises,siren', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'], 
-                'numTel' => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'], // Format : ** ** ** ** ** ou **********
+                'numTel' => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'], 
                 'email' => ['required', 'email', 'unique:entreprises,email', 'max:255'],
                 'rue' => ['required', 'string', 'max:255'],
                 'codePostal' => ['required', 'string', 'max:5', 'regex:/^\d{5}$/'], 
