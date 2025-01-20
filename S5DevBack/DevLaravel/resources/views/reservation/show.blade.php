@@ -46,10 +46,10 @@
             <div style="overflow: auto; max-height:230px;">
             @foreach ($reservation->notifications as $notif)
                 <div class="info">
-                    <p><i>Catégorie :</i> {{ $notif->categorie }}</p>
-                    <p><i>Délai :</i> {{ $notif->delai }}</p>
-                    <p><i>État :</i> {{ $notif->etat == 0 ? 'En attente' : 'Envoyé' }}</p>
-                    <p><i>Contenu :</i> {{ $notif->contenu }}</p>
+                    <p style="margin-bottom: 0px;"><i>Catégorie :</i> {{ $notif->categorie }}</p>
+                    <p style="margin-bottom: 0px;"><i>Délai :</i> {{ explode(':',explode(' ',$notif->delai)[1])[2] }} heures avant</p>
+                    <p style="margin-bottom: 0px;"><i>État :</i> {{ $notif->etat == 0 ? 'En attente' : 'Envoyé' }}</p>
+                    <p><i>{{-- Contenu --}}À envoyer à :</i> {{ $notif->contenu }}</p>
                 </div>
             @endforeach
         </div>

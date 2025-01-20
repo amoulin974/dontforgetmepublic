@@ -107,7 +107,7 @@
 
     <!-- Popup Dialog Suppression -->
     <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cet évènement sera définitivement supprimé. Voulez-vous continuer ?</p>
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette plage sera définitivement supprimé. Voulez-vous continuer ?</p>
     </div>
 </div>
 
@@ -163,7 +163,7 @@ var calendar = $('#calendar').fullCalendar({
                 callback(events);
             },
             error: function() {
-                displayError("Erreur lors de la récupération des évènements");
+                displayError("Erreur lors de la récupération des plages");
             }
         });
     },
@@ -231,7 +231,7 @@ var calendar = $('#calendar').fullCalendar({
                                         type: "POST",
                                         success: function (data) {
                                             $('#dialogTitre').dialog('close');
-                                            displaySuccess("Évènement ajouté avec succès");
+                                            displaySuccess("Plage ajoutée avec succès");
 
                                             // Désélectionner après la sélection
                                             $('#calendar').fullCalendar('unselect');
@@ -240,7 +240,7 @@ var calendar = $('#calendar').fullCalendar({
                                             $('#calendar').fullCalendar('refetchEvents');
                                         },
                                         error: function() {
-                                            displayError("Erreur lors de l'ajout de l'évènement. Réssayez...");
+                                            displayError("Erreur lors de l'ajout de la plage. Réssayez...");
                                         }
                                     });
                                 }
@@ -288,11 +288,11 @@ var calendar = $('#calendar').fullCalendar({
                     },
                     type: "POST",
                     success: function (response) {
-                        displayMessage("Évènement modifié avec succès");
+                        displayMessage("Plage modifié avec succès");
                     }
                 });
             } else {
-                displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+                displayError("Les plages ne peuvent pas dépasser plusieurs jours");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -309,7 +309,7 @@ var calendar = $('#calendar').fullCalendar({
             modal: true,
             closeOnEscape: true,
                     open: function(event, ui) {
-                        //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'évènement');
+                        //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'plage');
                         //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
                         $('.ui-widget-overlay').bind('click', function(){
                             $('#dialogModif').dialog('close');
@@ -332,7 +332,7 @@ var calendar = $('#calendar').fullCalendar({
                             success: function (data) {
                                 $('#dialogModif').dialog('close');
 
-                                displaySuccess("Évènement modifié avec succès");
+                                displaySuccess("Plage modifiée avec succès");
 
                                 // Désélectionner après la sélection
                                 $('#calendar').fullCalendar('unselect');
@@ -342,7 +342,7 @@ var calendar = $('#calendar').fullCalendar({
                             },
                             error: function() {
                                 $('#dialogTitre').dialog('close');
-                                displayErrorWithButton("Erreur lors de la modification de l'évènement. Réssayez...");
+                                displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
                             }
                         });
                     }
@@ -366,7 +366,7 @@ var calendar = $('#calendar').fullCalendar({
                                     },
                                     success: function (response) {
                                         calendar.fullCalendar('removeEvents', eventAct.id);
-                                        displayMessage("Évènement supprimé avec succès");
+                                        displayMessage("Plage supprimée avec succès");
                                     }
                                 });
                                 $( this ).dialog( "close" );
@@ -406,16 +406,16 @@ var calendar = $('#calendar').fullCalendar({
                         },
                         type: "POST",
                         success: function(response) {
-                            displayMessage("Évènement modifié avec succès");
+                            displayMessage("Plage modifiée avec succès");
                         },
                         error: function() {
                             revertFunc(); // Revert the change if the update fails
-                            displayError("Erreur lors de la modification de l'évènement");
+                            displayError("Erreur lors de la modification de la plage");
                         }
                     });
                 } else {
                     revertFunc(); // Revert the change if the update fails
-                    displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+                    displayError("Les plages ne peuvent pas dépasser plusieurs jours");
                     // Désélectionner après la sélection
                     $('#calendar').fullCalendar('unselect');
                 }
