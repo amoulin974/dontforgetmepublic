@@ -222,7 +222,7 @@ class ActiviteController extends Controller
               break;
    
             case 'delete':
-                Activite::findOrFail($id)->plages()->detach($request->id);
+                Activite::firstOrFail($id)->plages()->detach($request->id);
                $event = Plage::find($request->id)->delete();
 
                

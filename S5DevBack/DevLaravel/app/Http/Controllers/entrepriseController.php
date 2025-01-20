@@ -118,7 +118,13 @@ class entrepriseController extends Controller
     {
         switch ($request->type) {
            case 'invite':
-                $event = User::where('email',$request->email)->first()->travailler_entreprises()->attach($request->idEntreprise, [1,'statut' => 'Invité']);  /* à modifier mettre activité récupérée de $request */
+            $activitesEntreprise = Entreprise::where('id', $request->idEntreprise)->first()->activites()->get('id');
+
+            foreach ($activitesEntreprise as $idActivite) {
+                $event = User::where('email',$request->email)->first()->travailler_entreprises()->attach($request->idEntreprise, ['idActivite' => $idActivite->id,'statut' => 'Invité']);  /* à modifier mettre activité récupérée de $request */
+            }
+
+                $event = User::where('email',$request->email)->first();
 
               return response()->json($event);
              break;
@@ -140,7 +146,13 @@ class entrepriseController extends Controller
                 break;
   
            case 'delete':
-              $event = User::where('id',$request->idEmploye)->first()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->delete();
+              $activitesEntreprise = Entreprise::where('id', $request->idEntreprise)->first()->activites()->get('id');
+
+              foreach ($activitesEntreprise as $idActivite) {
+                $event = User::where('id',$request->idEmploye)->first()->travailler_activites()->wherePivot('idEntreprise',$request->idEntreprise)->detach($idActivite->id);
+              }
+
+              //$event = User::where('id',$request->idEmploye)->first()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->delete();
   
               return response()->json($event);
              break;

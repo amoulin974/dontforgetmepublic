@@ -6,6 +6,9 @@
 
     <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        {{-- Pour les popups --}}
+        <link href='https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' rel='stylesheet' />
+        <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
     </head>
 
     <div class="container">
@@ -34,10 +37,15 @@
             </div>
             @if($entreprise->publier)
                 <p><strong>Publié !</strong></p>
-                <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
-                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}"><i class="bi bi-tools"></i> Gérer les activités</a>
+                <div style="display: inline-flex; width: 100%;">
+                <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:1%;margin-right:10px;"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
+                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="bi bi-tools"></i> Gérer les activités</a>
+                </div>
             @endif
-            <h3 style="margin-top: 15px;">Liste des employés</h3>
+            <div style="display: inline-flex; width: 100%;margin-top: 15px;">
+            <h3>Liste des employés</h3>
+            <a class="btn btn-primary" id="addEmploye" style="display:block; margin:auto; margin margin-left:auto;margin-right:20%;"><i class="fa fa-user-plus"></i> Ajouter un(e) employé(e)</a>
+            </div>
             <div style="overflow:auto; max-height:400px;">
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
@@ -55,7 +63,7 @@
                     @else
                         <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
                             <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
-                            <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->pluck('statut')[0] }}</p>
+                            <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                             @if ($user->id == $entreprise->idCreateur)
                             <p><strong>Créateur</strong></p>
                             @else
@@ -66,7 +74,7 @@
                                         <a onclick="promouvoir({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary accept">Promouvoir</a>
                                         <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
                                     @else
-                                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Annuler l'invitation</a>
+                                        <a onclick="annulerInvit({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Annuler l'invitation</a>
                                 @endif
                             @endif
                         </div>
@@ -75,6 +83,15 @@
                 
         </div>
         
+    </div>
+
+
+    <!-- Popup -->
+    <div id="dialog" title="Ajouter un(e) employé(e)" style="display:none;">
+        <form>
+            <label for="employe">Saisissez l'email de l'employé(e)</label>
+            <input type="email" id="employe" name="employe" required>
+        </form>
     </div>
 
     <script>
@@ -153,6 +170,67 @@
                 }
             });
         }
+
+        function annulerInvit(uId, uName, uPrenom){
+            $.ajax({
+                type: "POST",
+                url: SITEURL + "/",
+                data: {
+                    idEmploye: uId,
+                    type: 'delete',
+                    idEntreprise: {{ $entreprise->id }},
+                },
+                success: function (data) {
+                    // Transformer la possibilité d'accepter en la possibilité de visualiser
+                    $("#user" + uId).remove();
+                    displayMessage('Vous avez annuler l\'invitation pour ' +  uName +' ' + uPrenom + '. Il ne peut plus rejoindre votre entreprise.');
+                },
+                error: function (data) {
+                    displayError('Erreur lors de l\'annulation. Réessayez...');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $("#addEmploye").click(function(){
+                var dialog = $("#dialog");
+                dialog.dialog({
+                    modal: true,
+                    closeOnEscape: true,
+                    open: function(event, ui) {
+                        $('.ui-widget-overlay').bind('click', function(){
+                            $('#dialog').dialog('close');
+                        });
+                    },
+                    buttons: {
+                        "Inviter": function() {
+                            var email = $("#employe").val();+
+                            $.ajax({
+                                type: "POST",
+                                url: SITEURL + "/",
+                                data: {
+                                    email: email,
+                                    type: 'invite',
+                                    idEntreprise: {{ $entreprise->id }},
+                                },
+                                success: function (data) {
+                                    displaySuccess('Vous avez invité ' + email + ' (' + data.nom + ' ' + data.prenom + ') à rejoindre votre entreprise.');
+                                    $(".containerEntreprise").last().after('<div class="containerEntreprise" id="user'+data.id+'"> <p><strong>Utilisateur :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>Statut :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
+
+                                    $('#dialog').dialog('close');
+                                },
+                                error: function (data) {
+                                    displayError('Erreur lors de l\'ajout. Réessayez...');
+                                }
+                            });
+                        },
+                        "Annuler": function() {
+                            $('#dialog').dialog('close');
+                        }
+                    }
+                });
+            });
+        });
     </script>
 
 @endsection
