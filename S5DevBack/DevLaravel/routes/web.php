@@ -24,11 +24,11 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
         Route::get('/{reservation}/delete', 'destroy')->name('delete');
 
         // Route::resources
-    });
 
-    Route::get('/{reservation}', 'show')->where([
-        'id' => '[0-9]+',
-    ])->name('show');
+        Route::get('/{reservation}', 'show')->where([
+            'id' => '[0-9]+',
+        ])->name('show');
+    });
 });
 
 /* Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){

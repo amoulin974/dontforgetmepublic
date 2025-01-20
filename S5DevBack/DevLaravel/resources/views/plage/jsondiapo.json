@@ -1,0 +1,13 @@
+{
+    "userNom" : "GUIHENEUF",
+    "userPrenom" : "Mattin",
+    "userNumTel" : "0648008383",
+    "userEmail" : "mattin.guiheneuf@gmail.com",
+    "entrepriseNom" : "Hair'be",
+    "dateRendezVous" : "2025-01-17",
+    "heureRendezVous" : "14:00:00",
+    "notifId" : 10,
+    "notifCategorie": "SMS",
+    "notifEtat": 0,
+    "notifDelaiAvantNotif" : 24
+}
