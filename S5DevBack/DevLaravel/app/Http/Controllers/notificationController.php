@@ -9,7 +9,8 @@ class notificationController extends Controller
 {
     public function getDetails()
     {
-        $data = DB::table('effectuer')
+        $data = //DB::connection('userLecture')
+            DB::table('effectuer')
             ->join('users', 'effectuer.idUser', '=', 'users.id')
             ->join('reservations', 'effectuer.idReservation', '=', 'reservations.id')
             ->join('activites', 'effectuer.idActivite', '=', 'activites.id')
@@ -19,7 +20,6 @@ class notificationController extends Controller
                 'users.prenom AS userPrenom',
                 'users.numTel AS userNumTel',
                 'users.email AS userEmail',
-                'effectuer.typeNotif AS typeNotification',
                 'entreprises.libelle AS entrepriseNom',
                 'reservations.dateRdv AS dateRendezVous',
                 'reservations.heureDeb AS heureRendezVous',
@@ -30,6 +30,13 @@ class notificationController extends Controller
                   ORDER BY n.id ASC
                   LIMIT 1
         ) AS notifId'),
+
+                DB::raw('(SELECT n.categorie
+                  FROM notifications n
+                  WHERE n.reservation_id = reservations.id
+                  ORDER BY n.id ASC
+                  LIMIT 1
+        ) AS notifCategorie'),
 
                 DB::raw('(SELECT n.etat
                   FROM notifications n

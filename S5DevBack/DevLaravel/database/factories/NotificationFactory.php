@@ -18,7 +18,7 @@ class NotificationFactory extends Factory
     {
         return [
             'categorie' => fake()->word(1),
-            'delai' => fake()->time('H:i:s'),
+            'delai' => fake()->randomElement([24, 48, 168]),
             'etat' => fake()->numberBetween(0,1),
             'contenu' => fake()->sentence(1),
             'reservation_id' => fake()->numberBetween(1, 5),

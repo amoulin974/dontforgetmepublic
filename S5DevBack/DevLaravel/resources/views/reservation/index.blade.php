@@ -19,18 +19,11 @@
     <div class="res-container">
         @foreach ($reservations as $reservation)
             <div class="res">
-                <div class="res-header" >
+                <div class="res-header" style="display: inline-flex; width: 100%;">
                     
-
                     @auth
                         @if(Auth::user()->id)
-                            <h2 style="max-height: 8px;">{{ $reservation->id }}</h2>
-                            <a class="primary-button-link" href="{{ route('reservation.edit', $reservation->id) }}" >
-                                <i class="fa fa-edit"></i>
-                            </a>           
-                            <a class="primary-button-link trash" href="{{ route('reservation.delete', $reservation->id) }}" >
-                                <i class="fas fa-trash-alt"></i>
-                            </a>   
+                            <h2>{{ $reservation->effectuer_activites()->wherePivot('idUser',Auth::user()->id)->first()->libelle }}</h2>
                         @else 
                         <h2>{{ $reservation->id }}</h2>                                     
                         @endif
@@ -39,10 +32,14 @@
                     @endauth
                 </div>
                 <div class="info">
-                    <p><strong>dateRdv:</strong> {{ $reservation->dateRdv }}</p>
-                    <p><strong>heureDeb:</strong> {{ $reservation->heureDeb }}</p>
-                    <p><strong>heureFin:</strong> {{ $reservation->heureFin }}</p>
-                    <p><strong>nbPersonnes:</strong> {{ $reservation->nbPersonnes }}</p>
+                    <p>Réservé chez <strong>{{ $reservation->effectuer_activites()->wherePivot('idUser',Auth::user()->id)->first()->entreprise->libelle }}</strong>
+                     pour la date du <strong>{{ explode('-',explode(' ',$reservation->dateRdv)[0])[2] }}/{{ explode('-',explode(' ',$reservation->dateRdv)[0])[1] }}/{{ explode('-',explode(' ',$reservation->dateRdv)[0])[0] }}</strong></p>
+                    <p>À partir de <strong>{{ explode(':',$reservation->heureDeb)[0] }}h{{ explode(':',$reservation->heureDeb)[1] }}</strong> jusqu'à <strong>{{ explode(':',$reservation->heureFin)[0] }}h{{ explode(':',$reservation->heureFin)[1] }}</strong></p>
+                    @if($reservation->nbPersonnes > 1)
+                        <p>Vous y allez à <strong>{{ $reservation->nbPersonnes }}</strong></p>
+                    @else
+                        <p>Vous y allez <strong>seul(e)</strong></p>
+                    @endif
                 </div>
                 <a class="secondary-button" href="{{ route('reservation.show', ['reservation' => $reservation->id]) }}">Voir plus</a>
             </div>
@@ -51,6 +48,13 @@
 
     {{ $reservations -> links() }}
 
+    <script>
+        $(document).ready(function() {
+            setTimeout(() => {
+                $('.success-message').fadeOut();
+            }, 3000);
+        });
+    </script>
     @endif
     
 @endsection

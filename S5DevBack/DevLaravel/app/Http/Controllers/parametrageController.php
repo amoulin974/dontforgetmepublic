@@ -89,11 +89,26 @@ class parametrageController extends Controller
      *
      * @return response()
      */
-    public function indexPlageAsEmploye(Request $request, Entreprise $entreprise)
+    public function indexPlageAsEmploye(Request $request, Entreprise $entreprise, Activite $activite)
     {
       // Pour récupérer les données
       if($request->ajax()) {
-        // Cas employé
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
+          // à rajouter : récupérer les plages spécifiques à l'utilisateur
+
+          // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
+          $activites = Activite::where('id', $activite->id)->where('idEntreprise', $entreprise->id)->first();
+
+            if ($activites) {
+                $plageIds = $activites->plages()->pluck('idPlage');
+                $data = Plage::whereIn('id', $plageIds)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+                return response()->json($data);
+            } else {
+                // Handle the case where the activite is not found
+                return response()->json(['error' => 'Activite not found'], 404);
+            }
+        }
+        /* // Cas employé
         if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé') {
           // Requête pour récupérer les plages
           $data = Plage::where('entreprise_id', $entreprise->id)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
@@ -103,7 +118,7 @@ class parametrageController extends Controller
           // Requête pour récupérer les plages
           $data = Plage::where('entreprise_id', $entreprise->id)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
           return response()->json($data);
-        }
+        } */
       }
       // Vérification utilisateur travaille
       if (!Auth::check()) {
@@ -118,6 +133,7 @@ class parametrageController extends Controller
           return view('plage.show', [
               'user' => Auth::user(),
               'entreprise' => $entreprise,
+              'activite' => $activite,
           ]);
         }
         else {
@@ -201,6 +217,8 @@ class parametrageController extends Controller
                     'entreprise_id' => $request->entreprise_id,
                 ]);
               }
+
+              //$event->activites()->attach($idActivites);
               
               return response()->json($event);
              break;
@@ -216,7 +234,12 @@ class parametrageController extends Controller
              break;
   
            case 'delete':
-              $event = Plage::find($request->id)->delete();
+
+              $event = Plage::findOrFail($request->id)->first();
+
+              $event->activites()->detach($request->id_activite);
+
+              $event = $event->delete();
   
               return response()->json($event);
              break;

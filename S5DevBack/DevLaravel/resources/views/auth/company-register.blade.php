@@ -23,6 +23,8 @@
         <!-- Titre -->
         <h3 class="text-center mb-3">Créer le profil de votre entreprise</h3>
 
+        <p class="text-center mb-3">Attention, notre plateforme n'est pas destinée aux professionnels de santé !</p>
+
         <form method="POST" action="{{ route('register.company.register.typeRdv') }}">
             @csrf
 

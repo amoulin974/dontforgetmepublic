@@ -34,9 +34,9 @@ class Plage extends Model
      */
     protected $casts = [
         'datePlage' => 'datetime',
-        'heureDeb' => 'datetime:H:i:s',
-        'heureFin' => 'datetime:H:i:s',
-        'interval' => 'datetime:H:i:s',
+        'heureDeb' => 'string',
+        'heureFin' => 'string',
+        'interval' => 'string',
         'planTables' => 'array',
         'entreprise_id' => 'integer',
     ];
