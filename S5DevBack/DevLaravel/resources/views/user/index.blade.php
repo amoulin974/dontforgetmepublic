@@ -21,7 +21,7 @@
             <h4><strong>Superadmin</strong></h4>
         @endif
     </div>
-    <a class="btn btn-primary" href="{{ route('register.company.register.company') }}" style="margin:auto;"><i class="fa fa-plus"></i> Créer une entreprise</a>
+    <a class="btn btn-primary" href="{{ route('entreprise.create') }}" style="margin:auto;"><i class="fa fa-plus"></i> Créer une entreprise</a>
     </div>
 <div>
 
