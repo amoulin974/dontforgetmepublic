@@ -120,6 +120,8 @@ var SITEURL = "{{ url('/entreprise/') }}";
 SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/services/" + {{ $activite->id }} + "/plage";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
+var DUREE = '{{ $activite->duree }}';
+var DUREE_EN_MS = moment.duration(DUREE).asMilliseconds();
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -183,11 +185,12 @@ var calendar = $('#calendar').fullCalendar({
         
     },
     //slotDuration: '{{ $activite->duree }}',
-    snapDuration: '{{ $activite->duree }}',
+    snapDuration: DUREE,
     /* selectConstraint: {
-        start: '00:00',
-        end: '24:00'
+        start: tatat,
+        end: '23:59:59'
     }, */
+    /* selectOverlap:false, */
     selectable: true,
     nowIndicator: true,
     selectHelper: true,
@@ -452,6 +455,13 @@ function selectable(start, end, idEvent) {
             return false;
         }
     }
+
+    // Vérifiez que la plage est un multiple de la durée de l'activité
+    if(moment(end).diff(moment(start), 'milliseconds') % DUREE_EN_MS != 0){
+        displayWarning("Impossible de créer une plage qui ne respecte pas l'interval de l'activité");
+        return false;
+    }
+
     return true;
 }
 

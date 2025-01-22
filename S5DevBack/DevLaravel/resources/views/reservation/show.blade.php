@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Détail résa n°' . $reservation -> id)
+@section('title', 'Détail réservation n°' . $reservation -> id)
 
 @section('content')
 

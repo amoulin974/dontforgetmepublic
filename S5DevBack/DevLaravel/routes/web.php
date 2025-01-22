@@ -24,13 +24,12 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
 
         Route::delete('/{reservation}', 'destroy')->name('destroy');
 
+        // Route::resources
+
+        Route::get('/{reservation}', 'show')->where([
+            'id' => '[0-9]+',
+        ])->name('show');
     });
-
-    Route::get('/{reservation}', 'show')
-        ->where(['reservation' => '[0-9]+'])
-        ->name('show');
-
-
 });
 
 /* Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
@@ -46,7 +45,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
 
     Route::middleware(['auth'])->group(function () {
 
-        Route::get('/', 'index')->name('index');
+        /* Route::get('/', 'index')->name('index'); */
 
         Route::post('/invit', 'invit')->name('invit');
 

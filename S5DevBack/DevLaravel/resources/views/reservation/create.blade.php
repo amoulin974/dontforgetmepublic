@@ -23,6 +23,11 @@
         <ul class="list-unstyled">
             @if ($activite->plages->count() > 0)
                 @foreach ($activite->plages->groupBy('datePlage') as $date => $plages)
+                @php
+                    $cpt = 0;
+                @endphp
+                {{-- Vérifier que la date n'est pas passée --}}
+                @if (\Carbon\Carbon::parse($date)->gt(\Carbon\Carbon::now()) || \Carbon\Carbon::parse($date)->isToday())
                     <li class="mb-4">
                         <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
                         <div class="d-flex flex-wrap gap-2">
@@ -36,8 +41,25 @@
                                         displayWarning('Erreur de formatage des plages horaires.');
                                         continue;
                                     }
+
+                                    // Définir le fuseau horaire
+                                    $timezone = 'Europe/Paris';
+
+                                    // Get the current time
+                                    $now = \Carbon\Carbon::now();
+
+                                    // Extract only the time part from the current time
+                                    $currentTime = \Carbon\Carbon::createFromTime($now->hour + 1, $now->minute, 0 , $timezone);
                                 @endphp
                                 @while ($heureDeb->lessThan($heureFin))
+                                {{-- Vérifier que heureDeb n'est pas passé --}}
+                                    @if ($heureDeb->lessThan($currentTime))
+                                        {{-- On passe à l’intervalle suivant --}}
+                                        @php
+                                            $heureDeb->addMinutes($interval);
+                                        @endphp
+                                    @else
+                                    <script>console.log("{{\Carbon\Carbon::parse($plage->interval)->hour}}")</script>
                                     @php
                                         // On calcule les bornes de l’intervalle courant
                                         // $currentEnd   = $heureDeb->copy()->addMinutes($interval);
@@ -87,6 +109,10 @@
                                         >
                                             {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}
                                         </button>
+
+                                        @php
+                                            $cpt++;
+                                        @endphp
                                     @endif
 
                                     {{-- On passe à l’intervalle suivant --}}
@@ -94,13 +120,18 @@
                                         $heureDeb->addMinutes($interval);
                                         //dd($heureDeb); 
                                     @endphp
+                                    @endif
                                 @endwhile
                             @endforeach
 
 
                         </div>
                     </li>
+                @endif
                 @endforeach
+                @if($cpt == 0)
+                    <p>Aucune plage horaire disponible.</p>
+                @endif
             @else
                 <p>Aucune plage horaire disponible.</p>
             @endif
