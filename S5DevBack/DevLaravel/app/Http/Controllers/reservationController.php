@@ -68,7 +68,7 @@ class reservationController extends Controller
                   ->from('effectuer')
                   ->where('idActivite', $activite->id);
         })->get();
-    
+
         return view('reservation.create', [
             'entreprise' => $entreprise,
             'activite' => $activite,
@@ -124,7 +124,7 @@ class reservationController extends Controller
             $reservation->notifications()->save($notification);
         }
 
-        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);  
+        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);
 
         // Rediriger avec un message de succès
         return redirect()
@@ -142,14 +142,30 @@ class reservationController extends Controller
      */
     public function edit(Reservation $reservation)
     {
-        // À modifier
-        if((Auth::user()->id) || (Auth::user()->superadmin)) {
-            return view('reservation.edit' , ['reservation' => $reservation]);        
+        // Récupérer la première activité liée à la réservation
+        $activite = $reservation->effectuer_activites()->first();
+        if (! $activite) {
+            return redirect()->route('reservation.index')->with('error', 'Aucune activité associée à cette réservation.');
         }
-        else {
-            return redirect()->route('reservation.index');
-        }  
+
+        // Récupérer toutes les réservations liées à cette activité
+        $allReservations = Reservation::whereIn('id', function ($query) use ($activite) {
+            $query->select('idReservation')
+                ->from('effectuer')
+                ->where('idActivite', $activite->id);
+        })->get();
+
+        $reservations = $allReservations;
+
+        // Récupérer l'entreprise associée via l'activité
+        $entreprise = $activite->entreprise;
+
+        // On passe tout ça à la vue
+        return view('reservation.edit', compact('reservation', 'activite', 'reservations', 'entreprise'));
     }
+
+
+
 
     /**
      * Update the specified resource in storage.
@@ -158,12 +174,72 @@ class reservationController extends Controller
      * @param  Reservation  $reservation
      * @return \Illuminate\Http\Response
      */
-    public function update(Reservation $reservation, FormPostRequest $request)
+    public function update(Request $request, Reservation $reservation)
     {
-        $reservation->update($request->validated());
+        // Valider les données
+        $validated = $request->validate([
+            'slot'         => 'required|string', // ex : "09:00 - 10:00|2025-02-01"
+            'nbPersonnes'  => 'integer|min:1',
 
-        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La réservation a été modifiée avec succès.');
+            // Si vous ajoutez les notifications en update :
+            'notifications' => 'sometimes|array',
+            'notifications.*.typeNotification' => 'sometimes|string|in:SMS,Mail',
+            'notifications.*.contenu'          => 'sometimes|string',
+            'notifications.*.duree'            => 'sometimes|string|in:1jour,2jours,1semaine',
+        ]);
+
+        // 1) Analyser la string "slot" => "HH:MM - HH:MM|YYYY-MM-DD"
+        [$timeRange, $jour] = explode('|', $validated['slot']);
+        [$hDeb, $hFin] = explode(' - ', $timeRange);
+
+        // 2) Créer la nouvelle réservation
+        $newReservation = Reservation::create([
+            'dateRdv'     => $jour,
+            'heureDeb'    => \Carbon\Carbon::parse($hDeb)->format('H:i:s'),
+            'heureFin'    => \Carbon\Carbon::parse($hFin)->format('H:i:s'),
+            'nbPersonnes' => $reservation->nbPersonnes, //$validated['nbPersonnes'],
+        ]);
+
+        // 3) Récupérer l’activité liée à l’ancienne réservation
+        $activite = $reservation->effectuer_activites()->first();
+
+        // 4) Attacher la nouvelle réservation dans la table pivot 'effectuer'
+        //    pour le même utilisateur
+        $newReservation->effectuer_activites()->attach($activite->id, [
+            'idUser'          => Auth::id(),
+            'dateReservation' => now(),
+            'typeNotif'       => 'SMS',
+            'numTel'          => Auth::user()->numTel,
+        ]);
+
+        // 5) Gérer les notifications si besoin
+        if (!empty($validated['notifications'])) {
+            foreach ($validated['notifications'] as $notificationData) {
+                $delaiHeures = match ($notificationData['duree']) {
+                    '1jour'   => 24,
+                    '2jours'  => 48,
+                    '1semaine'=> 168,
+                };
+
+                $newReservation->notifications()->create([
+                    'categorie'      => $notificationData['typeNotification'],
+                    'contenu'        => $notificationData['contenu'],
+                    'delai'          => $delaiHeures,
+                    'etat'           => 0,
+                ]);
+            }
+        }
+
+        // 6) Supprimer l’ancienne réservation (et ses relations)
+        $reservation->notifications()->delete();
+        $reservation->effectuer_activites()->detach();
+        $reservation->delete();
+
+        return redirect()
+            ->route('reservation.index')
+            ->with('success', 'Votre réservation a été modifiée avec succès !');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -182,6 +258,6 @@ class reservationController extends Controller
         }
         else {
             return redirect()->route('reservation.index');
-        }  
+        }
     }
 }
