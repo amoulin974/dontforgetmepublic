@@ -145,7 +145,6 @@
                                         class="form-control"
                                         value="{{ $reservation->nbPersonnes }}"
                                         min="1"
-                                        required
                                     >
                                 </div>
                             @endif

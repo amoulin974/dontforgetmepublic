@@ -159,8 +159,7 @@ class reservationController extends Controller
                 ->where('idActivite', $activite->id);
         })->get();
 
-        // Exclure la réservation actuelle pour que l’ancien créneau apparaisse comme disponible
-        $reservations = $allReservations->filter(fn($r) => $r->id !== $reservation->id);
+        $reservations = $allReservations;
 
         // Récupérer l'entreprise associée via l'activité
         $entreprise = $activite->entreprise;
@@ -183,7 +182,7 @@ class reservationController extends Controller
         // Valider les données
         $validated = $request->validate([
             'slot'         => 'required|string', // Ex: "09:00 - 10:00|2025-02-01"
-            'nbPersonnes'  => 'required|integer|min:1',
+            'nbPersonnes'  => 'integer|min:1',
         ]);
 
         // 1) Extraire l'horaire et la date depuis 'slot'
@@ -195,7 +194,7 @@ class reservationController extends Controller
             'dateRdv'     => $jour,
             'heureDeb'    => \Carbon\Carbon::parse($hDeb)->format('H:i:s'),
             'heureFin'    => \Carbon\Carbon::parse($hFin)->format('H:i:s'),
-            'nbPersonnes' => $validated['nbPersonnes'],
+            'nbPersonnes' => $reservation->nbPersonnes,
         ]);
 
         // 3) Récupérer l’activité liée à l’ancienne réservation
