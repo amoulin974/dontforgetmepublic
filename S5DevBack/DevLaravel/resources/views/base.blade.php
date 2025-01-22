@@ -9,21 +9,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.1.3/hamburgers.min.css">
 
-    <!-- Pour les notifications -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- JQuery -->
 
     <!-- Pour les carousel -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Pour les icones -->
+    <!-- Pour les icônes -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- Pour les notifications -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+
+    <!-- Pour le menu burger -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
@@ -35,11 +40,11 @@
         <div class="collapse navbar-collapse full-page-menu" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a href="/" class="@yield('home_active') nav-link"><i class="fa fa-home"></i> Accueil</a></li>
-                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
-                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
                 @guest
                 @else
-                  <li class="nav-item"><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active') nav-link"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
+                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
+                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
+                  {{-- <li class="nav-item"><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active') nav-link"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li> --}}
                 @endguest
                 <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
             </ul>
@@ -96,8 +101,6 @@
 
     
 </header>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
 function displaySuccess(message) {
     toastr.options = {
@@ -146,17 +149,22 @@ function displayErrorWithButton(message) {
         extendedTimeOut: 0
     });
 }
+
+$(document).ready(function() {
+    @if (session('success'))
+        displaySuccess("{{ session('success') }}");
+    @elseif (session('error'))
+            displayError("{{ session('error') }}");
+    @endif
+
+    const successMessage = localStorage.getItem('success');
+    if (successMessage) {
+        displaySuccess(successMessage);
+        localStorage.removeItem('success'); // Supprimer le message de succès du stockage local
+    }
+});
 </script>
 
-@if (session('success'))
-    <script>
-        toastr.success("{{ session('success') }}");
-    </script>
-@elseif (session('error'))
-    <script>
-        toastr.error("{{ session('error') }}");
-    </script>
-@endif
     @yield('content')
 </div>
 
