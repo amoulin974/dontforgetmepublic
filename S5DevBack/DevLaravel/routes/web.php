@@ -59,9 +59,14 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
 });
 
 Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){
-
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/type-rdv', 'showTypeRdvPage')->name('typeRdv');
+        Route::get('/recap', 'showRecapPage')->name('recap');
+        Route::post('/submit-appointments', 'storeAppointments')->name('submit.appointments');
+        Route::post('/store', 'store')->name('store');
+
         Route::post('/{entreprise}', 'ajax')->where([
             'id' => '[0-9]+',
         ])->name('ajax');
@@ -84,12 +89,7 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
             Route::get('/{id}/plage', 'createPlage')->name('createPlage');
             Route::post('/{id}/plage', 'ajaxPlage')->name('ajaxPlage');
         });
-        
     });
-    
-    //Route::get('/', 'index')->name('index');
-
-    
 });
 
 Route::prefix('/reserver')->name('reserver.')->controller(ReserverController::class)->group(function(){
@@ -118,21 +118,18 @@ Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, '
 */
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/clear-session', function () {    
+    session()->forget(['company', 'appointment']);
+    return redirect()->route('home');
+})->name('clear.session');
+
 
 Route::prefix('/register')->name('register.')->controller(RegisterController::class)->group(function() {
     Route::get('/choose-account-type', [RegisterController::class, 'showChoicePage'])->name('choose.account.type');
     
     Route::get('/user', [RegisterController::class, 'showUserRegisterPage'])->name('user.register');
     
-    Route::get('/company/userAccount', [RegisterController::class, 'showUserRegisterPage'])->name('company.register.user');
+    Route::get('/userAccount', [RegisterController::class, 'showUserRegisterPage'])->name('company.register.user');
 
-    Route::match(['get', 'post'], '/company/companyAccount', [RegisterController::class, 'showCompanyRegisterPage'])->name('company.register.company');
-
-    Route::post('/company/typeRdv', [RegisterController::class, 'showTypeRdvPage'])->name('company.register.typeRdv');
-
-    Route::get('/company/recap', [RegisterController::class, 'showRecapPage'])->name('company.register.recap');
-
-    Route::post('/submit-responses', [RegisterController::class, 'storeResponses'])->name('submit.responses');
-
-    Route::post('/company/submit', [RegisterController::class, 'submit'])->name('company.register.submit');
+    Route::post('/user', 'storeUser')->name('user.store');
 });

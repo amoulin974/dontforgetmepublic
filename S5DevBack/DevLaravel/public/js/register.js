@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // console.log("Test");
-    // console.log(document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-
     const responses = {};
     const retourButton = document.querySelector("#retour");
     const navButtons = document.querySelectorAll(".btn-nav");
@@ -53,14 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
             for (const stepId in responses) {
                 if (!stepsToKeep.includes(stepId)) {
-                    // console.log("Réponse supprimée pour ", stepId);
                     delete responses[stepId];
                 }
             }
-    
-            // console.log(responses);
-    
-            // Navigation entre les étapes
             currentStep.classList.add("d-none");
             previousStep.classList.remove("d-none");
             updateProgressBar();
@@ -72,14 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener("click", () => {
             const parentStep = button.closest(".step");
             const stepId = parentStep.id;
-            // console.log("Parent trouvé :", parentStep);
 
             const answer = button.getAttribute("answer");
             if(answer) {
                 responses[stepId] = answer;
-                // console.log("Réponse enregistrée pour ", stepId, " : ", answer);
             }
-            // console.log(responses);
 
             let nextStep = parentStep.nextElementSibling;
             while (nextStep && !nextStep.classList.contains("step")) {
@@ -90,10 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 parentStep.classList.add("d-none"); 
                 nextStep.classList.remove("d-none");   
                 updateProgressBar();            
-            } else {
-                // console.log("Aucune étape suivante trouvée.");
-            }
-
+            } 
         });
     });
 
@@ -102,16 +88,13 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault(); 
             const parentStep = button.closest(".step");
             const stepId = parentStep.id;
-            // console.log("Parent trouvé :", parentStep);
 
             const answer = button.getAttribute("answer");
             if (answer) {
                 responses[stepId] = answer;
-                // console.log("Réponse enregistrée pour ", stepId, " : ", answer);
             }
-            // console.log(responses);
-
-            fetch("/register/submit-responses", {
+ 
+            fetch("/entreprise/submit-appointments", {
                 method: "POST", 
                 headers: {
                     "Content-Type": "application/json", 
@@ -126,11 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     return response.json(); 
                 })
                 .then((data) => {
-                    // console.log("Réponses envoyées avec succès :", data);
                     window.location.href = button.href;
                 })
                 .catch((error) => {
-                    // console.error("Erreur lors de l'envoi des réponses :", error);
                     alert("Une erreur s'est produite lors de l'envoi des données. Veuillez réessayer.");
                 });
         })
