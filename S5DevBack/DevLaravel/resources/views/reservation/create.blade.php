@@ -19,6 +19,14 @@
     <div class="availability">
 
         <h4 class="text-center mb-4">Disponibilités pour {{ $activite->libelle}}</h4>
+        @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
+            <label for="emplye" class="form-label mt-3">Veuillez Sélectionner un employé</label>
+            <select id="employe" class="form-select">
+                @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
+                    <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+                @endforeach
+            </select>
+        @endif
 
         <ul class="list-unstyled">
             @if ($activite->plages->count() > 0)
@@ -160,6 +168,26 @@
                         <!-- Champs cachés pour la date et l'horaire -->
                         <input type="hidden" name="dateRdv" id="hiddenDateRdv">
                         <input type="hidden" name="horaire" id="hiddenHoraire">
+
+                        <!-- Sélection de l'employé -->
+                        @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
+                        <div class="form-group mb-3">
+                            <label for="employeSelect" class="form-label">Sélectionnez un employé :</label>
+                            <select name="employe_id" id="employeSelect" class="form-select" required>
+                                @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
+                                    <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @elseif ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() === 1)
+                        @php
+                            $employe = $entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->first();
+                        @endphp
+                        <input type="hidden" name="employe_id" value="{{ $employe->id }}">
+                        <p>
+                            Employé affecté automatiquement : <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong>
+                        </p>
+                    @endif
 
                         <!-- Nombre de personnes -->
                         @if ($entreprise->typeRdv[0] == 1)
