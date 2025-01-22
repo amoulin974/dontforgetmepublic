@@ -246,6 +246,7 @@ margin-right: auto;
 .res-header {
   display: inline-flex; 
   width: 100%;
+  margin-bottom: 10px;
 }
 
 /* .res-header a {
