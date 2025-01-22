@@ -12,6 +12,11 @@
     </head>
 
     <div class="container">
+
+        @php
+         $isAdmin = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null;
+         $isInvite = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->first() != null;
+        @endphp
         <a href="{{ route('entreprise.indexUser') }}" class="btn btn-primary">Retour</a>
         <div class="containerEntreprise"> 
             <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
@@ -39,26 +44,44 @@
                 <p><strong>Publié !</strong></p>
                 <div style="display: inline-flex; width: 100%;">
                 <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:1%;margin-right:10px;"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
+                @if ($isAdmin)
                 <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="bi bi-tools"></i> Gérer les activités</a>
-                </div>
+                @endif
+            </div>
+            @else
+                <p><strong>Non publié (en attente de création de votre première activité)</strong></p>
+                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>
+            @endif
+            @if($isInvite)
+            <div id="invitation" style="display: inline-flex;  width: 100%;">
+                <p style="margin: auto; margin-right: 1%;"><i>Vous êtes invité dans cette entreprise :</i></p>
+                <a style="margin:auto; margin-left:1%; margin-right: 1%;" onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
+                <a style="margin:auto; margin-left:0px;" onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
+            </div>
             @endif
             <div style="display: inline-flex; width: 100%;margin-top: 15px;">
             <h3>Liste des employés</h3>
+            @if ($isAdmin)
             <a class="btn btn-primary" id="addEmploye" style="display:block; margin:auto; margin margin-left:auto;margin-right:20%;"><i class="fa fa-user-plus"></i> Ajouter un(e) employé(e)</a>
+            @endif
             </div>
             <div style="overflow:auto; max-height:400px;">
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
                     <div class="containerEntreprise" id="user{{$user->id}}" style="width:100%;"> 
                         <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
-                        <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->pluck('statut')[0] }}</p>
-                        <p style="margin-bottom: 0%;"><strong><i>Vous</i></strong>
+                        <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
+                        <div style="display: inline-flex; width: 100%;">
+                        <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong>
                         @if ($user->id == $entreprise->idCreateur)
                             <strong>(Créateur)</strong></p>
                         @else
                         </p>
-                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Quitter l'entreprise</a>
+                        @if(!$isInvite)
+                        <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Quitter l'entreprise</a>
                         @endif
+                        @endif
+                        </div>
                     </div>
                     @else
                         <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
@@ -66,7 +89,7 @@
                             <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                             @if ($user->id == $entreprise->idCreateur)
                             <p><strong>Créateur</strong></p>
-                            @else
+                            @elseif($isAdmin)
                                 @if ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
                                         <a onclick="retrograder({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Rétrograder</a>
                                         <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
@@ -171,6 +194,30 @@
             });
         }
 
+        function quitterEntreprise(uId, uName, uPrenom){
+            $.ajax({
+                type: "POST",
+                url: SITEURL + "/",
+                data: {
+                    idEmploye: uId,
+                    type: 'delete',
+                    idEntreprise: {{ $entreprise->id }},
+                },
+                success: function (data) {
+                    // Transformer la possibilité d'accepter en la possibilité de visualiser
+                    $("#user" + uId).remove();
+                    displayMessage('Vous (' +  uName +' ' + uPrenom + ') avez quitté l\'entreprise.');
+                    // Redirection après 2 secondes
+                    setTimeout(function(){
+                        window.location.href = "{{ route('entreprise.indexUser') }}";
+                    }, 2000);
+                },
+                error: function (data) {
+                    displayError('Erreur lors de la suppression. Réessayez...');
+                }
+            });
+        }
+
         function annulerInvit(uId, uName, uPrenom){
             $.ajax({
                 type: "POST",
@@ -204,7 +251,16 @@
                     },
                     buttons: {
                         "Inviter": function() {
-                            var email = $("#employe").val();+
+                            var email = $("#employe").val();
+                            // Vérifier que l'employé n'est pas déjà dans l'entreprise
+                            @foreach ($entreprise->travailler_users->unique() as $user)
+                                if ("{{ $user->email }}" == email){
+                                    displayError('Cet employé est déjà dans votre entreprise.');
+                                    $('#dialog').dialog('close');
+                                    $("#employe").val('');
+                                    return;
+                                }
+                            @endforeach
                             $.ajax({
                                 type: "POST",
                                 url: SITEURL + "/",
@@ -231,6 +287,57 @@
                 });
             });
         });
+
+        // URL dans le site
+        var SITEURL2 = "{{ url('/parametrage/invit') }}";
+
+function accepterInvit(eId, eLib) {
+    $.ajax({
+        type: "POST",
+        url: SITEURL2 + "/",
+        data: {
+            id: {{ Auth::user()->id }},
+            type: 'accept',
+            idEntreprise: eId,
+        },
+        success: function (data) {
+            displaySuccess('Vous avez accepté l\'invitation.\nVous travaillez maintenant pour ' + eLib);
+            // Retirer l'invitation
+            $("#invitation").remove();
+            // Retirer l'employé correspondant
+            $("#user{{ Auth::user()->id }}").remove();
+            // Ajouter à la liste des employés
+            $(".entreprise").append('<div class="containerEntreprise" id="user{{ Auth::user()->id }}"> <p><strong>Utilisateur :</strong> {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</p> <p><strong>Statut :</strong> Employé</p> <div style="display: inline-flex; width: 100%;"> <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong></p> <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{ Auth::user()->id }},\'{{ Auth::user()->nom }}\',\'{{ Auth::user()->prenom }}\')" class="btn btn-primary reject">Quitter l\'entreprise</a> </div> </div>');
+       },
+        error: function (data) {
+            displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');
+        }
+    });
+}
+
+function refuserInvit(eId, eLib) {
+    $.ajax({
+        type: "POST",
+        url: SITEURL2 + "/",
+        data: {
+            id: {{ Auth::user()->id }},
+            type: 'reject',
+            idEntreprise: eId,
+        },
+        success: function (data) {
+            displayMessage('Vous avez refusé l\'invitation de ' + eLib);
+            // Retirer les boutons d'acceptation et de refus
+            $("#invitation").remove();
+            // Redirection après 2 secondes
+            setTimeout(function(){
+                window.location.href = "{{ route('entreprise.indexUser') }}";
+            }, 2000);
+        },
+        error: function (data) {
+            displayError('Erreur lors du refus de l\'invitation. Réessayez...');
+        }
+    });
+}
     </script>
 
 @endsection
