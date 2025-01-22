@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Reservation;
@@ -39,12 +40,11 @@ class reservationController extends Controller
      * @param  int  $id
      * @return Illuminate\View\View
      */
-    public function show(Reservation $reservation) : View
+    public function show(Reservation $reservation)
     {
-        return view('reservation.show', [
-            'reservation' => $reservation
-        ]);
+        return view('reservation.show', compact('reservation'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -68,7 +68,7 @@ class reservationController extends Controller
                   ->from('effectuer')
                   ->where('idActivite', $activite->id);
         })->get();
-    
+
         return view('reservation.create', [
             'entreprise' => $entreprise,
             'activite' => $activite,
@@ -80,7 +80,7 @@ class reservationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\FormPostRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request, Entreprise $entreprise, Activite $activite)
     {
@@ -124,7 +124,7 @@ class reservationController extends Controller
             $reservation->notifications()->save($notification);
         }
 
-        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);  
+        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);
 
         // Rediriger avec un message de succès
         return redirect()
@@ -138,50 +138,98 @@ class reservationController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Reservation $reservation
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function edit(Reservation $reservation)
     {
-        // À modifier
-        if((Auth::user()->id) || (Auth::user()->superadmin)) {
-            return view('reservation.edit' , ['reservation' => $reservation]);        
+        // Récupérer la première activité liée à la réservation
+        $activite = $reservation->effectuer_activites()->first();
+        if (! $activite) {
+            return redirect()->route('reservation.index')->with('error', 'Aucune activité associée à cette réservation.');
         }
-        else {
-            return redirect()->route('reservation.index');
-        }  
+
+        // Récupérer toutes les réservations liées à cette activité
+        $allReservations = Reservation::whereIn('id', function ($query) use ($activite) {
+            $query->select('idReservation')
+                ->from('effectuer')
+                ->where('idActivite', $activite->id);
+        })->get();
+
+        // Exclure la réservation actuelle pour que l’ancien créneau apparaisse comme disponible
+        $reservations = $allReservations->filter(fn($r) => $r->id !== $reservation->id);
+
+        // Récupérer l'entreprise associée via l'activité
+        $entreprise = $activite->entreprise;
+
+        // On passe tout ça à la vue
+        return view('reservation.edit', compact('reservation', 'activite', 'reservations', 'entreprise'));
     }
+
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param FormPostRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  Reservation  $reservation
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Reservation $reservation, FormPostRequest $request)
+    public function update(Request $request, Reservation $reservation)
     {
-        $reservation->update($request->validated());
+        // Valider les données
+        $validated = $request->validate([
+            'slot'         => 'required|string', // Ex: "09:00 - 10:00|2025-02-01"
+            'nbPersonnes'  => 'required|integer|min:1',
+        ]);
 
-        return redirect()->route('reservation.show', ['reservation' => $reservation->id])->with('success', 'La réservation a été modifiée avec succès.');
+        // 1) Extraire l'horaire et la date depuis 'slot'
+        [$timeRange, $jour] = explode('|', $validated['slot']);
+        [$hDeb, $hFin] = explode(' - ', $timeRange);
+
+        // 2) Créer la nouvelle réservation
+        $newReservation = Reservation::create([
+            'dateRdv'     => $jour,
+            'heureDeb'    => \Carbon\Carbon::parse($hDeb)->format('H:i:s'),
+            'heureFin'    => \Carbon\Carbon::parse($hFin)->format('H:i:s'),
+            'nbPersonnes' => $validated['nbPersonnes'],
+        ]);
+
+        // 3) Récupérer l’activité liée à l’ancienne réservation
+        $activite = $reservation->effectuer_activites()->first();
+
+        // 4) Attacher la nouvelle réservation (table pivot 'effectuer')
+        $newReservation->effectuer_activites()->attach($activite->id, [
+            'idUser'          => Auth::id(),
+            'dateReservation' => now(),
+            'typeNotif'       => 'SMS',
+            'numTel'          => Auth::user()->numTel,
+        ]);
+
+        // 5) Supprimer l’ancienne réservation et ses relations
+        $reservation->notifications()->delete();
+        $reservation->effectuer_activites()->detach();
+        $reservation->delete();
+
+        return redirect()
+            ->route('reservation.index')
+            ->with('success', 'Votre réservation a été modifiée avec succès !');
     }
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Reservation  $reservation
-     * @return \Illuminate\Http\Response
+     * @param Reservation $reservation
+     * @return RedirectResponse
      */
     public function destroy(Reservation $reservation)
     {
-        $reservation = Reservation::findOrFail($reservation->id);
+        $reservation->notifications()->delete();
+        $reservation->effectuer_activites()->detach();
+        $reservation->delete();
 
-        if((Auth::user()->id) || (Auth::user()->superadmin)) {
-            $reservation->delete();
-
-            return redirect()->route('reservation.index')->with('success', 'Réservation supprimée avec succès');
-        }
-        else {
-            return redirect()->route('reservation.index');
-        }  
+        return redirect()
+            ->route('reservation.index')
+            ->with('success', 'Réservation et notifications supprimées avec succès !');
     }
 }
