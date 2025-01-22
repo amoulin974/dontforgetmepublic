@@ -39,7 +39,7 @@
         {{-- @if (Auth::user()->id == $entreprise->user_id) // Cas créateur
             <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
         @endif --}}
-        <div style="display: inline-flex;">
+        <div style="display: inline-flex;  width: 100%;">
         @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
             <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="margin:auto;"><i class="fa fa-wrench"></i> Paramétrer les plages</a>
             <div style="overflow: auto; max-height: 150px; margin-left:30px;">
@@ -60,9 +60,11 @@
             @endforeach
             </div>
         @else
-            <p ><i>Vous êtes invité dans cette entreprise :</i></p>
-            <a onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
-            <a onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
+        <div style="display: inline-flex;  width: 100%;">
+            <p style="margin: auto;"><i>Vous êtes invité dans cette entreprise :</i></p>
+            <a style="margin:auto; margin-right: 1%;" onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
+            <a style="margin:auto; margin-left:0px;" onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
+        </div>
         @endif
     </div>
     </div>
@@ -96,9 +98,10 @@ function accepterInvit(eId, eLib) {
         success: function (data) {
             displaySuccess('Vous avez accepté l\'invitation.\nVous travaillez maintenant pour ' + eLib);
             // Transformer la possibilité d'accepter en la possibilité de visualiser
-            $("#entreprise" + eId + " a").remove();
+            location.reload();
+            /* $("#entreprise" + eId + " a").remove();
             $("#entreprise" + eId + " i").remove();
-            $("#entreprise" + eId).append('<a class="btn btn-primary light" href="/parametrage/plage/'+eId+'">Visualiser vos plages</a>'); {{-- {{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }} --}}
+            $("#entreprise" + eId).append('<a class="btn btn-primary light" href="/parametrage/plage/'+eId+'">Visualiser vos plages</a>'); {{-- {{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }} --}} */
         },
         error: function (data) {
             displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');

@@ -24,7 +24,6 @@
             Date : <em>{{ $reservation->dateRdv->format('d/m/Y') }}</em><br>
             Heure : <em>{{ \Carbon\Carbon::parse($reservation->heureDeb)->format('H:i') }} -
                 {{ \Carbon\Carbon::parse($reservation->heureFin)->format('H:i') }}</em><br>
-            Nombre de personnes : <em>{{ $reservation->nbPersonnes }}</em>
         </div>
 
         <!-- Tableau des disponibilités (même style que create.blade.php) -->
@@ -203,7 +202,6 @@
                                 value="{{ Auth::user()->numTel }}"
                             >
                         </div>
-
                         <div class="form-check mb-3 mt-4">
                             <input class="form-check-input" type="radio" name="typeNotification" id="mailOption" value="Mail">
                             <label class="form-check-label" for="mailOption">
@@ -237,16 +235,6 @@
                 </div>
             </div>
         </div>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $message)
-                        <li>{{ $message }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
 
     </div>
 

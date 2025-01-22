@@ -20,14 +20,16 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
 
         Route::get('/{reservation}/edit', 'edit')->name('edit');
         Route::put('/{reservation}/edit', 'update')->name('update');
-        Route::get('/{reservation}/delete', 'destroy')->name('delete');
+        // Route::resources
+
+        Route::delete('/{reservation}', 'destroy')->name('destroy');
 
         // Route::resources
-    });
 
-    Route::get('/{reservation}', 'show')->where([
-        'id' => '[0-9]+',
-    ])->name('show');
+        Route::get('/{reservation}', 'show')->where([
+            'id' => '[0-9]+',
+        ])->name('show');
+    });
 });
 
 /* Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
@@ -43,7 +45,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
 
     Route::middleware(['auth'])->group(function () {
 
-        Route::get('/', 'index')->name('index');
+        /* Route::get('/', 'index')->name('index'); */
 
         Route::post('/invit', 'invit')->name('invit');
 
