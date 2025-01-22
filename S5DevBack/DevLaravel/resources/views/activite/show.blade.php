@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">Mes Services</h2>
+    <h2 class="mb-4">Services proposés</h2>
 
     @if($services->isEmpty())
         <p>Aucun service n'a été créé pour {{ $entreprise->libelle }}.</p>
