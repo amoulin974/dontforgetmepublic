@@ -15,9 +15,10 @@ class ActiviteController extends Controller
     public function index(Entreprise $entreprise)
     {
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
+        $isEmploye = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Employé')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
         $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
-        $isAllow = $isAdmin || $isCreator;
+        $isAllow = $isAdmin || $isCreator || $isEmploye;
 
         if($isAllow){
             //$services = Activite::where('entreprise_id', $entrepriseActuelle->id)->get();

@@ -46,6 +46,8 @@
                 <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:1%;margin-right:10px;"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
                 @if ($isAdmin)
                 <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="bi bi-tools"></i> Gérer les activités</a>
+                @elseif(!$isInvite)
+                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="fa fa-eye"></i> Visualiser vos plages</a>
                 @endif
             </div>
             @else
@@ -206,11 +208,12 @@
                 success: function (data) {
                     // Transformer la possibilité d'accepter en la possibilité de visualiser
                     $("#user" + uId).remove();
-                    displayMessage('Vous (' +  uName +' ' + uPrenom + ') avez quitté l\'entreprise.');
+                    /* displayMessage('Vous (' +  uName +' ' + uPrenom + ') avez quitté l\'entreprise.'); */
                     // Redirection après 2 secondes
-                    setTimeout(function(){
+                    /* setTimeout(function(){ */
+                        localStorage.setItem('success', 'Vous (' +  uName +' ' + uPrenom + ') avez quitté l\'entreprise.');
                         window.location.href = "{{ route('entreprise.indexUser') }}";
-                    }, 2000);
+                    /* }, 2000); */
                 },
                 error: function (data) {
                     displayError('Erreur lors de la suppression. Réessayez...');
@@ -325,13 +328,16 @@ function refuserInvit(eId, eLib) {
             idEntreprise: eId,
         },
         success: function (data) {
-            displayMessage('Vous avez refusé l\'invitation de ' + eLib);
+            //displayMessage('Vous avez refusé l\'invitation de ' + eLib);
             // Retirer les boutons d'acceptation et de refus
             $("#invitation").remove();
             // Redirection après 2 secondes
-            setTimeout(function(){
+            /* setTimeout(function(){ */
+                // Stocker le message de succès dans le stockage local
+                localStorage.setItem('success', 'Vous avez refusé l\'invitation de ' + eLib);
                 window.location.href = "{{ route('entreprise.indexUser') }}";
-            }, 2000);
+                
+            /* }, 2000); */
         },
         error: function (data) {
             displayError('Erreur lors du refus de l\'invitation. Réessayez...');

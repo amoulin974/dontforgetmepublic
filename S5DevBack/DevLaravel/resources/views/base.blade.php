@@ -40,11 +40,11 @@
         <div class="collapse navbar-collapse full-page-menu" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a href="/" class="@yield('home_active') nav-link"><i class="fa fa-home"></i> Accueil</a></li>
-                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
-                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
                 @guest
                 @else
-                  <li class="nav-item"><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active') nav-link"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
+                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
+                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
+                  {{-- <li class="nav-item"><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active') nav-link"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li> --}}
                 @endguest
                 <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
             </ul>
@@ -156,6 +156,12 @@ $(document).ready(function() {
     @elseif (session('error'))
             displayError("{{ session('error') }}");
     @endif
+
+    const successMessage = localStorage.getItem('success');
+    if (successMessage) {
+        displaySuccess(successMessage);
+        localStorage.removeItem('success'); // Supprimer le message de succès du stockage local
+    }
 });
 </script>
 

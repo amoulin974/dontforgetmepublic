@@ -44,7 +44,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
 
     Route::middleware(['auth'])->group(function () {
 
-        Route::get('/', 'index')->name('index');
+        /* Route::get('/', 'index')->name('index'); */
 
         Route::post('/invit', 'invit')->name('invit');
         

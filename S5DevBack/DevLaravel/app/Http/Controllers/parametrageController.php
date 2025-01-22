@@ -164,23 +164,23 @@ class parametrageController extends Controller
               }
               else { */
                 // Update en conséquence
-                Auth::user()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->update([
+                $event = Auth::user()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->update([
                   'statut' => 'Employé',
                 ]);
               /* } */
 
-              return redirect()->route('parametrage.plage.idEntreprise', ['entreprise' => $request->idEntreprise]);
+              return response()->json($event);//redirect()->route('parametrage.plage.idEntreprise', ['entreprise' => $request->idEntreprise]);
              break;
   
            case 'reject':
               // Envoyer mail ou sms
               // Supprimer du pivot travailler
-              Auth::user()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->delete();
-              return redirect()->route('parametrage.index');
+              $event = Auth::user()->travailler_entreprises->where('id', $request->idEntreprise)->first()->pivot->delete();
+              return response()->json($event);//redirect()->route('entreprise.indexUser');
              break;
              
            default:
-              return redirect()->route('parametrage.index');
+              return redirect()->route('entreprise.indexUser');
              break;
         }
     }
@@ -237,7 +237,8 @@ class parametrageController extends Controller
 
               $event = Plage::findOrFail($request->id)->first();
 
-              $event->activites()->detach($request->id_activite);
+              // Supprimer les relations
+              $event->activites()->detach();
 
               $event = $event->delete();
   
