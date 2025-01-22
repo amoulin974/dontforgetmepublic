@@ -93,6 +93,7 @@ class reservationController extends Controller
             'notifications.*.typeNotification' => 'sometimes|string|in:SMS,Mail', // Type : SMS ou Mail
             'notifications.*.contenu' => 'sometimes|string', // Contenu : email ou numéro
             'notifications.*.duree' => 'sometimes|string|in:1jour,2jours,1semaine', // Durée : "1jour", "2jours", "1semaine"
+            'employe_id' => 'required|integer|exists:users,id', // Employé doit exister dans la table users
         ]);
 
         // Extraction des heures à partir de 'horaire'
@@ -123,6 +124,9 @@ class reservationController extends Controller
             // Associer la notification à la réservation via la relation notifications()
             $reservation->notifications()->save($notification);
         }
+
+        // Associer l'employé à la réservation via la relation affecter_users
+        $reservation->affecter_users()->attach($validated['employe_id']);
 
         Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);  
 
