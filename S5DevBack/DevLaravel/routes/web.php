@@ -31,14 +31,14 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     ])->name('show');
 });
 
-/* Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
+Route::prefix('/calendrier')->name('calendrier.')->controller(calendrierController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/ajax', 'ajax')->name('ajax');
     });
     
-}); */
+});
 
 Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageController::class)->group(function(){
 
@@ -106,7 +106,7 @@ Route::prefix('/profile')->name('profile.')->controller(userController::class)->
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 
-// Auth::routes();
+Auth::routes();
 
 Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->middleware('throttle:5,1');
@@ -114,7 +114,6 @@ Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class, 'logou
 
 Route::get('register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])->middleware('throttle:3,1');
-
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

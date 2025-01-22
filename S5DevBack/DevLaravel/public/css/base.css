@@ -18,11 +18,6 @@ body {
   font-weight: bold;
 }
 
-.nameProfil.active{
-  color: #1c1b19;
-  font-weight: bold;
-}
-
 .container {
   max-width: 90vh;
   margin: 2vh auto;
@@ -31,7 +26,7 @@ body {
   border-radius: 10px; /* Bords arrondis pour le conteneur */
 }
 
-.containerEntreprise h2 {
+.containerEntreprise h3 {
   color: #1167FC /* 1dacff*/; /* Couleur primaire */
   padding-bottom: 1vh;
 }
@@ -64,18 +59,14 @@ header .profileInfo {
 header .profileInfo a {
   color: #eeeeff;
   text-decoration: none;
-  margin-left: 20px;
   cursor: pointer;
+  padding: 8px;
 }
 
 header .profileInfo a:hover {
   scale: 1.1;
   transition: scale 0.3s; /* color: #1c1b19;
   transition: color 0.3s; */
-}
-
-.nameProfil {
-font-weight: bold;
 }
 
 nav ul {
@@ -86,7 +77,6 @@ nav ul {
 
 nav ul li {
   display: inline-flex;
-  margin-right: 20px;
 }
 
 nav ul li a {
@@ -108,8 +98,7 @@ nav ul li a:hover {
 }
 
 .logo img {
-  max-width: 100px;
-  margin-right: 10px;
+  max-width: 55px;
   transition: transform 0.3s;
 }
 
@@ -195,9 +184,14 @@ background-color: #f8f9fa; /* Couleur de fond */
 padding: 20px; /* Espacement interne */
 margin: 20px auto; /* Marges */
 border: 1px solid #dee2e6; /* Bordure */
-border-radius: 5px; /* Bords arrondis */
+border-radius: 10px; /* Bords arrondis */
 max-width: 1200px; /* Largeur maximale */
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre */
+transition: transform 0.3s; /* Animation de levée au survol */
+}
+
+.containerEntreprise:hover {
+  transform: translateY(-5px); /* Animation de levée au survol */
 }
 
 /* Style pour les éléments à l'intérieur du conteneur */
@@ -227,12 +221,12 @@ margin-right: auto;
 
 /* Styles pour les cartes de ress */
 .res {
-  background-color: #fff;
+  background-color: #f8f9fa; /* Couleur de fond */
+  border: 1px solid #dee2e6; /* Bordure */
   border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
-  margin: 0 10px 20px 10px; /* Espacement entre les cartes */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre */
+  padding: 20px; /* Espacement interne */
+  margin: 20px auto; /* Espacement entre les cartes */
   transition: transform 0.3s; /* Animation de levée au survol */
 }
 
@@ -240,13 +234,18 @@ margin-right: auto;
   transform: translateY(-5px); /* Animation de levée au survol */
 }
 
-.res h2 {
+.res h3 {
   color: #1167FC /* 1dacff*/; /* Couleur primaire */
   margin-bottom: 10px;
 }
 
 .res p {
   margin-bottom: 5px;
+}
+
+.res-header {
+  display: inline-flex; 
+  width: 100%;
 }
 
 /* .res-header a {
@@ -374,6 +373,7 @@ margin-right: auto;
 }
 
 .res-details-info {
+  font-size: 0.875rem; /* Texte en petit */
   flex: 1; /* Prend autant d'espace que possible */
   margin: 0; /* Espacement entre les informations et le Heat */
 }
@@ -511,6 +511,32 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 /* Styles pour la page d'accueil */
+.logo-home {
+  max-width: 32vh; 
+  max-height: 32vh; 
+  display: block; 
+  margin-top: 0px; 
+  margin-inline: auto;
+}
+
+.searchbar-home {
+  display: inline-flex; 
+  width: 100%;
+  margin-block: 30px;
+}
+
+.headerEntreprise {
+  width: 150px;
+  height: 150px;
+  margin-block: auto !important;
+  text-align: center;
+}
+
+.infoEntreprise {
+  margin-block: 10px !important;
+  font-size: 0.875rem;
+}
+
 .card {
   margin-top: 50px; /* Espacement du haut de la carte */
 }
@@ -978,6 +1004,13 @@ background: #007aff; /* Couleur des puces actives */
 }
 
 /* Styles pour les écrans de moins de 768px */
+@media (max-width: 767px) {
+  .infoEntreprise h3 {
+    text-align: center;
+  }
+}
+
+/* Styles pour les écrans de moins de 993px */
 @media (max-width: 992px) {
   .navbar-collapse {
       position: fixed;

@@ -39,7 +39,7 @@
                 <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
                 @guest
                 @else
-                  <li class="nav-item"><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active') nav-link"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
+                  <li class="nav-item"><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active') nav-link"><i class="fa fa-calendar"></i> Planning</a></li>
                 @endguest
                 <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
             </ul>
