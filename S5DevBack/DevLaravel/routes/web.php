@@ -20,8 +20,9 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
 
         Route::get('/{reservation}/edit', 'edit')->name('edit');
         Route::post('/{reservation}/edit', 'update')->name('update');
+        // Route::resources
 
-        Route::get('/{reservation}/delete', 'destroy')->name('delete');
+        Route::delete('/{reservation}', 'destroy')->name('destroy');
 
         // Route::resources
 
@@ -37,7 +38,7 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
         Route::get('/', 'index')->name('index');
         Route::post('/ajax', 'ajax')->name('ajax');
     });
-    
+
 }); */
 
 Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageController::class)->group(function(){
@@ -47,7 +48,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
         /* Route::get('/', 'index')->name('index'); */
 
         Route::post('/invit', 'invit')->name('invit');
-        
+
         Route::prefix('/plage')->name('plage.')->group(function(){
             Route::post('/', 'ajax')->name('ajax');
             Route::get('/{entreprise}', 'indexPlage')->name('idEntreprise');
@@ -55,7 +56,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
         });
 
     });
-    
+
 });
 
 Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){
@@ -77,19 +78,19 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::post('/store', 'store')->name('store');
-            Route::get('/{id}', 'show')->name('show'); 
+            Route::get('/{id}', 'show')->name('show');
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
             Route::get('/{id}/plage', 'createPlage')->name('createPlage');
             Route::post('/{id}/plage', 'ajaxPlage')->name('ajaxPlage');
         });
-        
+
     });
-    
+
     //Route::get('/', 'index')->name('index');
 
-    
+
 });
 
 Route::prefix('/reserver')->name('reserver.')->controller(ReserverController::class)->group(function(){
@@ -121,9 +122,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('/register')->name('register.')->controller(RegisterController::class)->group(function() {
     Route::get('/choose-account-type', [RegisterController::class, 'showChoicePage'])->name('choose.account.type');
-    
+
     Route::get('/user', [RegisterController::class, 'showUserRegisterPage'])->name('user.register');
-    
+
     Route::get('/company/userAccount', [RegisterController::class, 'showUserRegisterPage'])->name('company.register.user');
 
     Route::match(['get', 'post'], '/company/companyAccount', [RegisterController::class, 'showCompanyRegisterPage'])->name('company.register.company');
