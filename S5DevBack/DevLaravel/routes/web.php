@@ -19,7 +19,7 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
         Route::post('/{entreprise}/new/{activite}', 'store')->name('store');
 
         Route::get('/{reservation}/edit', 'edit')->name('edit');
-        Route::post('/{reservation}/edit', 'update')->name('update');
+        Route::put('/{reservation}/edit', 'update')->name('update');
         // Route::resources
 
         Route::delete('/{reservation}', 'destroy')->name('destroy');
