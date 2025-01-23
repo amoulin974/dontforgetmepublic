@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('layouts.app')
 @include('base')
 
@@ -16,8 +17,8 @@
         <div class="alert alert-info">
             <strong>Ancienne réservation :</strong><br>
             Date : <em>{{ $reservation->dateRdv->format('d/m/Y') }}</em><br>
-            Heure : <em>{{ \Carbon\Carbon::parse($reservation->heureDeb)->format('H:i') }} -
-                {{ \Carbon\Carbon::parse($reservation->heureFin)->format('H:i') }}</em><br>
+            Heure : <em>{{ Carbon::parse($reservation->heureDeb)->format('H:i') }} -
+                {{ Carbon::parse($reservation->heureFin)->format('H:i') }}</em><br>
         </div>
 
         <!-- Tableau des disponibilités (comme create, mais on va skip les dates/horaires passés) -->
@@ -26,13 +27,13 @@
 
             <ul class="list-unstyled">
                 @php
-                    $today = \Carbon\Carbon::today();
+                    $today = Carbon::today();
                 @endphp
 
                 @if($activite->plages->count() > 0)
                     @foreach ($activite->plages->groupBy('datePlage') as $datePlage => $plages)
                         @php
-                            $dateObj = \Carbon\Carbon::parse($datePlage);
+                            $dateObj = Carbon::parse($datePlage);
                             // On saute si la date est strictement avant aujourd'hui
                             if ($dateObj->isBefore($today)) {
                                 continue;
@@ -48,10 +49,10 @@
                                 @foreach ($plages as $plage)
                                     @php
                                         try {
-                                            $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                            $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                            $interval = \Carbon\Carbon::parse($plage->interval)->hour * 60
-                                                      + \Carbon\Carbon::parse($plage->interval)->minute;
+                                            $heureDeb = Carbon::parse($plage->heureDeb);
+                                            $heureFin = Carbon::parse($plage->heureFin);
+                                            $interval = Carbon::parse($plage->interval)->hour * 60
+                                                      + Carbon::parse($plage->interval)->minute;
                                         } catch (\Exception $e) {
                                             echo '<div class="text-danger">Erreur de formatage des plages horaires.</div>';
                                             continue;
@@ -76,8 +77,8 @@
                                                     return false;
                                                 }
                                                 // Compare chevauchement horaire
-                                                $resStart = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureDeb);
-                                                $resEnd   = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureFin);
+                                                $resStart = Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureDeb);
+                                                $resEnd   = Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureFin);
 
                                                 return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
                                             });
@@ -134,7 +135,7 @@
                             </p>
 
                             <!-- Champ caché pour le slot (ex: "09:00 - 10:00|2025-02-01") -->
-                            <input type="hidden" name="slot" id="hiddenSlot" />
+                            <input type="hidden" name="slot" id="hiddenSlot"/>
 
                             <!-- Nombre de personnes (comme en create) -->
                             @if($entreprise->typeRdv[0] == 1)
@@ -170,7 +171,8 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary w-100">Confirmer la modification</button>
-                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Annuler
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -178,7 +180,8 @@
         </div>
 
         <!-- Modal : Ajouter une nouvelle notification (identique à create) -->
-        <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -267,11 +270,11 @@
             document.querySelectorAll('.horaire-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const horaire = btn.dataset.horaire; // ex: "09:00 - 10:00"
-                    const date    = btn.dataset.date;    // ex: "2025-02-01"
+                    const date = btn.dataset.date;    // ex: "2025-02-01"
 
                     // Injecter le texte dans la modale
                     document.getElementById('selectedHoraire').textContent = horaire;
-                    document.getElementById('selectedDate').textContent    = date;
+                    document.getElementById('selectedDate').textContent = date;
 
                     // Champ hidden "slot" => "09:00 - 10:00|2025-02-01"
                     document.getElementById('hiddenSlot').value = `${horaire}|${date}`;
@@ -282,24 +285,24 @@
             });
 
             // Toggle SMS/Email
-            const smsOption  = document.getElementById('smsOption');
+            const smsOption = document.getElementById('smsOption');
             const mailOption = document.getElementById('mailOption');
-            const smsField   = document.getElementById('smsField');
-            const mailField  = document.getElementById('mailField');
+            const smsField = document.getElementById('smsField');
+            const mailField = document.getElementById('mailField');
 
             smsOption.addEventListener('change', () => {
-                smsField.style.display  = smsOption.checked ? 'block' : 'none';
+                smsField.style.display = smsOption.checked ? 'block' : 'none';
                 mailField.style.display = 'none';
             });
             mailOption.addEventListener('change', () => {
                 mailField.style.display = mailOption.checked ? 'block' : 'none';
-                smsField.style.display  = 'none';
+                smsField.style.display = 'none';
             });
 
             // Bouton "Valider" dans le modal "Ajouter une notification"
             const saveNotificationBtn = document.getElementById('saveNotificationBtn');
             saveNotificationBtn.addEventListener('click', () => {
-                const type   = smsOption.checked ? 'SMS' : 'Mail';
+                const type = smsOption.checked ? 'SMS' : 'Mail';
                 const contenu = smsOption.checked
                     ? document.getElementById('smsInput').value
                     : document.getElementById('mailInput').value;
@@ -318,22 +321,22 @@
 
                 // typeNotification
                 const inputType = document.createElement('input');
-                inputType.type  = 'hidden';
-                inputType.name  = `notifications[${index}][typeNotification]`;
+                inputType.type = 'hidden';
+                inputType.name = `notifications[${index}][typeNotification]`;
                 inputType.value = type;
                 form.appendChild(inputType);
 
                 // contenu
                 const inputContenu = document.createElement('input');
-                inputContenu.type  = 'hidden';
-                inputContenu.name  = `notifications[${index}][contenu]`;
+                inputContenu.type = 'hidden';
+                inputContenu.name = `notifications[${index}][contenu]`;
                 inputContenu.value = contenu;
                 form.appendChild(inputContenu);
 
                 // duree
                 const inputDuree = document.createElement('input');
-                inputDuree.type  = 'hidden';
-                inputDuree.name  = `notifications[${index}][duree]`;
+                inputDuree.type = 'hidden';
+                inputDuree.name = `notifications[${index}][duree]`;
                 inputDuree.value = duree;
                 form.appendChild(inputDuree);
 
