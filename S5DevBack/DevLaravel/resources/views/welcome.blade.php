@@ -1,8 +1,7 @@
 @extends('base')
 
 @section('home_active', 'active')
-@section('title', 'Don\'t Forget Me')
-
+@section('title_base', 'Don\'t Forget Me')
 
 
 @section('content')

@@ -2,6 +2,8 @@
 
 @include('base')
 
+@section('title', 'Activités proposés par ' . $entreprise->libelle)
+
 @section('content')
 <div class="container">
     <h2 class="mb-4">Services proposés</h2>

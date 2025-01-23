@@ -72,17 +72,7 @@ class Reservation extends Model
      */
     public function affecter_users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'affecter', 'idReservation','idUser')->withPivot('idCreneau')->withTimestamps();
-    }
-
-    /**
-     * Get the creneaux associated with the reservation via Affecter.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function affecter_creneaux(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'affecter', 'idReservation','idCreneau')->withPivot('idUser')->withTimestamps();
+        return $this->belongsToMany(User::class, 'affecter', 'idReservation','idUser')->withTimestamps();
     }
 
     /**

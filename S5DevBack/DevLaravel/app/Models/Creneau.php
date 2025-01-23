@@ -70,24 +70,4 @@ class Creneau extends Model
     {
         return $this->belongsToMany(User::class, 'etre_disponible', 'idCreneau', 'idUser')->withTimestamps();
     }
-
-    /**
-     * Get the users associated with the creneau via Affecter.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function affecter_users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'affecter', 'idCreneau','idUser')->withPivot('idReservation')->withTimestamps();
-    }
-
-    /**
-     * Get the users associated with the creneau via Affecter.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function affecter_reservations(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'affecter', 'idCreneau','idReservation')->withPivot('idUser')->withTimestamps();
-    }
 }

@@ -2,6 +2,8 @@
 
 @include('base')
 
+@section('title', 'Activité de ' . $entreprise->libelle)
+
 @section('content')
 <div class="container">
     @if($services->isEmpty())

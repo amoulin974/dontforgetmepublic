@@ -92,15 +92,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Creneau::class, 'etre_disponible', 'idUser', 'idCreneau')->withTimestamps();
     }
 
-    /**
-     * Get the creneaux associated with the user via Affecter.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function affecter_creneaux(): BelongsToMany
-    {
-        return $this->belongsToMany(Creneau::class, 'affecter', 'idUser', 'idCreneau')->withPivot('idReservation')->withTimestamps();
-    }
 
     /**
      * Get the reservations associated with the user via Affecter.
@@ -109,7 +100,7 @@ class User extends Authenticatable
      */
     public function affecter_reservations(): BelongsToMany
     {
-        return $this->belongsToMany(Reservation::class, 'affecter', 'idUser', 'idReservation')->withPivot('idCreneau')->withTimestamps();
+        return $this->belongsToMany(Reservation::class, 'affecter', 'idUser', 'idReservation')->withTimestamps();
     }
 
     /**

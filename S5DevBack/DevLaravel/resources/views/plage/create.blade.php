@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
+@section('title_base', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
 @section('parametrage_active', 'active')
 
 @section('content')

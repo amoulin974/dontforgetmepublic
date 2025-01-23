@@ -3,6 +3,8 @@
 
 @include('base')
 
+@section('title', 'Réserver pour ' . $activite->libelle)
+
 @section('content')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -20,7 +22,15 @@
         <!-- Tableau des disponibilités -->
         <div class="availability">
 
-            <h4 class="text-center mb-4">Disponibilités pour {{ $activite->libelle}}</h4>
+        <h4 class="text-center mb-4">Disponibilités pour {{ $activite->libelle}}</h4>
+        @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
+            <label for="emplye" class="form-label mt-3">Veuillez Sélectionner un employé</label>
+            <select id="employe" class="form-select">
+                @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
+                    <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+                @endforeach
+            </select>
+        @endif
 
             <ul class="list-unstyled">
                 @if ($activite->plages->count() > 0)
@@ -242,6 +252,7 @@
                             >
                         </div>
 
+<<<<<<< HEAD
                         <div class="form-check mb-3 mt-4">
                             <input class="form-check-input" type="radio" name="typeNotification" id="mailOption"
                                    value="Mail">
@@ -259,6 +270,48 @@
                                 value="{{ Auth::user()->email }}"
                             >
                         </div>
+=======
+                        <!-- Sélection de l'employé -->
+                        @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
+                        <div class="form-group mb-3">
+                            <label for="employeSelect" class="form-label">Sélectionnez un employé :</label>
+                            <select name="employe_id" id="employeSelect" class="form-select" required>
+                                @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
+                                    <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @elseif ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() === 1)
+                        @php
+                            $employe = $entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->first();
+                        @endphp
+                        <input type="hidden" name="employe_id" value="{{ $employe->id }}">
+                        <p>
+                            Employé affecté automatiquement : <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong>
+                        </p>
+                    @endif
+
+                        <!-- Nombre de personnes -->
+                        @if ($entreprise->typeRdv[0] == 1)
+                            <div class="form-group mb-3">
+                                <label for="nbPersonnes" class="form-label">
+                                    <i class="bi bi-people-fill"></i> Nombre de personnes :
+                                </label>
+                                <input
+                                    type="number"
+                                    name="nbPersonnes"
+                                    id="nbPersonnes"
+                                    class="form-control"
+                                    placeholder="Entrez le nombre de personnes"
+                                    min="1"
+                                    required
+                                >
+                            </div>
+                        @endif
+                        <!-- Liste des notifications ajoutées -->
+                        <h5 class="mt-4">Notifications ajoutées :</h5>
+                        <ul id="notificationsList" class="list-group"></ul>
+>>>>>>> 8b49276e5f3d61cd8ca850529d29e57e529bb6ca
 
                         <!-- Durée avant rappel -->
                         <label for="duree" class="form-label mt-3">Durée avant rendez-vous :</label>

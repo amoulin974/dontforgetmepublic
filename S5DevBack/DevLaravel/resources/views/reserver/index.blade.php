@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Réserver une activité')
+@section('title_base', 'Réserver une activité')
 @section('reserver_active', 'active')
 
 @section('content')

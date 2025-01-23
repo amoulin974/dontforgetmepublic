@@ -2,6 +2,8 @@
 @extends('layouts.app')
 @include('base')
 
+@section('title', 'Modification réservation ' . $activite->libelle)
+
 @section('content')
     <div class="container">
 
@@ -29,7 +31,7 @@
 
         <!-- Tableau des disponibilités (même style que create.blade.php) -->
         <div class="availability">
-            <h4 class="text-center mb-4">Modifier la réservation pour l’activité: {{ $activite->libelle }}</h4>
+            <h4 class="text-center mb-4">Modifier la réservation pour l’activité : {{ $activite->libelle }}</h4>
 
             <ul class="list-unstyled">
                 @if ($activite->plages->count() > 0)
