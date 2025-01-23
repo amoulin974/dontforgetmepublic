@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Choix du type de rdv')
+
 @section('content')
 
 <div class="container d-flex flex-column align-items-center" style="min-height: 100vh;">

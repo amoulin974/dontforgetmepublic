@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Récapitulatif de création de compte')
+
 @section('content')
 <!-- <div class="container my-5" style="border: 2px solid blue; padding: 20px; border-radius: 10px;"> -->
 <div class="container my-5">

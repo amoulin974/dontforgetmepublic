@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Détail de ' . $entreprise -> libelle)
+@section('title_base', 'Détail de ' . $entreprise -> libelle)
 
 @section('content')
 

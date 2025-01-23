@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Créer votre entreprise')
+
 @section('content')
 <div class="container d-flex flex-column" style="min-height: 100vh;">
     <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">

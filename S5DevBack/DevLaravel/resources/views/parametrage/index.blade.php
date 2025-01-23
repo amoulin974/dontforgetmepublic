@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Paramétrage')
+@section('title_base', 'Paramétrage')
 @section('parametrage_active', 'active')
 
 @section('content')

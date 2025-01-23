@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Mes réservations')
+@section('title_base', 'Mes réservations')
 @section('catalogue_active', 'active')
 
 @section('content')

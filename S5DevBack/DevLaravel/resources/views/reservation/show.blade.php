@@ -1,17 +1,17 @@
 @extends('base')
 
-@section('title', 'Détail réservation n°' . $reservation -> id)
+@section('title_base', 'Détail réservation n°' . $reservation -> id)
 
 @section('content')
 
 @if(Auth::check())
 <div  style="display: inline-flex; width: 100%; margin-top:15px;margin-bottom:5px;">
-    <a class="btn btn-primary" style="display: block; margin-left:auto; margin-right:5px;" href="{{ route('reservation.edit', $reservation->id) }}" >
+    <a class="btn btn-primary" style="display: block; margin-left:auto; margin-right:1%;" href="{{ route('reservation.edit', $reservation->id) }}" >
         <span>Modifier la réservation</span>
         <i class="fa fa-edit"></i>
     </a>
     {{-- Formulaire pour SUPPRIMER la réservation --}}
-    <form action="{{ route('reservation.destroy', $reservation->id) }}" method="POST" style="display:inline;">
+    <form action="{{ route('reservation.destroy', $reservation->id) }}" method="POST" style="margin-right:5%;">
         @csrf
         @method('DELETE')
         <button type="submit" class="btn btn-danger"

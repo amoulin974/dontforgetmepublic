@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Récapitulatif de la création d\'entreprise')
+
 @section('content')
 <div class="container my-5">
     <div class="d-flex justify-content-center mb-5">
