@@ -116,6 +116,15 @@
         <form>
             <label for="employe">Saisissez l'email de l'employé(e)</label>
             <input type="email" id="employe" name="employe" required>
+            <label for="activites">Sélectionnez les activités de l'employé(e)</label>
+            <div style="width: 100%;">
+            <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
+            </div>
+            <div id="activites" name="activites" style="overflow: auto; display:block; max-height:50%;">
+                @foreach ($entreprise->activites as $activite)
+                    <label for="{{ $activite->id }}"><input type="checkbox" id="{{ $activite->id }}" value="{{ $activite->id }}"> {{ $activite->libelle }}</label><br>
+                @endforeach
+            </select>
         </form>
     </div>
 
@@ -264,6 +273,7 @@
                                     return;
                                 }
                             @endforeach
+                            var checked = $('input[type="checkbox"]:checked').map(function(){return $(this).val();}).get();
                             $.ajax({
                                 type: "POST",
                                 url: SITEURL + "/",
@@ -271,6 +281,7 @@
                                     email: email,
                                     type: 'invite',
                                     idEntreprise: {{ $entreprise->id }},
+                                    activites: checked.splice(1,checked.length),
                                 },
                                 success: function (data) {
                                     displaySuccess('Vous avez invité ' + email + ' (' + data.nom + ' ' + data.prenom + ') à rejoindre votre entreprise.');
@@ -290,6 +301,13 @@
                 });
             });
         });
+
+function checkAll() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = true;
+    });
+}
 
         // URL dans le site
         var SITEURL2 = "{{ url('/parametrage/invit') }}";

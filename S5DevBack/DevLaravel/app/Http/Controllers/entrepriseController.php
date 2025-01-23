@@ -155,9 +155,9 @@ class entrepriseController extends Controller
     {
         switch ($request->type) {
            case 'invite':
-            $activitesEntreprise = Entreprise::where('id', $request->idEntreprise)->first()->activites()->get('id');
+            //$activitesEntreprise = Entreprise::where('id', $request->idEntreprise)->first()->activites()->get('id');
 
-            foreach ($activitesEntreprise as $idActivite) {
+            foreach /* ($activitesEntreprise */($request->activites as $idActivite) {
                 $event = User::where('email',$request->email)->first()->travailler_entreprises()->attach($request->idEntreprise, ['idActivite' => $idActivite->id,'statut' => 'Invité']);  /* à modifier mettre activité récupérée de $request */
             }
 

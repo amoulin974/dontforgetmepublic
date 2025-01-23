@@ -73,6 +73,22 @@ class ActiviteController extends Controller
               'statut' => 'Admin',
           ]);
 
+          // Ajouter les employés de l'entreprise à l'activité
+            $entreprise->travailler_users()->where('statut', 'Employé')->get()->each(function ($user) use ($activite, $entreprise) {
+                $activite->travailler_users()->attach($user->id, [
+                    'idEntreprise' => $entreprise->id,
+                    'statut' => 'Employé',
+                ]);
+            });
+            $entreprise->travailler_users()->where('statut', 'Admin')->get()->each(function ($user) use ($activite, $entreprise) {
+                if ($user->id != Auth::user()->id) {
+                    $activite->travailler_users()->attach($user->id, [
+                        'idEntreprise' => $entreprise->id,
+                        'statut' => 'Admin',
+                    ]);
+                }
+            });
+
           if ($entreprise->activites()->count() === 1) {
               $entreprise->update(['publier' => 1]);
           }
