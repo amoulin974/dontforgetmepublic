@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('layouts.app')
 @include('base')
 
@@ -22,8 +23,8 @@
         <div class="alert alert-info">
             <strong>Ancienne réservation :</strong><br>
             Date : <em>{{ $reservation->dateRdv->format('d/m/Y') }}</em><br>
-            Heure : <em>{{ \Carbon\Carbon::parse($reservation->heureDeb)->format('H:i') }} -
-                {{ \Carbon\Carbon::parse($reservation->heureFin)->format('H:i') }}</em><br>
+            Heure : <em>{{ Carbon::parse($reservation->heureDeb)->format('H:i') }} -
+                {{ Carbon::parse($reservation->heureFin)->format('H:i') }}</em><br>
         </div>
 
         <!-- Tableau des disponibilités (même style que create.blade.php) -->
@@ -35,17 +36,17 @@
                     @foreach ($activite->plages->groupBy('datePlage') as $date => $plages)
                         <li class="mb-4">
                             <h5 class="text-primary">
-                                {{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}
+                                {{ Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}
                             </h5>
 
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach ($plages as $plage)
                                     @php
                                         try {
-                                            $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                            $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                            $interval = \Carbon\Carbon::parse($plage->interval)->hour * 60
-                                                      + \Carbon\Carbon::parse($plage->interval)->minute;
+                                            $heureDeb = Carbon::parse($plage->heureDeb);
+                                            $heureFin = Carbon::parse($plage->heureFin);
+                                            $interval = Carbon::parse($plage->interval)->hour * 60
+                                                      + Carbon::parse($plage->interval)->minute;
                                         } catch (\Exception $e) {
                                             echo '<div class="text-danger">Erreur de formatage des plages horaires.</div>';
                                             continue;
@@ -55,7 +56,7 @@
                                     @while ($heureDeb->lessThan($heureFin))
                                         @php
                                             // Intervalle courant
-                                            $currentStart = \Carbon\Carbon::parse($date)
+                                            $currentStart = Carbon::parse($date)
                                                 ->setTimeFromTimeString($heureDeb->format('H:i:s'));
                                             $currentEnd   = $currentStart->copy()->addMinutes($interval);
 
@@ -66,11 +67,11 @@
                                                     return false;
                                                 }
                                                 // Compare horaire (chevauchement)
-                                                $resStart = \Carbon\Carbon::createFromFormat(
+                                                $resStart = Carbon::createFromFormat(
                                                     'Y-m-d H:i:s',
                                                     $res->dateRdv->format('Y-m-d').' '.$res->heureDeb
                                                 );
-                                                $resEnd   = \Carbon\Carbon::createFromFormat(
+                                                $resEnd   = Carbon::createFromFormat(
                                                     'Y-m-d H:i:s',
                                                     $res->dateRdv->format('Y-m-d').' '.$res->heureFin
                                                 );
@@ -161,7 +162,8 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary w-100">Confirmer la modification</button>
-                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Annuler
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -169,7 +171,8 @@
         </div>
 
         <!-- MODAL : Ajouter une notification (même style que create) -->
-        <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -187,7 +190,8 @@
 
                         <!-- Type de notification -->
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="radio" name="typeNotification" id="smsOption" value="SMS" checked>
+                            <input class="form-check-input" type="radio" name="typeNotification" id="smsOption"
+                                   value="SMS" checked>
                             <label class="form-check-label" for="smsOption">
                                 <i class="bi bi-chat-left-text"></i> SMS
                             </label>
@@ -203,7 +207,8 @@
                             >
                         </div>
                         <div class="form-check mb-3 mt-4">
-                            <input class="form-check-input" type="radio" name="typeNotification" id="mailOption" value="Mail">
+                            <input class="form-check-input" type="radio" name="typeNotification" id="mailOption"
+                                   value="Mail">
                             <label class="form-check-label" for="mailOption">
                                 <i class="bi bi-envelope"></i> Email
                             </label>
@@ -240,7 +245,7 @@
 
     <!-- Optionally reuse the same reservation.js (adapt the IDs if needed) -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Quand on clique sur un bouton de créneau
             document.querySelectorAll('.horaire-btn').forEach(button => {
                 button.addEventListener('click', () => {
@@ -253,8 +258,7 @@
 
                     // Construire la value pour "slot" (même format que dans update())
                     // "09:00 - 10:00|2025-02-01"
-                    const slotValue = horaire + '|' + date;
-                    document.getElementById('hiddenSlot').value = slotValue;
+                    document.getElementById('hiddenSlot').value = horaire + '|' + date;
 
                     // Vider la liste de notifications (si besoin)
                     document.getElementById('notificationsList').innerHTML = '';
@@ -264,16 +268,16 @@
             // Gestion toggle SMS/Email
             const smsOption = document.getElementById('smsOption');
             const mailOption = document.getElementById('mailOption');
-            const smsField   = document.getElementById('smsField');
-            const mailField  = document.getElementById('mailField');
+            const smsField = document.getElementById('smsField');
+            const mailField = document.getElementById('mailField');
 
             smsOption.addEventListener('change', () => {
-                smsField.style.display  = smsOption.checked ? 'block' : 'none';
+                smsField.style.display = smsOption.checked ? 'block' : 'none';
                 mailField.style.display = 'none';
             });
             mailOption.addEventListener('change', () => {
                 mailField.style.display = mailOption.checked ? 'block' : 'none';
-                smsField.style.display  = 'none';
+                smsField.style.display = 'none';
             });
 
             // Bouton "Add Notification" => ouvre le modal (#notificationModal)

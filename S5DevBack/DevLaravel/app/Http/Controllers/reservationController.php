@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\Reservation;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
-use App\Http\Requests\FormPostRequest;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Entreprise;
 use App\Models\Notification;
@@ -20,7 +19,7 @@ class reservationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Illuminate\View\View
+     * @return View
      */
     public function index() : View
     {
@@ -37,10 +36,10 @@ class reservationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return Illuminate\View\View
+     * @param Reservation $reservation
+     * @return Factory|\Illuminate\Contracts\View\View|Application
      */
-    public function show(Reservation $reservation)
+    public function show(Reservation $reservation): Factory|\Illuminate\Contracts\View\View|Application
     {
         return view('reservation.show', compact('reservation'));
     }
@@ -49,6 +48,8 @@ class reservationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Entreprise $entreprise
+     * @param Activite $activite
      * @return View
      */
     public function create(Entreprise $entreprise, Activite $activite): View
@@ -79,10 +80,12 @@ class reservationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\FormPostRequest  $request
-     * @return Response
+     * @param Request $request
+     * @param Entreprise $entreprise
+     * @param Activite $activite
+     * @return RedirectResponse
      */
-    public function store(Request $request, Entreprise $entreprise, Activite $activite)
+    public function store(Request $request, Entreprise $entreprise, Activite $activite): RedirectResponse
     {
         // Validation des données du formulaire
         $validated = $request->validate([
@@ -101,8 +104,8 @@ class reservationController extends Controller
         // Création de la réservation
         $reservation = Reservation::create([
             'dateRdv' => $validated['dateRdv'], // Date de la plage choisie
-            'heureDeb' => \Carbon\Carbon::parse($heureDeb)->format('H:i:s'), // Heure de début
-            'heureFin' => \Carbon\Carbon::parse($heureFin)->format('H:i:s'), // Heure de fin
+            'heureDeb' => Carbon::parse($heureDeb)->format('H:i:s'), // Heure de début
+            'heureFin' => Carbon::parse($heureFin)->format('H:i:s'), // Heure de fin
             'nbPersonnes' => $validated['nbPersonnes'] ?? 1, // Nombre de personnes
         ]);
 
@@ -140,7 +143,7 @@ class reservationController extends Controller
      * @param  Reservation $reservation
      * @return RedirectResponse
      */
-    public function edit(Reservation $reservation)
+    public function edit(Reservation $reservation): RedirectResponse
     {
         // Récupérer la première activité liée à la réservation
         $activite = $reservation->effectuer_activites()->first();
@@ -169,11 +172,11 @@ class reservationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  Reservation  $reservation
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function update(Request $request, Reservation $reservation)
+    public function update(Request $request, Reservation $reservation): RedirectResponse
     {
         // Valider les données
         $validated = $request->validate([
@@ -188,8 +191,8 @@ class reservationController extends Controller
         // 2) Créer la nouvelle réservation
         $newReservation = Reservation::create([
             'dateRdv'     => $jour,
-            'heureDeb'    => \Carbon\Carbon::parse($hDeb)->format('H:i:s'),
-            'heureFin'    => \Carbon\Carbon::parse($hFin)->format('H:i:s'),
+            'heureDeb'    => Carbon::parse($hDeb)->format('H:i:s'),
+            'heureFin'    => Carbon::parse($hFin)->format('H:i:s'),
             'nbPersonnes' => $reservation->nbPersonnes,
         ]);
 
@@ -221,7 +224,7 @@ class reservationController extends Controller
      * @param Reservation $reservation
      * @return RedirectResponse
      */
-    public function destroy(Reservation $reservation)
+    public function destroy(Reservation $reservation): RedirectResponse
     {
         $reservation->notifications()->delete();
         $reservation->effectuer_activites()->detach();
