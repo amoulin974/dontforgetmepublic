@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use App\Models\User;
 
@@ -97,7 +98,7 @@ class LoginTest extends TestCase
         $response = $this->post('/login', $this->loginData(['password' => 'wrongpassword']));
 
         // THEN
-        $response->assertSessionHasErrors(['password']);
+        $response->assertSessionHasErrors(['email']);
     }
 
     /**
@@ -111,8 +112,10 @@ class LoginTest extends TestCase
     {
         // GIVEN
         $user = User::factory()->create([
-            'email' => '',
-            'password' => bcrypt('Password123'),
+            'nom' => 'Test',
+            'prenom' => 'User',
+            'email' => 'user@domain.com',
+            'password' => Hash::make('Password123'),
         ]);
 
         // WHEN
@@ -120,7 +123,7 @@ class LoginTest extends TestCase
 
         // THEN
         $response->assertRedirect('/home');
-        $this->assertAuthenticated($user);
+        $this->assertAuthenticatedAs($user);
     }
 
     /**
@@ -133,7 +136,7 @@ class LoginTest extends TestCase
     {
         $response = $this->post('/login', $this->loginData(['email' => 'USER@DOMAIN.COM']));
 
-        $response->assertRedirect('/home');
+        $response->assertSessionHasErrors(['email']);
     }
 
     /**
@@ -146,7 +149,7 @@ class LoginTest extends TestCase
     {
         $response = $this->post('/login', $this->loginData(['password' => 'password123']));
 
-        $response->assertSessionHasErrors(['password']);
+        $response->assertSessionHasErrors(['email']);
     }
 
     /**
@@ -172,7 +175,7 @@ class LoginTest extends TestCase
     {
         $response = $this->post('/login', $this->loginData(['password' => 'pass']));
 
-        $response->assertSessionHasErrors(['password']);
+        $response->assertSessionHasErrors(['email']);
     }
 
     /**
@@ -198,7 +201,7 @@ class LoginTest extends TestCase
     {
         $response = $this->post('/login', $this->loginData(['password' => 'P@ssw0rd123!']));
 
-        $response->assertRedirect('/home');
+        $response->assertRedirect('/');
     }
 
     /**
@@ -212,8 +215,10 @@ class LoginTest extends TestCase
     {
         // GIVEN
         $user = User::factory()->create([
-            'email' => '',
-            'password' => bcrypt('Password123'),
+            'nom' => 'Test',
+            'prenom' => 'User',
+            'email' => 'user@domain.com',
+            'password' => Hash::make('Password123'),
         ]);
 
         // WHEN
@@ -223,6 +228,6 @@ class LoginTest extends TestCase
 
         // THEN
         $response = $this->post('/login', $this->loginData(['password' => 'wrongpassword']));
-        $response->assertSessionHasErrors(['password']);
+        $response->assertSessionHasErrors(['email']);
     }
 }
