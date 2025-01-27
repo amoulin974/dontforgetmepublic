@@ -15,7 +15,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <!-- Import FullCalendar locales CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale-all.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
   
     <!-- Pour les notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -44,7 +43,7 @@
   
 <div class="containerCalendar">
     <h2>Calendrier des plages de {{ $entreprise->libelle }}</h2>
-    <h3>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} pour l'activité <i>{{ $activite->libelle }}</i></h3>
+    <p>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} pour l'activité <i>{{ $activite->libelle }}</i></p><br>
     <div id='calendar'></div>
 
     <!-- Popup Dialog Suppression -->

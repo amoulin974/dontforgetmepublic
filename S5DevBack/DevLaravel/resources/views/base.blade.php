@@ -64,7 +64,7 @@
         });
     </script>
 
-  <div class="profileInfo">
+  <div class="profile-info">
     @guest
             @if (Route::has('login'))
                     
@@ -236,7 +236,7 @@ function displayErrorWithButton(message) {
      </nav>
  
      <!-- Profil (auth) -->
-     <div class="profileInfo">
+     <div class="profile-info">
          @guest
              @if (Route::has('login'))
                  <a href="{{ route('login') }}">

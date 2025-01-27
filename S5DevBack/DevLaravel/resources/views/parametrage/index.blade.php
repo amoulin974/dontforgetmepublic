@@ -21,41 +21,51 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
 
-    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
-
 </head>
 <body>
   
 <div class="container">
-    <div style="border-bottom: 2px blue;">
-        <h1 >Les entreprises dans lesquels vous travaillez</h1>
+    <div class="header-profile">
+        <h1>Les entreprises dans lesquels vous travaillez</h1>
         <br/>
     </div>
-    <div class="containerEntreprise">
+    <div class="container-entreprise">
     @foreach (Auth::user()->travailler_entreprises->unique() as $entreprise)
     <div class="entreprise" id="entreprise{{$entreprise->id}}">
-        <h2>{{ $entreprise->libelle }}</h2>
-        <p><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
+        <div style="margin-bottom:10px;">
+            <h2>{{ $entreprise->libelle }}</h2>
+        </div>
+        <p style="margin-bottom:10px;"><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
         {{-- @if (Auth::user()->id == $entreprise->user_id) // Cas créateur
             <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
         @endif --}}
-        <div style="display: inline-flex;">
+        <div>
         @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
-            <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="margin:auto;"><i class="fa fa-wrench"></i> Paramétrer les plages</a>
-            <div style="overflow: auto; max-height: 150px; margin-left:30px;">
+            <div class="activity-container">
             @foreach ($entreprise->activites as $activite)
-            <div style="display: inline-flex; width:100%;">
-                <p style="display: block;margin-top:auto;margin-bottom:auto; margin-right:10px;"><strong>Activité :</strong> {{ $activite->libelle }}</p>
-                <a class="btn btn-primary light" style="margin-left: auto; margin-right:5px;" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+            <div class="activity row">
+                <div class="activity-description col-lg-8">
+                    <strong>Activité :</strong> {{ $activite->libelle }}
+                </div>
+                <div class="activity-button col-lg-4">
+                    <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+                </div>
             </div>
             @endforeach
             </div>
+            <div style="margin-top:10px;">
+                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="margin:auto;"><i class="fa fa-wrench"></i> Paramétrer les plages</a>
+            </div>
         @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
-            <div style="overflow: auto; max-height: 150px; margin-left:30px;">
+            <div class="activity-container">
             @foreach ($entreprise->activites as $activite)
-            <div style="display: inline-flex; width:100%;">
-                <p style="display: block;margin-top:auto;margin-bottom:auto; margin-right:10px;"><strong>Activité :</strong> {{ $activite->libelle }}</p>
-                <a class="btn btn-primary light" style="margin-left: auto; margin-right:5px;" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+            <div class="activity row">
+                <div class="activity-description col-lg-8">
+                    <strong>Activité :</strong> {{ $activite->libelle }}
+                </div>
+                <div class="activity-button col-lg-4">
+                    <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+                </div>
             </div>
             @endforeach
             </div>

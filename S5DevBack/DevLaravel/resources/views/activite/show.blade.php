@@ -30,6 +30,6 @@
             </tbody>
         </table>
     @endif
-    <a href="{{ route('reserver.index') }}" class="btn btn-primary">Retour</a>
+    <a href="{{ route('reserver.index') }}" class="btn btn-secondary">Retour</a>
 </div>
 @endsection

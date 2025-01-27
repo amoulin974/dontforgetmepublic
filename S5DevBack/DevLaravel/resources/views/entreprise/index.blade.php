@@ -28,14 +28,14 @@
                     <p><strong>Description :</strong> {{ $entreprise->description }}</p>
                     <p><strong>Type :</strong> {{ $entreprise->type }}</p>
                     <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                    <p><strong>email :</strong> {{ $entreprise->email }}</p>
+                    <p><strong>Email :</strong> {{ $entreprise->email }}</p>
                         @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
                         <div class="carousel">
                         <div class="swiper-container swiper{{ $entreprise->id }}">
                             <div class="swiper-wrapper">
                                 @foreach (json_decode($entreprise->cheminImg) as $img)
                                     <div class="swiper-slide">
-                                        <img src="{{ $img }}" alt="{{ $img }}" height="250vh" width="250vh">
+                                        <img class="info-image" src="{{ $img }}" alt="{{ $img }}" height="250vh" width="250vh">
                                     </div>
                                 @endforeach
                             </div>
@@ -67,12 +67,12 @@
                         </script>
                         </div>
                         @elseif(($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1))
-                            <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
+                            <img class="info-image" src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                         @else
-                                <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
+                                <img class="info-image" src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                         @endif
                     @if($entreprise->publier)
-                    <p style="text-align: center"><i><strong>Publié !</strong></i></p>
+                    <p class="text-center"><i><strong>Publié !</strong></i></p>
                     @endif
                     @if($entreprise->idCreateur == Auth::user()->id && $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() == null)
                     <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>

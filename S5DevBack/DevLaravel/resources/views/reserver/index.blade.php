@@ -16,8 +16,8 @@
             @if($entreprise->publier && $entreprise->activites->count() > 0)
 
                 
-                <div class="row containerEntreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
-                    <div class="col-md-3 headerEntreprise">
+                <div class="row container-entreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
+                    <div class="col-md-3 header-entreprise">
                         {{-- @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
                                 <div class="carousel" style="display: block; margin:auto;">
                                     <div class="swiper-container swiper{{ $entreprise->id }}">
@@ -47,7 +47,7 @@
                                 <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" style="margin-block:auto;" alt="{{ $entreprise->libelle }}" height="150vh" width="150vh">
                             @endif
                     </div>
-                    <div class="col-md-5 infoEntreprise">
+                    <div class="col-md-5 info-entreprise">
                             <h3>{{ $entreprise->libelle }}</h3>
                             <p>{{ $entreprise->adresse }}</p>
                             <div style="margin-bottom:15px;overflow:auto; max-height:14vh;">
@@ -112,7 +112,7 @@
         $(document).ready(function() {
             document.getElementById('search-input').addEventListener('input', function(e) {
                 const filter = e.target.value.toLowerCase();
-                const entreprises = document.querySelectorAll('.containerEntreprise');
+                const entreprises = document.querySelectorAll('.container-entreprise');
 
                 entreprises.forEach(entreprise => {
                     const libelle = entreprise.getAttribute('data-libelle');

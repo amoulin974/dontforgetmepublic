@@ -16,7 +16,7 @@
     </a>
 </div>
 @endif
-    <div class="containerEntreprise" style="display:block; margin:auto; margin-top:10px; width:80%;">
+    <div class="container-entreprise" style="display:block; margin:auto; margin-top:10px; width:80%;">
         <div class="res-header">
             @auth
                 @if(Auth::user()->id)
