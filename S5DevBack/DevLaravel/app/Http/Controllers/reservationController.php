@@ -131,7 +131,7 @@ class reservationController extends Controller
         // Associer l'employé à la réservation via la relation affecter_users
         $reservation->affecter_users()->attach($validated['employe_id']);
 
-        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);  
+        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);
 
         // Rediriger avec un message de succès
         return redirect()
@@ -145,9 +145,9 @@ class reservationController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Reservation $reservation
-     * @return RedirectResponse
+     * @return \Illuminate\Contracts\View\View|Application|Factory
      */
-    public function edit(Reservation $reservation): RedirectResponse
+    public function edit(Reservation $reservation): Factory|\Illuminate\Contracts\View\View|Application
     {
         // Récupérer la première activité liée à la réservation
         $activite = $reservation->effectuer_activites()->first();
