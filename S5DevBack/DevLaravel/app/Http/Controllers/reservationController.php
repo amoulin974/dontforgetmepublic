@@ -54,16 +54,6 @@ class reservationController extends Controller
      */
     public function create(Entreprise $entreprise, Activite $activite): View
     {
-        /*return view('reservation.create', [
-            'entreprise' => $entreprise,
-            'activite' => $activite,
-        ]);*/
-
-        //$date = now()->toDateString();
-
-        //$reservations = Reservation::where('dateRdv', $date)
-        //    ->where('activite_id', $activite->id)
-        //    ->get();
         $reservations = Reservation::whereIn('id', function ($query) use ($activite) {
             $query->select('idReservation')
                   ->from('effectuer')
@@ -87,57 +77,90 @@ class reservationController extends Controller
      */
     public function store(Request $request, Entreprise $entreprise, Activite $activite): RedirectResponse
     {
-        // Validation des données du formulaire
+        // Validation des données
         $validated = $request->validate([
-            'dateRdv' => 'required|date_format:Y-m-d', // Exemple : "2025-01-09"
-            'horaire' => 'required|string', // Exemple : "09:00 - 10:00"
-            'nbPersonnes' => 'nullable|integer|min:1', // Nombre de personnes
-            'notifications' => 'sometimes|array', // Notifications doivent être un tableau
-            'notifications.*.typeNotification' => 'sometimes|string|in:SMS,Mail', // Type : SMS ou Mail
-            'notifications.*.contenu' => 'sometimes|string', // Contenu : email ou numéro
-            'notifications.*.duree' => 'sometimes|string|in:1jour,2jours,1semaine', // Durée : "1jour", "2jours", "1semaine"
-            'employe_id' => 'required|integer|exists:users,id', // Employé doit exister dans la table users
+            'dateRdv' => 'required|date_format:Y-m-d',
+            'horaire' => 'required|string',
+            'nbPersonnes' => 'nullable|integer|min:1',
+            'notifications' => 'sometimes|array',
+            'notifications.*.typeNotification' => 'sometimes|string|in:SMS,Mail',
+            'notifications.*.contenu' => 'sometimes|string',
+            'notifications.*.duree' => 'sometimes|string|in:1jour,2jours,1semaine',
+            'employe_id' => 'required|integer|exists:users,id',
         ]);
 
-        // Extraction des heures à partir de 'horaire'
+        // Extraction de l'horaire
         [$heureDeb, $heureFin] = explode(' - ', $validated['horaire']);
 
-        // Création de la réservation
+        // Vérification et suppression du rendez-vous précédent pour cet utilisateur
+        $previousReservation = Auth::user()
+            ->effectuer_reservations()
+            ->whereHas('effectuer_activites', function ($query) use ($activite) {
+                $query->where('idActivite', $activite->id);
+            })
+            ->first();
+
+        if ($previousReservation) {
+            $previousReservation->notifications()->each(function ($notification) {
+                $notification->delete();
+            });
+
+            $previousReservation->effectuer_activites()->detach();
+            $previousReservation->delete();
+        }
+
+
+        if ($previousReservation) {
+            // Supprimer les relations et notifications liées à la réservation précédente
+            $previousReservation->notifications()->each(function ($notification) {
+                $notification->delete();
+            });
+
+            $previousReservation->effectuer_activites()->detach();
+
+            // Supprimez ensuite la réservation
+            $previousReservation->delete();
+        }
+
+
+        // Création de la nouvelle réservation
         $reservation = Reservation::create([
-            'dateRdv' => $validated['dateRdv'], // Date de la plage choisie
-            'heureDeb' => Carbon::parse($heureDeb)->format('H:i:s'), // Heure de début
-            'heureFin' => Carbon::parse($heureFin)->format('H:i:s'), // Heure de fin
-            'nbPersonnes' => $validated['nbPersonnes'] ?? 1, // Nombre de personnes
+            'dateRdv' => $validated['dateRdv'],
+            'heureDeb' => Carbon::parse($heureDeb)->format('H:i:s'),
+            'heureFin' => Carbon::parse($heureFin)->format('H:i:s'),
+            'nbPersonnes' => $validated['nbPersonnes'] ?? 1,
         ]);
 
-        // Parcourir les notifications et les associer à la réservation
+        // Gestion des notifications
         foreach ($validated['notifications'] ?? [] as $notificationData) {
             $notification = new Notification([
-                'categorie' => $notificationData['typeNotification'], // Type : SMS ou Mail
-                'contenu' => $notificationData['contenu'], // Email ou numéro de téléphone
-                'delai' => match ($notificationData['duree']) { // Calcul du délai de rappel
+                'categorie' => $notificationData['typeNotification'],
+                'contenu' => $notificationData['contenu'],
+                'delai' => match ($notificationData['duree']) {
                     '1jour' => 24,
                     '2jours' => 48,
                     '1semaine' => 168,
                 },
-                'etat' => 0, // Non envoyé par défaut
+                'etat' => 0,
                 'reservation_id' => $reservation->id
             ]);
 
-            // Associer la notification à la réservation via la relation notifications()
             $reservation->notifications()->save($notification);
         }
 
-        // Associer l'employé à la réservation via la relation affecter_users
-        $reservation->affecter_users()->attach($validated['employe_id']);
+        // Lier la réservation à l'activité et à l'utilisateur
+        $reservation->effectuer_activites()->attach($activite->id, [
+            'idUser' => Auth::id(),
+            'dateReservation' => now(),
+            'typeNotif' => 'SMS',
+            'numTel' => Auth::user()->numTel,
+        ]);
 
-        Auth::user()->effectuer_activites()->attach($activite->id, ['idReservation' => $reservation->id,'dateReservation' => now(), 'typeNotif' => 'SMS', 'numTel' => Auth::user()->numtel]);
-
-        // Rediriger avec un message de succès
         return redirect()
             ->route('reservation.index')
-            ->with('success', 'La réservation et les notifications ont été ajoutées avec succès.');
+            ->with('success', 'Votre réservation a été enregistrée avec succès !');
     }
+
 
 
 
@@ -212,9 +235,7 @@ class reservationController extends Controller
         ]);
 
         // 5) Supprimer l’ancienne réservation et ses relations
-        $reservation->notifications()->delete();
-        $reservation->effectuer_activites()->detach();
-        $reservation->delete();
+        $this->destroy($reservation);
 
         return redirect()
             ->route('reservation.index')
@@ -230,10 +251,17 @@ class reservationController extends Controller
      */
     public function destroy(Reservation $reservation): RedirectResponse
     {
+        // Supprimer les notifications liées à la réservation
         $reservation->notifications()->delete();
+
+        // Détacher la réservation de toutes les relations liées (par exemple, 'affecter' ou d'autres relations pivot)
         $reservation->effectuer_activites()->detach();
+        $reservation->affecter_users()->detach(); // Si une relation 'affecter_users' existe
+
+        // Supprimer la réservation
         $reservation->delete();
 
+        // Redirection avec message de succès
         return redirect()
             ->route('reservation.index')
             ->with('success', 'Réservation et notifications supprimées avec succès !');
