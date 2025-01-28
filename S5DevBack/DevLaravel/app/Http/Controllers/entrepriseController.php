@@ -319,4 +319,27 @@ class entrepriseController extends Controller
 
         return redirect()->route('entreprise.services.index', ['entreprise' => $newCompany->id])->with('success', 'Inscription réussie.'); 
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     * 
+     * @param  Entreprise $entreprise
+     * @return \Illuminate\View\View
+     */
+    public function edit(Entreprise $entreprise) : View
+    {
+        return view('entreprise.edit', [
+            'entreprise' => $entreprise
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * 
+     * 
+     */
+    public function update(Request $request, Entreprise $entreprise) 
+    {
+        return redirect()->route('entreprise.index')->with('success', 'Entreprise mise à jour.');
+    }
 }

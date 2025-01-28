@@ -18,6 +18,9 @@
          $isInvite = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->first() != null;
         @endphp
         <a href="{{ route('entreprise.indexUser') }}" class="btn btn-primary">Retour</a>
+        @if ($isAdmin)
+        <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Modifier</a>
+        @endif
         <div class="containerEntreprise"> 
             <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
         </div>
@@ -30,7 +33,7 @@
                 <p><strong>Description :</strong> {{ $entreprise->description }}</p>
                 <p><strong>Type :</strong> {{ $entreprise->type }}</p>
                 <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                <p><strong>email :</strong> {{ $entreprise->email }}</p>
+                <p><strong>Email :</strong> {{ $entreprise->email }}</p>
                 </div>
                 <div style="display: block; margin:auto;">
                 @if ($entreprise->cheminImg)
