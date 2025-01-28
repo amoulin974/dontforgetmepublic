@@ -68,6 +68,10 @@
             @endif
             </div>
             <div style="overflow:auto; max-height:400px;">
+                @php
+                    /* Récupérer la liste des travailleurs travaillant dans l'entreprise pour pouvoir les réinviter */
+                    $userTravaillant = $entreprise->travailler_users->unique();
+                @endphp
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
                     <div class="containerEntreprise" id="user{{$user->id}}" style="width:100%;"> 
@@ -251,6 +255,16 @@
         }
 
         $(document).ready(function() {
+            var checked = [];
+            $("input[type='checkbox']").change(function(){
+                if(this.checked){
+                    checked.push($(this).val());
+                }
+                else{
+                    checked.splice(checked.indexOf($(this).val()), 1);
+                }
+            });
+
             $("#addEmploye").click(function(){
                 var dialog = $("#dialog");
                 dialog.dialog({
@@ -259,40 +273,61 @@
                     open: function(event, ui) {
                         $('.ui-widget-overlay').bind('click', function(){
                             $('#dialog').dialog('close');
+                            $("#employe").val('');
+                            uncheckAll();
                         });
                     },
                     buttons: {
                         "Inviter": function() {
                             var email = $("#employe").val();
                             // Vérifier que l'employé n'est pas déjà dans l'entreprise
-                            @foreach ($entreprise->travailler_users->unique() as $user)
+                            @foreach ($entreprise->refresh()->travailler_users->unique() as $user)
                                 if ("{{ $user->email }}" == email){
                                     displayError('Cet employé est déjà dans votre entreprise.');
                                     $('#dialog').dialog('close');
                                     $("#employe").val('');
+                                    uncheckAll();
                                     return;
                                 }
                             @endforeach
-                            var checked = $('input[type="checkbox"]:checked').map(function(){return $(this).val();}).get();
-                            $.ajax({
-                                type: "POST",
-                                url: SITEURL + "/",
-                                data: {
-                                    email: email,
-                                    type: 'invite',
-                                    idEntreprise: {{ $entreprise->id }},
-                                    activites: checked.splice(1,checked.length),
-                                },
-                                success: function (data) {
-                                    displaySuccess('Vous avez invité ' + email + ' (' + data.nom + ' ' + data.prenom + ') à rejoindre votre entreprise.');
-                                    $(".containerEntreprise").last().after('<div class="containerEntreprise" id="user'+data.id+'"> <p><strong>Utilisateur :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>Statut :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
-
-                                    $('#dialog').dialog('close');
-                                },
-                                error: function (data) {
-                                    displayError('Erreur lors de l\'ajout. Réessayez...');
+                            let boolExist = false;
+                            @foreach (\App\Models\User::pluck('email') as $mail)
+                                if ("{{ $mail }}" == email){
+                                    boolExist = true;
                                 }
-                            });
+                            @endforeach
+                            if(email == ""){
+                                displayWarning('Veuillez saisir un email.');
+                            }
+                            else if(boolExist == false){
+                                displayError('Cet email ne correspond à aucun compte.');
+                            }
+                            if (checked.length == 0){
+                                displayWarning('Veuillez sélectionner au moins une activité.');
+                            }
+                            if (checked.length != 0 && boolExist){
+                                $.ajax({
+                                    type: "POST",
+                                    url: SITEURL + "/",
+                                    data: {
+                                        email: email,
+                                        type: 'invite',
+                                        idEntreprise: {{ $entreprise->id }},
+                                        activites: checked,
+                                    },
+                                    success: function (data) {
+                                        displaySuccess('Vous avez invité ' + email + ' (' + data.nom + ' ' + data.prenom + ') à rejoindre votre entreprise.');
+                                        $(".containerEntreprise").last().after('<div class="containerEntreprise" id="user'+data.id+'"> <p><strong>Utilisateur :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>Statut :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
+
+                                        $('#dialog').dialog('close');
+                                        $("#employe").val('');
+                                        uncheckAll();
+                                    },
+                                    error: function (data) {
+                                        displayError('Erreur lors de l\'ajout. Réessayez...');
+                                    }
+                                });
+                            }
                         },
                         "Annuler": function() {
                             $('#dialog').dialog('close');
@@ -306,6 +341,13 @@ function checkAll() {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach((checkbox) => {
         checkbox.checked = true;
+    });
+}
+
+function uncheckAll() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
     });
 }
 
