@@ -319,7 +319,7 @@
                                     },
                                     success: function (data) {
                                         displaySuccess('Vous avez invité ' + email + ' (' + data.nom + ' ' + data.prenom + ') à rejoindre votre entreprise.');
-                                        $(".containerEntreprise").last().after('<div class="containerEntreprise" id="user'+data.id+'"> <p><strong>Utilisateur :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>Statut :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
+                                        $(".container-entreprise").last().after('<div class="container-entreprise" id="user'+data.id+'"> <p><strong>Utilisateur :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>Statut :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
 
                                         $('#dialog').dialog('close');
                                         $("#employe").val('');
@@ -372,7 +372,7 @@ function accepterInvit(eId, eLib) {
             // Retirer l'employé correspondant
             $("#user{{ Auth::user()->id }}").remove();
             // Ajouter à la liste des employés
-            $(".entreprise").append('<div class="containerEntreprise" id="user{{ Auth::user()->id }}"> <p><strong>Utilisateur :</strong> {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</p> <p><strong>Statut :</strong> Employé</p> <div style="display: inline-flex; width: 100%;"> <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong></p> <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{ Auth::user()->id }},\'{{ Auth::user()->nom }}\',\'{{ Auth::user()->prenom }}\')" class="btn btn-primary reject">Quitter l\'entreprise</a> </div> </div>');
+            $(".entreprise").append('<div class="container-entreprise" id="user{{ Auth::user()->id }}"> <p><strong>Utilisateur :</strong> {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</p> <p><strong>Statut :</strong> Employé</p> <div style="display: inline-flex; width: 100%;"> <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong></p> <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{ Auth::user()->id }},\'{{ Auth::user()->nom }}\',\'{{ Auth::user()->prenom }}\')" class="btn btn-primary reject">Quitter l\'entreprise</a> </div> </div>');
        },
         error: function (data) {
             displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');
