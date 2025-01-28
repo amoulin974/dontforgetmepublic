@@ -118,7 +118,7 @@
                     const libelle = entreprise.getAttribute('data-libelle');
                     // Vérifie si le libellé commence par le texte saisi
                     if (libelle.startsWith(filter)) {
-                        entreprise.style.display = 'block';
+                        entreprise.style.display = 'flex';
                     } else {
                         entreprise.style.display = 'none';
                     }
