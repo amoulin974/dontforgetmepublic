@@ -41,7 +41,7 @@
 </head>
 <body>
   
-<div class="containerCalendar">
+<div class="container-calendar">
     <h2>Calendrier des plages de {{ $entreprise->libelle }}</h2>
     <p>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} pour l'activité <i>{{ $activite->libelle }}</i></p><br>
     <div id='calendar'></div>

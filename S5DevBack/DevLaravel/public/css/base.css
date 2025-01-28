@@ -576,7 +576,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* Pour le container concernant le calendrier */
-.containerCalendar {
+.container-calendar {
   margin: 0 auto;
   padding: 20px;
 }
@@ -1073,7 +1073,7 @@ background: #007aff; /* Couleur des puces actives */
   }
 
   .activity-button {
-    text-align: center;
+    text-align: left;
   }
 }
 

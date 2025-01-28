@@ -520,7 +520,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* Pour le container concernant le calendrier */
-.containerCalendar {
+.container-calendar {
     background-color: #ffffff; /* Couleur de fond */
     margin: 0 auto;
     padding: 20px;
