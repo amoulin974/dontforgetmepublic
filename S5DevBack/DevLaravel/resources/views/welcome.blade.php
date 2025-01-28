@@ -6,56 +6,65 @@
 
 @section('content')
     <div class="container" style="margin-top:0px">
-        <img src="{{ asset('favicon.ico') }}" alt="Logo" style="max-width: 50vh; max-height: 50vh; display:block; margin-top:0px; margin:auto;">
+        <img class="logo-home" src="{{ asset('favicon.ico') }}" alt="Logo">
+        <div class="searchbar-home">
+            <input class="form-control mr-sm-2 d-block" id="search-input" type="search" placeholder="Rechercher une entreprise par libellé..." aria-label="Search">
+            <button class="btn btn-secondary my-2 my-sm-0 d-block"><i class="bi bi-search"></i></button>
+        {{-- <img src="{{ asset('favicon.ico') }}" alt="Logo" style="max-width: 50vh; max-height: 50vh; display:block; margin-top:0px; margin:auto;">
         <div style="display: inline-flex; width: 100%;">
         <input class="form-control mr-sm-2" id="search-input" style="display: block; margin-left:30%;" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" style="display: block;margin-right:30%;" id="rechercher"><i class="bi bi-search"></i></button>
+        <button class="btn btn-secondary my-2 my-sm-0" style="display: block;margin-right:30%;" id="rechercher"><i class="bi bi-search"></i></button> --}}
         </div>
-        @foreach ($entreprises as $entreprise)
-        @if($entreprise->publier && $entreprise->activites->count() > 0)
-            <div class="containerEntreprise" style="display: inline-flex; width: 100%;"  data-libelle="{{ Str::lower($entreprise->libelle) }}">
-                <div class="headerEntreprise" style="display: block; margin-left:0%;margin-right:0%; height:auto; width: 30%">
-                <h2 style="text-align: center">{{ $entreprise->libelle }}</h2>
-                {{-- @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
-                        <div class="carousel" style="display: block; margin:auto;">
-                            <div class="swiper-container swiper{{ $entreprise->id }}">
-                                <div class="swiper-wrapper">
-                                    @foreach (json_decode($entreprise->cheminImg) as $img)
-                                        <div class="swiper-slide">
-                                            <img src="{{ $img }}" alt="{{ $img }}" height="100vh" width="100vh">
-                                        </div>
-                                    @endforeach
+        <div class="container">
+            @foreach ($entreprises as $entreprise)
+            @if($entreprise->publier && $entreprise->activites->count() > 0)
+                <div class="row container-entreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
+                    <div class="col-md-3 header-entreprise">
+                    {{-- @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
+                            <div class="carousel" style="display: block; margin:auto;">
+                                <div class="swiper-container swiper{{ $entreprise->id }}">
+                                    <div class="swiper-wrapper">
+                                        @foreach (json_decode($entreprise->cheminImg) as $img)
+                                            <div class="swiper-slide">
+                                                <img src="{{ $img }}" alt="{{ $img }}" height="100vh" width="100vh">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <div class="swiper-pagination swiperPag{{ $entreprise->id }}"></div>
                                 </div>
-                                <div class="swiper-pagination swiperPag{{ $entreprise->id }}"></div>
-                            </div>
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    var swiper = new Swiper('.swiper{{ $entreprise->id }}', {
-                                        slidesPerView: 1,
-                                        spaceBetween: 10,
-                                        grabCursor: true,
-                                        loop: true,
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        var swiper = new Swiper('.swiper{{ $entreprise->id }}', {
+                                            slidesPerView: 1,
+                                            spaceBetween: 10,
+                                            grabCursor: true,
+                                            loop: true,
+                                        });
                                     });
-                                });
-                            </script>
-                        </div>
-                    @elseif($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1) --}}@if($entreprise->cheminImg)
-                        <img src="{{ json_decode($entreprise->cheminImg)[0] }}" style="display: block; margin:auto;" alt="{{ $entreprise->libelle }}" height="100vh" width="100vh">
-                    @else
-                        <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" style="display: block; margin:auto;" alt="{{ $entreprise->libelle }}" height="100vh" width="100vh">
-                    @endif
-                </div>
-                <div style="display: inline-block; margin-left:auto;margin-right:auto; max-width:50vh;">
-                    <p>{{ $entreprise->adresse }}</p>
-                    <div style="margin-bottom:15px;overflow:auto; max-height:5vh;">
-                    <p style="margin-bottom: 0px">{{ $entreprise->description }}</p>
+                                </script>
+                            </div>
+                        @elseif($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1) --}}@if($entreprise->cheminImg)
+                            <img src="{{ json_decode($entreprise->cheminImg)[0] }}" style="margin-block:auto;" alt="{{ $entreprise->libelle }}" height="150vh" width="150vh">
+                        @else
+                            <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" style="margin-block:auto;" alt="{{ $entreprise->libelle }}" height="150vh" width="150vh">
+                        @endif
                     </div>
-                    <p style="margin-bottom: 0px">{{ $entreprise->email }}</p>
-                </div> 
-                <a class="secondary-button" style="display: block; margin: auto; margin-right: 5%; width:auto;" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">Réserver une activité</a>
-            </div>
-        @endif
-        @endforeach
+                    <div class="col-md-5 info-entreprise">
+                        <h3>{{ $entreprise->libelle }}</h3>
+                        <p>{{ $entreprise->adresse }}</p>
+                        <div style="margin-bottom:15px;overflow:auto; max-height:14vh;">
+                        <p style="margin-bottom: 0px">{{ $entreprise->description }}</p>
+                        </div>
+                        <p style="margin-bottom: 0px"><strong>Email :</strong> {{ $entreprise->email }}</p>
+                        <p style="margin-bottom: 0px"><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
+                    </div> 
+                    <div class="col-md-4 text-center" style="margin-block: auto">
+                        <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">Réserver une activité</a>
+                    </div>
+                </div>
+            @endif
+            @endforeach
+        </div>
 
         {{ $entreprises->links() }}
 

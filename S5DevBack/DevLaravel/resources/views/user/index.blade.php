@@ -6,11 +6,11 @@
 @section('content')
 
 <div class="container">
-    <div style="border-bottom: 2px #1dacff solid;">
+    <div class="header-profile">
         <h1 >Votre profil</h1>
         <br/>
     </div>
-    <div class="containerEntreprise">
+    <div class="container-entreprise">
     <div class="entreprise" id="profil">
         <h2>{{ $utilisateur->nom }} {{ $utilisateur->prenom }}</h2>
         <p><strong>Email : </strong>{{ $utilisateur->email }}</p>

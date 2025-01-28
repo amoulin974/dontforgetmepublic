@@ -12,31 +12,33 @@
     </head>
 
     <div class="container">
-
         @php
          $isAdmin = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null;
          $isInvite = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->first() != null;
         @endphp
-        <a href="{{ route('entreprise.indexUser') }}" class="btn btn-primary">Retour</a>
-        <div class="containerEntreprise"> 
+        <a href="{{ route('entreprise.indexUser') }}">
+            <i class="fa fa-arrow-left fa-lg" style="color: #000000;"></i>
+        </a>
+        <div class="header-profile" style="margin-top: 1rem;"> 
             <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
+            <br/>
         </div>
         <div class="entreprise">
-            <div class="res-details-info" style="display: inline-flex; width: 100%;">
-                <div style="display: block; margin:auto; margin-left: 0px;">
+            <div class="row res-details-info" style="display: inline-flex; width: 100%;">
+                <div class="col-sm-7 col-md-8 col-lg-9" style="display: block; margin:auto; margin-left: 0px;">
                 <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
                 <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
                 <p><strong>Métier :</strong> {{ $entreprise->metier }}</p>
                 <p><strong>Description :</strong> {{ $entreprise->description }}</p>
                 <p><strong>Type :</strong> {{ $entreprise->type }}</p>
                 <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                <p><strong>email :</strong> {{ $entreprise->email }}</p>
+                <p><strong>Email :</strong> {{ $entreprise->email }}</p>
                 </div>
-                <div style="display: block; margin:auto;">
+                <div class="col-sm-5 col-md-4 col-lg-3" style="display: block; margin:auto;">
                 @if ($entreprise->cheminImg)
-                <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
+                <img class="info-image" src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                 @else
-                <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
+                <img class="info-image" src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                 @endif
                 </div>
             </div>
@@ -74,7 +76,7 @@
                 @endphp
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
-                    <div class="containerEntreprise" id="user{{$user->id}}" style="width:100%;"> 
+                    <div class="container-entreprise" id="user{{$user->id}}" style="width:100%;"> 
                         <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                         <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                         <div style="display: inline-flex; width: 100%;">
@@ -90,7 +92,7 @@
                         </div>
                     </div>
                     @else
-                        <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
+                        <div class="container-entreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
                             <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                             <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                             @if ($user->id == $entreprise->idCreateur)

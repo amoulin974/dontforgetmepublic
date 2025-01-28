@@ -42,7 +42,7 @@
 </head>
 <body>
   
-<div class="containerCalendar">
+<div class="container-calendar">
     <h3>Calendrier des plages de {{ $entreprise->libelle }}</h3>
     <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>

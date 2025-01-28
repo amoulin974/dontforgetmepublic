@@ -10,7 +10,7 @@
         <!-- Navigation de retour -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <a href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" class="btn btn-outline-secondary mt-4 mb-4">
-                <i class="bi bi-arrow-left"></i>
+                <i class="fa fa-arrow-left fa-lg" style="color: #000000;"></i>
             </a>
             <h1 class="text-center flex-grow-1">{{ $entreprise->libelle }}</h1>
         </div>

@@ -42,7 +42,7 @@
 </head>
 <body>
   
-<div class="containerCalendar">
+<div class="container-calendar">
     <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
     <div id='calendar'></div>
 
