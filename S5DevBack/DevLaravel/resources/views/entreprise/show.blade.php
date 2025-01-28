@@ -17,8 +17,8 @@
          $isAdmin = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null;
          $isInvite = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->first() != null;
         @endphp
-        <a href="{{ route('entreprise.indexUser') }}" class="btn btn-primary">Retour</a>
-        <div class="containerEntreprise"> 
+        <a href="{{ route('entreprise.indexUser') }}" class="btn btn-primary"><i class="fa fa-arrow-left fa-lg"></i></a>
+        <div class="containerEntreprise">
             <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
         </div>
         <div class="entreprise">

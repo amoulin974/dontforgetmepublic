@@ -7,10 +7,10 @@
 
     <div class="res-container">
         <!-- Barre de recherche centrée -->
-        <div class="search-bar" style="display: inline-flex; margin-top:10px; margin-bottom:20px; width:50%">
+        <div class="search-bar" style="display: inline-flex; margin:auto;margin-top:10px; margin-bottom:20px; width:50%;">
             <input type="search" id="search-input" placeholder="Rechercher une entreprise par libellé..." 
-                   style="width: 50%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; display:block; margin-left:auto;">
-            <i class="fa fa-search" style="display:block;margin-top:auto;margin-bottom:auto;margin-left:15px;margin-right:auto;"></i>
+                   style="width: 50%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; display:block; margin:auto; margin-right:0px;">
+            <button type="button" class="btn btn-secondary my-2 my-sm-0" style="margin: auto; margin-left: 0px;"><i class="fa fa-search" id="rechercher" style="display:block;margin:auto;"></i></button>
         </div>
     </div>
 
@@ -67,8 +67,8 @@
 
     <script>
         $(document).ready(function() {
-            document.getElementById('search-input').addEventListener('input', function(e) {
-                const filter = e.target.value.toLowerCase();
+            $('#rechercher').click(function() {
+                const filter = $("#search-input").val().toLowerCase();
                 const entreprises = document.querySelectorAll('.containerEntreprise');
 
                 entreprises.forEach(entreprise => {
@@ -80,6 +80,18 @@
                         entreprise.style.display = 'none';
                     }
                 });
+            });
+
+            $('#search-input').on('input', function() {
+                const filter = $(this).val().toLowerCase();
+                const entreprises = document.querySelectorAll('.containerEntreprise');
+
+                if (filter === '') {
+                    entreprises.forEach(entreprise => {
+                        entreprise.style.display = 'block';
+                    });
+                    return;
+                }
             });
         });
     </script>
