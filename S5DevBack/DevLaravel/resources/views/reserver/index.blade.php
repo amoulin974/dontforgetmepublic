@@ -14,11 +14,9 @@
         <div class="container">
             @foreach ($entreprises as $entreprise)
             @if($entreprise->publier && $entreprise->activites->count() > 0)
-
-                
                 <div class="row container-entreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
                     <div class="col-md-3 header-entreprise">
-                        {{-- @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
+                        @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
                                 <div class="carousel" style="display: block; margin:auto;">
                                     <div class="swiper-container swiper{{ $entreprise->id }}">
                                         <div class="swiper-wrapper">
@@ -41,7 +39,7 @@
                                         });
                                     </script>
                                 </div>
-                            @elseif($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1) --}}@if($entreprise->cheminImg)
+                            @elseif($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) == 1)
                                 <img src="{{ json_decode($entreprise->cheminImg)[0] }}" style="margin-block:auto;" alt="{{ $entreprise->libelle }}" height="150vh" width="150vh">
                             @else
                                 <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" style="margin-block:auto;" alt="{{ $entreprise->libelle }}" height="150vh" width="150vh">
@@ -59,10 +57,10 @@
                     <div class="col-md-4 text-center" style="margin-block: auto">
                         <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">Réserver une activité</a>
                     </div>
-                    <!--
-                    <div class="entreprise">
+                    
+                    {{-- <div class="entreprise">
                         <p style="overflow:auto; max-height:50px; min-height:50px;"><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
-                        {{-- <p><strong>Métier :</strong> {{ $entreprise->metier }}</p> --}}
+                        <p><strong>Métier :</strong> {{ $entreprise->metier }}</p> 
                         <p><strong>Description :</strong>
                         <div style="overflow:auto; max-height:150px; min-height:150px;">
                         {{ $entreprise->description }}</p>
@@ -98,8 +96,8 @@
                             <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                         @endif
                         <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">Réserver une activité</a>
-                    </div>
-                -->
+                    </div> --}}
+                
                 </div>
             @endif
             @endforeach
