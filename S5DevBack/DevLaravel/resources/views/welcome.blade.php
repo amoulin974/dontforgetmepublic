@@ -9,7 +9,7 @@
         <img class="logo-home" src="{{ asset('favicon.ico') }}" alt="Logo">
         <div class="searchbar-home">
             <input class="form-control mr-sm-2 d-block" id="search-input" type="search" placeholder="Rechercher une entreprise par libellé..." aria-label="Search">
-            <button class="btn btn-secondary my-2 my-sm-0 d-block"><i class="bi bi-search"></i></button>
+            <button class="btn btn-secondary my-2 my-sm-0 d-block" id="rechercher"><i class="bi bi-search"></i></button>
         </div>
         <div class="container">
             @foreach ($entreprises as $entreprise)
@@ -68,13 +68,13 @@
         $(document).ready(function() {
             $('#rechercher').click(function() {
                 const filter = $("#search-input").val().toLowerCase();
-                const entreprises = document.querySelectorAll('.containerEntreprise');
+                const entreprises = document.querySelectorAll('.container-entreprise');
 
                 entreprises.forEach(entreprise => {
                     const libelle = entreprise.getAttribute('data-libelle');
                     // Vérifie si le libellé commence par le texte saisi
                     if (libelle.startsWith(filter)) {
-                        entreprise.style.display = 'inline-flex';
+                        entreprise.style.display = 'flex';
                     } else {
                         entreprise.style.display = 'none';
                     }
@@ -83,11 +83,11 @@
 
             $('#search-input').on('input', function() {
                 const filter = $(this).val().toLowerCase();
-                const entreprises = document.querySelectorAll('.containerEntreprise');
+                const entreprises = document.querySelectorAll('.container-entreprise');
 
                 if (filter === '') {
                     entreprises.forEach(entreprise => {
-                        entreprise.style.display = 'inline-flex';
+                        entreprise.style.display = 'flex';
                     });
                     return;
                 }
