@@ -1,8 +1,7 @@
 @extends('base')
 
 @section('home_active', 'active')
-@section('title', 'Don\'t Forget Me')
-
+@section('title_base', 'Don\'t Forget Me')
 
 
 @section('content')
@@ -11,6 +10,10 @@
         <div class="searchbar-home">
             <input class="form-control mr-sm-2 d-block" id="search-input" type="search" placeholder="Rechercher une entreprise par libellé..." aria-label="Search">
             <button class="btn btn-secondary my-2 my-sm-0 d-block"><i class="bi bi-search"></i></button>
+        {{-- <img src="{{ asset('favicon.ico') }}" alt="Logo" style="max-width: 50vh; max-height: 50vh; display:block; margin-top:0px; margin:auto;">
+        <div style="display: inline-flex; width: 100%;">
+        <input class="form-control mr-sm-2" id="search-input" style="display: block; margin-left:30%;" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" style="display: block;margin-right:30%;" id="rechercher"><i class="bi bi-search"></i></button> --}}
         </div>
         <div class="container">
             @foreach ($entreprises as $entreprise)
@@ -67,9 +70,9 @@
 
     <script>
         $(document).ready(function() {
-            document.getElementById('search-input').addEventListener('input', function(e) {
-                const filter = e.target.value.toLowerCase();
-                const entreprises = document.querySelectorAll('.container-entreprise');
+            $('#rechercher').click(function() {
+                const filter = $("#search-input").val().toLowerCase();
+                const entreprises = document.querySelectorAll('.containerEntreprise');
 
                 entreprises.forEach(entreprise => {
                     const libelle = entreprise.getAttribute('data-libelle');
@@ -80,6 +83,18 @@
                         entreprise.style.display = 'none';
                     }
                 });
+            });
+
+            $('#search-input').on('input', function() {
+                const filter = $(this).val().toLowerCase();
+                const entreprises = document.querySelectorAll('.containerEntreprise');
+
+                if (filter === '') {
+                    entreprises.forEach(entreprise => {
+                        entreprise.style.display = 'inline-flex';
+                    });
+                    return;
+                }
             });
         });
         

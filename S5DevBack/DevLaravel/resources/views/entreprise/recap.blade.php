@@ -1,22 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Récapitulatif de création de compte')
+@section('title', 'Récapitulatif de la création d\'entreprise')
 
 @section('content')
-<!-- <div class="container my-5" style="border: 2px solid blue; padding: 20px; border-radius: 10px;"> -->
 <div class="container my-5">
     <div class="d-flex justify-content-center mb-5">
-        <span class="me-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
-        <span class="mx-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
-        <span class="ms-2 bg-primary rounded-circle" style="width: 10px; height: 10px;"></span>
+        <span class="me-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
+        <span class="mx-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
     </div>
 
-    <!-- Titre principal -->
+    {{-- Titre principal --}}
     <div class="text-center">
         <h3 style="font-weight: bold;">Récapitulatif</h3>
     </div>
 
-    <!-- Informations sur l'entreprise -->
+    {{-- Informations sur l'entreprise --}}
     <div class="mt-4">
         <h4>Informations sur l'entreprise</h4>
         <ul>
@@ -28,7 +26,7 @@
         </ul>
     </div>
 
-    <!-- Informations sur le type de rendez-vous -->
+    {{-- Informations sur le type de rendez-vous --}}
     <div class="mt-4">
         <h4>Type de rendez-vous</h4>
         <ul>
@@ -68,15 +66,15 @@
         </ul>
     </div>
 
-    <!-- Boutons d'action -->
+    {{-- Boutons d'action --}}
     <div class="d-flex justify-content-between mt-4">
-        <!-- Bouton Valider -->
-        <form method="POST" action="{{ route('register.company.register.submit') }}">
+        {{-- Bouton Valider --}}
+        <form method="POST" action="{{ route('entreprise.store') }}">
             @csrf
             <button type="submit" class="btn btn-primary btn-lg">Valider</button>
         </form>
 
-        <!-- Bouton Modifier -->
+        {{-- Bouton Modifier --}}
         <button class="btn btn-outline-secondary" onclick="window.history.back()">Modifier</button>
     </div>
 </div>

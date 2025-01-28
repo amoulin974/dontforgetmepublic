@@ -1,19 +1,24 @@
 @extends('base')
 
-@section('title', 'Détail résa n°' . $reservation -> id)
+@section('title_base', 'Détail réservation n°' . $reservation -> id)
 
 @section('content')
 
 @if(Auth::check())
 <div  style="display: inline-flex; width: 100%; margin-top:15px;margin-bottom:5px;">
-    <a class="btn btn-primary" style="display: block; margin-left:auto; margin-right:5px;" href="{{ route('reservation.edit', $reservation->id) }}" >
+    <a class="btn btn-primary" style="display: block; margin-left:auto; margin-right:1%;" href="{{ route('reservation.edit', $reservation->id) }}" >
         <span>Modifier la réservation</span>
         <i class="fa fa-edit"></i>
     </a>
-    <a class="btn btn-primary reject" style="display: block; margin-right:10%;" href="{{ route('reservation.delete', $reservation->id) }}" >
-        <span>Supprimer la réservation</span>
-        <i class="fas fa-trash-alt"></i>
-    </a>
+    {{-- Formulaire pour SUPPRIMER la réservation --}}
+    <form action="{{ route('reservation.destroy', $reservation->id) }}" method="POST" style="margin-right:5%;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger"
+                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')">
+            Supprimer la réservation
+        </button>
+    </form>
 </div>
 @endif
     <div class="container-entreprise" style="display:block; margin:auto; margin-top:10px; width:80%;">
@@ -22,10 +27,10 @@
                 @if(Auth::user()->id)
                     <h2 style="text-align:center">{{ $reservation->effectuer_activites()->wherePivot('idUser',Auth::user()->id)->first()->libelle }}</h2>
                 <br>
-                @else 
-                <h2>{{ $reservation->id }}</h2>                                     
+                @else
+                <h2>{{ $reservation->id }}</h2>
                 @endif
-            @else 
+            @else
             <h2>{{ $reservation->id }}</h2>
             @endauth
         </div>
@@ -55,7 +60,7 @@
         </div>
             @endif
         </div>
-        
+
     </div>
 
 @endsection

@@ -2,12 +2,18 @@
 
 @include('base')
 
+@section('title', 'Activité de ' . $entreprise->libelle)
+
 @section('content')
 <div class="container">
     @if($services->isEmpty())
         <h1 style="text-align:center;">Créez votre premier service</h1>
     @endif
     <h2 class="mb-4">Mes Services</h2>
+
+    @php
+        $isAdmin = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null;
+    @endphp
 
     @if($services->isEmpty())
         <p>Aucun service n'a été créé pour {{ $entreprise->libelle }}.</p>
@@ -27,6 +33,7 @@
                     <td>{{ $service->libelle }}</td>
                     <td>{{ $service->formatted_duree }}</td>
                     <td>
+                        @if($isAdmin)
                         <a href="{{ route('entreprise.services.edit', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
                             <i class="fa fa-pencil-alt"></i> Modifier
                         </a>
@@ -40,6 +47,14 @@
                         <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
                             <i class="fa fa-calendar"></i> Gérer les plages
                         </a>
+                        <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-link">
+                            <i class="fa fa-eye"></i> Voir vos plages
+                        </a>
+                        @else
+                        <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-link">
+                            <i class="fa fa-calendar"></i> Voir les plages
+                        </a>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
@@ -47,7 +62,7 @@
         </table>
     @endif
 
-    @if(!$services->isEmpty())
+    @if(!$services->isEmpty() && $isAdmin)
         <div class="mt-4">
             <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Ajouter un service</a>
         </div>

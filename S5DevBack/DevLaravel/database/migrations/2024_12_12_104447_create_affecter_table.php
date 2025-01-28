@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('affecter', function (Blueprint $table) {
             $table->unsignedBigInteger('idUser');
-            $table->unsignedBigInteger('idCreneau');
             $table->unsignedBigInteger('idReservation');
             $table->timestamps();
 
             $table->foreign('idUser')->references('id')->on('users');
-            $table->foreign('idCreneau')->references('id')->on('creneaus');
             $table->foreign('idReservation')->references('id')->on('reservations');
 
-            $table->primary(['idUser', 'idCreneau', 'idReservation']);
+            $table->primary(['idUser', 'idReservation']);
         });
     }
 
