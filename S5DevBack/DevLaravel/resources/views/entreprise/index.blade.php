@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Mes entreprises')
+@section('title_base', 'Mes entreprises')
 @section('entreprises_active', 'active')
 
 @section('content')
@@ -10,7 +10,7 @@
         <br>
         <br><br>
         <br>
-            <h3>Vous ne travaillez ou n'avez créé aucune entreprise</h3>
+            <h3>Vous ne travaillez, n'êtes invité ou n'avez créé aucune entreprise</h3>
         @else
         @foreach ($entreprises as $entreprise)
             <div class="res">
@@ -74,19 +74,14 @@
                     @if($entreprise->publier)
                     <p class="text-center"><i><strong>Publié !</strong></i></p>
                     @endif
+                    @if($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->count() > 0)
+                        <p style="text-align: center"><i>Vous êtes invités dans cette entreprise.</i></p>
+                    @endif
                     @if($entreprise->idCreateur == Auth::user()->id && $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() == null)
                     <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>
-                    @endif
-                    @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
+                    @else
                     <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button" style="display:block;margin-left:auto;margin-right:auto;">Voir plus</a>
                     @endif
-                    {{-- @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null)
-                        <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
-                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
-                        <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button">Voir plus</a>
-                    @elseif ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Employé')->first() != null)
-                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
-                    @endif --}}
                 </div>
             </div>
         @endforeach

@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Paramétrage des créneaux')
+@section('title_base', 'Paramétrage des créneaux')
 @section('creneau_active', 'active')
 
 @section('content')

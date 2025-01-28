@@ -2,6 +2,8 @@
 
 @include('base')
 
+@section('title', 'Modification du service ' . $service->libelle)
+
 @section('content')
 <div class="container">
     <h2 class="mb-4">Modifier un service</h2>

@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Mes réservations')
+@section('title_base', 'Mes réservations')
 @section('catalogue_active', 'active')
 
 @section('content')
@@ -9,7 +9,9 @@
         {{ session('success') }}
     </div>
 @endif
-<div class="res-container"><a href="{{ route('reserver.index') }}" class="btn btn-primary"><h3>Ajouter une réservation</h3></a></div></div>{{-- Lien à modifier --}}
+
+<div class="res-container"><a href="{{ route('reserver.index') }}" class="btn btn-primary"><h2><i class="fa fa-plus-circle"></i> Ajouter une réservation</h2></a></div></div>{{-- Lien à modifier --}}
+
 
     @if($reservations == [])
     <div class="res-container">

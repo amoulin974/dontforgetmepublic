@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Réinitialiser votre mdp')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

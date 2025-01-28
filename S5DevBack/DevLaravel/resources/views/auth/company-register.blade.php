@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Création du compte entreprise')
+
 @section('content')
 <!-- <div class="container d-flex flex-column align-items-center" style="min-height: 100vh;"> -->
 <div class="container d-flex flex-column" style="min-height: 100vh;">
