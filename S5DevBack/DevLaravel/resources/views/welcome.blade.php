@@ -72,13 +72,13 @@
         $(document).ready(function() {
             $('#rechercher').click(function() {
                 const filter = $("#search-input").val().toLowerCase();
-                const entreprises = document.querySelectorAll('.containerEntreprise');
+                const entreprises = document.querySelectorAll('.container-entreprise');
 
                 entreprises.forEach(entreprise => {
                     const libelle = entreprise.getAttribute('data-libelle');
                     // Vérifie si le libellé commence par le texte saisi
                     if (libelle.startsWith(filter)) {
-                        entreprise.style.display = 'inline-flex';
+                        entreprise.style.display = 'flex';
                     } else {
                         entreprise.style.display = 'none';
                     }
@@ -87,11 +87,11 @@
 
             $('#search-input').on('input', function() {
                 const filter = $(this).val().toLowerCase();
-                const entreprises = document.querySelectorAll('.containerEntreprise');
+                const entreprises = document.querySelectorAll('.container-entreprise');
 
                 if (filter === '') {
                     entreprises.forEach(entreprise => {
-                        entreprise.style.display = 'inline-flex';
+                        entreprise.style.display = 'flex';
                     });
                     return;
                 }
