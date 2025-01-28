@@ -46,32 +46,23 @@
     <h3>Calendrier des plages de {{ $entreprise->libelle }}</h3>
     <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>
+    @php
+        dd(App\Models\User::where("id",$entreprise->travailler_users()->wherePivot("idActivite",$activite->id)->pluck("idUser")));
+    @endphp
 
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
-            <label for="employe">Quel employé chosir ?</label>
-            <select name="employe" id="employe" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }}(Vous)</option>
+            <p>Quel employé chosir ?</p>
+            <div style="width: 100%;">
+                <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
+            </div>
+            <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
+                <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
                 @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
-                    <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+                    <label for="{{ $employe->id }}"><input type="checkbox" id="{{ $employe->id }}" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
                 @endforeach
-              </select><br><br>
-            {{--<label for="interv">Interval de début d'activités :</label>
-            <select name="interv" id="interv" class="text ui-widget-content ui-corner-all">
-                <option value="00:05:00">5 min</option>
-                <option value="00:10:00">10 min</option>
-                <option value="00:15:00">15 min</option>
-                <option value="00:20:00">20 min</option>
-                <option value="00:25:00">25 min</option>
-                <option value="00:30:00">30 min</option>
-                <option value="00:35:00">35 min</option>
-                <option value="00:40:00">40 min</option>
-                <option value="00:45:00">45 min</option>
-                <option value="00:50:00">50 min</option>
-                <option value="00:55:00">55 min</option>
-                <option value="01:00:00">1 h</option>
-              </select>--}}
+            </div><br>
             <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
@@ -79,28 +70,20 @@
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
-            <label for="employeModif">Quel employé chosir ?</label>
-            <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</option>
+            <p>Quel employé chosir ?</p>
+            {{-- <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
+                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</option> --}}
+            <div style="width: 100%;">
+                <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
+            </div>
+                <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
+                <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
                 @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
-                    <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+                    {{-- <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option> --}}
+                    <label for="{{ $employe->id }}Modif"><input type="checkbox" id="{{ $employe->id }}Modif" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
                 @endforeach
-              </select><br><br>
-            {{--<label for="intervModif">Interval de débuts d'activités :</label>
-            <select name="intervModif" id="intervModif" class="text ui-widget-content ui-corner-all">
-                <option value="00:05:00">5 min</option>
-                <option value="00:10:00">10 min</option>
-                <option value="00:15:00">15 min</option>
-                <option value="00:20:00">20 min</option>
-                <option value="00:25:00">25 min</option>
-                <option value="00:30:00">30 min</option>
-                <option value="00:35:00">35 min</option>
-                <option value="00:40:00">40 min</option>
-                <option value="00:45:00">45 min</option>
-                <option value="00:50:00">50 min</option>
-                <option value="00:55:00">55 min</option>
-                <option value="01:00:00">1 h</option>
-              </select>--}}
+            </div><br>
+              {{-- </select> --}}
               <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
@@ -112,7 +95,55 @@
 </div>
 
 <script>
+var checked = [];
+
+function checkAll() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = true;
+        // Vérifier si l'id fini par Modif avec une regex
+        if(checkbox.id.match(/Modif$/)){
+            checkbox.checked = false;
+        }
+        else {
+            checked.push(checkbox.value);
+        }
+    });
+    checked = checked.splice(1,checked.length);
+}
+
+function checkAllModif() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+        // Vérifier si l'id fini par Modif avec une regex
+        if(checkbox.id.match(/Modif$/)){
+            checkbox.checked = true;
+            checked.push(checkbox.value);
+        }
+    });
+    checked = checked.splice(1,checked.length);
+}
+
+function uncheckAll() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+    });
+    checked = [];
+}
 $(document).ready(function () {
+
+    $("input[type='checkbox']").change(function(){
+        if(this.checked){
+            checked.push($(this).val());
+        }
+        else{
+            checked.splice(checked.indexOf($(this).val()), 1);
+        }
+    });
+
+
 
 // VARIABLES GLOBALES
 // URL dans le site
@@ -213,12 +244,16 @@ var calendar = $('#calendar').fullCalendar({
                                         //$('#interv').val('00:05:00');
                                         $('#employe').val('{{ Auth::user()->id }}');
                                         $('#dialogTitre').dialog('close');
+                                        uncheckAll();
                                     });
                                 },
                         buttons: {
                             "Ajouter": function() {
                                 var employe = $('#employe').val();
                                 //var interv = $('#interv').val();
+                                if (checked.length == 0){
+                                displayWarning('Veuillez sélectionner au moins une activité.');
+                                }
                                 if (employe /* && interv */) {
                                     $.ajax({
                                         url: SITEURL + "/",
