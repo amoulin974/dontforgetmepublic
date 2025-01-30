@@ -206,7 +206,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succés !');
+    toastr.success(message, 'Succès !');
 }
 
 function displayError(message) {

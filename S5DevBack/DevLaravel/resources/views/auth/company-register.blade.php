@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- <div class="container d-flex flex-column align-items-center" style="min-height: 100vh;"> -->
-<div class="container d-flex flex-column" style="min-height: 100vh;">
+<div class="container d-flex flex-column" style="min-height: 100vh; margin-bottom: 2rem;">
     <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">
         <!-- Bouton retour -->
         <a href="{{ route('register.company.register.user') }}">
@@ -12,7 +12,7 @@
         </a>
 
         <!-- Points de progression -->
-        <div class="d-flex justify-content-center align-items-center w-100 mt-4 mb-4">
+        <div class="d-flex justify-content-center align-items-center w-100 mt-5 mb-5">
             <span class="mx-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
             <span class="mx-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
             <span class="mx-2 bg-secondary rounded-circle" style="width: 12px; height: 12px;"></span>

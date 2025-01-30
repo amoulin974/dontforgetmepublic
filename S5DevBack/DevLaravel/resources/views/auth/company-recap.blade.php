@@ -47,7 +47,7 @@
             @if($appointment[$keys[1]] == 0)
                 <li>Seulement vous pouvez sélectionner un créneau pour prendre un rendez-vous.</li>
             @elseif($appointment[$keys[1]] == 1)
-                <li>Le client et vous pouvez séléectionner un créneau pour prendre un rendez-vous.</li>
+                <li>Le client et vous pouvez sélectionner un créneau pour prendre un rendez-vous.</li>
             @endif
 
             {{-- Troisième réponse --}}

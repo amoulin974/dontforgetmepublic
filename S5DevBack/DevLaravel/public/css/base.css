@@ -22,7 +22,8 @@ body, h1, h2, h3, p, ul, li {
 }
 
 .container-entreprise h2,
-.container-entreprise h3 {
+.container-entreprise h3,
+.container-entreprise h4 {
   color: #1167FC /* 1dacff*/; /* Couleur primaire */
   padding-bottom: 1vh;
 }
@@ -565,9 +566,6 @@ input[type="range"]::-webkit-slider-thumb {
   display: block;
   margin-block:auto;
 }
-.activity-button {
-  text-align: right;
-}
 
 
 .card {
@@ -967,7 +965,6 @@ overflow: hidden; /* Masquer les débordements */
 .swiper-slide {
 text-align: center;
 font-size: 18px;
-background: #fff;
 /* Center slide text vertically */
 display: -webkit-box;
 display: -ms-flexbox;
@@ -1044,6 +1041,9 @@ background: #007aff; /* Couleur des puces actives */
   .info-entreprise h3 {
     text-align: center;
   }
+  .activity-button {
+    text-align: left;
+  }
 }
 
 /* Styles pour les écrans de moins de 993px */
@@ -1083,10 +1083,11 @@ background: #007aff; /* Couleur des puces actives */
       font-size: 24px;
       color: white;
   }
+}
 
-  .activity-button {
-    text-align: left;
-  }
+.activity-button {
+  text-align: right;
+  padding-right: 0.5rem;
 }
 
 .navbar-toggler {
