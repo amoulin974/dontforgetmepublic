@@ -47,7 +47,7 @@
     <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>
     @php
-        dd(App\Models\User::where("id",$entreprise->travailler_users()->wherePivot("idActivite",$activite->id)->pluck("idUser")));
+        $userTravaillantSurAct = App\Models\User::whereIn("id",$entreprise->travailler_users()->wherePivot("idActivite",$activite->id)->pluck("idUser"))->get();
     @endphp
 
     <!-- Popup Dialog -->
@@ -58,9 +58,12 @@
                 <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
             <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
-                <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
+                @foreach($userTravaillantSurAct as $employe)
+                    @if($employe->id == Auth::user()->id)
+                    <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
+                    @else
                     <label for="{{ $employe->id }}"><input type="checkbox" id="{{ $employe->id }}" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
+                    @endif
                 @endforeach
             </div><br>
             <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
@@ -77,10 +80,13 @@
                 <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
                 <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
-                <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
+                @foreach($userTravaillantSurAct as $employe)
                     {{-- <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option> --}}
+                    @if($employe->id == Auth::user()->id)
+                    <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
+                    @else
                     <label for="{{ $employe->id }}Modif"><input type="checkbox" id="{{ $employe->id }}Modif" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
+                    @endif
                 @endforeach
             </div><br>
               {{-- </select> --}}
@@ -99,6 +105,7 @@ var checked = [];
 
 function checkAll() {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checked = [];
     checkboxes.forEach((checkbox) => {
         checkbox.checked = true;
         // Vérifier si l'id fini par Modif avec une regex
@@ -114,6 +121,7 @@ function checkAll() {
 
 function checkAllModif() {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checked = [];
     checkboxes.forEach((checkbox) => {
         checkbox.checked = false;
         // Vérifier si l'id fini par Modif avec une regex
@@ -249,12 +257,11 @@ var calendar = $('#calendar').fullCalendar({
                                 },
                         buttons: {
                             "Ajouter": function() {
-                                var employe = $('#employe').val();
                                 //var interv = $('#interv').val();
                                 if (checked.length == 0){
-                                displayWarning('Veuillez sélectionner au moins une activité.');
+                                displayWarning('Veuillez sélectionner au moins un employé.');
                                 }
-                                if (employe /* && interv */) {
+                                else {
                                     $.ajax({
                                         url: SITEURL + "/",
                                         data: {
@@ -263,12 +270,13 @@ var calendar = $('#calendar').fullCalendar({
                                             heureFin: end.split(' ')[1],
                                             interval: '{{ $activite->duree }}',
                                             entreprise_id: {{ $entreprise->id }},
-                                            employe_affecter: employe,
+                                            employes_affecter: checked,
                                             type: 'add'
                                         },
                                         type: "POST",
                                         success: function (data) {
                                             $('#dialogTitre').dialog('close');
+                                            uncheckAll();
                                             displaySuccess("Plage ajoutée avec succès");
 
                                             // Désélectionner après la sélection
@@ -282,13 +290,9 @@ var calendar = $('#calendar').fullCalendar({
                                         }
                                     });
                                 }
-                                else {
-                                    displayWarning("Informations manquantes");
-                                }
-                                //$(this).dialog("close");
                             },
                             "Annuler": function() {
-                                $('#interv').val('00:05:00');
+                                uncheckAll();
                                 $(this).dialog("close");
                             }
                         }
@@ -309,8 +313,16 @@ var calendar = $('#calendar').fullCalendar({
             $('#calendar').fullCalendar('unselect');
         }
     },
-    eventDrop: function (event, delta) {
-        if(selectable(event.start,event.end,event.id)){
+    eventDrop: function (event, delta, revertFunc) {
+        var originalStart = moment(event.start).subtract(delta);
+        var originalEnd = event.end ? moment(event.end).subtract(delta) : originalStart;
+
+        if (originalStart.isBefore(moment())) {
+            displayError("Impossible de déplacer un événement passé ou en cours");
+            $('#calendar').fullCalendar('unselect');
+            revertFunc();
+        }
+        else if(selectable(event.start,event.end,event.id)){
             // Vérifiez si l'événement dépasse une journée
             if (moment(event.start).isSame(event.end, 'day')) {
                 var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
@@ -338,90 +350,103 @@ var calendar = $('#calendar').fullCalendar({
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
             // Rafraîchir l'affichage du calendrier
-            $('#calendar').fullCalendar('refetchEvents');
+            revertFunc();
+            //$('#calendar').fullCalendar('refetchEvents');
         }
     },
     eventClick: function (event) {
-        var eventAct = event;
-        $('#dialogModif').dialog({
-            modal: true,
-            closeOnEscape: true,
-                    open: function(event, ui) {
-                        //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'plage');
-                        //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
-                        $('.ui-widget-overlay').bind('click', function(){
-                            $('#dialogModif').dialog('close');
+        //var alreadyChecked = {{--  --}};
+
+        // Vérifiez si la date de début est passée
+        if (moment().isAfter(event.start) || moment().isAfter(event.end)) {
+            displayWarning("Vous ne pouvez pas modifier une plage passée ou en cours");
+        } else {
+            var eventAct = event;
+            $('#dialogModif').dialog({
+                modal: true,
+                closeOnEscape: true,
+                        open: function(event, ui) {
+                            //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'plage');
+                            //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
+                            $('.ui-widget-overlay').bind('click', function(){
+                                $('#dialogModif').dialog('close');
+                                uncheckAll();
+                            });
+                        },
+                buttons: {
+                    "Modifier": function() {
+                        var employe = $('#employeModif').val();
+                        //var interv = $('#intervModif').val();
+                        if (employe/*  && interv */) {
+                            $.ajax({
+                                url: SITEURL + "/",
+                                data: {
+                                    id: eventAct.id,
+                                    interval: '{{ $activite->duree }}',
+                                    employe_affecter: employe,
+                                    type: 'modify'
+                                },
+                                type: "POST",
+                                success: function (data) {
+                                    $('#dialogModif').dialog('close');
+                                    uncheckAll();
+
+                                    displaySuccess("Plage modifiée avec succès");
+
+                                    // Désélectionner après la sélection
+                                    $('#calendar').fullCalendar('unselect');
+
+                                    // Rafraîchir l'affichage du calendrier
+                                    $('#calendar').fullCalendar('refetchEvents');
+                                },
+                                error: function() {
+                                    $('#dialogTitre').dialog('close');
+                                    displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
+                                }
+                            });
+                        }
+                        else {
+                            displayWarning("Informations manquantes");
+                        }
+                    },
+                    "Supprimer": function() {
+                        $(this).dialog("close");
+                        $( "#dialog-confirm" ).dialog({
+                            resizable: false,
+                            modal: true,
+                            buttons: {
+                                "Confirmer la suppression": function() {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: SITEURL + '/',
+                                        data: {
+                                                id: eventAct.id,
+                                                type: 'delete'
+                                        },
+                                        success: function (response) {
+                                            calendar.fullCalendar('removeEvents', eventAct.id);
+                                            displayMessage("Plage supprimée avec succès");
+                                        }
+                                    });
+                                    $( this ).dialog( "close" );
+                                    uncheckAll();
+                                    $('#dialogModif').dialog("close");
+                                },
+                                "Annuler": function() {
+                                    $( this ).dialog( "close" );
+                                    uncheckAll();
+                                    $('#dialogModif').dialog("open");
+                                }
+                            }
                         });
                     },
-            buttons: {
-                "Modifier": function() {
-                    var employe = $('#employeModif').val();
-                    //var interv = $('#intervModif').val();
-                    if (employe/*  && interv */) {
-                        $.ajax({
-                            url: SITEURL + "/",
-                            data: {
-                                id: eventAct.id,
-                                interval: '{{ $activite->duree }}',
-                                employe_affecter: employe,
-                                type: 'modify'
-                            },
-                            type: "POST",
-                            success: function (data) {
-                                $('#dialogModif').dialog('close');
-
-                                displaySuccess("Plage modifiée avec succès");
-
-                                // Désélectionner après la sélection
-                                $('#calendar').fullCalendar('unselect');
-
-                                // Rafraîchir l'affichage du calendrier
-                                $('#calendar').fullCalendar('refetchEvents');
-                            },
-                            error: function() {
-                                $('#dialogTitre').dialog('close');
-                                displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
-                            }
-                        });
+                    "Annuler": function() {
+                        uncheckAll();
+                        $(this).dialog("close");
                     }
-                    else {
-                        displayWarning("Informations manquantes");
-                    }
-                },
-                "Supprimer": function() {
-                    $(this).dialog("close");
-                    $( "#dialog-confirm" ).dialog({
-                        resizable: false,
-                        modal: true,
-                        buttons: {
-                            "Confirmer la suppression": function() {
-                                $.ajax({
-                                    type: "POST",
-                                    url: SITEURL + '/',
-                                    data: {
-                                            id: eventAct.id,
-                                            type: 'delete'
-                                    },
-                                    success: function (response) {
-                                        calendar.fullCalendar('removeEvents', eventAct.id);
-                                        displayMessage("Plage supprimée avec succès");
-                                    }
-                                });
-                                $( this ).dialog( "close" );
-                                $('#dialogModif').dialog("close");
-                            },
-                            "Annuler": function() {
-                                $( this ).dialog( "close" );
-                                $('#dialogModif').dialog("open");
-                            }
-                        }
-                    });
-                },
-                "Annuler": function() {
-                    $(this).dialog("close");
                 }
-            }
-        });
+            });
+        }
     },
     eventResize: function(event, delta, revertFunc) {
         if(selectable(event.start,event.end,event.id)){

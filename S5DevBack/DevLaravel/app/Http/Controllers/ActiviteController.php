@@ -222,6 +222,9 @@ class ActiviteController extends Controller
                }
 
                //Auth::user()->travailler_activites()->attach($id, ['idEntreprise'=>$entreprise->id,'statut' => 'Admin']);
+               foreach($request->employes_affecter as $idEmploye){
+                   $event->employes()->attach($idEmploye);
+               }
 
                $event->activites()->attach($id);
                
@@ -239,8 +242,11 @@ class ActiviteController extends Controller
               break;
    
             case 'delete':
-                Activite::firstOrFail($id)->plages()->detach($request->id);
-               $event = Plage::find($request->id)->delete();
+                $activite = Activite::firstOrFail("id",$id);
+                $plage = Plage::firstOrFail("id",$request->id);
+                $plage->employes()->detach($request->employes_affecter);
+                $activite->plages()->detach($request->id);
+                $event = $plage->delete();
 
                
    

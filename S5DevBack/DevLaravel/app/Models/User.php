@@ -122,4 +122,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Activite::class, 'effectuer', 'idUser', 'idActivite')->withPivot('idCreneau', 'dateReservation', 'typeNotif', 'numTel')->withTimestamps();
     }
+
+    /**
+     * Define a many-to-many relationship with the Plage model via Placer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function plages(): BelongsToMany
+    {
+        return $this->belongsToMany(Plage::class, 'placer', 'idActivite', 'idUser')->withTimestamps();
+    }
 }
