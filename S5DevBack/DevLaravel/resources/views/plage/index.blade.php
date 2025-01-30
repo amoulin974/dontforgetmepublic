@@ -43,7 +43,10 @@
 <body>
   
 <div class="container-calendar">
-    <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+    <div class="header-profile mb-3">
+        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <br/>
+    </div>
     <div id='calendar'></div>
 
     <!-- Popup Dialog Titre -->

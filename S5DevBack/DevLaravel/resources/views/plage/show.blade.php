@@ -42,7 +42,10 @@
 <body>
   
 <div class="container-calendar">
-    <h2>Calendrier des plages de {{ $entreprise->libelle }}</h2>
+    <div class="header-profile mb-3">
+        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <br/>
+    </div>
     <p>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} pour l'activité <i>{{ $activite->libelle }}</i></p><br>
     <div id='calendar'></div>
 

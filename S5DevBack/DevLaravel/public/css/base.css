@@ -224,7 +224,7 @@ margin-right: auto;
   display: flex;
   flex-wrap: wrap; /* Permet aux cartes de passer à la ligne si l'espace est insuffisant */
   justify-content: center; /* Centre les cartes horizontalement */
-  align-items: center; /* Centre les cartes verticalement */
+  /*align-items: center;  Centre les cartes verticalement */
   margin: 2vh auto;
 }
 
@@ -235,7 +235,7 @@ margin-right: auto;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre */
   padding: 20px; /* Espacement interne */
-  margin: 20px auto; /* Espacement entre les cartes */
+  margin: 20px; /* Espacement entre les cartes */
   transition: transform 0.3s; /* Animation de levée au survol */
 }
 
@@ -587,8 +587,12 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* Pour le container concernant le calendrier */
 .container-calendar {
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 20px;
+}
+
+#calendar {
+  margin-top: 1rem;
 }
 
 /* Pour le calendrier */

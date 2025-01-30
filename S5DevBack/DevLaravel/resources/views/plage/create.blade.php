@@ -43,7 +43,10 @@
 <body>
   
 <div class="container-calendar">
-    <h3>Calendrier des plages de {{ $entreprise->libelle }}</h3>
+    <div class="header-profile mb-3">
+        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <br/>
+    </div>
     <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>
 

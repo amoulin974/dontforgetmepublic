@@ -21,27 +21,29 @@
         @csrf
 
         {{-- Champ Nom Entreprise --}}
-        <div class="mb-3 mt-2">
-            <label for="nomEntreprise" class="form-label">Nom de l'entreprise</label>
-            <input id="nomEntreprise" type="text" class="form-control @error('nomEntreprise') is-invalid @enderror" 
-                    name="nomEntreprise" value="{{ old('nomEntreprise', session('company.nomEntreprise', '')) }}" placeholder="Entrez le nom de votre entreprise" required>
-            @error('nom')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+        <div class="row mt-2">
+            <div class="col-lg-6 mb-3">
+                <label for="nomEntreprise" class="form-label">Nom de l'entreprise</label>
+                <input id="nomEntreprise" type="text" class="form-control @error('nomEntreprise') is-invalid @enderror" 
+                        name="nomEntreprise" value="{{ old('nomEntreprise', session('company.nomEntreprise', '')) }}" placeholder="Entrez le nom de votre entreprise" required>
+                @error('nom')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
 
-        {{-- Champ SIREN --}}
-        <div class="mb-3">
-            <label for="siren" class="form-label">Numéro de SIREN</label>
-            <input id="siren" type="text" class="form-control @error('siren') is-invalid @enderror" 
-                    name="siren" value="{{ old('siren', session('company.siren', '')) }}" placeholder="Entrez le numéro de SIREN" required>
-            @error('siren')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
+            {{-- Champ SIREN --}}
+            <div class="col-lg-6 mb-3">
+                <label for="siren" class="form-label">Numéro de SIREN</label>
+                <input id="siren" type="text" class="form-control @error('siren') is-invalid @enderror" 
+                        name="siren" value="{{ old('siren', session('company.siren', '')) }}" placeholder="Entrez le numéro de SIREN" required>
+                @error('siren')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
         </div>
 
         {{-- Champ Numéro de Téléphone --}}

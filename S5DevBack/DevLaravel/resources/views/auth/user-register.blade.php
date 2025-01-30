@@ -3,7 +3,7 @@
 @section('title', 'Création de compte utilisateur')
 
 @section('content')
-<div class="container d-flex flex-column" style="min-height: 100vh;">
+<div class="container d-flex flex-column" style="min-height: 100vh; margin-top: 3rem; margin-bottom: 2rem;">
     <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">
         <a href="/" class="btn btn-outline-secondary mt-5 mb-4" style="position: absolute; left: 0;">
             <i class="bi bi-arrow-left"></i>
@@ -27,28 +27,30 @@
     @endif
         @csrf
 
-        {{-- Champ Nom  --}}
-        <div class="mb-3 mt-1">
-            <label for="nom" class="form-label">Nom</label>
-            <input id="nom" type="text" class="form-control @error('nom') is-invalid @enderror" 
-                    name="nom" value="{{ old('nom') }}" placeholder="Entrez votre nom" required>
-            @error('nom')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+        <div class="mt-1 row">
+            {{-- Champ Nom  --}}
+            <div class="mb-3 col-lg-6">
+                <label for="nom" class="form-label">Nom</label>
+                <input id="nom" type="text" class="form-control @error('nom') is-invalid @enderror" 
+                        name="nom" value="{{ old('nom') }}" placeholder="Entrez votre nom" required>
+                @error('nom')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
 
-        {{--  Champ Prénom --}} 
-        <div class="mb-3">
-            <label for="prenom" class="form-label">Prénom</label>
-            <input id="prenom" type="text" class="form-control @error('prenom') is-invalid @enderror" 
-                    name="prenom" value="{{ old('prenom') }}" placeholder="Entrez votre prénom" required>
-            @error('prenom')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
+            {{--  Champ Prénom --}} 
+            <div class="mb-3 col-lg-6">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input id="prenom" type="text" class="form-control @error('prenom') is-invalid @enderror" 
+                        name="prenom" value="{{ old('prenom') }}" placeholder="Entrez votre prénom" required>
+                @error('prenom')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
         </div>
 
         {{-- Champ Numéro de Téléphone --}}
