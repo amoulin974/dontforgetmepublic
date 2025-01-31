@@ -18,7 +18,7 @@
         </div> --}}
     </div>
     {{-- Titre --}}
-    <h3 class="text-center mb-4">{{ __('Register') }}</h3>
+    <h3 class="text-center mt-4 mb-4">{{ __('Register') }}</h3>
 
     @if (Route::currentRouteName() === 'register.company.register.user')
     <form method="POST" action="{{ route('register.user.store') }}">
@@ -98,7 +98,7 @@
 
         {{-- Bouton Créer un compte --}}
         <div class="d-grid">
-            <button type="submit" class="btn btn-dark">
+            <button type="submit" class="btn btn-dark mt-3">
                 Créer son compte
             </button>
         </div>
