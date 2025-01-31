@@ -592,13 +592,16 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 #calendar {
+  margin-right: auto;
+  margin-left: auto;
   margin-top: 1rem;
+  max-width: 150vh;
 }
 
 /* Pour le calendrier */
 #calendar table {
   min-width: 250px;
-  max-width: 900px;
+  max-width: 950px;
   margin-inline: auto;
 }
 
