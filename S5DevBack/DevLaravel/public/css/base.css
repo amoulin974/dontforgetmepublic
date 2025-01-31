@@ -598,8 +598,12 @@ input[type="range"]::-webkit-slider-thumb {
 /* Pour le calendrier */
 #calendar table {
   min-width: 250px;
-  max-width: 900px;
+  max-width: 800px;
   margin-inline: auto;
+}
+
+.fc-time-grid-container {
+  max-height: 425px;
 }
 
 /* Pour la customisation du calendrier */
