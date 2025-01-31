@@ -247,6 +247,7 @@ class entrepriseController extends Controller
             'libelle' => $company['nomEntreprise'],
             'siren' => $company['siren'],
             'adresse' => $company['rue'] . ', ' . $company['codePostal'] . ' ' . $company['ville'],
+            'description' => 'Aucune description saisie pour le moment.',
             'numTel' => $company['numTel'],
             'email' => $company['email'],
             'typeRdv' => json_encode(array_values($appointment)),
@@ -256,5 +257,58 @@ class entrepriseController extends Controller
         session()->forget(['company', 'appointment']);
 
         return redirect()->route('entreprise.services.index', ['entreprise' => $newCompany->id])->with('success', 'Inscription réussie.'); 
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     * 
+     * @param  Entreprise $entreprise
+     * @return \Illuminate\View\View
+     */
+    public function edit(Entreprise $entreprise) : View
+    {
+        return view('entreprise.edit', [
+            'entreprise' => $entreprise
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * 
+     * 
+     */
+    public function update(Request $request, Entreprise $entreprise) 
+    {
+        /* Champs de saisies */
+        $validated = $request->validate([
+            'libelle' => ['required', 'string', 'max:255'],
+            'siren' => ['required', 'string', 'max:14', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'], 
+            'rue' => ['required', 'string', 'max:255'],
+            'codePostal' => ['required', 'string', 'max:6', 'regex:/^\d{5}|\d{2} \d{3}$/'],
+            'ville' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'numTel' => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
+        ]);
+        $entreprise->libelle = $validated['libelle'];
+        $entreprise->siren = $validated['siren'];
+        $entreprise->adresse = $validated['rue'] . ', ' . $validated['codePostal'] . ' ' . $validated['ville'];
+        $entreprise->description = $validated['description'];
+        $entreprise->email = $validated['email'];
+        $entreprise->numTel = $validated['numTel'];
+
+        $typeRdv = $entreprise->typeRdv ? json_decode($entreprise->typeRdv, true) : [];
+        // Mise à jour des réponses
+        $typeRdv[0] = $request->input('question_0', $typeRdv[0] ?? 0);
+        $typeRdv[1] = $request->input('question_1', $typeRdv[1] ?? 0);
+        $typeRdv[2] = $request->input('question_2', $typeRdv[2] ?? 0);
+        $typeRdv[3] = $request->input('question_3', $typeRdv[3] ?? 0);
+
+        $entreprise->typeRdv = json_encode($typeRdv);
+
+        $entreprise->save();
+
+        return redirect()->route('entreprise.show', $entreprise)
+                         ->with('success', 'Entreprise mise à jour avec succès.');
     }
 }

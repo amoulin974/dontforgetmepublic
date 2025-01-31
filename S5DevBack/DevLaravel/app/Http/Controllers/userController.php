@@ -27,4 +27,43 @@ class userController extends Controller
             return redirect()->route('login');
         }
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit() : View
+    {
+        return view('user.edit', ['user' => Auth::user()]);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        // Validation des données du formulaire
+        $validatedData = $request->validate([
+            'nom' => ['required', 'string', 'max:255'],
+            'prenom' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'numTel' => ['nullable', 'string', 'max:20', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
+            'typeNotif' => ['nullable', 'in:SMS,Email'],
+            'delaiAvantNotif' => ['nullable', 'in:1 jour,2 jours,1 semaine'],
+        ]);
+
+        // Mise à jour des informations utilisateur
+        $user->update([
+            'nom' => $validatedData['nom'],
+            'prenom' => $validatedData['prenom'],
+            'email' => $validatedData['email'],
+            'numTel' => $validatedData['numTel'],
+            'typeNotif' => $validatedData['typeNotif'] ?? null,
+            'delaiAvantNotif' => $validatedData['delaiAvantNotif'] ?? null,
+        ]);
+
+        return redirect()->route('profile.index')->with('success', 'Profil mis à jour avec succès.');
+    }
 }
