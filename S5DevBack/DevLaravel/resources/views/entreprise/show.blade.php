@@ -12,21 +12,24 @@
     </head>
 
     <div class="container">
-
         @php
          $isAdmin = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null;
          $isInvite = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->first() != null;
         @endphp
-        <a href="{{ route('entreprise.indexUser') }}" class="btn btn-primary">Retour</a>
+        <a href="{{ route('entreprise.indexUser') }}">
+            <i class="fa fa-arrow-left fa-lg" style="color: #000000;"></i>
+        </a>
+        <div class="header-profile" style="margin-top: 1rem;"> 
         @if ($isAdmin)
         <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Modifier</a>
         @endif
         <div class="containerEntreprise"> 
             <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
+            <br/>
         </div>
         <div class="entreprise">
-            <div class="res-details-info" style="display: inline-flex; width: 100%;">
-                <div style="display: block; margin:auto; margin-left: 0px;">
+            <div class="row res-details-info" style="display: inline-flex; width: 100%;">
+                <div class="col-sm-7 col-md-8 col-lg-9" style="display: block; margin:auto; margin-left: 0px;">
                 <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
                 <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
                 <p><strong>Métier :</strong> {{ $entreprise->metier }}</p>
@@ -35,11 +38,11 @@
                 <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
                 <p><strong>Email :</strong> {{ $entreprise->email }}</p>
                 </div>
-                <div style="display: block; margin:auto;">
+                <div class="col-sm-5 col-md-4 col-lg-3" style="display: block; margin:auto;">
                 @if ($entreprise->cheminImg)
-                <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
+                <img class="info-image" src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                 @else
-                <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
+                <img class="info-image" src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="200vh" width="200vh">
                 @endif
                 </div>
             </div>
@@ -77,7 +80,7 @@
                 @endphp
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
-                    <div class="containerEntreprise" id="user{{$user->id}}" style="width:100%;"> 
+                    <div class="container-entreprise" id="user{{$user->id}}" style="width:100%;"> 
                         <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                         <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                         <div style="display: inline-flex; width: 100%;">
@@ -93,7 +96,7 @@
                         </div>
                     </div>
                     @else
-                        <div class="containerEntreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
+                        <div class="container-entreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
                             <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                             <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                             @if ($user->id == $entreprise->idCreateur)
@@ -320,7 +323,7 @@
                                     },
                                     success: function (data) {
                                         displaySuccess('Vous avez invité ' + email + ' (' + data.nom + ' ' + data.prenom + ') à rejoindre votre entreprise.');
-                                        $(".containerEntreprise").last().after('<div class="containerEntreprise" id="user'+data.id+'"> <p><strong>Utilisateur :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>Statut :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
+                                        $(".container-entreprise").last().after('<div class="container-entreprise" id="user'+data.id+'"> <p><strong>Utilisateur :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>Statut :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
 
                                         $('#dialog').dialog('close');
                                         $("#employe").val('');
@@ -373,7 +376,7 @@ function accepterInvit(eId, eLib) {
             // Retirer l'employé correspondant
             $("#user{{ Auth::user()->id }}").remove();
             // Ajouter à la liste des employés
-            $(".entreprise").append('<div class="containerEntreprise" id="user{{ Auth::user()->id }}"> <p><strong>Utilisateur :</strong> {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</p> <p><strong>Statut :</strong> Employé</p> <div style="display: inline-flex; width: 100%;"> <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong></p> <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{ Auth::user()->id }},\'{{ Auth::user()->nom }}\',\'{{ Auth::user()->prenom }}\')" class="btn btn-primary reject">Quitter l\'entreprise</a> </div> </div>');
+            $(".entreprise").append('<div class="container-entreprise" id="user{{ Auth::user()->id }}"> <p><strong>Utilisateur :</strong> {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</p> <p><strong>Statut :</strong> Employé</p> <div style="display: inline-flex; width: 100%;"> <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong></p> <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{ Auth::user()->id }},\'{{ Auth::user()->nom }}\',\'{{ Auth::user()->prenom }}\')" class="btn btn-primary reject">Quitter l\'entreprise</a> </div> </div>');
        },
         error: function (data) {
             displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');

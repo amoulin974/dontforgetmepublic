@@ -42,8 +42,11 @@
 </head>
 <body>
   
-<div class="containerCalendar">
-    <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+<div class="container-calendar">
+    <div class="header-profile mb-3">
+        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <br/>
+    </div>
     <div id='calendar'></div>
 
     <!-- Popup Dialog Titre -->
@@ -51,7 +54,7 @@
         <form>
             <label for="eventTitle">Titre de l'évènement :</label>
             <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="interv">Interval de début d'activités :</label>
+            <label for="interv">Intervalle de début d'activités :</label>
             {{-- <input type="time" id="interv" name="interv" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
             <select name="interv" id="interv" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
@@ -75,7 +78,7 @@
         <form>
             <label for="eventTitleModif">Titre de l'évènement :</label>
             <input type="text" id="eventTitleModif" name="eventTitleModif" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="intervModif">Interval de débuts d'activités :</label>
+            <label for="intervModif">Intervalle de débuts d'activités :</label>
             {{-- <input type="time" id="intervModif" name="intervModif" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
             <select name="intervModif" id="intervModif" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
@@ -424,7 +427,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succés !');
+    toastr.success(message, 'Succès !');
 }
 
 function displayError(message) {
