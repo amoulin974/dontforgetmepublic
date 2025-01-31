@@ -28,12 +28,14 @@
         @foreach ($entreprises as $entreprise)
         <div class="entreprise">
             <h4>{{ $entreprise->libelle }}</h4>
-            <div style="display: inline-flex; width: 100%;">
-            <div style="display: block">
-            <p><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
-            <p style="margin-bottom: 0%;"><strong>Description :</strong> {{ $entreprise->description }}</p>
-            </div>
-                <a class="btn btn-primary" href="{{ route('entreprise.show', $entreprise->id) }}" style="margin:auto; margin-right:5%;"><i class="fa fa-eye"></i> Voir plus</a>
+            <div class="d-flex flex-wrap">
+                <div class="col-md-8">
+                    <p><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
+                    <p><strong>Description :</strong> {{ $entreprise->description }}</p>
+                </div>
+                <div class="col-md-4 activity-button">
+                    <a class="btn btn-primary" href="{{ route('entreprise.show', $entreprise->id) }}"><i class="fa fa-eye"></i> Voir plus</a>
+                </div>
             </div>
         </div>
         @endforeach

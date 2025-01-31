@@ -22,7 +22,7 @@
                                         <div class="swiper-wrapper">
                                             @foreach (json_decode($entreprise->cheminImg) as $img)
                                                 <div class="swiper-slide">
-                                                    <img src="{{ $img }}" alt="{{ $img }}" height="100vh" width="100vh">
+                                                    <img src="{{ $img }}" alt="{{ $img }}" height="150vh" width="150vh">
                                                 </div>
                                             @endforeach
                                         </div>

@@ -13,6 +13,7 @@
             <h3>Vous ne travaillez, n'êtes invité ou n'avez créé aucune entreprise</h3>
         @else
         @foreach ($entreprises as $entreprise)
+        <div class="col-md-6 col-xl-4">
             <div class="res">
                 <h2 style="text-align: center">{{ $entreprise->libelle }}</h2>
                 @if ($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->first() != null)
@@ -84,6 +85,7 @@
                     @endif
                 </div>
             </div>
+        </div>
         @endforeach
         @endif
     </div>

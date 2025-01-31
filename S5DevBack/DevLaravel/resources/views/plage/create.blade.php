@@ -43,7 +43,10 @@
 <body>
   
 <div class="container-calendar">
-    <h3>Calendrier des plages de {{ $entreprise->libelle }}</h3>
+    <div class="header-profile mb-3">
+        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <br/>
+    </div>
     <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>
 
@@ -57,7 +60,7 @@
                     <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                 @endforeach
               </select><br><br>
-            {{--<label for="interv">Interval de début d'activités :</label>
+            {{--<label for="interv">Intervalle de début d'activités :</label>
             <select name="interv" id="interv" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
                 <option value="00:10:00">10 min</option>
@@ -72,7 +75,7 @@
                 <option value="00:55:00">55 min</option>
                 <option value="01:00:00">1 h</option>
               </select>--}}
-            <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+            <p><strong>Intervalle entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
@@ -86,7 +89,7 @@
                     <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                 @endforeach
               </select><br><br>
-            {{--<label for="intervModif">Interval de débuts d'activités :</label>
+            {{--<label for="intervModif">Intervalle de débuts d'activités :</label>
             <select name="intervModif" id="intervModif" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
                 <option value="00:10:00">10 min</option>
@@ -101,7 +104,7 @@
                 <option value="00:55:00">55 min</option>
                 <option value="01:00:00">1 h</option>
               </select>--}}
-              <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+              <p><strong>Intervalle entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
@@ -424,7 +427,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             } else {
                 revertFunc(); // Revert the change if the update fails
-                displayWarning("Impossible de modifier une plage pour qu'elle ait un interval de moins de {{ $activite->duree }} minutes");
+                displayWarning("Impossible de modifier une plage pour qu'elle ait un intervalle de moins de {{ $activite->duree }} minutes");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -458,7 +461,7 @@ function selectable(start, end, idEvent) {
 
     // Vérifiez que la plage est un multiple de la durée de l'activité
     if(moment(end).diff(moment(start), 'milliseconds') % DUREE_EN_MS != 0){
-        displayWarning("Impossible de créer une plage qui ne respecte pas l'interval de l'activité");
+        displayWarning("Impossible de créer une plage qui ne respecte pas l'intervalle de l'activité");
         return false;
     }
 
@@ -513,7 +516,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succés !');
+    toastr.success(message, 'Succès !');
 }
 
 function displayError(message) {

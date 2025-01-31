@@ -22,7 +22,8 @@ body, h1, h2, h3, p, ul, li {
 }
 
 .container-entreprise h2,
-.container-entreprise h3 {
+.container-entreprise h3,
+.container-entreprise h4 {
   color: #1167FC /* 1dacff*/; /* Couleur primaire */
   padding-bottom: 1vh;
 }
@@ -223,7 +224,7 @@ margin-right: auto;
   display: flex;
   flex-wrap: wrap; /* Permet aux cartes de passer à la ligne si l'espace est insuffisant */
   justify-content: center; /* Centre les cartes horizontalement */
-  align-items: center; /* Centre les cartes verticalement */
+  /*align-items: center;  Centre les cartes verticalement */
   margin: 2vh auto;
 }
 
@@ -234,7 +235,7 @@ margin-right: auto;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre */
   padding: 20px; /* Espacement interne */
-  margin: 20px auto; /* Espacement entre les cartes */
+  margin: 20px; /* Espacement entre les cartes */
   transition: transform 0.3s; /* Animation de levée au survol */
 }
 
@@ -565,9 +566,6 @@ input[type="range"]::-webkit-slider-thumb {
   display: block;
   margin-block:auto;
 }
-.activity-button {
-  text-align: right;
-}
 
 
 .card {
@@ -589,8 +587,12 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* Pour le container concernant le calendrier */
 .container-calendar {
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 20px;
+}
+
+#calendar {
+  margin-top: 1rem;
 }
 
 /* Pour le calendrier */
@@ -967,7 +969,6 @@ overflow: hidden; /* Masquer les débordements */
 .swiper-slide {
 text-align: center;
 font-size: 18px;
-background: #fff;
 /* Center slide text vertically */
 display: -webkit-box;
 display: -ms-flexbox;
@@ -1044,6 +1045,9 @@ background: #007aff; /* Couleur des puces actives */
   .info-entreprise h3 {
     text-align: center;
   }
+  .activity-button {
+    text-align: left;
+  }
 }
 
 /* Styles pour les écrans de moins de 993px */
@@ -1083,10 +1087,11 @@ background: #007aff; /* Couleur des puces actives */
       font-size: 24px;
       color: white;
   }
+}
 
-  .activity-button {
-    text-align: left;
-  }
+.activity-button {
+  text-align: right;
+  padding-right: 0.5rem;
 }
 
 .navbar-toggler {
