@@ -355,7 +355,19 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
-        //var alreadyChecked = {{--  --}};
+        var alreadyChecked = [];
+        @foreach (App\Models\Plage::all() as $p)
+            if(event.id == {{ $p->id }}){
+                @foreach($p->employes as $e)
+                    alreadyChecked.push({{ $e->id }});
+                @endforeach
+            }
+        @endforeach
+
+        alreadyChecked.forEach(userWorking => {
+            document.getElementById(userWorking+"Modif").checked = true;
+            checked.push(userWorking);
+        });
 
         // Vérifiez si la date de début est passée
         if (moment().isAfter(event.start) || moment().isAfter(event.end)) {
@@ -375,15 +387,16 @@ var calendar = $('#calendar').fullCalendar({
                         },
                 buttons: {
                     "Modifier": function() {
-                        var employe = $('#employeModif').val();
-                        //var interv = $('#intervModif').val();
-                        if (employe/*  && interv */) {
+                        if (checked.length == 0){
+                        displayWarning('Veuillez sélectionner au moins un employé.');
+                        }
+                        else {
                             $.ajax({
                                 url: SITEURL + "/",
                                 data: {
                                     id: eventAct.id,
                                     interval: '{{ $activite->duree }}',
-                                    employe_affecter: employe,
+                                    employe_affecter: checked,
                                     type: 'modify'
                                 },
                                 type: "POST",

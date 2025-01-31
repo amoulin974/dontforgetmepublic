@@ -232,7 +232,7 @@ class ActiviteController extends Controller
               break;
    
             case 'update':
-               $event = Plage::find($request->id)->update([
+               $event = Plage::where($request->id)->first()->update([
                  'heureDeb' => $request->heureDeb,
                  'heureFin' => $request->heureFin,
                  'datePlage' => $request->datePlage,
@@ -242,8 +242,8 @@ class ActiviteController extends Controller
               break;
    
             case 'delete':
-                $activite = Activite::find("id",$id)->first();
-                $plage = Plage::find("id",$request->id)->first();
+                $activite = Activite::where("id",$id)->first();
+                $plage = Plage::where("id",$request->id)->first();
                 $plage->employes()->detach();
                 $plage->activites()->detach();
                 $event = $plage->delete();
