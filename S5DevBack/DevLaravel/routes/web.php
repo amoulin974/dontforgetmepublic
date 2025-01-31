@@ -75,6 +75,14 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
             'id' => '[0-9]+',
         ])->name('show');
 
+        Route::get('/{entreprise}/edit', 'edit')->where([
+            'id' => '[0-9]+',
+        ])->name('edit');
+        
+        Route::put('/{entreprise}', 'update')->where([
+            'id' => '[0-9]+',
+        ])->name('update');
+
         Route::get('/{entreprise}/activites', 'showActivites')->where([
             'id' => '[0-9]+',
         ])->name('activites');
@@ -99,9 +107,10 @@ Route::prefix('/reserver')->name('reserver.')->controller(ReserverController::cl
 });
 
 Route::prefix('/profile')->name('profile.')->controller(userController::class)->group(function(){
-
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/edit', 'edit')->name('edit');
+        Route::put('/update', 'update')->name('update');
     });
 });
 

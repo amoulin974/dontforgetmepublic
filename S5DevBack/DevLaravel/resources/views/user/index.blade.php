@@ -20,6 +20,7 @@
         @if ($utilisateur->superadmin)
             <h4><strong>Superadmin</strong></h4>
         @endif
+        <a href="{{ route('profile.edit') }}" class="btn btn-primary">Modifier mon profil</a>
     </div>
     <a class="btn btn-primary" href="{{ route('entreprise.create') }}" style="margin:auto;"><i class="fa fa-plus"></i> Créer une entreprise</a>
     @if($entreprises->count() > 0)
