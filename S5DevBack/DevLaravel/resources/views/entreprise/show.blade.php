@@ -20,12 +20,13 @@
             <i class="fa fa-arrow-left fa-lg" style="color: #000000;"></i>
         </a>
         <div class="header-profile" style="margin-top: 1rem;"> 
-        @if ($isAdmin)
-        <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Modifier</a>
-        @endif
-        <div class="containerEntreprise"> 
-            <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
-            <br/>
+            @if ($isAdmin)
+            <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Modifier</a>
+            @endif
+            <div class="containerEntreprise"> 
+                <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
+                <br/>
+            </div>
         </div>
         <div class="entreprise">
             <div class="row res-details-info" style="display: inline-flex; width: 100%;">
