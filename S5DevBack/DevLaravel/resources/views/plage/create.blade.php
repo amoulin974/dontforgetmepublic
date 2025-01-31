@@ -318,7 +318,7 @@ var calendar = $('#calendar').fullCalendar({
         var originalEnd = event.end ? moment(event.end).subtract(delta) : originalStart;
 
         if (originalStart.isBefore(moment())) {
-            displayError("Impossible de déplacer un événement passé ou en cours");
+            displayWarning("Impossible de déplacer un événement passé ou en cours");
             $('#calendar').fullCalendar('unselect');
             revertFunc();
         }
@@ -426,6 +426,8 @@ var calendar = $('#calendar').fullCalendar({
                                         success: function (response) {
                                             calendar.fullCalendar('removeEvents', eventAct.id);
                                             displayMessage("Plage supprimée avec succès");
+                                            // Rafraîchir l'affichage du calendrier
+                                            $('#calendar').fullCalendar('refetchEvents');
                                         }
                                     });
                                     $( this ).dialog( "close" );

@@ -242,13 +242,11 @@ class ActiviteController extends Controller
               break;
    
             case 'delete':
-                $activite = Activite::firstOrFail("id",$id);
-                $plage = Plage::firstOrFail("id",$request->id);
-                $plage->employes()->detach($request->employes_affecter);
-                $activite->plages()->detach($request->id);
+                $activite = Activite::find("id",$id)->first();
+                $plage = Plage::find("id",$request->id)->first();
+                $plage->employes()->detach();
+                $plage->activites()->detach();
                 $event = $plage->delete();
-
-               
    
                return response()->json($event);
               break;
