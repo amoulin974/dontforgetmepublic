@@ -275,6 +275,7 @@
         $document.ready(function () {
             $('#employe').change(function () {
                 if ($(this).val() !== 'default') {
+                    document.cookie = "employe=0";
                     let cookieToAdd = 'employe=' + $(this).val();
                     document.cookie = cookieToAdd;
                     @foreach(App\Models\User::where("id",$_COOKIE['employe'])->first()->plages as $plage)
