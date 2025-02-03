@@ -42,7 +42,7 @@
 </head>
 <body>
   
-<div class="containerCalendar">
+<div class="container-calendar">
     <h1>Calendrier des créneaux</h1>
     <div id='calendar'></div>
 
@@ -546,7 +546,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succés !');
+    toastr.success(message, 'Succès !');
 }
 
 function displayError(message) {

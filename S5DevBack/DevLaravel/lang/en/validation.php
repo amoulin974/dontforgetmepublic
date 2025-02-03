@@ -185,7 +185,7 @@ return [
         'display_type'             => 'display type',
         'district'                 => 'district',
         'duration'                 => 'duration',
-        'email'                    => 'email',
+        'email'                    => 'email address',
         'excerpt'                  => 'excerpt',
         'filter'                   => 'filter',
         'finished_at'              => 'finished at',

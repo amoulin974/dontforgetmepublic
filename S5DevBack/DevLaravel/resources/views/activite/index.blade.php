@@ -71,9 +71,9 @@
 
     @if(!$services->isEmpty() && $isAdmin)
         <div class="mt-4">
-            <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Ajouter un service</a>
+            <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Ajouter un service</a>
         </div>
     @endif
-    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Retour</a>
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" class="btn btn-secondary">Retour</a>
 </div>
 @endsection

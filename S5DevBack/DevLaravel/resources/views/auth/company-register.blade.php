@@ -4,15 +4,15 @@
 
 @section('content')
 <!-- <div class="container d-flex flex-column align-items-center" style="min-height: 100vh;"> -->
-<div class="container d-flex flex-column" style="min-height: 100vh;">
+<div class="container d-flex flex-column" style="min-height: 100vh; margin-bottom: 2rem;">
     <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">
         <!-- Bouton retour -->
-        <a class="btn btn-outline-secondary mt-4 mb-4" href="{{ route('register.company.register.user') }}" style="position: absolute; left: 0;">
-            <i class="bi bi-arrow-left"></i>
+        <a href="{{ route('register.company.register.user') }}">
+            <i class="fa fa-arrow-left fa-lg" style="color: #000000;"></i>
         </a>
 
         <!-- Points de progression -->
-        <div class="d-flex justify-content-center align-items-center w-100 mt-4 mb-4">
+        <div class="d-flex justify-content-center align-items-center w-100 mt-5 mb-5">
             <span class="mx-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
             <span class="mx-2 bg-primary rounded-circle" style="width: 12px; height: 12px;"></span>
             <span class="mx-2 bg-secondary rounded-circle" style="width: 12px; height: 12px;"></span>

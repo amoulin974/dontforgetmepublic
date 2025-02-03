@@ -42,8 +42,11 @@
 </head>
 <body>
   
-<div class="containerCalendar">
-    <h3>Calendrier des plages de {{ $entreprise->libelle }}</h3>
+<div class="container-calendar">
+    <div class="header-profile mb-3">
+        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <br/>
+    </div>
     <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>
     @php
@@ -497,7 +500,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             } else {
                 revertFunc(); // Revert the change if the update fails
-                displayWarning("Impossible de modifier une plage pour qu'elle ait un interval de moins de {{ $activite->duree }} minutes");
+                displayWarning("Impossible de modifier une plage pour qu'elle ait un intervalle de moins de {{ $activite->duree }} minutes");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -531,7 +534,7 @@ function selectable(start, end, idEvent) {
 
     // Vérifiez que la plage est un multiple de la durée de l'activité
     if(moment(end).diff(moment(start), 'milliseconds') % DUREE_EN_MS != 0){
-        displayWarning("Impossible de créer une plage qui ne respecte pas l'interval de l'activité");
+        displayWarning("Impossible de créer une plage qui ne respecte pas l'intervalle de l'activité");
         return false;
     }
 
@@ -586,7 +589,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succés !');
+    toastr.success(message, 'Succès !');
 }
 
 function displayError(message) {

@@ -46,7 +46,6 @@
                 @else
                 <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
                 <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
-                  {{-- <li class="nav-item"><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active') nav-link"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li> --}}
                 @endguest
                 <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
             </ul>
@@ -71,7 +70,7 @@
         });
     </script>
 
-  <div class="profileInfo">
+  <div class="profile-info">
     @guest
             @if (Route::has('login'))
                     
@@ -110,7 +109,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succés !');
+    toastr.success(message, 'Succès !');
 }
 
 function displayError(message) {
@@ -246,7 +245,7 @@ $(document).ready(function() {
      </nav>
  
      <!-- Profil (auth) -->
-     <div class="profileInfo">
+     <div class="profile-info">
          @guest
              @if (Route::has('login'))
                  <a href="{{ route('login') }}">

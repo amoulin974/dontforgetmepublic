@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('typeNotif')->nullable();
-            $table->datetime('delaiAvantNotif')->nullable();
+            $table->string('delaiAvantNotif')->nullable();
             $table->integer('superadmin')->nullable();
             $table->rememberToken();
             $table->timestamps();
