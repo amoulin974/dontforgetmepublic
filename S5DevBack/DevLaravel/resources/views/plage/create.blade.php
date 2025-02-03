@@ -355,7 +355,7 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
-        var alreadyChecked = [];
+        var alreadyChecked = [];        
         @foreach (App\Models\Plage::all() as $p)
             if(event.id == {{ $p->id }}){
                 @foreach($p->employes as $e)

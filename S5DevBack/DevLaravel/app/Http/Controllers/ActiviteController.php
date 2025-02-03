@@ -256,12 +256,12 @@ class ActiviteController extends Controller
                  'interval' => $request->interval,
                ]); */
 
-               $event = Plage::find($request->id)->first();
+               $event = Plage::where("id",$request->id)->first();
 
                $event->employes()->detach();
 
                foreach($request->employes_affecter as $idEmploye){
-                $event->employes()->attach($idEmploye);
+                    $event->employes()->attach($idEmploye);
                 }
   
                return response()->json($event);
