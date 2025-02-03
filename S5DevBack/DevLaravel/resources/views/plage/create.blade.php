@@ -391,12 +391,13 @@ var calendar = $('#calendar').fullCalendar({
                         displayWarning('Veuillez sélectionner au moins un employé.');
                         }
                         else {
+                            console.log(checked);
                             $.ajax({
                                 url: SITEURL + "/",
                                 data: {
                                     id: eventAct.id,
                                     interval: '{{ $activite->duree }}',
-                                    employe_affecter: checked,
+                                    employes_affecter: checked,
                                     type: 'modify'
                                 },
                                 type: "POST",
@@ -417,9 +418,6 @@ var calendar = $('#calendar').fullCalendar({
                                     displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
                                 }
                             });
-                        }
-                        else {
-                            displayWarning("Informations manquantes");
                         }
                     },
                     "Supprimer": function() {
