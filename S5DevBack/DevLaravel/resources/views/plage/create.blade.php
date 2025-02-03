@@ -162,6 +162,7 @@ var SITEURL = "{{ url('/entreprise/') }}";
 SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/services/" + {{ $activite->id }} + "/plage";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
+var curseurUnclickable = 'not-allowed';
 var DUREE = '{{ $activite->duree }}';
 var DUREE_EN_MS = moment.duration(DUREE).asMilliseconds();
 
@@ -217,9 +218,11 @@ var calendar = $('#calendar').fullCalendar({
         if (moment(event.end).isBefore(moment())) {
             element.css('background-color', couleurPasses); // Couleur pour les événements passés
             element.css('border-color', couleurPasses);
+            element.css('cursor', curseurUnclickable);
         } else if (moment(event.start).isSame(moment(), 'day')) {
             element.css('background-color', couleurAjd); // Couleur pour les événements futurs
             element.css('border-color', couleurAjd);
+            element.css('cursor', curseurUnclickable);
         }
         if (event.interval) { // Si le nombre de personnes est renseigné
             element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
@@ -236,6 +239,7 @@ var calendar = $('#calendar').fullCalendar({
     selectable: true,
     nowIndicator: true,
     selectHelper: true,
+    allDaySlot: false,
     select: function (start, end, allDay) {
         // Vérifiez si l'événement est sur la même journée
         if (selectable(start,end,true)) {
