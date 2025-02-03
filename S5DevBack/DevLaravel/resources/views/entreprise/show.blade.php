@@ -261,11 +261,16 @@
             });
         }
 
+        var checked = [];
+        var allSelected = false;
+
         $(document).ready(function() {
-            var checked = [];
             $("input[type='checkbox']").change(function(){
                 if(this.checked){
                     checked.push($(this).val());
+                    if (allSelected){
+                        allSelected = false;
+                    }
                 }
                 else{
                     checked.splice(checked.indexOf($(this).val()), 1);
@@ -338,6 +343,8 @@
                         },
                         "Annuler": function() {
                             $('#dialog').dialog('close');
+                            $("#employe").val('');
+                            uncheckAll();
                         }
                     }
                 });
@@ -346,16 +353,23 @@
 
 function checkAll() {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checked = [];
     checkboxes.forEach((checkbox) => {
         checkbox.checked = true;
+        checked.push(checkbox.value);
     });
+    checked = checked.splice(1, checked.length);
+    allSelected = true;
 }
 
 function uncheckAll() {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach((checkbox) => {
         checkbox.checked = false;
+        
     });
+    checked = [];
+    allSelected = false;
 }
 
         // URL dans le site

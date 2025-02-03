@@ -222,6 +222,9 @@ class ActiviteController extends Controller
                }
 
                //Auth::user()->travailler_activites()->attach($id, ['idEntreprise'=>$entreprise->id,'statut' => 'Admin']);
+               foreach($request->employes_affecter as $idEmploye){
+                   $event->employes()->attach($idEmploye);
+               }
 
                $event->activites()->attach($id);
                
@@ -229,7 +232,7 @@ class ActiviteController extends Controller
               break;
    
             case 'update':
-               $event = Plage::find($request->id)->update([
+               $event = Plage::where($request->id)->first()->update([
                  'heureDeb' => $request->heureDeb,
                  'heureFin' => $request->heureFin,
                  'datePlage' => $request->datePlage,
@@ -239,18 +242,27 @@ class ActiviteController extends Controller
               break;
    
             case 'delete':
-                Activite::firstOrFail($id)->plages()->detach($request->id);
-               $event = Plage::find($request->id)->delete();
-
-               
+                $activite = Activite::where("id",$id)->first();
+                $plage = Plage::where("id",$request->id)->first();
+                $plage->employes()->detach();
+                $plage->activites()->detach();
+                $event = $plage->delete();
    
                return response()->json($event);
               break;
  
             case 'modify':
-               $event = Plage::find($request->id)->update([
+               /* $event = Plage::find($request->id)->update([
                  'interval' => $request->interval,
-               ]);
+               ]); */
+
+               $event = Plage::where("id",$request->id)->first();
+
+               $event->employes()->detach();
+
+               foreach($request->employes_affecter as $idEmploye){
+                    $event->employes()->attach($idEmploye);
+                }
   
                return response()->json($event);
               break;

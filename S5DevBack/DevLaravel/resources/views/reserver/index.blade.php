@@ -7,9 +7,10 @@
 
     <div class="res-container container">
         <!-- Barre de recherche centrée -->
+
         <div class="searchbar-home">
             <input class="form-control mr-sm-2 d-block" id="search-input" type="search" placeholder="Rechercher une entreprise par libellé..." aria-label="Search">
-            <button class="btn btn-secondary my-2 my-sm-0 d-block"><i class="bi bi-search"></i></button>
+            <button class="btn btn-secondary my-2 my-sm-0 d-block" id="rechercher"><i class="bi bi-search"></i></button>
         </div>
         <div class="container">
             @foreach ($entreprises as $entreprise)
@@ -67,9 +68,9 @@
 
     <script>
         $(document).ready(function() {
-            document.getElementById('search-input').addEventListener('input', function(e) {
-                const filter = e.target.value.toLowerCase();
-                const entreprises = document.querySelectorAll('.container-entreprise');
+            $('#rechercher').click(function() {
+                const filter = $("#search-input").val().toLowerCase();
+                const entreprises = document.querySelectorAll('.containerEntreprise');
 
                 entreprises.forEach(entreprise => {
                     const libelle = entreprise.getAttribute('data-libelle');
@@ -80,6 +81,18 @@
                         entreprise.style.display = 'none';
                     }
                 });
+            });
+
+            $('#search-input').on('input', function() {
+                const filter = $(this).val().toLowerCase();
+                const entreprises = document.querySelectorAll('.containerEntreprise');
+
+                if (filter === '') {
+                    entreprises.forEach(entreprise => {
+                        entreprise.style.display = 'block';
+                    });
+                    return;
+                }
             });
         });
     </script>

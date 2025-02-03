@@ -29,6 +29,10 @@
             </thead>
             <tbody>
                 @foreach($services as $service)
+                @php
+                    $isWorkedByUser = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('idActivite',$service->id)->first() != null;
+                @endphp
+                @if($isWorkedByUser || $isAdmin)
                 <tr>
                     <td>{{ $service->libelle }}</td>
                     <td>{{ $service->formatted_duree }}</td>
@@ -47,9 +51,11 @@
                         <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
                             <i class="fa fa-calendar"></i> Gérer les plages
                         </a>
+                        @if($isWorkedByUser)
                         <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-link">
                             <i class="fa fa-eye"></i> Voir vos plages
                         </a>
+                        @endif
                         @else
                         <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-link">
                             <i class="fa fa-calendar"></i> Voir les plages
@@ -57,6 +63,7 @@
                         @endif
                     </td>
                 </tr>
+                @endif
                 @endforeach
             </tbody>
         </table>

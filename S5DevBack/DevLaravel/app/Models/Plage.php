@@ -64,4 +64,14 @@ class Plage extends Model
     {
         return $this->belongsToMany(Activite::class, 'composer', 'idPlage', 'idActivite')->withTimestamps();
     }
+
+    /**
+     * Define a many-to-many relationship with the User model via Placer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function employes(): BelongsToMany
+    {
+        return $this->belongsToMany(Activite::class, 'placer', 'idPlage', 'idUser')->withTimestamps();
+    }
 }
