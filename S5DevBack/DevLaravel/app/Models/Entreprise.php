@@ -24,7 +24,6 @@ class Entreprise extends Model
         'adresse',
         'metier',
         'description',
-        'type',
         'numTel',
         'email',
         'cheminImg',

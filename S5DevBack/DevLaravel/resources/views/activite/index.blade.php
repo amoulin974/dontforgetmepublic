@@ -24,6 +24,7 @@
                 <tr>
                     <th>Nom</th>
                     <th>Durée</th>
+                    <th>Nombre de places</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -32,6 +33,7 @@
                 <tr>
                     <td>{{ $service->libelle }}</td>
                     <td>{{ $service->formatted_duree }}</td>
+                    <td>{{ $service->nbrPlaces }}</td>
                     <td>
                         @if($isAdmin)
                         <a href="{{ route('entreprise.services.edit', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">

@@ -21,6 +21,7 @@ class Activite extends Model
     protected $fillable = [
         'libelle',
         'duree',
+        'nbrPlaces',
         'idEntreprise'
     ];
 

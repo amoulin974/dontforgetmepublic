@@ -28,6 +28,14 @@
             @enderror
         </div>
 
+        <div class="form-group mb-3">
+            <label for="nbrPlaces">Nombre de places disponibles</label>
+            <input type="number" name="nbrPlaces" id="nbrPlaces" class="form-control @error('nbrPlaces') is-invalid @enderror" placeholder="Nombre de places disponibles" value="{{ old('nbrPlaces', $service->nbrPlaces) }}" required>
+            @error('nbrPlaces')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
         {{-- <!-- <div class="form-group mb-3">
             <label for="employes">Attribuer le service à :</label>
             <div class="form-check">

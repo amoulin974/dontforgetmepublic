@@ -16,6 +16,7 @@
                 <tr>
                     <th>Nom</th>
                     <th>Durée</th>
+                    <th>Nombre de places</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
                 <tr>
                     <td>{{ $service->libelle }}</td>
                     <td>{{ $service->duree }}</td>
+                    <td>{{ $service->nbrPlaces }}</td>
                     <td>
                         <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-primary">Réserver</a>
                     </td>

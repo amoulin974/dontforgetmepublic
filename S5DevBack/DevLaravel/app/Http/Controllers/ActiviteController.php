@@ -57,7 +57,8 @@ class ActiviteController extends Controller
         else{
             $request->validate([
               'libelle' => 'required|string|max:255',
-              'duree' => 'required|integer|min:1', 
+              'duree' => 'required|integer|min:1',
+              'nbrPlaces' => 'required|integer|min:1'
           ]);
 
           $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
@@ -65,6 +66,7 @@ class ActiviteController extends Controller
           $activite = Activite::create([
               'libelle' => $request->libelle,
               'duree' => $dureeInTimeFormat,
+              'nbrPlaces' => $request->nbrPlaces,
               'idEntreprise' => $entreprise->id
           ]);
 
@@ -111,7 +113,7 @@ class ActiviteController extends Controller
         }
         else{
             $service = Activite::where('id', $id)->where('idEntreprise', $entreprise->id)->firstOrFail();
-        return view('activite.edit', ['entreprise' => $entreprise, 'service' => $service]);
+            return view('activite.edit', ['entreprise' => $entreprise, 'service' => $service]);
         }
     }
 
@@ -128,6 +130,7 @@ class ActiviteController extends Controller
             $request->validate([
                 'libelle' => 'required|string|max:255',
                 'duree' => 'required|integer|min:1', // Durée en minutes
+                'nbrPlaces' => 'required|integer|min:1'
             ]);
     
             $service = Activite::findOrFail($id);
@@ -139,6 +142,7 @@ class ActiviteController extends Controller
             $service->update([
                 'libelle' => $request->libelle,
                 'duree' => $dureeInTimeFormat,
+                'nbrPlaces' => $request->nbrPlaces
             ]);
     
             return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service mis à jour avec succès.');

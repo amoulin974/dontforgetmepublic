@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('libelle');
             $table->time('duree');
+            $table->integer('nbrPlaces');
             $table->timestamps();
             $table->unsignedBigInteger('idEntreprise');
             $table->foreign('idEntreprise')->references('id')->on('entreprises');
