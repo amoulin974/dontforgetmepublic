@@ -12,15 +12,17 @@ use Illuminate\Support\Facades\Auth;
 
 class weekdayController extends Controller
 {
-    public function indexWeek(Entreprise $entreprise)
+    public function indexWeek(Request $request, Entreprise $entreprise)
     {
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
-        $isEmploye = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Employé')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
         $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
-        $isAllow = $isAdmin || $isCreator || $isEmploye;
+        $isAllow = $isAdmin || $isCreator;
 
         if($isAllow){
+            if($entreprise->journeeTypes->count() == 0){
+                return redirect()->route('entreprise.day.indexDay', ['entreprise' => $entreprise]);
+            }
             return view('dayweektype.week', ['entreprise' => $entreprise]);
         }
         else {
@@ -28,16 +30,26 @@ class weekdayController extends Controller
         }
     }
 
-    public function indexDay(Entreprise $entreprise)
+    public function indexDay(Request $request, Entreprise $entreprise)
     {
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
-        $isEmploye = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Employé')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
         $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
-        $isAllow = $isAdmin || $isCreator || $isEmploye;
+        $isAllow = $isAdmin || $isCreator;
 
         if($isAllow){
+          if($request->ajax()) {
+              // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
+              $journees = $entreprise->journeeTypes;
+              $data = [];
+
+              foreach($journees as $journee){
+                  $data[$journee->id] = $journee->planning;
+              }
+              return response()->json($data);
+          } else {
             return view('dayweektype.day', ['entreprise' => $entreprise]);
+          }
         }
         else {
             return redirect()->route('entreprise.show', ['entreprise' => $entreprise]);

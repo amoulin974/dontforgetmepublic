@@ -43,8 +43,8 @@
 <body>
   
 <div class="container-calendar">
-    <div class="header-profile mb-3">
-        <h1>Journées types de {{ $entreprise->libelle }}</h1>
+    <div class="header-profile mb-3" style="text-align: center;">
+        <h2 style="color: #1167FC;"><a href="{{ route('entreprise.week.indexWeek', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none;">Semaine types de {{ $entreprise->libelle }}</a> | <a href="{{ route('entreprise.day.indexDay', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none; font-weight: bold;">Journées types de {{ $entreprise->libelle }}</a></h2>
         <br/>
     </div>
     <div id='calendar'></div>
@@ -99,57 +99,7 @@
 </div>
 
 <script>
-var checked = [];
-
-function checkAll() {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checked = [];
-    checkboxes.forEach((checkbox) => {
-        checkbox.checked = true;
-        // Vérifier si l'id fini par Modif avec une regex
-        if(checkbox.id.match(/Modif$/)){
-            checkbox.checked = false;
-        }
-        else {
-            checked.push(checkbox.value);
-        }
-    });
-    checked = checked.splice(1,checked.length);
-}
-
-function checkAllModif() {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checked = [];
-    checkboxes.forEach((checkbox) => {
-        checkbox.checked = false;
-        // Vérifier si l'id fini par Modif avec une regex
-        if(checkbox.id.match(/Modif$/)){
-            checkbox.checked = true;
-            checked.push(checkbox.value);
-        }
-    });
-    checked = checked.splice(1,checked.length);
-}
-
-function uncheckAll() {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach((checkbox) => {
-        checkbox.checked = false;
-    });
-    checked = [];
-}
 $(document).ready(function () {
-
-    $("input[type='checkbox']").change(function(){
-        if(this.checked){
-            checked.push($(this).val());
-        }
-        else{
-            checked.splice(checked.indexOf($(this).val()), 1);
-        }
-    });
-
-
 
 // VARIABLES GLOBALES
 // URL dans le site
@@ -169,7 +119,7 @@ $.ajaxSetup({
 // Mise en place du calendrier
 var calendar = $('#calendar').fullCalendar({
     header: {
-        left: 'prev,next today',
+        left: 'prev,next',
         center: 'title',
         right: 'agendaDay'
     },
@@ -221,9 +171,30 @@ var calendar = $('#calendar').fullCalendar({
             element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
         }
         
+    /**
+     * File: day.blade.php
+     * Description: This file is a view file for displaying a day in the fullcalendar.
+     *
+     * Title Format:
+     * The title format for the fullcalendar day view can be customized using the `titleFormat` option.
+     * This option accepts a string that can include various placeholders to display different parts of the date.
+     * Some commonly used placeholders for the day view are:
+     * - `{dddd}`: Full weekday name (e.g., Monday, Tuesday)
+     * - `{MMM}`: Short month name (e.g., Jan, Feb)
+     * - `{D}`: Day of the month (e.g., 1, 2, 3)
+     *
+     * Example:
+     * If you want to display the day in the format "Monday, Jan 1", you can use the following title format:
+     * ```
+     * titleFormat: '{dddd}, {MMM} {D}'
+     * ```
+     *
+     * Note: The actual implementation of the fullcalendar and its options may vary depending on the specific usage and version of the library.
+     */
     },
+    titleFormat: 'dddd',
     selectable: true,
-    nowIndicator: true,
+    nowIndicator: false,
     selectHelper: true,
     allDaySlot: false,
     select: function (start, end, allDay) {
@@ -248,10 +219,7 @@ var calendar = $('#calendar').fullCalendar({
                         buttons: {
                             "Ajouter": function() {
                                 //var interv = $('#interv').val();
-                                if (checked.length == 0){
-                                displayWarning('Veuillez sélectionner au moins un employé.');
-                                }
-                                else {
+                                
                                     $.ajax({
                                         url: SITEURL + "/",
                                         data: {
@@ -259,13 +227,12 @@ var calendar = $('#calendar').fullCalendar({
                                             heureDeb: start.split(' ')[1],
                                             heureFin: end.split(' ')[1],
                                             entreprise_id: {{ $entreprise->id }},
-                                            employes_affecter: checked,
+                                            employes_affecter: 0,
                                             type: 'add'
                                         },
                                         type: "POST",
                                         success: function (data) {
                                             $('#dialogTitre').dialog('close');
-                                            uncheckAll();
                                             displaySuccess("Plage ajoutée avec succès");
 
                                             // Désélectionner après la sélection
@@ -278,10 +245,8 @@ var calendar = $('#calendar').fullCalendar({
                                             displayError("Erreur lors de l'ajout de la plage. Réssayez...");
                                         }
                                     });
-                                }
                             },
                             "Annuler": function() {
-                                uncheckAll();
                                 $(this).dialog("close");
                             }
                         }
@@ -339,19 +304,6 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
-        var alreadyChecked = [];        
-        @foreach (App\Models\Plage::all() as $p)
-            if(event.id == {{ $p->id }}){
-                @foreach($p->employes as $e)
-                    alreadyChecked.push({{ $e->id }});
-                @endforeach
-            }
-        @endforeach
-
-        alreadyChecked.forEach(userWorking => {
-            document.getElementById(userWorking+"Modif").checked = true;
-            checked.push(userWorking);
-        });
 
         // Vérifiez si la date de début est passée
         if (moment().isAfter(event.start) || moment().isAfter(event.end)) {
@@ -366,27 +318,20 @@ var calendar = $('#calendar').fullCalendar({
                             //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
                             $('.ui-widget-overlay').bind('click', function(){
                                 $('#dialogModif').dialog('close');
-                                uncheckAll();
                             });
                         },
                 buttons: {
                     "Modifier": function() {
-                        if (checked.length == 0){
-                        displayWarning('Veuillez sélectionner au moins un employé.');
-                        }
-                        else {
-                            console.log(checked);
                             $.ajax({
                                 url: SITEURL + "/",
                                 data: {
                                     id: eventAct.id,
-                                    employes_affecter: checked,
+                                    employes_affecter: 0,
                                     type: 'modify'
                                 },
                                 type: "POST",
                                 success: function (data) {
                                     $('#dialogModif').dialog('close');
-                                    uncheckAll();
 
                                     displaySuccess("Plage modifiée avec succès");
 
@@ -401,7 +346,6 @@ var calendar = $('#calendar').fullCalendar({
                                     displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
                                 }
                             });
-                        }
                     },
                     "Supprimer": function() {
                         $(this).dialog("close");
@@ -425,19 +369,16 @@ var calendar = $('#calendar').fullCalendar({
                                         }
                                     });
                                     $( this ).dialog( "close" );
-                                    uncheckAll();
                                     $('#dialogModif').dialog("close");
                                 },
                                 "Annuler": function() {
                                     $( this ).dialog( "close" );
-                                    uncheckAll();
                                     $('#dialogModif').dialog("open");
                                 }
                             }
                         });
                     },
                     "Annuler": function() {
-                        uncheckAll();
                         $(this).dialog("close");
                     }
                 }
