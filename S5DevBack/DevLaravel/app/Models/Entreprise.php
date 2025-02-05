@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @brief The Entreprise model represents a company.
+ *
+ * This model defines the attributes and relationships for a company. An Entreprise
+ * may have multiple related activities, schedules, and users.
+ */
 class Entreprise extends Model
 {
     use HasFactory;
@@ -34,26 +40,25 @@ class Entreprise extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'publier' => 'integer',
-        'cheminImg' => 'array',
-        'typeRdv' => 'array',
+        'publier'    => 'integer',
+        'cheminImg'  => 'array',
+        'typeRdv'    => 'array',
         'idCreateur' => 'integer'
     ];
 
-
-    // METHODES
+    // METHODS
 
     /**
      * Define a one-to-many relationship with the Activite model.
      *
-     * Each Entreprise can be associated with zero or more Activite entries.
+     * Each Entreprise can have zero or more activities.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany Returns a has-many relationship instance.
      */
     public function activites(): HasMany
     {
@@ -63,9 +68,9 @@ class Entreprise extends Model
     /**
      * Define a one-to-many relationship with the JourneeType model.
      *
-     * Each Entreprise can be associated with zero or more JourneeType entries.
+     * Each Entreprise can have zero or more JourneeType entries.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany Returns a has-many relationship instance.
      */
     public function journeeTypes(): HasMany
     {
@@ -75,9 +80,9 @@ class Entreprise extends Model
     /**
      * Define a one-to-many relationship with the SemaineType model.
      *
-     * Each Entreprise can be associated with zero or more SemaineType entries.
+     * Each Entreprise can have zero or more SemaineType entries.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany Returns a has-many relationship instance.
      */
     public function semaineTypes(): HasMany
     {
@@ -87,9 +92,9 @@ class Entreprise extends Model
     /**
      * Define a one-to-many relationship with the Plage model.
      *
-     * Each Entreprise can be associated with zero or more Plage entries.
+     * Each Entreprise can have zero or more Plage entries.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany Returns a has-many relationship instance.
      */
     public function plages(): HasMany
     {
@@ -99,32 +104,43 @@ class Entreprise extends Model
     /**
      * Define a many-to-many relationship with the Creneau model.
      *
-     * Each entreprise can be associated with one or more creneaux.
+     * Each Entreprise can be associated with one or more Creneaux (time slots) via the "ouvrir" pivot table.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany Returns a belongs-to-many relationship instance.
      */
     public function creneaux(): BelongsToMany
     {
-        return $this->belongsToMany(Creneau::class, 'ouvrir', 'idEntreprise', 'idCreneau')->withTimestamps();
+        return $this->belongsToMany(Creneau::class, 'ouvrir', 'idEntreprise', 'idCreneau')
+            ->withTimestamps();
     }
 
     /**
-     * Get the activites associated with the entreprise via Travailler.
+     * Get the activities associated with the Entreprise via the "travailler" pivot table.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * This relationship retrieves activities along with additional pivot data (idUser and statut)
+     * that indicate the user's role within the enterprise.
+     *
+     * @return BelongsToMany Returns a belongs-to-many relationship instance.
      */
     public function travailler_activites(): BelongsToMany
     {
-        return $this->belongsToMany(Activite::class, 'travailler', 'idEntreprise', 'idActivite')->withPivot('idUser', 'statut')->withTimestamps();
+        return $this->belongsToMany(Activite::class, 'travailler', 'idEntreprise', 'idActivite')
+            ->withPivot('idUser', 'statut')
+            ->withTimestamps();
     }
 
     /**
-     * Get the users associated with the entreprise via Travailler.
+     * Get the users associated with the Entreprise via the "travailler" pivot table.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * This relationship retrieves users along with additional pivot data (idActivite and statut)
+     * that indicate the user's role within the enterprise.
+     *
+     * @return BelongsToMany Returns a belongs-to-many relationship instance.
      */
     public function travailler_users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'travailler', 'idEntreprise', 'idUser')->withPivot('idActivite', 'statut')->withTimestamps();
+        return $this->belongsToMany(User::class, 'travailler', 'idEntreprise', 'idUser')
+            ->withPivot('idActivite', 'statut')
+            ->withTimestamps();
     }
 }

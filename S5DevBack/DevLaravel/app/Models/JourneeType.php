@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @brief The JourneeType model represents a type of day schedule.
+ *
+ * This model defines the attributes and relationships for a day type schedule,
+ * including its planning details and its relationships with an enterprise and week types.
+ */
 class JourneeType extends Model
 {
     use HasFactory;
@@ -24,7 +30,7 @@ class JourneeType extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
@@ -32,15 +38,14 @@ class JourneeType extends Model
         'planning' => 'array'
     ];
 
-
-    // METHODES
+    // METHODS
 
     /**
      * Define a many-to-one relationship with the Entreprise model.
      *
      * Each JourneeType is associated with exactly one Entreprise.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo Returns a belongs-to relationship instance linking this day type to an enterprise.
      */
     public function entreprise(): BelongsTo
     {
@@ -50,9 +55,10 @@ class JourneeType extends Model
     /**
      * Define a many-to-many relationship with the SemaineType model.
      *
-     * Each JourneeType is associated with zero to or more SemaineType entries.
+     * Each JourneeType can be associated with zero or more SemaineType entries.
+     * This relationship is defined via the "constituer" pivot table.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     * @return BelongsToMany Returns a belongs-to-many relationship instance.
      */
     public function semaineTypes(): BelongsToMany
     {
