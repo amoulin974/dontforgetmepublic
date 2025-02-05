@@ -155,26 +155,13 @@ var calendar = $('#calendar').fullCalendar({
         });
     },
     displayEventTime: true, // false -> don't show the time column in list view
-    weekNumbers: true,
-    eventRender: function(event, element) {
-        if (moment(event.end).isBefore(moment())) {
-            element.css('background-color', couleurPasses); // Couleur pour les événements passés
-            element.css('border-color', couleurPasses);
-            element.css('cursor', curseurUnclickable);
-        } else if (moment(event.start).isSame(moment(), 'day')) {
-            element.css('background-color', couleurAjd); // Couleur pour les événements futurs
-            element.css('border-color', couleurAjd);
-            element.css('cursor', curseurUnclickable);
-        }
-        if (event.interval) { // Si le nombre de personnes est renseigné
-            element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
-        }
-        
-    },
+    weekNumbers: false,
+    columnHeader: false,
     selectable: true,
     nowIndicator: false,
     selectHelper: true,
     allDaySlot: false,
+    selectOverlap: false,
     select: function (start, end, allDay) {
         // Vérifiez si l'événement est sur la même journée
         if (selectable(start,end,true)) {
@@ -400,25 +387,6 @@ var calendar = $('#calendar').fullCalendar({
 });
 
 function selectable(start, end, idEvent) {
-    // Vérifiez si la date de début est passée
-    if (moment().isAfter(start)) {
-        displayWarning("Impossible de créer une plage dans le passé");
-        return false;
-    }
-    // Vérifiez si la date de fin est passée
-    if (moment().isAfter(end)) {
-        displayWarning("Impossible de créer une plage dans le passé");
-        return false;
-    }
-    var events = $('#calendar').fullCalendar('clientEvents');
-    for (var i = 0; i < events.length; i++) {
-        var event = events[i];
-        if (start.isBefore(event.end) && end.isAfter(event.start) && event.id != idEvent) {
-            displayWarning("Impossible de créer une plage en même temps qu'une autre");
-            return false;
-        }
-    }
-
     // Vérifiez que la plage est un multiple de la durée de l'activité
     if(moment(end).diff(moment(start), 'milliseconds') % DUREE_EN_MS != 0){
         displayWarning("Impossible de créer une plage qui ne respecte pas l'intervalle de l'activité");

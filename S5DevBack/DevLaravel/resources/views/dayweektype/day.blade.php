@@ -39,6 +39,10 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-multimonth/1.0.0/fullcalendar-multimonth.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-multimonth/1.0.0/fullcalendar-multimonth.min.js"></script> -->
 
+    <!-- Pour les couleur -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+
 </head>
 <body>
   
@@ -46,7 +50,10 @@
     <div class="header-profile mb-3" style="text-align: center;">
         <h2 style="color: #1167FC;"><a href="{{ route('entreprise.week.indexWeek', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none;">Semaine types de {{ $entreprise->libelle }}</a> | <a href="{{ route('entreprise.day.indexDay', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none; font-weight: bold;">Journées types de {{ $entreprise->libelle }}</a></h2>
         <br/>
+        
     </div>
+    <div style="text-align: center; width: 100%;">
+    <input type="text" id="inputColor" data-coloris value="#3a87ad" /></div>
     <div id='calendar'></div>
     @php
         $dayType =  0;
@@ -101,13 +108,33 @@
 <script>
 $(document).ready(function () {
 
+var currentColor = $('#inputColor').val();
+
+    // Pour tous les éléments dans la div .clr-field
+    document.querySelector('.clr-field').childNodes
+    .forEach(element => {
+        element.style.borderRadius = '10px';
+    });
+
+    $('#inputColor').on('input', function() {
+        currentColor = $('#inputColor').val();
+    });
+
+
 // VARIABLES GLOBALES
 // URL dans le site
 var SITEURL = "{{ url('/entreprise/') }}";
-SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/week";
-var couleurPasses = 'red';
-var couleurAjd = 'green';
-var curseurUnclickable = 'not-allowed';
+SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/day";
+var DUREE_EN_MS = 1;
+var semainier = {
+    "lundi" : 0,
+    "mardi" : 1,
+    "mercredi" : 2,
+    "jeudi" : 3,
+    "vendredi" : 4,
+    "samedi" : 5,
+    "dimanche" : 6
+};
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -123,6 +150,10 @@ var calendar = $('#calendar').fullCalendar({
         center: 'title',
         right: 'agendaDay'
     },
+    validRange: {
+    start: moment().startOf('week').add(1,'days'), // Limite le début de la plage de dates à la semaine actuelle
+    end: moment().endOf('week').add(1,'days') // Limite la fin de la plage de dates à la semaine actuelle
+    },
     buttonIcons: false, // show the prev/next text
     locale: 'fr',
     editable: true,
@@ -131,23 +162,24 @@ var calendar = $('#calendar').fullCalendar({
             url: SITEURL + "/",
             type: 'GET',
             success: function(data) {
+
+                // Placer les évènements sur toutes les semaines
                 var events = [];
                 var start_datetime;
                 var end_datetime;
-                $(data).each(function() {
-                    start_datetime = this.datePlage.split('T')[0] + 'T' + this.heureDeb + '.000000Z';
-                    end_datetime = this.datePlage.split('T')[0] + 'T' + this.heureFin + '.000000Z';
-                    if (this.heureFin == '00:00:00') {
-                        end_datetime = this.datePlage.split('T')[0] + 'T' + '23:59:59' + '.000000Z';
+                for (var day in data[1]) {
+                    var momentDay = moment().startOf('week').add(1,'days').add(semainier[day], 'days').format('YYYY-MM-DD');
+                    for (var index in data[1][day]) {
+                        event = data[1][day][index];
+                        start_datetime = momentDay + 'T' + event.start +':00.000000Z';
+                        end_datetime = momentDay + 'T' + event.end +':00.000000Z';
+                        events.push({
+                            start: start_datetime,
+                            end: end_datetime,
+                            color: event.color,
+                        });
                     }
-                    events.push({
-                        id: this.id,
-                        title: this.id,
-                        start: start_datetime,
-                        end: end_datetime,
-                        interval: this.interval,
-                    });
-                });
+                }
                 callback(events);
             },
             error: function() {
@@ -155,53 +187,31 @@ var calendar = $('#calendar').fullCalendar({
             }
         });
     },
-    displayEventTime: true, // false -> don't show the time column in list view
-    weekNumbers: true,
     eventRender: function(event, element) {
-        if (moment(event.end).isBefore(moment())) {
-            element.css('background-color', couleurPasses); // Couleur pour les événements passés
-            element.css('border-color', couleurPasses);
-            element.css('cursor', curseurUnclickable);
-        } else if (moment(event.start).isSame(moment(), 'day')) {
-            element.css('background-color', couleurAjd); // Couleur pour les événements futurs
-            element.css('border-color', couleurAjd);
-            element.css('cursor', curseurUnclickable);
-        }
-        if (event.interval) { // Si le nombre de personnes est renseigné
-            element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
-        }
-        
-    /**
-     * File: day.blade.php
-     * Description: This file is a view file for displaying a day in the fullcalendar.
-     *
-     * Title Format:
-     * The title format for the fullcalendar day view can be customized using the `titleFormat` option.
-     * This option accepts a string that can include various placeholders to display different parts of the date.
-     * Some commonly used placeholders for the day view are:
-     * - `{dddd}`: Full weekday name (e.g., Monday, Tuesday)
-     * - `{MMM}`: Short month name (e.g., Jan, Feb)
-     * - `{D}`: Day of the month (e.g., 1, 2, 3)
-     *
-     * Example:
-     * If you want to display the day in the format "Monday, Jan 1", you can use the following title format:
-     * ```
-     * titleFormat: '{dddd}, {MMM} {D}'
-     * ```
-     *
-     * Note: The actual implementation of the fullcalendar and its options may vary depending on the specific usage and version of the library.
-     */
+        element.css('background-color', event.color);
+        element.css('border-color', event.color);
     },
+    displayEventTime: true, // false -> don't show the time column in list view
+    weekNumbers: false,
+    columnHeader: false,
     titleFormat: 'dddd',
     selectable: true,
     nowIndicator: false,
     selectHelper: true,
     allDaySlot: false,
+    selectOverlap: false,
     select: function (start, end, allDay) {
         // Vérifiez si l'événement est sur la même journée
         if (selectable(start,end,true)) {
                 // Vérifiez si l'événement dépasse une journée
                 if (moment(start).isSame(end, 'day')) {
+                    // Update la couleur de l'évènement en cours de sélection avec la couleur actuelle
+                    var eventDisplay = {
+                        start: start,
+                        end: end,
+                        color: currentColor
+                    };
+                    $('#calendar').fullCalendar('renderEvent', eventDisplay, true);
                     var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
                     var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
                     // Afficher la popup avec les inputs
@@ -425,25 +435,6 @@ var calendar = $('#calendar').fullCalendar({
 });
 
 function selectable(start, end, idEvent) {
-    // Vérifiez si la date de début est passée
-    if (moment().isAfter(start)) {
-        displayWarning("Impossible de créer une plage dans le passé");
-        return false;
-    }
-    // Vérifiez si la date de fin est passée
-    if (moment().isAfter(end)) {
-        displayWarning("Impossible de créer une plage dans le passé");
-        return false;
-    }
-    var events = $('#calendar').fullCalendar('clientEvents');
-    for (var i = 0; i < events.length; i++) {
-        var event = events[i];
-        if (start.isBefore(event.end) && end.isAfter(event.start) && event.id != idEvent) {
-            displayWarning("Impossible de créer une plage en même temps qu'une autre");
-            return false;
-        }
-    }
-
     // Vérifiez que la plage est un multiple de la durée de l'activité
     if(moment(end).diff(moment(start), 'milliseconds') % DUREE_EN_MS != 0){
         displayWarning("Impossible de créer une plage qui ne respecte pas l'intervalle de l'activité");
@@ -452,6 +443,31 @@ function selectable(start, end, idEvent) {
 
     return true;
 }
+
+// Callback function to execute when mutations are observed
+const callback = (mutationList, observer) => {
+  for (const mutation of mutationList) {
+    if (mutation.type === "childList") {
+        if ($('.fc-center').children().text() == 'dimanche – samedi') {
+            $('.fc-center').children().text('dimanche');
+        }
+    } else if (mutation.type === "attributes") {
+    }
+  }
+};
+
+const config = { attributes: true, childList: true, subtree: true };
+
+const observer = new MutationObserver(callback);
+
+observer.observe($(".fc-center")[0], config);
+
+/* $('.fc-center').children().on('DOMSubtreeModified', function() { // Deprecated
+    if ($('.fc-center').children().text() == 'dimanche - samedi') {
+        console.log('text changed');
+        $('.fc-center').children().text('dimanche');
+    }
+}); */
 
 var tippyPrev = tippy('.fc-prev-button', {
     content: 'Précédent',
