@@ -29,6 +29,7 @@ class Entreprise extends Model
         'cheminImg',
         'publier',
         'typeRdv',
+        'capaciteMax',
         'idCreateur'
     ];
 

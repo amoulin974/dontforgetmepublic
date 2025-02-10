@@ -119,7 +119,8 @@ class ActiviteController extends Controller
 
     public function update(Request $request, Entreprise $entreprise, $id)
     {
-        $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
+        /*
+        $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise', $entreprise->id)->count() > 0;
         $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
         $isAllow = $isAdmin || $isCreator;
@@ -146,6 +147,42 @@ class ActiviteController extends Controller
             ]);
     
             return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service mis à jour avec succès.');
+        }*/
+
+        $isAdmin = Auth::user()->travailler_entreprises()
+            ->wherePivot('statut', 'Admin')
+            ->wherePivot('idEntreprise', $entreprise->id)
+            ->count() > 0;
+        $isCreator = $entreprise->idCreateur == Auth::user()->id;
+
+        $isAllow = $isAdmin || $isCreator;
+        if (!$isAllow) {
+            return redirect()->route('entreprise.index');
+        } else {
+            $request->validate([
+                'libelle' => 'required|string|max:255',
+                'duree' => 'required|integer|min:1', // Durée en minutes
+                'nbrPlaces' => [
+                    'required',
+                    'integer',
+                    'min:1',
+                    'max:' . $entreprise->capaciteMax, // Limite le nombre de places à la capacité de l'entreprise
+                ]
+            ]);
+
+            $service = Activite::findOrFail($id);
+
+            // Convertir la durée (minutes) en format H:i:s
+            $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
+
+            $service->update([
+                'libelle' => $request->libelle,
+                'duree' => $dureeInTimeFormat,
+                'nbrPlaces' => $request->nbrPlaces
+            ]);
+
+            return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])
+                ->with('success', 'Service mis à jour avec succès.');
         }
     }
 

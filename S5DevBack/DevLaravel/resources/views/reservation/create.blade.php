@@ -49,28 +49,38 @@
                                         @php
                                             // On calcule les bornes de l’intervalle courant
                                             // $currentEnd   = $heureDeb->copy()->addMinutes($interval);
-                                            /*$currentStart = \Carbon\Carbon::createFromFormat(
-                                                'Y-m-d H:i:s',
-                                                $plage->datePlage->format('Y-m-d') . ' ' . $plage->heureDeb
-                                            );
-                                            dd($currentStart);*/
                                             $currentStart = $plage->datePlage->copy()->setTimeFromTimeString($heureDeb->format('H:i:s'));
                                             //dd($currentStart);
                                             $currentEnd = $currentStart->copy()->addMinutes($interval);
 
-                                            // On va déterminer si ce créneau est déjà réservé
-                                            $isReserved = $reservations->contains(function($res) use ($date, $currentStart, $currentEnd) {
-                                                // 1. Vérifier la date
-                                                //    Attention à bien comparer des chaînes identiques
-                                                //dd($res->dateRdv->format('Y-m-d 00:00:00'));
-                                                //dd($date);
+                                            $reservationsCount = $reservations->filter(function($res) use ($date, $currentStart, $currentEnd) {
                                                 if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
                                                     return false;
                                                 }
 
+                                                // Vérifier le chevauchement avec d'autres réservations
+                                                $resStart = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureDeb);
+                                                $resEnd = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureFin);
+
+                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
+                                            })->sum('nbPersonnes'); // Somme des personnes déjà réservées
+
+                                            // Calcul des places restantes
+                                            $placesRestantes = min($entreprise->capaciteMax, $activite->nbrPlaces) - $reservationsCount;
+
+                                            // On va déterminer si ce créneau est déjà réservé
+                                            // $isReserved = $reservations->contains(function($res) use ($date, $currentStart, $currentEnd) {
+                                                // 1. Vérifier la date
+                                                //    Attention à bien comparer des chaînes identiques
+                                                //dd($res->dateRdv->format('Y-m-d 00:00:00'));
+                                                //dd($date);
+                                                /* if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
+                                                    return false;
+                                                } */
+
                                                 // 2. Vérifier le chevauchement d’horaire
                                                 //    On parse l’heureDeb/heureFin de la réservation
-                                                $resStart = \Carbon\Carbon::createFromFormat(
+                                                /* $resStart = \Carbon\Carbon::createFromFormat(
                                                     'Y-m-d H:i:s',
                                                     $res->dateRdv->format('Y-m-d').' '.$res->heureDeb
                                                 );
@@ -80,12 +90,25 @@
                                                 );
 
                                                 // Condition de chevauchement : (start < resEnd) ET (end > resStart)
-                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
-                                            });
+                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart); 
+                                            });*/
                                         @endphp
 
-                                        @if (! $isReserved)
-                                            {{-- Si pas réservé, on affiche le bouton --}}
+                                        @if ($placesRestantes > 0)
+                                        {{-- Affichage du bouton si des places restent disponibles --}}
+                                        <button
+                                            class="btn btn-outline-primary flex-grow-1 horaire-btn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#reservationModal"
+                                            data-horaire="{{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}"
+                                            data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}"
+                                            data-places-restantes="{{ $placesRestantes }}"
+                                        >
+                                            {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }} ({{ $placesRestantes }} places restantes)
+                                        </button>
+                                        @endif
+                                        {{-- @if (! $isReserved)
+                                            <!-- Si pas réservé, on affiche le bouton -->
                                             <button
                                                 class="btn btn-outline-primary flex-grow-1 horaire-btn"
                                                 data-bs-toggle="modal"
@@ -95,9 +118,9 @@
                                             >
                                                 {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}
                                             </button>
-                                        @endif
+                                        @endif --}}
 
-                                        {{-- On passe à l’intervalle suivant --}}
+                                        <!-- On passe à l’intervalle suivant -->
                                         @php
                                             $heureDeb->addMinutes($interval);
                                             //dd($heureDeb);
@@ -105,7 +128,60 @@
                                     @endwhile
                                 @endforeach
 
-
+                                {{-- @foreach ($plages as $plage)
+                                    @php
+                                        try {
+                                            $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
+                                            $heureFin = \Carbon\Carbon::parse($plage->heureFin);
+                                            $interval = \Carbon\Carbon::parse($plage->interval)->minute + \Carbon\Carbon::parse($plage->interval)->hour * 60;
+                                        } catch (\Exception $e) {
+                                            displayWarning('Erreur de formatage des plages horaires.');
+                                            continue;
+                                        }
+                                    @endphp
+                                
+                                    @while ($heureDeb->lessThan($heureFin))
+                                        @php
+                                            // Définir les bornes du créneau actuel
+                                            $currentStart = $plage->datePlage->copy()->setTimeFromTimeString($heureDeb->format('H:i:s'));
+                                            $currentEnd = $currentStart->copy()->addMinutes($interval);
+                                
+                                            // Vérifier combien de personnes sont déjà réservées sur ce créneau
+                                            $reservationsCount = $reservations->filter(function($res) use ($date, $currentStart, $currentEnd) {
+                                                if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
+                                                    return false;
+                                                }
+                                
+                                                // Vérifier le chevauchement avec d'autres réservations
+                                                $resStart = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureDeb);
+                                                $resEnd = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureFin);
+                                
+                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
+                                            })->sum('nbPersonnes'); // Somme des personnes déjà réservées
+                                
+                                            // Calcul des places restantes
+                                            $placesRestantes = min($entreprise->capaciteMax, $activite->nbPersonnesMax) - $reservationsCount;
+                                        @endphp
+                                
+                                        @if ($placesRestantes > 0)
+                                            <button
+                                                class="btn btn-outline-primary flex-grow-1 horaire-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#reservationModal"
+                                                data-horaire="{{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}"
+                                                data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}"
+                                                data-places-restantes="{{ $placesRestantes }}"
+                                            >
+                                                {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }} ({{ $placesRestantes }} places restantes)
+                                            </button>
+                                        @endif
+                                
+                                        @php
+                                            $heureDeb->addMinutes($interval);
+                                        @endphp
+                                    @endwhile
+                                @endforeach --}}
+                            
                             </div>
                         </li>
                     @endforeach

@@ -35,6 +35,15 @@
                     <input type="text" name="siren" id="siren" value="{{ $entreprise->siren }}" class="form-control" required>
                 </div>
                 <div class="mb-2">
+                    <label for="metier" class="form-label">Métier</label>
+                    <select name="metier" id="metier" class="form-select @error('metier') is-invalid @enderror" required>
+                        <option value="">Sélectionnez votre métier</option>
+                        <option value="Restaurant" {{ old('metier', $entreprise->metier) == 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
+                        <option value="Coiffeur" {{ old('metier', $entreprise->metier) == 'Coiffeur' ? 'selected' : '' }}>Coiffeur</option>
+                        <option value="Avocat" {{ old('metier', $entreprise->metier)  == 'Avocat' ? 'selected' : '' }}>Avocat</option>
+                    </select>
+                </div>
+                <div class="mb-2">
                     <label for="rue">Rue</label>
                     <input type="text" name="rue" id="rue" 
                            value="{{ explode(',', $entreprise->adresse)[0] ?? '' }}" 
@@ -81,6 +90,36 @@
                         </select>
                     </div>
                 </div>
+
+                {{-- Champ capacité max, affiché seulement si "Plusieurs" est sélectionné --}}
+                <div class="row align-items-center mb-3" id="capaciteMaxContainer" style="display: none;">
+                    <div class="col-md-8">
+                        <label for="capaciteMax" class="form-label">Capacité maximale de clients par créneau :</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" name="capaciteMax" id="capaciteMax" class="form-control @error('capaciteMax') is-invalid @enderror"
+                               value="{{ old('capaciteMax', $entreprise->capaciteMax ?? 1) }}" 
+                               min="1">
+                    </div>
+                </div>    
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        let question0 = document.getElementById("question_0");
+                        let capaciteMaxContainer = document.getElementById("capaciteMaxContainer");
+
+                        function toggleCapaciteMax() {
+                            capaciteMaxContainer.style.display = question0.value == "1" ? "flex" : "none";
+                        }
+
+                        // Vérification initiale
+                        toggleCapaciteMax();
+
+                        // Ajout de l'écouteur d'événement pour les changements
+                        question0.addEventListener("change", toggleCapaciteMax);
+                    });
+                </script>
+
                 
                 {{-- Question 2 --}}
                 <div class="row align-items-center mb-3">

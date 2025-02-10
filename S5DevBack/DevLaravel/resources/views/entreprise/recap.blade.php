@@ -20,9 +20,11 @@
         <ul>
             <li><strong>Nom de l'entreprise :</strong> {{ session('company.nomEntreprise') }}</li>
             <li><strong>Numéro de SIREN :</strong> {{ session('company.siren') }}</li>
+            <li><strong>Métier :</strong> {{ session('company.metier') }}</li>
             <li><strong>Numéro de téléphone :</strong> {{ session('company.numTel') }}</li>
             <li><strong>Adresse email :</strong> {{ session('company.email') }}</li>
             <li><strong>Adresse :</strong> {{ session('company.rue') }}, {{ session('company.codePostal') }} {{ session('company.ville') }}</li>
+            <li><strong>Description :</strong> {{ session('company.description') }}</li>
         </ul>
     </div>
 
@@ -38,7 +40,7 @@
             @if($appointment[$keys[0]] == 0)
                 <li>Vous traitez un client par créneau.</li>
             @elseif($appointment[$keys[0]] == 1)
-                <li>Vous traitez plusieurs clients par créneau.</li>
+                <li>Vous traitez plusieurs clients (maximum {{ session('capacity') }} personnes) par créneau.</li>
             @endif
 
             {{-- Deuxième réponse --}}

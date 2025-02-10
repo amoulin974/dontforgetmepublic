@@ -23,6 +23,7 @@ return new class extends Migration
             $table->json('cheminImg')->nullable(); // ->default(json_encode(['https://static.thenounproject.com/png/1584264-200.png']));
             $table->integer('publier')->default(0);
             $table->json('typeRdv')->nullable();
+            $table->integer('capaciteMax');
             $table->unsignedBigInteger('idCreateur');
             $table->timestamps();
             $table->foreign('idCreateur')->references('id')->on('users');

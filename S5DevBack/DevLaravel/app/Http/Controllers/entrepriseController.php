@@ -160,12 +160,14 @@ class entrepriseController extends Controller
             // Valider les données Entreprise
             $validated = $request->validate([
                 'nomEntreprise' => ['required', 'string', 'max:255'],
-                'siren' => ['required', 'string', 'max:14', 'unique:entreprises,siren', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'], 
+                'siren' => ['required', 'string', 'max:14', 'unique:entreprises,siren', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'],
+                'metier' => ['required', 'string', 'in:Restaurant,Coiffeur,Avocat'],
                 'numTel' => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'], 
                 'email' => ['required', 'email', 'unique:entreprises,email', 'max:255'],
                 'rue' => ['required', 'string', 'max:255'],
                 'codePostal' => ['required', 'string', 'max:6', 'regex:/^\d{5}|\d{2} \d{3}$/'], 
                 'ville' => ['required', 'string', 'max:255'],
+                'description' => ['nullable', 'string', 'max:255'],
             ]);
 
             // Stocker les données en session
@@ -192,6 +194,7 @@ class entrepriseController extends Controller
         //$user = session('user', []);
         $company = session('company', []);
         $appointment = session('appointment', []);
+        $capacity = session('capacity', []);
 
         // Vérifier que toutes les informations nécessaires sont disponibles
         if (empty($company) || empty($appointment)) {
@@ -200,7 +203,7 @@ class entrepriseController extends Controller
         }
 
         // Afficher la page récapitulative avec toutes les données
-        return view('entreprise.recap', compact('company', 'appointment'));
+        return view('entreprise.recap', compact('company', 'appointment', 'capacity'));
     }
 
     /**
@@ -211,19 +214,34 @@ class entrepriseController extends Controller
      */
     public function storeAppointments(Request $request)
     {
-        // Validez les données envoyées
-        $validated = $request->validate([
-            '*' => 'required|string|max:255', 
+        // Séparer la capacité des autres réponses
+        $responses = $request->except('capacity'); // Récupère tout sauf capacity
+        $capacity = $request->input('capacity'); // Récupère capacity
+    
+        // Valider les réponses (chaînes de caractères)
+        $validatedResponses = validator($responses, [
+            '*' => 'required|string|max:255',
+        ])->validate();
+    
+        // Valider la capacité (entier requis, positif)
+        $validatedCapacity = validator(['capacity' => $capacity], [
+            'capacity' => 'nullable|integer|min:1'
+        ])->validate();
+    
+        // Stocker toutes les données en session
+        session([
+            'appointment' => $validatedResponses,
+            'capacity' => $validatedCapacity['capacity'] ?? null // Met null si vide
         ]);
-
-        session(['appointment' => $validated]);
-
-        // Réponse de succès
+    
+        // Retourner une réponse JSON
         return response()->json([
             'message' => 'Réponses enregistrées avec succès.',
-            'responses' => $validated,
+            'responses' => $validatedResponses,
+            'capacity' => $validatedCapacity['capacity'] ?? null,
         ], 200);
     }
+    
 
     /**
      * Finalize the registration process by saving the user, company, and appointment data.
@@ -235,6 +253,7 @@ class entrepriseController extends Controller
     {
         $company = session('company');
         $appointment = session('appointment');
+        $capacity = session('capacity');
 
         // Vérif pour améliorer
         if (empty($company) || empty($appointment)) {
@@ -246,15 +265,17 @@ class entrepriseController extends Controller
         $newCompany = Entreprise::create([
             'libelle' => $company['nomEntreprise'],
             'siren' => $company['siren'],
+            'metier' => $company['metier'],
             'adresse' => $company['rue'] . ', ' . $company['codePostal'] . ' ' . $company['ville'],
-            'description' => 'Aucune description saisie pour le moment.',
+            'description' => $company['description'] ?? 'Aucune description renseignée pour le moment.',
             'numTel' => $company['numTel'],
             'email' => $company['email'],
             'typeRdv' => json_encode(array_values($appointment)),
+            'capaciteMax' => $capacity,
             'idCreateur' => Auth::id()
         ]);
         
-        session()->forget(['company', 'appointment']);
+        session()->forget(['company', 'appointment', 'capacity']);
 
         return redirect()->route('entreprise.services.index', ['entreprise' => $newCompany->id])->with('success', 'Inscription réussie.'); 
     }
@@ -282,16 +303,19 @@ class entrepriseController extends Controller
         /* Champs de saisies */
         $validated = $request->validate([
             'libelle' => ['required', 'string', 'max:255'],
-            'siren' => ['required', 'string', 'max:14', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'], 
+            'siren' => ['required', 'string', 'max:14', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'],
+            'metier' => ['required', 'string', 'in:Restaurant,Coiffeur,Avocat'],
             'rue' => ['required', 'string', 'max:255'],
             'codePostal' => ['required', 'string', 'max:6', 'regex:/^\d{5}|\d{2} \d{3}$/'],
             'ville' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'numTel' => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
+            'capaciteMax' => ['nullable', 'integer', 'min:1'],
         ]);
         $entreprise->libelle = $validated['libelle'];
         $entreprise->siren = $validated['siren'];
+        $entreprise->metier = $validated['metier'];
         $entreprise->adresse = $validated['rue'] . ', ' . $validated['codePostal'] . ' ' . $validated['ville'];
         $entreprise->description = $validated['description'];
         $entreprise->email = $validated['email'];
@@ -305,6 +329,7 @@ class entrepriseController extends Controller
         $typeRdv[3] = $request->input('question_3', $typeRdv[3] ?? 0);
 
         $entreprise->typeRdv = json_encode($typeRdv);
+        $entreprise->capaciteMax = ($typeRdv[0] == 0) ? 1 : $validated['capaciteMax'];
 
         $entreprise->save();
 
