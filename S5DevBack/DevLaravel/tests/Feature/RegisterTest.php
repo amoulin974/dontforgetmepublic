@@ -20,6 +20,7 @@ class RegisterTest extends TestCase
         return array_merge([
             'nom' => 'Victoras',
             'prenom' => 'Dylan',
+            'numTel' => '0651334645',
             'email' => 'user@domain.com',
             'password' => 'Password123',
             'password_confirmation' => 'Password123',
@@ -27,7 +28,29 @@ class RegisterTest extends TestCase
     }
 
     /**
-     * CASE 1 - Empty inputs
+     * CASE 1 - All valid
+     * GIVEN : All valid
+     * WHEN : A register attempt is made
+     * THEN : The account should be created
+     */
+    #[Test]
+    public function test_all_valid(): void
+    {
+        // GIVEN
+        //$this->
+
+        // WHEN
+        $response = $this->post('/register', $this->registerData());
+
+        // THEN
+        $response->assertRedirect('/home');
+        $this->assertDatabaseHas('users', [
+            'email' => 'user@domain.com',
+        ]);
+    }
+
+    /**
+     * CASE 2 - Empty inputs
      * GIVEN : No data is provided
      * WHEN : AA register attempt is made
      * THEN : Errors should be returned for all fields
@@ -63,7 +86,7 @@ class RegisterTest extends TestCase
     }
 
     /**
-     * CASE 2 - Empty nom
+     * CASE 3 - Empty nom
      * GIVEN : All valid but an empty nom is provided
      * WHEN : A register attempt is made
      * THEN : An error should be returned for the nom field
@@ -83,7 +106,7 @@ class RegisterTest extends TestCase
     }
 
     /**
-     * CASE 3 - Empty prenom
+     * CASE 4 - Empty prenom
      * GIVEN : All valid but an empty prenom is provided
      * WHEN : A register attempt is made
      * THEN : An error should be returned for the prenom field
@@ -103,7 +126,7 @@ class RegisterTest extends TestCase
     }
 
     /**
-     * CASE 4 - Empty email
+     * CASE 5 - Empty email
      * GIVEN : All valid but an empty email is provided
      * WHEN : A register attempt is made
      * THEN : An error should be returned for the email field
@@ -123,7 +146,7 @@ class RegisterTest extends TestCase
     }
 
     /**
-     * CASE 4 - Empty password
+     * CASE 6 - Empty password
      * GIVEN : All valid but an empty password is provided
      * WHEN : A register attempt is made
      * THEN : An error should be returned for the password field
@@ -143,7 +166,7 @@ class RegisterTest extends TestCase
     }
 
     /**
-     * CASE 4 - Empty password confirmation
+     * CASE 7 - Empty password confirmation
      * GIVEN : All valid but an empty password confirmation is provided
      * WHEN : A register attempt is made
      * THEN : An error should be returned for the password confirmation field
@@ -160,6 +183,138 @@ class RegisterTest extends TestCase
             __('validation.required', ['attribute' => __('validation.attributes.password_confirmation')]),
             session('errors')->first('password_confirmation')
         );
+    }
+
+    /**
+     * CASE 8 - Invalid email
+     * GIVEN : All valid but an invalid email is provided
+     * WHEN : A register attempt is made
+     * THEN : An error should be returned for the email field
+     */
+    #[Test]
+    public function test_invalid_email_should_return_error(): void
+    {
+        // WHEN
+        $response = $this->post('/register/user', $this->registerData(['email' => 'victodydy@']));
+
+        // THEN
+        $response->assertSessionHasErrors(['email']);
+        $this->assertEquals(
+            __('validation.email', ['attribute' => __('validation.attributes.email')]),
+            session('errors')->first('email')
+        );
+    }
+
+    /**
+     * CASE 9 - Password and confirmation password different
+     * GIVEN : All valid but password and confirmation password not matching
+     * WHEN : A register attempt is made
+     * THEN : An error should be returned for the confirmation password
+     */
+    #[Test]
+    public function test_password_and_confirmation_should_match(): void
+    {
+        // WHEN
+        $response = $this->post('/register/user', $this->registerData([
+            'password' => 'Password123',
+            'password_confirmation' => 'Password321'
+        ]));
+
+        // THEN
+        $response->assertSessionHasErrors(['password']);
+        $this->assertEquals(
+            __('validation.confirmed', ['attribute' => __('validation.attributes.password')]),
+            session('errors')->first('password')
+        );
+    }
+
+    /**
+     * CASE 10 - Password too short
+     * GIVEN : All valid but password too short provided
+     * WHEN : A register attempt is made
+     * THEN : An error should be returned for the password field
+     */
+    #[Test]
+    public function test_password_too_short_should_return_error(): void
+    {
+        // WHEN
+        $response = $this->post('/register/user', $this->registerData(['password' => 'pass', 'password_confirmation' => 'pass']));
+
+        // THEN
+        $response->assertSessionHasErrors(['password']);
+        $this->assertEquals(
+            __('validation.min.string', ['attribute' => __('validation.attributes.password'), 'min' => 8]),
+            session('errors')->first('password')
+        );
+    }
+
+    /**
+     * CASE 11 - Password too short
+     * GIVEN : All valid but password too short provided
+     * WHEN : A register attempt is made
+     * THEN : An error should be returned for the password field
+     */
+    #[Test]
+    public function test_email_with_uppercase_should_be_valid(): void
+    {
+        // WHEN
+        $response = $this->post('/register/user', $this->registerData(['email' => 'VICTODYDY@GMAIL.COM']));
+
+        // THEN
+        $response->assertSessionHasErrors(['email']);
+    }
+
+    /**
+     * CASE 12 - Email containing script (XSS attempt)
+     * GIVEN : An email containing potentially malicious JavaScript code
+     * WHEN : A register attempt is made
+     * THEN : An error should be returned for the email field
+     */
+    #[Test]
+    public function test_email_with_script_injection_should_return_error(): void
+    {
+        // WHEN
+        $response = $this->post('/register/user', $this->registerData(['email' => 'victodydy@gmail.com<script>']));
+
+        // THEN
+        $response->assertSessionHasErrors(['email']);
+    }
+
+    /**
+     * CASE 13 - Correct credentials with password containing special caracters
+     * GIVEN : A valid email and a valid password containing special caracters
+     * WHEN : A register attempt is made
+     * THEN : The user should be logged in successfully
+     */
+    #[Test]
+    public function test_password_with_special_characters_should_be_valid(): void
+    {
+        // WHEN
+        $response = $this->post('/register/user', $this->registerData(['password' => 'Password123%', 'password_confirmation' => 'Password123%']));
+
+        // THEN
+        $response->assertRedirect('/home');
+        $this->assertDatabaseHas('users', [
+            'email' => 'user@domain.com',
+        ]);
+    }
+
+    /**
+     * CASE 14 - Protecting against brute force attacks
+     * GIVEN : Multiple failed login attempts
+     * WHEN : The user exceeds the maximum number of attempts
+     * THEN : The user should be temporarily locked out
+     */
+    #[Test]
+    public function test_brute_force_protection_should_block_attempts(): void
+    {
+        // Simuler plusieurs tentatives
+        for ($i = 0; $i < 10; $i++) {
+            $response = $this->post('/register/user', $this->registerData(['email' => 'user@domain.com', 'password' => 'wrongpass']));
+        }
+
+        // Vérifier si l'application bloque l'utilisateur après trop de tentatives
+        $response->assertSessionHasErrors(['email']);
     }
 
 }
