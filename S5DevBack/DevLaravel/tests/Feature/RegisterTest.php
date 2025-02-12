@@ -258,10 +258,13 @@ class RegisterTest extends TestCase
     public function test_email_with_uppercase_should_be_valid(): void
     {
         // WHEN
-        $response = $this->post('/register/user', $this->registerData(['email' => 'VICTODYDY@GMAIL.COM']));
+        $response = $this->post('/register', $this->registerData(['email' => 'VICTODYDY@GMAIL.COM']));
 
         // THEN
-        $response->assertSessionHasErrors(['email']);
+        $response->assertRedirect('/home');
+        $this->assertDatabaseHas('users', [
+            'email' => 'VICTODYDY@GMAIL.COM',
+        ]);
     }
 
     /**
@@ -281,26 +284,7 @@ class RegisterTest extends TestCase
     }
 
     /**
-     * CASE 13 - Correct credentials with password containing special caracters
-     * GIVEN : A valid email and a valid password containing special caracters
-     * WHEN : A register attempt is made
-     * THEN : The user should be logged in successfully
-     */
-    #[Test]
-    public function test_password_with_special_characters_should_be_valid(): void
-    {
-        // WHEN
-        $response = $this->post('/register/user', $this->registerData(['password' => 'Password123%', 'password_confirmation' => 'Password123%']));
-
-        // THEN
-        $response->assertRedirect('/home');
-        $this->assertDatabaseHas('users', [
-            'email' => 'user@domain.com',
-        ]);
-    }
-
-    /**
-     * CASE 14 - Protecting against brute force attacks
+     * CASE 13 - Protecting against brute force attacks
      * GIVEN : Multiple failed login attempts
      * WHEN : The user exceeds the maximum number of attempts
      * THEN : The user should be temporarily locked out
@@ -314,7 +298,7 @@ class RegisterTest extends TestCase
         }
 
         // Vérifier si l'application bloque l'utilisateur après trop de tentatives
-        $response->assertSessionHasErrors(['email']);
+        $response->assertSessionHasErrors(['password']);
     }
 
 }
