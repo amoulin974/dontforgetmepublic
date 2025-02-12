@@ -52,7 +52,7 @@ class reservationController extends Controller
      * @param Activite $activite
      * @return View
      */
-    public function create(Entreprise $entreprise, Activite $activite): View
+    /* public function create(Entreprise $entreprise, Activite $activite): View
     {
         $reservations = Reservation::whereIn('id', function ($query) use ($activite) {
             $query->select('idReservation')
@@ -65,7 +65,35 @@ class reservationController extends Controller
             'activite' => $activite,
             'reservations' => $reservations,
         ]);
+    } */
+    public function create(Entreprise $entreprise, Activite $activite): View
+    {
+        // Récupérer les réservations spécifiques à l'activité
+        $reservations = Reservation::whereIn('id', function ($query) use ($activite) {
+            $query->select('idReservation')
+                  ->from('effectuer')
+                  ->where('idActivite', $activite->id);
+        })->get();
+    
+        // Récupérer toutes les réservations de l’entreprise (toutes activités confondues)
+        $reservationsEntreprise = Reservation::whereIn('id', function ($query) use ($entreprise) {
+            $query->select('idReservation')
+                  ->from('effectuer')
+                  ->whereIn('idActivite', function ($subQuery) use ($entreprise) {
+                      $subQuery->select('id')
+                               ->from('activites')
+                               ->where('idEntreprise', $entreprise->id);
+                  });
+        })->get();
+    
+        return view('reservation.create', [
+            'entreprise' => $entreprise,
+            'activite' => $activite,
+            'reservations' => $reservations,
+            'reservationsEntreprise' => $reservationsEntreprise, // Ajout pour vérification globale
+        ]);
     }
+    
 
     /**
      * Store a newly created resource in storage.

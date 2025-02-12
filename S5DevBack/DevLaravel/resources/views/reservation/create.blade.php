@@ -53,7 +53,7 @@
                                             //dd($currentStart);
                                             $currentEnd = $currentStart->copy()->addMinutes($interval);
 
-                                            $reservationsCount = $reservations->filter(function($res) use ($date, $currentStart, $currentEnd) {
+                                            $reservationsActivity = $reservations->filter(function($res) use ($date, $currentStart, $currentEnd) {
                                                 if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
                                                     return false;
                                                 }
@@ -65,8 +65,27 @@
                                                 return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
                                             })->sum('nbPersonnes'); // Somme des personnes déjà réservées
 
+                                            $reservationsGlobal = $reservationsEntreprise->filter(function($res) use ($date, $currentStart, $currentEnd) {
+                                                if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
+                                                    return false;
+                                                }
+                                                $resStart = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureDeb);
+                                                $resEnd = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureFin);
+
+                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
+                                            })->sum('nbPersonnes');
+
+                                            // Places restantes au niveau global (entreprise)
+                                            $placesRestantesGlobal = $entreprise->capaciteMax - $reservationsGlobal;
+
+                                            // Places restantes au niveau de l'activité
+                                            $placesRestantesActivite = $activite->nbrPlaces - $reservationsActivity;
+
+                                            // Prendre la valeur minimale entre les deux
+                                            $placesRestantes = min($placesRestantesGlobal, $placesRestantesActivite);
+
                                             // Calcul des places restantes
-                                            $placesRestantes = min($entreprise->capaciteMax, $activite->nbrPlaces) - $reservationsCount;
+                                            // $placesRestantes = min($entreprise->capaciteMax, $activite->nbrPlaces) - $reservationsCount;
 
                                             // On va déterminer si ce créneau est déjà réservé
                                             // $isReserved = $reservations->contains(function($res) use ($date, $currentStart, $currentEnd) {
