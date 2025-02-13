@@ -1,115 +1,85 @@
 <?php
 
+/**
+ * @file auth.php
+ * @brief Authentication configuration file.
+ *
+ * This file defines authentication settings such as guards, user providers,
+ * password reset policies, and other security-related configurations.
+ */
+
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Defaults
-    |--------------------------------------------------------------------------
-    |
-    | This option defines the default authentication "guard" and password
-    | reset "broker" for your application. You may change these values
-    | as required, but they're a perfect start for most applications.
-    |
-    */
-
+    /**
+     * @brief Authentication Defaults.
+     *
+     * Defines the default authentication "guard" and password reset "broker".
+     * These values can be modified as needed.
+     *
+     * @var array
+     */
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'guard' => env('AUTH_GUARD', 'web'),  ///< Default authentication guard
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'), ///< Default password reset broker
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Guards
-    |--------------------------------------------------------------------------
-    |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | which utilizes session storage plus the Eloquent user provider.
-    |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
-    |
-    | Supported: "session"
-    |
-    */
-
+    /**
+     * @brief Authentication Guards.
+     *
+     * Defines different authentication guards. Guards use user providers
+     * to retrieve user information and handle authentication.
+     *
+     * @var array
+     */
     'guards' => [
         'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+            'driver' => 'session', ///< Uses session-based authentication
+            'provider' => 'users', ///< Refers to the 'users' provider
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | User Providers
-    |--------------------------------------------------------------------------
-    |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
-    |
-    | If you have multiple user tables or models you may configure multiple
-    | providers to represent the model / table. These providers may then
-    | be assigned to any extra authentication guards you have defined.
-    |
-    | Supported: "database", "eloquent"
-    |
-    */
-
+    /**
+     * @brief User Providers.
+     *
+     * Specifies how users are retrieved from storage (database, Eloquent model, etc.).
+     *
+     * @var array
+     */
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'driver' => 'eloquent', ///< Uses Eloquent ORM for user retrieval
+            'model' => env('AUTH_MODEL', App\Models\User::class), ///< Defines the User model class
         ],
 
+        // Alternative database-based authentication (commented out by default)
         // 'users' => [
         //     'driver' => 'database',
-        //     'table' => 'users',
+        //     'table' => 'users', ///< Retrieves users directly from database table
         // ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Resetting Passwords
-    |--------------------------------------------------------------------------
-    |
-    | These configuration options specify the behavior of Laravel's password
-    | reset functionality, including the table utilized for token storage
-    | and the user provider that is invoked to actually retrieve users.
-    |
-    | The expiry time is the number of minutes that each reset token will be
-    | considered valid. This security feature keeps tokens short-lived so
-    | they have less time to be guessed. You may change this as needed.
-    |
-    | The throttle setting is the number of seconds a user must wait before
-    | generating more password reset tokens. This prevents the user from
-    | quickly generating a very large amount of password reset tokens.
-    |
-    */
-
+    /**
+     * @brief Resetting Passwords.
+     *
+     * Configures password reset settings, including expiration and throttling.
+     *
+     * @var array
+     */
     'passwords' => [
         'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
+            'provider' => 'users', ///< Links to the 'users' provider
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'), ///< Token storage table
+            'expire' => 60, ///< Password reset token validity in minutes
+            'throttle' => 60, ///< Minimum wait time (seconds) before generating new reset tokens
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Password Confirmation Timeout
-    |--------------------------------------------------------------------------
-    |
-    | Here you may define the amount of seconds before a password confirmation
-    | window expires and users are asked to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
-    |
-    */
-
-    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
-
+    /**
+     * @brief Password Confirmation Timeout.
+     *
+     * Defines how long (in seconds) a password confirmation remains valid.
+     *
+     * @var int
+     */
+    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800), ///< Default: 3 hours
 ];

@@ -19,12 +19,12 @@
         <a href="{{ route('entreprise.indexUser') }}">
             <i class="fa fa-arrow-left fa-lg" style="color: #000000;"></i>
         </a>
-        <div class="header-profile" style="margin-top: 1rem;"> 
+        <div class="header-profile" style="margin-top: 1rem;">
             @if ($isAdmin)
             <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Modifier</a>
             @endif
-            <div class="containerEntreprise"> 
-                <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
+            <div class="containerEntreprise">
+                <h1>Entreprise : {{ $entreprise->libelle }}</h1>
                 <br/>
             </div>
         </div>
@@ -71,7 +71,7 @@
             <div style="display: inline-flex; width: 100%;margin-top: 15px;">
             <h3>Liste des employés</h3>
             @if ($isAdmin)
-            <a class="btn btn-primary" id="addEmploye" style="display:block; margin:auto; margin margin-left:auto;margin-right:20%;"><i class="fa fa-user-plus"></i> Ajouter un(e) employé(e)</a>
+            <a class="btn btn-primary" id="addEmploye" style="display:block; margin: auto 20% auto auto;"><i class="fa fa-user-plus"></i> Ajouter un(e) employé(e)</a>
             @endif
             </div>
             <div style="overflow:auto; max-height:400px;">
@@ -81,7 +81,7 @@
                 @endphp
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
-                    <div class="container-entreprise" id="user{{$user->id}}" style="width:100%;"> 
+                    <div class="container-entreprise" id="user{{$user->id}}" style="width:100%;">
                         <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                         <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                         <div style="display: inline-flex; width: 100%;">
@@ -97,7 +97,7 @@
                         </div>
                     </div>
                     @else
-                        <div class="container-entreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}> 
+                        <div class="container-entreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}>
                             <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                             <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                             @if ($user->id == $entreprise->idCreateur)
@@ -116,9 +116,9 @@
                         </div>
                     @endif
                 @endforeach
-                
+
         </div>
-        
+
     </div>
 
 
@@ -135,7 +135,7 @@
                 @foreach ($entreprise->activites as $activite)
                     <label for="{{ $activite->id }}"><input type="checkbox" id="{{ $activite->id }}" value="{{ $activite->id }}"> {{ $activite->libelle }}</label><br>
                 @endforeach
-            </select>
+            </div>
         </form>
     </div>
 
@@ -366,7 +366,7 @@ function uncheckAll() {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach((checkbox) => {
         checkbox.checked = false;
-        
+
     });
     checked = [];
     allSelected = false;
@@ -417,7 +417,7 @@ function refuserInvit(eId, eLib) {
                 // Stocker le message de succès dans le stockage local
                 localStorage.setItem('success', 'Vous avez refusé l\'invitation de ' + eLib);
                 window.location.href = "{{ route('entreprise.indexUser') }}";
-                
+
             /* }, 2000); */
         },
         error: function (data) {

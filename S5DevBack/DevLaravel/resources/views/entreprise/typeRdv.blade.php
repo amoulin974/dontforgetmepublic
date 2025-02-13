@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="container d-flex flex-column align-items-center" style="min-height: 100vh;">
-    <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">        
+    <div class="d-flex justify-content-between align-items-center w-100" style="position: relative;">
         <a class="btn btn-outline-secondary mt-5 mb-5" id="retour" redirectUrl="{{ route('entreprise.create') }}" style="position: absolute; left: 0;">
             <i class="bi bi-arrow-left"></i>
         </a>
@@ -18,7 +18,7 @@
 
         {{-- Barre de progression --}}
         <div class="progress mb-4" style="height: 20px; width: 100%;">
-            <div id="progress-bar" class="progress-bar bg-primary" role="progressbar" 
+            <div id="progress-bar" class="progress-bar bg-primary" role="progressbar"
                 style="width: 20%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
             </div>
         </div>
@@ -29,7 +29,7 @@
             <h2 class="text-center mb-4 fw-bold">Traitez-vous un ou plusieurs clients lors d’un créneau ?</h2>
             <div class="row text-center w-100">
                 {{-- Carte pour "Un seul client" --}}
-                <div class="col-md-6 mb-4">  
+                <div class="col-md-6 mb-4">
                     <div class="card border border-danger shadow-sm h-100 w-100" style="cursor: pointer;">
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="0">
                             <div class="card-body d-flex flex-column align-items-center">
@@ -60,7 +60,7 @@
             <h2 class="text-center mb-4 fw-bold">Qui sélectionne le créneau ?</h2>
             <div class="row text-center w-100">
                 {{-- Carte pour "Seulement vous" --}}
-                <div class="col-md-6 mb-4">    
+                <div class="col-md-6 mb-4">
                     <div class="card border border-danger shadow-sm h-100 w-100" style="cursor: pointer;">
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="0">
                             <div class="card-body d-flex flex-column align-items-center">
@@ -68,11 +68,11 @@
                                 <p class="mt-3 fw-bold text-dark">Seulement vous</p>
                             </div>
                         </button>
-                    </div> 
+                    </div>
                 </div>
 
                 {{-- Carte pour "Le client et vous" --}}
-                <div class="col-md-6 mb-4">                   
+                <div class="col-md-6 mb-4">
                     <div class="card border border-danger shadow-sm h-100 w-100" style="cursor: pointer;">
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="1">
                             <div class="card-body d-flex flex-column align-items-center">
@@ -80,7 +80,7 @@
                                 <p class="mt-3 fw-bold text-dark">Le client et vous</p>
                             </div>
                         </button>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,33 +90,33 @@
             <h2 class="text-center mb-4 fw-bold">Affectez-vous un salarié pour chaque client ?</h2>
             <div class="row text-center w-100">
                 {{-- Carte pour "Aucun" --}}
-                <div class="col-md-4 mb-4"> 
+                <div class="col-md-4 mb-4">
                     <div class="card border border-danger shadow-sm h-100 w-100" style="cursor: pointer;">
-                        <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="0">    
+                        <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="0">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/None.png') }}" alt="Aucun" style="width: 100px; height: auto;">
                                 <p class="mt-3 fw-bold text-dark">Aucun</p>
                             </div>
                         </button>
-                    </div>                  
+                    </div>
                 </div>
 
                 {{-- Carte pour "Un seul" --}}
-                <div class="col-md-4 mb-4"> 
+                <div class="col-md-4 mb-4">
                     <div class="card border border-danger shadow-sm h-100 w-100" style="cursor: pointer;">
-                        <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="1">    
+                        <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="1">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/Barber.png') }}" alt="Un seul" style="width: 100px; height: auto;">
                                 <p class="mt-3 fw-bold text-dark">Un seul</p>
                             </div>
                         </button>
-                    </div>                  
+                    </div>
                 </div>
 
                 {{-- Carte pour "Plusieurs" --}}
                 <div class="col-md-4 mb-4">
                     <div class="card border border-danger shadow-sm h-100 w-100" style="cursor: pointer;">
-                        <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="2">    
+                        <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="2">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/TeamMeeting.png') }}" alt="Plusieurs" style="width: 100px; height: auto;">
                                 <p class="mt-3 fw-bold text-dark">Plusieurs</p>
@@ -155,8 +155,8 @@
                     </div>
                 </div>
             </div>
-        </div> 
-    </div>
+        </div>
+
 </div>
 
 <script src="{{ asset('js/register.js') }}"></script>

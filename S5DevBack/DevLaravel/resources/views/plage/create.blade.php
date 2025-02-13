@@ -6,7 +6,7 @@
 @section('content')
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-  
+
     <!-- Pour le calendrier -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" /> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -16,7 +16,7 @@
     <!-- Import FullCalendar locales CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale-all.js"></script>
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
-  
+
     <!-- Pour les notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
@@ -41,7 +41,7 @@
 
 </head>
 <body>
-  
+
 <div class="container-calendar">
     <div class="header-profile mb-3">
         <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
@@ -77,14 +77,12 @@
     <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
             <p>Quel employé chosir ?</p>
-            {{-- <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</option> --}}
+
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
                 <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
                 @foreach($userTravaillantSurAct as $employe)
-                    {{-- <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option> --}}
                     @if($employe->id == Auth::user()->id)
                     <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
                     @else
@@ -227,7 +225,7 @@ var calendar = $('#calendar').fullCalendar({
         if (event.interval) { // Si le nombre de personnes est renseigné
             element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
         }
-        
+
     },
     //slotDuration: '{{ $activite->duree }}',
     snapDuration: DUREE,
@@ -362,7 +360,7 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
-        var alreadyChecked = [];        
+        var alreadyChecked = [];
         @foreach (App\Models\Plage::all() as $p)
             if(event.id == {{ $p->id }}){
                 @foreach($p->employes as $e)
@@ -634,8 +632,8 @@ function displayErrorWithButton(message) {
         extendedTimeOut: 0
     });
 }
-  
+
 </script>
-  
+
 </body>
 @endsection

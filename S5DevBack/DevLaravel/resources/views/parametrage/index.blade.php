@@ -7,7 +7,7 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  
+
     <!-- Pour les notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
@@ -23,7 +23,7 @@
 
 </head>
 <body>
-  
+
 <div class="container">
     <div class="header-profile">
         <h1>Les entreprises dans lesquels vous travaillez</h1>
@@ -36,9 +36,6 @@
             <h2>{{ $entreprise->libelle }}</h2>
         </div>
         <p style="margin-bottom:10px;"><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
-        {{-- @if (Auth::user()->id == $entreprise->user_id) // Cas créateur
-            <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
-        @endif --}}
         <div style="display: inline-flex;  width: 100%;">
         @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
             <div class="activity-container">
@@ -80,7 +77,7 @@
     </div>
     @endforeach
     </div>
-<div>
+</div>
 
 
     <script>
@@ -109,9 +106,6 @@ function accepterInvit(eId, eLib) {
             displaySuccess('Vous avez accepté l\'invitation.\nVous travaillez maintenant pour ' + eLib);
             // Transformer la possibilité d'accepter en la possibilité de visualiser
             location.reload();
-            /* $("#entreprise" + eId + " a").remove();
-            $("#entreprise" + eId + " i").remove();
-            $("#entreprise" + eId).append('<a class="btn btn-primary light" href="/parametrage/plage/'+eId+'">Visualiser vos plages</a>'); {{-- {{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }} --}} */
         },
         error: function (data) {
             displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');
@@ -138,8 +132,7 @@ function refuserInvit(eId, eLib) {
         }
     });
 }
-        /* }); */
     </script>
-   
+
 </body>
 @endsection
