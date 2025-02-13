@@ -50,59 +50,47 @@
     <div class="header-profile mb-3" style="text-align: center;">
         <h2 style="color: #1167FC;"><a href="{{ route('entreprise.week.indexWeek', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none;">Semaine types de {{ $entreprise->libelle }}</a> | <a href="{{ route('entreprise.day.indexDay', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none; font-weight: bold;">Journées types de {{ $entreprise->libelle }}</a></h2>
         <br/>
-        
     </div>
     <div style="text-align: center; width: 100%;">
-    <input type="text" id="inputColor" data-coloris value="#3a87ad" /></div>
+    <input type="text" id="inputColor" data-coloris value="#3a87ad" />
+    <button id="loadDay" class="secondary-button" style="width:auto !important;"><i class="bi bi-box-arrow-in-down"></i> Load a day</button>
+    <button id="newDay" class="secondary-button" style="width:auto !important;"><i class="bi bi-calendar2-plus"></i> Create new</button>
+    <button id="saveDay" class="secondary-button disabled" style="width:auto !important;"><i class="bi bi-save" disabled></i> Save the type day</button></div>
     <div id='calendar'></div>
     @php
-        $dayType =  0;
+        $jours = $entreprise->journeeTypes;
+        $currentTypeDay = $entreprise->journeeTypes->first()->id;
     @endphp
 
     <!-- Popup Dialog -->
-    {{-- <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
+    <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
-            <div style="width: 100%;">
-                <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
-            </div>
-            <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
-                @foreach($userTravaillantSurAct as $employe)
-                    @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                    @else
-                    <label for="{{ $employe->id }}"><input type="checkbox" id="{{ $employe->id }}" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
-                    @endif
-                @endforeach
-            </div><br>
-            <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+            <label for="titre">Libellé de la plage :</label>
+            <input type="text" id="titre" name="titre" style="width: 100%;"><br>
         </form>
-    </div> --}}
+    </div>
 
-    <!-- Popup Dialog Modif -->
-    {{-- <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
+    <!-- Popup Dialog -->
+    <div id="dialogNew" title="Créer une nouvelle journée type ?" style="display:none;">
+            <p><span class="ui-icon ui-icon-alert" style="float:left;">Êtes-vous sûr(e) de vouloir créer une nouvelle journée type ?<br/>Toute progression sera perdue.</p>
+    </div>
+
+    <!-- Popup Dialog Sélection Journée -->
+    <div id="dialogDaySelect" title="Charger une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
-            <div style="width: 100%;">
-                <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
-            </div>
-                <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
-                @foreach($userTravaillantSurAct as $employe)
-                    @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                    @else
-                    <label for="{{ $employe->id }}Modif"><input type="checkbox" id="{{ $employe->id }}Modif" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
-                    @endif
+            <p>Quelle journée chosir ?</p>
+            <select id="daySelect" name="daySelect">
+                @foreach ($jours as $jour)
+                    <option value="{{ $jour->id }}">{{ $jour->libelle }}</option>
                 @endforeach
-            </div><br>
-              <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+            </select>
         </form>
-    </div> --}}
+    </div>
 
     <!-- Popup Dialog Suppression -->
-    {{-- <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
+    <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
         <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette plage sera définitivement supprimé. Voulez-vous continuer ?</p>
-    </div> --}}
+    </div>
 </div>
 
 <script>
@@ -118,6 +106,7 @@ var currentColor = $('#inputColor').val();
 
     $('#inputColor').on('input', function() {
         currentColor = $('#inputColor').val();
+        $('#calendar').fullCalendar('option', 'eventColor', currentColor);
     });
 
 
@@ -126,7 +115,7 @@ var currentColor = $('#inputColor').val();
 var SITEURL = "{{ url('/entreprise/') }}";
 SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/day";
 var DUREE_EN_MS = 1;
-var semainier = {
+/* var semainier = {
     "lundi" : 0,
     "mardi" : 1,
     "mercredi" : 2,
@@ -134,7 +123,7 @@ var semainier = {
     "vendredi" : 4,
     "samedi" : 5,
     "dimanche" : 6
-};
+}; */
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -143,16 +132,189 @@ $.ajaxSetup({
     }
 });
 
+
+    $('#loadDay').click(function() {
+        // Popup pour sélectionner quel journée charger
+        $('#dialogDaySelect').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogDaySelect').dialog('close');
+                });
+            },
+            buttons: {
+                "Charger": function() {
+                    var day = $('#daySelect').val();
+                    $.ajax({
+                        url: SITEURL + "/",
+                        data: {
+                            idJournee: day,
+                            type: 'get'
+                        },
+                        type: 'POST',
+                        success: function(data) {
+                            var events = [];
+                            var start_datetime;
+                            var end_datetime;
+                            var momentDay = moment().startOf('week').add(1,'days').format('YYYY-MM-DD');
+                            var planning = data[0].planning;
+                            for (var plage in planning) {
+                                start_datetime = momentDay + 'T' + planning[plage]['start'] +':00.000000Z';
+                                end_datetime = momentDay + 'T' + planning[plage]['end'] +':00.000000Z';
+                                events.push({
+                                    start: start_datetime,
+                                    end: end_datetime,
+                                    color: planning[plage]['color'],
+                                });
+                            }
+                            $('#calendar').fullCalendar('removeEvents');
+                            $('#calendar').fullCalendar('addEventSource', events);
+                            displayMessage("Journée chargée avec succès");
+                        },
+                        error: function() {
+                            displayError("Erreur lors de la récupération des plages");
+                        }
+                    });
+                    $('#dialogDaySelect').dialog('close');
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+    $('#newDay').click(function () {
+        $('#dialogNew').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogNew').dialog('close');
+                });
+            },
+            buttons: {
+                "Créer": function() {
+                    $('#calendar').fullCalendar('removeEvents');
+                    @php
+                        $currentTypeDay = 0;
+                    @endphp
+                    $('#dialogNew').dialog('close');
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+    $('#saveDay').click(function () {
+        $('#dialogTitre').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                @if($currentTypeDay != 0)
+                    $('#titre').val({{ App\Models\JourneeType::where("id",$currentTypeDay)->first()->libelle }});
+                @endif
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogTitre').dialog('close');
+                });
+            },
+            buttons: {
+                "Enregistrer": function() {
+                    var title = $('#titre').val();
+                    if(title == ''){
+                        displayWarning("Le titre de la journée ne peut pas être vide");
+                    }
+                    else if ($('#calendar').fullCalendar('clientEvents').length == 0) {
+                        displayWarning("La journée doit contenir au moins une plage");     
+                    } else {
+                        if({{$currentTypeDay}} != 0){
+                            // Récupérer tous les évènements et les transformer en json
+                            var events = $('#calendar').fullCalendar('clientEvents');
+                            var planning = {};
+                            for (var i = 0; i < events.length; i++) {
+                                var start = events[i].start.format('HH:mm');
+                                var end = events[i].end.format('HH:mm');
+                                var color = events[i].color;
+                                planning[i] = {
+                                    start: start,
+                                    end: end,
+                                    color: color
+                                };
+                            }
+                            $.ajax({
+                                url: SITEURL + "/",
+                                data: {
+                                    idJournee: {{$currentTypeDay}},
+                                    libelle: title,
+                                    planning: planning,
+                                    type: 'update'
+                                },
+                                type: 'POST',
+                                success: function(data) {
+                                    displaySuccess("Journée modifiée avec succès");
+                                    $('#dialogTitre').dialog('close');
+                                },
+                                error: function() {
+                                    displayError("Erreur lors de la sauvegarde de la journée");
+                                    $('#dialogTitre').dialog('close');
+                                }
+                            });
+                        } else {
+                            // Récupérer tous les évènements et les transformer en json
+                            var events = $('#calendar').fullCalendar('clientEvents');
+                            var planning = {};
+                            for (var i = 0; i < events.length; i++) {
+                                var start = events[i].start.format('HH:mm');
+                                var end = events[i].end.format('HH:mm');
+                                var color = events[i].color;
+                                planning[i] = {
+                                    start: start,
+                                    end: end,
+                                    color: color
+                                };
+                            }
+                            $.ajax({
+                                url: SITEURL + "/",
+                                data: {
+                                    libelle: title,
+                                    planning: planning,
+                                    type: 'add'
+                                },
+                                type: 'POST',
+                                success: function(data) {
+                                    displaySuccess("Journée sauvegardée avec succès");
+                                    $('#dialogTitre').dialog('close');
+                                    @php
+                                        $currentTypeDay = $entreprise->journeeTypes->last()->id;
+                                    @endphp
+                                },
+                                error: function() {
+                                    displayError("Erreur lors de la sauvegarde de la journée");
+                                    $('#dialogTitre').dialog('close');
+                                }
+                            });
+                        }
+                    }
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });       
+    });
+
 // Mise en place du calendrier
 var calendar = $('#calendar').fullCalendar({
     header: {
-        left: 'prev,next',
-        center: 'title',
+        left: '',
         right: 'agendaDay'
     },
     validRange: {
     start: moment().startOf('week').add(1,'days'), // Limite le début de la plage de dates à la semaine actuelle
-    end: moment().endOf('week').add(1,'days') // Limite la fin de la plage de dates à la semaine actuelle
+    end: moment().startOf('week').add(2,'days') // Limite la fin de la plage de dates à la semaine actuelle
     },
     buttonIcons: false, // show the prev/next text
     locale: 'fr',
@@ -160,25 +322,25 @@ var calendar = $('#calendar').fullCalendar({
     events: function(start, end, timezone, callback) {
         $.ajax({
             url: SITEURL + "/",
-            type: 'GET',
+            data: {
+                idJournee: {{ App\Models\JourneeType::where("idEntreprise",$entreprise->id)->first()->id }},
+                type: 'get'
+            },
+            type: 'POST',
             success: function(data) {
-
-                // Placer les évènements sur toutes les semaines
                 var events = [];
                 var start_datetime;
                 var end_datetime;
-                for (var day in data[1]) {
-                    var momentDay = moment().startOf('week').add(1,'days').add(semainier[day], 'days').format('YYYY-MM-DD');
-                    for (var index in data[1][day]) {
-                        event = data[1][day][index];
-                        start_datetime = momentDay + 'T' + event.start +':00.000000Z';
-                        end_datetime = momentDay + 'T' + event.end +':00.000000Z';
-                        events.push({
-                            start: start_datetime,
-                            end: end_datetime,
-                            color: event.color,
-                        });
-                    }
+                var momentDay = moment().startOf('week').add(1,'days').format('YYYY-MM-DD');
+                var planning = data[0].planning;
+                for (var plage in planning) {
+                    start_datetime = momentDay + 'T' + planning[plage]['start'] +':00.000000Z';
+                    end_datetime = momentDay + 'T' + planning[plage]['end'] +':00.000000Z';
+                    events.push({
+                        start: start_datetime,
+                        end: end_datetime,
+                        color: planning[plage]['color'],
+                    });
                 }
                 callback(events);
             },
@@ -194,7 +356,6 @@ var calendar = $('#calendar').fullCalendar({
     displayEventTime: true, // false -> don't show the time column in list view
     weekNumbers: false,
     columnHeader: false,
-    titleFormat: 'dddd',
     selectable: true,
     nowIndicator: false,
     selectHelper: true,
@@ -205,62 +366,15 @@ var calendar = $('#calendar').fullCalendar({
         if (selectable(start,end,true)) {
                 // Vérifiez si l'événement dépasse une journée
                 if (moment(start).isSame(end, 'day')) {
-                    // Update la couleur de l'évènement en cours de sélection avec la couleur actuelle
-                    var eventDisplay = {
+                    var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
+                    var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
+                    // Enregistrer l'évènements dans les events clients
+                    var event = {
                         start: start,
                         end: end,
                         color: currentColor
                     };
-                    $('#calendar').fullCalendar('renderEvent', eventDisplay, true);
-                    var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
-                    var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
-                    // Afficher la popup avec les inputs
-                    $('#dialogTitre').dialog({
-                        modal: true,
-                        closeOnEscape: true,
-                                open: function(event, ui) {
-                                    $('.ui-widget-overlay').bind('click', function(){
-                                        //$('#interv').val('00:05:00');
-                                        $('#employe').val('{{ Auth::user()->id }}');
-                                        $('#dialogTitre').dialog('close');
-                                        uncheckAll();
-                                    });
-                                },
-                        buttons: {
-                            "Ajouter": function() {
-                                //var interv = $('#interv').val();
-                                
-                                    $.ajax({
-                                        url: SITEURL + "/",
-                                        data: {
-                                            datePlage: start.split(' ')[0],
-                                            heureDeb: start.split(' ')[1],
-                                            heureFin: end.split(' ')[1],
-                                            entreprise_id: {{ $entreprise->id }},
-                                            employes_affecter: 0,
-                                            type: 'add'
-                                        },
-                                        type: "POST",
-                                        success: function (data) {
-                                            $('#dialogTitre').dialog('close');
-                                            displaySuccess("Plage ajoutée avec succès");
-
-                                            // Désélectionner après la sélection
-                                            $('#calendar').fullCalendar('unselect');
-
-                                            // Rafraîchir l'affichage du calendrier
-                                            $('#calendar').fullCalendar('refetchEvents');
-                                        },
-                                        error: function() {
-                                            displayError("Erreur lors de l'ajout de la plage. Réssayez...");
-                                        }
-                                    });
-                            },
-                            "Annuler": function() {
-                                $(this).dialog("close");
-                            }
-                        }
-                    });
+                    $('#calendar').fullCalendar('renderEvent', event, true); // stick? = true
                 } else {
                     displayError("Impossible de créer une plage sur plusieurs jours");
                     // Désélectionner après la sélection
@@ -273,33 +387,10 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventDrop: function (event, delta, revertFunc) {
-        var originalStart = moment(event.start).subtract(delta);
-        var originalEnd = event.end ? moment(event.end).subtract(delta) : originalStart;
-
-        if (originalStart.isBefore(moment())) {
-            displayWarning("Impossible de déplacer un événement passé ou en cours");
-            $('#calendar').fullCalendar('unselect');
-            revertFunc();
-        }
-        else if(selectable(event.start,event.end,event.id)){
+        if(selectable(event.start,event.end,event.id)){
             // Vérifiez si l'événement dépasse une journée
             if (moment(event.start).isSame(event.end, 'day')) {
-                var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
-                var end = event.end ? $.fullCalendar.formatDate(event.end, "YYYY-MM-DD HH:mm:ss") : start;
-                $.ajax({
-                    url: SITEURL + '/',
-                    data: {
-                        datePlage: start.split(' ')[0],
-                        heureDeb: start.split(' ')[1],
-                        heureFin: end.split(' ')[1],
-                        id: event.id,
-                        type: 'update'
-                    },
-                    type: "POST",
-                    success: function (response) {
-                        displayMessage("Plage modifié avec succès");
-                    }
-                });
+                // ok
             } else {
                 displayError("Les plages ne peuvent pas dépasser plusieurs jours");
                 // Désélectionner après la sélection
@@ -397,32 +488,12 @@ var calendar = $('#calendar').fullCalendar({
     },
     eventResize: function(event, delta, revertFunc) {
         if(selectable(event.start,event.end,event.id)){
-                // Vérifiez si l'événement dépasse une journée
-                if (moment(event.start).isSame(event.end, 'day')) {
-                    var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
-                    var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
-
-                    $.ajax({
-                        url: SITEURL + '/',
-                        data: {
-                            datePlage: start.split(' ')[0],
-                            heureDeb: start.split(' ')[1],
-                            heureFin: end.split(' ')[1],
-                            id: event.id,
-                            type: 'update'
-                        },
-                        type: "POST",
-                        success: function(response) {
-                            displayMessage("Plage modifiée avec succès");
-                        },
-                        error: function() {
-                            revertFunc(); // Revert the change if the update fails
-                            displayError("Erreur lors de la modification de la plage");
-                        }
-                    });
+                // Vérifiez si l'événement dépasse une journée ou s'il ne chevauche pas un autre event
+                if (moment(event.start).isSame(event.end, 'day') && checkChevauche(event.start, event.end, event.id)) {
+                    // ok
                 } else {
                     revertFunc(); // Revert the change if the update fails
-                    displayError("Les plages ne peuvent pas dépasser plusieurs jours");
+                    displayError("Les plages ne peuvent pas se chevaucher");
                     // Désélectionner après la sélection
                     $('#calendar').fullCalendar('unselect');
                 }
@@ -433,6 +504,17 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
 });
+
+function checkChevauche(start, end, idEvent) {
+    var events = $('#calendar').fullCalendar('clientEvents');
+    for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+        if (start.isBefore(event.end) && end.isAfter(event.start) && event.id != idEvent) {
+            return false;
+        }
+    }
+    return true;
+}
 
 function selectable(start, end, idEvent) {
     // Vérifiez que la plage est un multiple de la durée de l'activité

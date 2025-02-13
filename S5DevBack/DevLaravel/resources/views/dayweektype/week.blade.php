@@ -39,6 +39,10 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-multimonth/1.0.0/fullcalendar-multimonth.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-multimonth/1.0.0/fullcalendar-multimonth.min.js"></script> -->
 
+    <!-- Pour les couleur -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+
 </head>
 <body>
   
@@ -46,31 +50,22 @@
     <div class="header-profile mb-3" style="text-align: center;">
         <h2 style="color: #1167FC;"><a href="{{ route('entreprise.week.indexWeek', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none; font-weight: bold;">Semaine types de {{ $entreprise->libelle }}</a> | <a href="{{ route('entreprise.day.indexDay', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none;">Journées types de {{ $entreprise->libelle }}</a></h2>
         <br/>
+        
     </div>
+    <div style="text-align: center; width: 100%;">
+    <input type="text" id="inputColor" data-coloris value="#3a87ad" /></div>
     <div id='calendar'></div>
     @php
-        $dayType =  $entreprise->journeeTypes;
+        $dayType =  0;
     @endphp
 
     <!-- Popup Dialog -->
-    {{-- <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
+    <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
-            <div style="width: 100%;">
-                <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
-            </div>
-            <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
-                @foreach($userTravaillantSurAct as $employe)
-                    @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                    @else
-                    <label for="{{ $employe->id }}"><input type="checkbox" id="{{ $employe->id }}" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
-                    @endif
-                @endforeach
-            </div><br>
-            <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+            <label for="titre">Libellé de la plage :</label>
+            <input type="text" id="titre" name="titre" style="width: 100%;"><br>
         </form>
-    </div> --}}
+    </div>
 
     <!-- Popup Dialog Modif -->
     {{-- <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
@@ -93,21 +88,42 @@
     </div> --}}
 
     <!-- Popup Dialog Suppression -->
-    {{-- <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
+    <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
         <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette plage sera définitivement supprimé. Voulez-vous continuer ?</p>
-    </div> --}}
+    </div>
 </div>
 
 <script>
 $(document).ready(function () {
 
+var currentColor = $('#inputColor').val();
+
+    // Pour tous les éléments dans la div .clr-field
+    document.querySelector('.clr-field').childNodes
+    .forEach(element => {
+        element.style.borderRadius = '10px';
+    });
+
+    $('#inputColor').on('input', function() {
+        currentColor = $('#inputColor').val();
+        $('#calendar').fullCalendar('option', 'eventColor', currentColor);
+    });
+
+
 // VARIABLES GLOBALES
 // URL dans le site
 var SITEURL = "{{ url('/entreprise/') }}";
 SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/week";
-var couleurPasses = 'red';
-var couleurAjd = 'green';
-var curseurUnclickable = 'not-allowed';
+var DUREE_EN_MS = 1;
+var semainier = {
+    "lundi" : 0,
+    "mardi" : 1,
+    "mercredi" : 2,
+    "jeudi" : 3,
+    "vendredi" : 4,
+    "samedi" : 5,
+    "dimanche" : 6
+};
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -120,7 +136,12 @@ $.ajaxSetup({
 var calendar = $('#calendar').fullCalendar({
     header: {
         left: 'prev,next',
-        right: 'agendaWeek'
+        center: 'title',
+        right: 'agendaWeek,agendaDay'
+    },
+    validRange: {
+    start: moment().startOf('week').add(1,'days'), // Limite le début de la plage de dates à la semaine actuelle
+    end: moment().endOf('week').add(1,'days') // Limite la fin de la plage de dates à la semaine actuelle
     },
     buttonIcons: false, // show the prev/next text
     locale: 'fr',
@@ -130,23 +151,24 @@ var calendar = $('#calendar').fullCalendar({
             url: SITEURL + "/",
             type: 'GET',
             success: function(data) {
+
+                // Placer les évènements sur toutes les semaines
                 var events = [];
                 var start_datetime;
                 var end_datetime;
-                $(data).each(function() {
-                    start_datetime = this.datePlage.split('T')[0] + 'T' + this.heureDeb + '.000000Z';
-                    end_datetime = this.datePlage.split('T')[0] + 'T' + this.heureFin + '.000000Z';
-                    if (this.heureFin == '00:00:00') {
-                        end_datetime = this.datePlage.split('T')[0] + 'T' + '23:59:59' + '.000000Z';
+                for (var day in data[1]) {
+                    var momentDay = moment().startOf('week').add(1,'days').add(semainier[day], 'days').format('YYYY-MM-DD');
+                    for (var index in data[1][day]) {
+                        event = data[1][day][index];
+                        start_datetime = momentDay + 'T' + event.start +':00.000000Z';
+                        end_datetime = momentDay + 'T' + event.end +':00.000000Z';
+                        events.push({
+                            start: start_datetime,
+                            end: end_datetime,
+                            color: event.color,
+                        });
                     }
-                    events.push({
-                        id: this.id,
-                        title: this.id,
-                        start: start_datetime,
-                        end: end_datetime,
-                        interval: this.interval,
-                    });
-                });
+                }
                 callback(events);
             },
             error: function() {
@@ -154,9 +176,14 @@ var calendar = $('#calendar').fullCalendar({
             }
         });
     },
+    eventRender: function(event, element) {
+        element.css('background-color', event.color);
+        element.css('border-color', event.color);
+    },
     displayEventTime: true, // false -> don't show the time column in list view
     weekNumbers: false,
     columnHeader: false,
+    titleFormat: 'dddd',
     selectable: true,
     nowIndicator: false,
     selectHelper: true,
@@ -178,19 +205,30 @@ var calendar = $('#calendar').fullCalendar({
                                         //$('#interv').val('00:05:00');
                                         $('#employe').val('{{ Auth::user()->id }}');
                                         $('#dialogTitre').dialog('close');
-                                        uncheckAll();
                                     });
                                 },
                         buttons: {
                             "Ajouter": function() {
+                                var titre = $('#titre').val();
+                                if(titre == ''){
+                                    displayWarning("Le titre de la plage ne peut pas être vide");
+                                } else {
+                                    console.log({
+                                            libelle: titre,
+                                            jour: moment(start).format('dddd'),
+                                            heureDeb: start.split(' ')[1],
+                                            heureFin: end.split(' ')[1],
+                                            color: currentColor,
+                                            type: 'add'
+                                        });
                                     $.ajax({
                                         url: SITEURL + "/",
                                         data: {
-                                            datePlage: start.split(' ')[0],
+                                            libelle: titre,
+                                            jour: moment(start).format('dddd'),
                                             heureDeb: start.split(' ')[1],
                                             heureFin: end.split(' ')[1],
-                                            entreprise_id: {{ $entreprise->id }},
-                                            employes_affecter: 0,
+                                            color: currentColor,
                                             type: 'add'
                                         },
                                         type: "POST",
@@ -208,6 +246,7 @@ var calendar = $('#calendar').fullCalendar({
                                             displayError("Erreur lors de l'ajout de la plage. Réssayez...");
                                         }
                                     });
+                                }
                             },
                             "Annuler": function() {
                                 $(this).dialog("close");
@@ -267,6 +306,7 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
+
         // Vérifiez si la date de début est passée
         if (moment().isAfter(event.start) || moment().isAfter(event.end)) {
             displayWarning("Vous ne pouvez pas modifier une plage passée ou en cours");
@@ -288,7 +328,7 @@ var calendar = $('#calendar').fullCalendar({
                                 url: SITEURL + "/",
                                 data: {
                                     id: eventAct.id,
-                                    employes_affecter: checked,
+                                    employes_affecter: 0,
                                     type: 'modify'
                                 },
                                 type: "POST",
@@ -395,6 +435,34 @@ function selectable(start, end, idEvent) {
 
     return true;
 }
+
+// Callback function to execute when mutations are observed
+const callback = (mutationList, observer) => {
+  for (const mutation of mutationList) {
+    if (mutation.type === "childList") {
+        if ($('.fc-center').children().text() == 'dimanche – samedi') {
+            $('.fc-center').children().text('dimanche');
+        }
+        if ($('.fc-center').children().text() == 'lundi – samedi') {
+            $('.fc-center').children().text('lundi - dimanche');
+        }
+    } else if (mutation.type === "attributes") {
+    }
+  }
+};
+
+const config = { attributes: true, childList: true, subtree: true };
+
+const observer = new MutationObserver(callback);
+
+observer.observe($(".fc-center")[0], config);
+
+/* $('.fc-center').children().on('DOMSubtreeModified', function() { // Deprecated
+    if ($('.fc-center').children().text() == 'dimanche - samedi') {
+        console.log('text changed');
+        $('.fc-center').children().text('dimanche');
+    }
+}); */
 
 var tippyPrev = tippy('.fc-prev-button', {
     content: 'Précédent',
