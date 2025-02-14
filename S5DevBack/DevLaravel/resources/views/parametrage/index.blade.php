@@ -35,7 +35,7 @@
         <div style="margin-bottom:10px;">
             <h2>{{ $entreprise->libelle }}</h2>
         </div>
-        <p style="margin-bottom:10px;"><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
+        <p style="margin-bottom:10px;"><strong>{{__('Address')}} : </strong>{{ $entreprise->adresse }}</p>
         {{-- @if (Auth::user()->id == $entreprise->user_id) // Cas créateur
             <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
         @endif --}}

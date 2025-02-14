@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Modifier mon profil</h1>
+    <h1>{{__('Edit profile')}}</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -16,19 +16,19 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label for="nom" class="form-label">Nom</label>
+            <label for="nom" class="form-label">{{__('Last name')}}</label>
             <input type="text" id="nom" name="nom" class="form-control" value="{{ old('nom', $user->nom) }}" required>
             @error('nom') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
 
         <div class="mb-3">
-            <label for="prenom" class="form-label">Prénom</label>
+            <label for="prenom" class="form-label">{{__('First name')}}</label>
             <input type="text" id="prenom" name="prenom" class="form-control" value="{{ old('prenom', $user->prenom) }}" required>
             @error('prenom') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
 
         <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">{{__('Email Address')}}</label>
             <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
             @error('email') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
@@ -45,7 +45,7 @@
         </div> --}}
 
         <div class="mb-3">
-            <label for="numTel" class="form-label">Numéro de téléphone</label>
+            <label for="numTel" class="form-label">{{__('Phone number')}}</label>
             <input type="text" id="numTel" name="numTel" class="form-control" value="{{ old('numTel', $user->numTel) }}">
             @error('numTel') <div class="text-danger">{{ $message }}</div> @enderror
         </div>

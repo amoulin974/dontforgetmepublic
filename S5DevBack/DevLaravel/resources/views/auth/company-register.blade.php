@@ -32,9 +32,9 @@
 
             <!-- Champ Nom Entreprise-->
             <div class="mb-3 mt-2">
-                <label for="nomEntreprise" class="form-label">Nom de l'entreprise</label>
+                <label for="nomEntreprise" class="form-label">{{__('Business name')}}</label>
                 <input id="nomEntreprise" type="text" class="form-control @error('nomEntreprise') is-invalid @enderror" 
-                       name="nomEntreprise" value="{{ old('nomEntreprise') }}" placeholder="Entrez le nom de votre entreprise" required>
+                       name="nomEntreprise" value="{{ old('nomEntreprise') }}" placeholder="{{__('Enter business name')}}" required>
                 @error('nom')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -44,9 +44,9 @@
 
             <!-- Champ SIREN -->
             <div class="mb-3">
-                <label for="siren" class="form-label">Numéro de SIREN</label>
+                <label for="siren" class="form-label">{{__('SIREN number')}}</label>
                 <input id="siren" type="text" class="form-control @error('siren') is-invalid @enderror" 
-                       name="siren" value="{{ old('siren') }}" placeholder="Entrez le numéro de SIREN" required>
+                       name="siren" value="{{ old('siren') }}" placeholder="{{__('Enter SIREN number')}}" required>
                 @error('siren')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -56,9 +56,9 @@
 
             <!-- Champ Numéro de Téléphone -->
             <div class="mb-3">
-                <label for="numTel" class="form-label">Numéro de téléphone</label>
+                <label for="numTel" class="form-label">{{__('Phone number')}}</label>
                 <input id="numTel" type="text" class="form-control @error('numTel') is-invalid @enderror" 
-                       name="numTel" value="{{ old('numTel') }}" placeholder="Numéro de téléphone (** ** ** ** **)">
+                       name="numTel" value="{{ old('numTel') }}" placeholder="{{__('Phone number')}} (** ** ** ** **)">
                 @error('numTel')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -68,9 +68,9 @@
 
             <!-- Champ Email -->
             <div class="mb-3">
-                <label for="email" class="form-label">Adresse Email</label>
+                <label for="email" class="form-label">{{__('Email Address')}}</label>
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
-                       name="email" value="{{ old('email') }}" placeholder="Entrez votre adresse Email" required>
+                       name="email" value="{{ old('email') }}" placeholder="{{__('Enter your Email address')}}" required>
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -80,9 +80,9 @@
 
             <!-- Champ Adresse -->
             <div class="mb-3">
-                <label for="rue" class="form-label">Adresse</label>
+                <label for="rue" class="form-label">{{__('Address')}}</label>
                 <input id="rue" type="text" class="form-control @error('rue') is-invalid @enderror" 
-                       name="rue" value="{{ old('rue') }}" placeholder="Rue" required>
+                       name="rue" value="{{ old('rue') }}" placeholder="{{__('Avenue')}}" required>
                 @error('rue')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -92,9 +92,9 @@
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="codePostal" class="form-label">Code Postal</label>
+                    <label for="codePostal" class="form-label">{{__('Postal code')}}</label>
                     <input id="codePostal" type="text" class="form-control @error('codePostal') is-invalid @enderror" 
-                           name="codePostal" value="{{ old('codePostal') }}" placeholder="Code Postal" required>
+                           name="codePostal" value="{{ old('codePostal') }}" placeholder="{{__('Postal code')}}" required>
                     @error('codePostal')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -102,9 +102,9 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="ville" class="form-label">Ville</label>
+                    <label for="ville" class="form-label">{{__('City')}}</label>
                     <input id="ville" type="text" class="form-control @error('ville') is-invalid @enderror" 
-                           name="ville" value="{{ old('ville') }}" placeholder="Ville" required>
+                           name="ville" value="{{ old('ville') }}" placeholder="{{__('City')}}" required>
                     @error('ville')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -116,7 +116,7 @@
             <!-- Bouton Créer un compte -->
             <div class="d-grid mt-3">
                 <button type="submit" class="btn btn-dark">
-                    Créer le profil entreprise
+                    {{__('Create business profile')}}
                 </button>
             </div>
         </form>

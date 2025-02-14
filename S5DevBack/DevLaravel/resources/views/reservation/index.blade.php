@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Mes réservations')
+@section('title_base', __('My bookings'))
 @section('catalogue_active', 'active')
 
 @section('content')
@@ -10,12 +10,12 @@
     </div>
 @endif
 
-<div class="res-container"><a href="{{ route('reserver.index') }}" class="btn btn-primary"><h2><i class="fa fa-plus-circle"></i> Ajouter une réservation</h2></a></div></div>{{-- Lien à modifier --}}
+<div class="res-container"><a href="{{ route('reserver.index') }}" class="btn btn-primary"><h2><i class="fa fa-plus-circle"></i> {{__('Add a booking')}}</h2></a></div></div>{{-- Lien à modifier --}}
 
 
     @if($reservations == [])
     <div class="res-container">
-        <p>Aucune réservation n'a été créée.</p>
+        <p>{{__("No booking was created yet.")}}</p>
     </div>
     @else
     <div class="res-container">
@@ -36,17 +36,17 @@
                             @endauth
                         </div>
                         <div class="res-details-info">
-                            <p>Réservé chez <strong>{{ $reservation->effectuer_activites()->wherePivot('idUser',Auth::user()->id)->first()->entreprise->libelle }}</strong>
-                            pour la date du <strong>{{ explode('-',explode(' ',$reservation->dateRdv)[0])[2] }}/{{ explode('-',explode(' ',$reservation->dateRdv)[0])[1] }}/{{ explode('-',explode(' ',$reservation->dateRdv)[0])[0] }}</strong></p>
-                            <p>À partir de <strong>{{ explode(':',$reservation->heureDeb)[0] }}h{{ explode(':',$reservation->heureDeb)[1] }}</strong> jusqu'à <strong>{{ explode(':',$reservation->heureFin)[0] }}h{{ explode(':',$reservation->heureFin)[1] }}</strong></p>
+                            <p>{{__('Booked at ')}}<strong>{{ $reservation->effectuer_activites()->wherePivot('idUser',Auth::user()->id)->first()->entreprise->libelle }}</strong>
+                            {{__(' for the date of ')}}<strong>{{ explode('-',explode(' ',$reservation->dateRdv)[0])[2] }}/{{ explode('-',explode(' ',$reservation->dateRdv)[0])[1] }}/{{ explode('-',explode(' ',$reservation->dateRdv)[0])[0] }}</strong></p>
+                            <p>{{__('From')}} <strong>{{ explode(':',$reservation->heureDeb)[0] }}h{{ explode(':',$reservation->heureDeb)[1] }}</strong> {{__('to2')}} <strong>{{ explode(':',$reservation->heureFin)[0] }}h{{ explode(':',$reservation->heureFin)[1] }}</strong></p>
                             @if($reservation->nbPersonnes > 1)
                                 <p>Vous y allez à <strong>{{ $reservation->nbPersonnes }}</strong></p>
                             @else
-                                <p>Vous y allez <strong>seul(e)</strong></p>
+                                <p>{{__('You are coming ')}}<strong>{{__('by yourself')}}</strong></p>
                             @endif
                         </div>
                         <div class="text-center">
-                            <a class="secondary-button" href="{{ route('reservation.show', ['reservation' => $reservation->id]) }}">Voir plus</a>
+                            <a class="secondary-button" href="{{ route('reservation.show', ['reservation' => $reservation->id]) }}">{{__('More')}}</a>
                         </div>
                     </div>
                 </div>

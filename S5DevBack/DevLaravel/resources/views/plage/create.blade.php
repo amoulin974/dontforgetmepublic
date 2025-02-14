@@ -63,7 +63,7 @@
             <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
                 @foreach($userTravaillantSurAct as $employe)
                     @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
+                    <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} ({{__('You')}})</label><br>
                     @else
                     <label for="{{ $employe->id }}"><input type="checkbox" id="{{ $employe->id }}" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
                     @endif
@@ -78,7 +78,7 @@
         <form>
             <p>Quel employé chosir ?</p>
             {{-- <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</option> --}}
+                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} ({{__('You')}})</option> --}}
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
@@ -86,7 +86,7 @@
                 @foreach($userTravaillantSurAct as $employe)
                     {{-- <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option> --}}
                     @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
+                    <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} ({{__('You')}})</label><br>
                     @else
                     <label for="{{ $employe->id }}Modif"><input type="checkbox" id="{{ $employe->id }}Modif" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
                     @endif

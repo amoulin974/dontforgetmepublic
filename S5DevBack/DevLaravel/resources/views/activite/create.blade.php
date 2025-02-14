@@ -45,7 +45,7 @@
 
         <div class="d-flex justify-content-between">
             <a href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" class="btn btn-light">Annuler</a>
-            <button type="submit" class="btn btn-dark">Valider</button>
+            <button type="submit" class="btn btn-dark">{{__('Validate')}}</button>
         </div>
     </form>
 </div>

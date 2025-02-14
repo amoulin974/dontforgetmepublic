@@ -22,8 +22,8 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Durée</th>
+                    <th>{{__('Name')}}</th>
+                    <th>{{__('Duration')}}</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -39,13 +39,13 @@
                     <td>
                         @if($isAdmin)
                         <a href="{{ route('entreprise.services.edit', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
-                            <i class="fa fa-pencil-alt"></i> Modifier
+                            <i class="fa fa-pencil-alt"></i> {{__('Edit2')}}
                         </a>
                         <form action="{{ route('entreprise.services.destroy', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-link text-danger">
-                                <i class="fa fa-trash"></i> Supprimer
+                                <i class="fa fa-trash"></i> {{__('Delete')}}
                             </button>
                         </form>
                         <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
@@ -71,9 +71,9 @@
 
     @if(!$services->isEmpty() && $isAdmin)
         <div class="mt-4">
-            <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Ajouter un service</a>
+            <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">{{__('Add service')}}</a>
         </div>
     @endif
-    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" class="btn btn-secondary">Retour</a>
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" class="btn btn-secondary">{{__('Back')}}</a>
 </div>
 @endsection

@@ -20,11 +20,11 @@
     <div class="mt-4">
         <h4>Informations sur l'entreprise</h4>
         <ul>
-            <li><strong>Nom de l'entreprise :</strong> {{ session('company.nomEntreprise') }}</li>
-            <li><strong>Numéro de SIREN :</strong> {{ session('company.siren') }}</li>
-            <li><strong>Numéro de téléphone :</strong> {{ session('company.numTel') }}</li>
-            <li><strong>Adresse email :</strong> {{ session('company.email') }}</li>
-            <li><strong>Adresse :</strong> {{ session('company.rue') }}, {{ session('company.codePostal') }} {{ session('company.ville') }}</li>
+            <li><strong>{{__('Business name')}} :</strong> {{ session('company.nomEntreprise') }}</li>
+            <li><strong>{{__('SIREN number')}} :</strong> {{ session('company.siren') }}</li>
+            <li><strong>{{__('Phone number')}} :</strong> {{ session('company.numTel') }}</li>
+            <li><strong>{{__('Email Address')}}</strong> {{ session('company.email') }}</li>
+            <li><strong>{{__('Address')}}</strong> {{ session('company.rue') }}, {{ session('company.codePostal') }} {{ session('company.ville') }}</li>
         </ul>
     </div>
 
@@ -73,11 +73,11 @@
         <!-- Bouton Valider -->
         <form method="POST" action="{{ route('register.company.register.submit') }}">
             @csrf
-            <button type="submit" class="btn btn-primary btn-lg">Valider</button>
+            <button type="submit" class="btn btn-primary btn-lg">{{__('Validate')}}</button>
         </form>
 
         <!-- Bouton Modifier -->
-        <button class="btn btn-outline-secondary" onclick="window.history.back()">Modifier</button>
+        <button class="btn btn-outline-secondary" onclick="window.history.back()">{{__('Edit2')}}</button>
     </div>
 </div>
 @endsection

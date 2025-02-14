@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Mes entreprises')
+@section('title_base', __('My businesses'))
 @section('entreprises_active', 'active')
 
 @section('content')
@@ -20,16 +20,16 @@
                     <h4>[ {{ $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->first()->pivot->statut }} ]</h4>
                 @endif
                 @if ($entreprise->idCreateur == Auth::user()->id)
-                    <h5 style="color:blue;">[ Créateur ]</h5>
+                    <h5 style="color:blue;">[ {{__('Creator')}} ]</h5>
                 @endif
                 <div class="info">
                     <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
-                    <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
-                    <p><strong>Métier :</strong> {{ $entreprise->metier }}</p>
-                    <p><strong>Description :</strong> {{ $entreprise->description }}</p>
-                    <p><strong>Type :</strong> {{ $entreprise->type }}</p>
-                    <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                    <p><strong>Email :</strong> {{ $entreprise->email }}</p>
+                    <p><strong>{{__('Address')}} :</strong> {{ $entreprise->adresse }}</p>
+                    <p><strong>{{__('Job')}} :</strong> {{ $entreprise->metier }}</p>
+                    <p><strong>{{__('Description')}} :</strong> {{ $entreprise->description }}</p>
+                    <p><strong>{{__('Type')}} :</strong> {{ $entreprise->type }}</p>
+                    <p><strong>{{__('Phone number')}} :</strong> {{ $entreprise->numTel }}</p>
+                    <p><strong>{{__('Email Address')}} :</strong> {{ $entreprise->email }}</p>
                         @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
                         <div class="carousel">
                         <div class="swiper-container swiper{{ $entreprise->id }}">
@@ -73,7 +73,7 @@
                                 <img class="info-image" src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                         @endif
                     @if($entreprise->publier)
-                    <p class="text-center"><i><strong>Publié !</strong></i></p>
+                    <p class="text-center"><i><strong>{{__('Posted!')}}</strong></i></p>
                     @endif
                     @if($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->count() > 0)
                         <p style="text-align: center"><i>Vous êtes invités dans cette entreprise.</i></p>
@@ -81,7 +81,7 @@
                     @if($entreprise->idCreateur == Auth::user()->id && $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() == null)
                     <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>
                     @else
-                    <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button" style="display:block;margin-left:auto;margin-right:auto;">Voir plus</a>
+                    <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button" style="display:block;margin-left:auto;margin-right:auto;">{{__('More')}}</a>
                     @endif
                 </div>
             </div>

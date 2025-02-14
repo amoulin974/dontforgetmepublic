@@ -182,7 +182,7 @@
                             <!-- Bouton : Ajouter une nouvelle notification -->
                             <button type="button" class="btn btn-success w-100 mt-3" id="addNotificationBtn" data-bs-toggle="modal"
                                     data-bs-target="#notificationModal">
-                                <i class="bi bi-plus-circle"></i> Ajouter une notification
+                                <i class="bi bi-plus-circle"></i> {{__('Add notification')}}
                             </button>
                         </div>
                         <div class="modal-footer">
@@ -200,7 +200,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-primary" id="notificationModalLabel">
-                            <i class="bi bi-bell"></i> Ajouter une notification
+                            <i class="bi bi-bell"></i> {{__('Add notification')}}
                         </h5>
                         <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -219,7 +219,7 @@
                             </label>
                         </div>
                         <div id="smsField" class="mt-2">
-                            <label for="smsInput" class="form-label">Numéro de téléphone :</label>
+                            <label for="smsInput" class="form-label">{{__('Phone number')}} :</label>
                             <input
                                 type="tel"
                                 id="smsInput"
@@ -236,7 +236,7 @@
                             </label>
                         </div>
                         <div id="mailField" class="mt-2" style="display: none;">
-                            <label for="mailInput" class="form-label">Adresse email :</label>
+                            <label for="mailInput" class="form-label">{{__('Email Address')}}</label>
                             <input
                                 type="email"
                                 id="mailInput"
@@ -256,8 +256,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="goBackBtn">Précédent</button>
-                        <button type="button" class="btn btn-primary" id="saveNotificationBtn">Valider</button>
+                        <button type="button" class="btn btn-secondary" id="goBackBtn">{{__('Back')}}</button>
+                        <button type="button" class="btn btn-primary" id="saveNotificationBtn">{{__('Validate')}}</button>
                     </div>
                 </div>
             </div>

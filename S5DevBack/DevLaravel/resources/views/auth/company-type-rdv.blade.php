@@ -138,7 +138,7 @@
                         <a class="btn btn-submit w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="0" href="{{ route('register.company.register.recap') }}">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/Validate.png') }}" alt="Oui" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Oui</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('Yes')}}</p>
                             </div>
                         </a>
                     </div>
@@ -150,7 +150,7 @@
                         <a class="btn btn-submit w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="1" href="{{ route('register.company.register.recap') }}">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/Refuse.png') }}" alt="Non" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Non</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('No')}}</p>
                             </div>
                         </a>
                     </div>

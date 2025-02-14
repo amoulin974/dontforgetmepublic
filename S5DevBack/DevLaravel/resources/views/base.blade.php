@@ -41,13 +41,13 @@
         </button>
         <div class="collapse navbar-collapse full-page-menu" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a href="/" class="@yield('home_active') nav-link"><i class="fa fa-home"></i> Accueil</a></li>
+                <li class="nav-item"><a href="/" class="@yield('home_active') nav-link"><i class="fa fa-home"></i> {{ __('Home') }}</a></li>
                 @guest
                 @else
-                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
-                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
+                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> {{__('My bookings')}}</a></li>
+                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> {{__('My businesses')}}</a></li>
                 @endguest
-                <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
+                <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> {{ __('Book') }}</a></li>
             </ul>
         </div>
     </nav>
