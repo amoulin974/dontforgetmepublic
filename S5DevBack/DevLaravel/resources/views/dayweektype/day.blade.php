@@ -62,7 +62,7 @@
         $jours = $entreprise->journeeTypes;
     @endphp
     <script>
-        var currentTypeDay = @json($entreprise->journeeTypes->first());
+        var currentTypeDay = @json($entreprise->journeeTypes->first() ? $entreprise->journeeTypes->first() : ["id" => 0, "libelle" => "", "planning" => []]);
         var journees = @json($jours);
     </script>
 
@@ -344,6 +344,8 @@ $.ajaxSetup({
                             // Supprimer la journée du select
                             $('#daySelect option[value="' + currentTypeDay["id"] + '"]').remove();
                             // Charger la première journée
+                            // Vérfier si journees n'est pas vide
+                            if(journees.length != 0) {
                             currentTypeDay = journees[0];
                             var events = [];
                             var start_datetime;
@@ -360,6 +362,13 @@ $.ajaxSetup({
                                 });
                             }
                             $('#calendar').fullCalendar('addEventSource', events);
+                            } else {
+                                currentTypeDay = {
+                                    "id": 0,
+                                    "libelle": "",
+                                    "planning": {}
+                                };
+                            }
                         }
                     });
                     $( this ).dialog( "close" );
@@ -388,11 +397,12 @@ var calendar = $('#calendar').fullCalendar({
         $.ajax({
             url: SITEURL + "/",
             data: {
-                idJournee: {{ App\Models\JourneeType::where("idEntreprise",$entreprise->id)->first()->id }},
+                idJournee: {{ App\Models\JourneeType::where("idEntreprise",$entreprise->id)->first() ? App\Models\JourneeType::where("idEntreprise",$entreprise->id)->first()->id : 0 }},
                 type: 'get'
             },
             type: 'POST',
             success: function(data) {
+                if(data.length != 0){
                 var events = [];
                 var start_datetime;
                 var end_datetime;
@@ -408,6 +418,10 @@ var calendar = $('#calendar').fullCalendar({
                     });
                 }
                 callback(events);
+                } else {
+                    var events = [];
+                    callback(events);
+                }
             },
             error: function() {
                 displayError("Erreur lors de la récupération des plages");
