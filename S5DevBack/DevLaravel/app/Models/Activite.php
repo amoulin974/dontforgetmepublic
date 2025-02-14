@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @class Activite
+ * @brief Classe représentant une activité dans l'application.
+ *
+ * Cette classe gère les informations liées aux activités.
+ */
 class Activite extends Model
 {
     use HasFactory;
