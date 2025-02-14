@@ -92,6 +92,14 @@
                         @else
                         </p>
                         @if(!$isInvite)
+                        @if($isAdmin)
+                        <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'id' => Auth::user()->id]) }}" class="btn btn-link">
+                            <i class="fa fa-calendar"></i> Gérer les plages
+                        </a>
+                        @endif
+                        <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => Auth::user()->id]) }}" class="btn btn-link">
+                            <i class="fa fa-eye"></i> Voir vos plages
+                        </a>
                         <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Quitter l'entreprise</a>
                         @endif
                         @endif
@@ -104,15 +112,18 @@
                             @if ($user->id == $entreprise->idCreateur)
                             <p><strong>Créateur</strong></p>
                             @elseif($isAdmin)
-                                @if ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
+                                @if ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {{-- isAdmin --}}
                                         <a onclick="retrograder({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Rétrograder</a>
                                         <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
-                                    @elseif ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
+                                    @elseif ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé') {{-- isEmploye --}}
                                         <a onclick="promouvoir({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary accept">Promouvoir</a>
                                         <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
-                                    @else
+                                    @else {{-- isInvite --}}
                                         <a onclick="annulerInvit({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Annuler l'invitation</a>
                                 @endif
+                                <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => $user->id]) }}" class="btn btn-link">
+                                    <i class="fa fa-calendar"></i> Gérer les plages
+                                </a>
                             @endif
                         </div>
                     @endif

@@ -47,6 +47,7 @@
 <body>
   
 <div class="container-calendar">
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" style="left:20%; margin: 0; color:black;"><i class="fa fa-arrow-left"></i></a>
     <div class="header-profile mb-3" style="text-align: center;">
         <h2 style="color: #1167FC;"><a href="{{ route('entreprise.week.indexWeek', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none;">Semaine types de {{ $entreprise->libelle }}</a> | <a href="{{ route('entreprise.day.indexDay', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none; font-weight: bold;">Journées types de {{ $entreprise->libelle }}</a></h2>
         <br/>

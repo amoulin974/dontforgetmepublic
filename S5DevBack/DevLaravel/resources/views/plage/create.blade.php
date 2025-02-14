@@ -47,10 +47,10 @@
         <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
-    <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
+    <h4>Employé : {{ $employe->nom }} {{ $employe->prenom }}</h4>
     <div id='calendar'></div>
     @php
-        $userTravaillantSurAct = App\Models\User::whereIn("id",$entreprise->travailler_users()->wherePivot("idActivite",$activite->id)->pluck("idUser"))->get();
+        $actWorkedByUser = App\Models\Activite::whereIn("id",$employe->travailler_entreprises()->wherePivot("idEntreprise",$entreprise->id)->pluck("idActivite"))->get();
     @endphp
 
     <!-- Popup Dialog -->
@@ -61,15 +61,10 @@
                 <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
             <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
-                @foreach($userTravaillantSurAct as $employe)
-                    @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                    @else
-                    <label for="{{ $employe->id }}"><input type="checkbox" id="{{ $employe->id }}" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
-                    @endif
+                @foreach($actWorkedByUser as $activite)
+                    <label for="{{ $activite->id }}"><input type="checkbox" id="{{ $activite->id }}" value="{{ $activite->id }}"> {{ $activite->libelle }}</label><br>
                 @endforeach
             </div><br>
-            <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
@@ -77,23 +72,14 @@
     <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
             <p>Quel employé chosir ?</p>
-            {{-- <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</option> --}}
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
                 <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
-                @foreach($userTravaillantSurAct as $employe)
-                    {{-- <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option> --}}
-                    @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                    @else
-                    <label for="{{ $employe->id }}Modif"><input type="checkbox" id="{{ $employe->id }}Modif" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
-                    @endif
+                @foreach($actWorkedByUser as $activite)
+                    <label for="{{ $activite->id }}Modif"><input type="checkbox" id="{{ $activite->id }}Modif" value="{{ $activite->id }}"> {{ $activite->libelle }}</label><br>
                 @endforeach
             </div><br>
-              {{-- </select> --}}
-              <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
@@ -159,11 +145,11 @@ $(document).ready(function () {
 // VARIABLES GLOBALES
 // URL dans le site
 var SITEURL = "{{ url('/entreprise/') }}";
-SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/services/" + {{ $activite->id }} + "/plage";
+SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/services/" + {{ $employe->id }} + "/plage";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
 var curseurUnclickable = 'not-allowed';
-var DUREE = '{{ $activite->duree }}';
+var DUREE = "00:30:00";
 var DUREE_EN_MS = moment.duration(DUREE).asMilliseconds();
 
 // Mise en place du setup du ajax avec le token CSRF
@@ -229,13 +215,7 @@ var calendar = $('#calendar').fullCalendar({
         }
         
     },
-    //slotDuration: '{{ $activite->duree }}',
     snapDuration: DUREE,
-    /* selectConstraint: {
-        start: tatat,
-        end: '23:59:59'
-    }, */
-    /* selectOverlap:false, */
     selectable: true,
     nowIndicator: true,
     selectHelper: true,
@@ -245,7 +225,7 @@ var calendar = $('#calendar').fullCalendar({
         if (selectable(start,end,true)) {
             // Vérifiez que l'événement fait au moins la durée d'une activité
             let diffTime = (moment(end).diff(moment(start), 'hours').toString().length == 1 ? "0" + moment(end).diff(moment(start), 'hours') : moment(end).diff(moment(start), 'hours')) + ":" + ((moment(end).diff(moment(start), 'minutes')%60).toString().length == 1 ? "0" + (moment(end).diff(moment(start), 'minutes')%60) : moment(end).diff(moment(start), 'minutes')%60) + ":00";
-            if (diffTime >= '{{ $activite->duree }}') {
+            if (diffTime >= DUREE) {
                 // Vérifiez si l'événement dépasse une journée
                 if (moment(start).isSame(end, 'day')) {
                     var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
@@ -275,7 +255,7 @@ var calendar = $('#calendar').fullCalendar({
                                             datePlage: start.split(' ')[0],
                                             heureDeb: start.split(' ')[1],
                                             heureFin: end.split(' ')[1],
-                                            interval: '{{ $activite->duree }}',
+                                            interval: DUREE,
                                             entreprise_id: {{ $entreprise->id }},
                                             employes_affecter: checked,
                                             type: 'add'
@@ -310,7 +290,7 @@ var calendar = $('#calendar').fullCalendar({
                     $('#calendar').fullCalendar('unselect');
                 }
             } else {
-                displayWarning("Impossible de créer une plage de moins de {{ $activite->duree }} minutes");
+                displayWarning("Impossible de créer une plage de moins de DUREE minutes");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -403,7 +383,7 @@ var calendar = $('#calendar').fullCalendar({
                                 url: SITEURL + "/",
                                 data: {
                                     id: eventAct.id,
-                                    interval: '{{ $activite->duree }}',
+                                    interval: DUREE,
                                     employes_affecter: checked,
                                     type: 'modify'
                                 },
@@ -472,7 +452,7 @@ var calendar = $('#calendar').fullCalendar({
         if(selectable(event.start,event.end,event.id)){
             // Vérifiez que l'événement fait au moins la durée d'une activité
             let diffTime = (moment(event.end).diff(moment(event.start), 'hours').toString().length == 1 ? "0" + moment(event.end).diff(moment(event.start), 'hours') : moment(event.end).diff(moment(event.start), 'hours')) + ":" + ((moment(event.end).diff(moment(event.start), 'minutes')%60).toString().length == 1 ? "0" + (moment(event.end).diff(moment(event.start), 'minutes')%60) : moment(event.end).diff(moment(event.start), 'minutes')%60) + ":00";
-            if (diffTime >= '{{ $activite->duree }}') {
+            if (diffTime >= DUREE) {
                 // Vérifiez si l'événement dépasse une journée
                 if (moment(event.start).isSame(event.end, 'day')) {
                     var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
@@ -504,7 +484,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             } else {
                 revertFunc(); // Revert the change if the update fails
-                displayWarning("Impossible de modifier une plage pour qu'elle ait un intervalle de moins de {{ $activite->duree }} minutes");
+                displayWarning("Impossible de modifier une plage pour qu'elle ait un intervalle de moins de DUREE minutes");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Activite;
 use App\Models\Entreprise;
 use App\Models\Plage;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -169,18 +170,16 @@ class ActiviteController extends Controller
         }
     }
 
-    public function createPlage(Request $request, Entreprise $entreprise, $id)
+    public function createPlage(Request $request, Entreprise $entreprise, User $employe)
     {
         // Pour récupérer les données
         if($request->ajax()) {
         // Cas employé
         if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
           // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
-          $activite = Activite::where('id', $id)->where('idEntreprise', $entreprise->id)->first();
-
-            if ($activite) {
-                $plageIds = $activite->plages()->pluck('idPlage');
-                $data = Plage::whereIn('id', $plageIds)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+          $plages = User::where('id', $employe->id)->first()->plages;
+          $plages = $plages->where('idEntreprise', $entreprise->id)->get();
+            if ($plages) {
                 return response()->json($data);
             } else {
                 // Handle the case where the activite is not found
@@ -188,15 +187,13 @@ class ActiviteController extends Controller
             }
         }
         else {
-            $service = Activite::findOrFail($id);
-            return view('plage.create', ['entreprise' => $entreprise, 'activite' => $service]);
+            return view('plage.create', ['entreprise' => $entreprise, 'employe' => $employe]);
         }
       }
-        $service = Activite::findOrFail($id);
-        return view('plage.create', ['entreprise' => $entreprise, 'activite' => $service]);
+        return view('plage.create', ['entreprise' => $entreprise, 'employe' => $employe]);
     }
 
-    public function ajaxPlage(Request $request, Entreprise $entreprise, $id)
+    public function ajaxPlage(Request $request, Entreprise $entreprise, User $employe)
     {
         switch ($request->type) {
             case 'add':
@@ -220,11 +217,8 @@ class ActiviteController extends Controller
                      'entreprise_id' => $request->entreprise_id,
                  ]);
                }
-
-               //Auth::user()->travailler_activites()->attach($id, ['idEntreprise'=>$entreprise->id,'statut' => 'Admin']);
-               foreach($request->employes_affecter as $idEmploye){
-                   $event->employes()->attach($idEmploye);
-               }
+               
+                   $event->employes()->attach($employe->id);
 
                $event->activites()->attach($id);
                
@@ -260,10 +254,10 @@ class ActiviteController extends Controller
 
                $event->employes()->detach();
 
-               foreach($request->employes_affecter as $idEmploye){
+               /* foreach($request->activites_affecter as $idEmploye){
                     $event->employes()->attach($idEmploye);
                 }
-  
+   */
                return response()->json($event);
               break;
               
