@@ -138,12 +138,14 @@ class weekdayController extends Controller
                      'planning' => $request->planning,
                      'idEntreprise' => $entreprise->id,
                  ]);
+
+                 $event = JourneeType::where('idEntreprise', $entreprise->id)->where("id",$event->id)->get();
                
                return response()->json($event);
               break;
    
             case 'update':
-               $event = Plage::where($request->idJournee)->first()->update([
+               $event = JourneeType::where("id",$request->idJournee)->first()->update([
                 'libelle' => $request->libelle,
                 'planning' => $request->planning,
                ]);
@@ -152,11 +154,9 @@ class weekdayController extends Controller
               break;
    
             case 'delete':
-                $activite = Activite::where("id",$id)->first();
-                $plage = Plage::where("id",$request->id)->first();
-                $plage->employes()->detach();
-                $plage->activites()->detach();
-                $event = $plage->delete();
+                $journee = JourneeType::where("id",$request->idJournee)->first();
+                
+                $event = $journee->delete();
    
                return response()->json($event);
               break;

@@ -55,12 +55,16 @@
     <input type="text" id="inputColor" data-coloris value="#3a87ad" />
     <button id="loadDay" class="secondary-button" style="width:auto !important;"><i class="bi bi-box-arrow-in-down"></i> Load a day</button>
     <button id="newDay" class="secondary-button" style="width:auto !important;"><i class="bi bi-calendar2-plus"></i> Create new</button>
-    <button id="saveDay" class="secondary-button disabled" style="width:auto !important;"><i class="bi bi-save" disabled></i> Save the type day</button></div>
+    <button id="saveDay" class="secondary-button" style="width:auto !important;"><i class="bi bi-save"></i> Save the type day</button>
+    <button id="deleteDay" class="btn-danger" style="width:auto !important;"><i class="bi bi-trash"></i></button></div>
     <div id='calendar'></div>
     @php
         $jours = $entreprise->journeeTypes;
-        $currentTypeDay = $entreprise->journeeTypes->first()->id;
     @endphp
+    <script>
+        var currentTypeDay = @json($entreprise->journeeTypes->first());
+        var journees = @json($jours);
+    </script>
 
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
@@ -89,7 +93,7 @@
 
     <!-- Popup Dialog Suppression -->
     <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette plage sera définitivement supprimé. Voulez-vous continuer ?</p>
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette journée sera définitivement supprimé. Voulez-vous continuer ?</p>
     </div>
 </div>
 
@@ -154,6 +158,7 @@ $.ajaxSetup({
                         },
                         type: 'POST',
                         success: function(data) {
+                            currentTypeDay = data[0];
                             var events = [];
                             var start_datetime;
                             var end_datetime;
@@ -197,9 +202,7 @@ $.ajaxSetup({
             buttons: {
                 "Créer": function() {
                     $('#calendar').fullCalendar('removeEvents');
-                    @php
-                        $currentTypeDay = 0;
-                    @endphp
+                    currentTypeDay["id"] = 0;
                     $('#dialogNew').dialog('close');
                 },
                 "Annuler": function() {
@@ -210,13 +213,14 @@ $.ajaxSetup({
     });
 
     $('#saveDay').click(function () {
+        $("#titre").val(currentTypeDay["id"] == 0 ? "" : currentTypeDay["libelle"]);
+        if ($('#calendar').fullCalendar('clientEvents').length == 0) {
+            displayWarning("La journée doit contenir au moins une plage");
+        } else {
         $('#dialogTitre').dialog({
             modal: true,
             closeOnEscape: true,
             open: function(event, ui) {
-                @if($currentTypeDay != 0)
-                    $('#titre').val({{ App\Models\JourneeType::where("id",$currentTypeDay)->first()->libelle }});
-                @endif
                 $('.ui-widget-overlay').bind('click', function(){
                     $('#dialogTitre').dialog('close');
                 });
@@ -227,10 +231,8 @@ $.ajaxSetup({
                     if(title == ''){
                         displayWarning("Le titre de la journée ne peut pas être vide");
                     }
-                    else if ($('#calendar').fullCalendar('clientEvents').length == 0) {
-                        displayWarning("La journée doit contenir au moins une plage");     
-                    } else {
-                        if({{$currentTypeDay}} != 0){
+                    else {
+                        if(currentTypeDay["id"] != 0){
                             // Récupérer tous les évènements et les transformer en json
                             var events = $('#calendar').fullCalendar('clientEvents');
                             var planning = {};
@@ -247,7 +249,7 @@ $.ajaxSetup({
                             $.ajax({
                                 url: SITEURL + "/",
                                 data: {
-                                    idJournee: {{$currentTypeDay}},
+                                    idJournee: currentTypeDay["id"],
                                     libelle: title,
                                     planning: planning,
                                     type: 'update'
@@ -256,6 +258,13 @@ $.ajaxSetup({
                                 success: function(data) {
                                     displaySuccess("Journée modifiée avec succès");
                                     $('#dialogTitre').dialog('close');
+                                    // Modifier la journée dans la liste journees
+                                    for (var i = 0; i < journees.length; i++) {
+                                        if (journees[i]["id"] == currentTypeDay["id"]) {
+                                            journees[i]["libelle"] = title;
+                                            journees[i]["planning"] = planning;
+                                        }
+                                    }
                                 },
                                 error: function() {
                                     displayError("Erreur lors de la sauvegarde de la journée");
@@ -287,9 +296,11 @@ $.ajaxSetup({
                                 success: function(data) {
                                     displaySuccess("Journée sauvegardée avec succès");
                                     $('#dialogTitre').dialog('close');
-                                    @php
-                                        $currentTypeDay = $entreprise->journeeTypes->last()->id;
-                                    @endphp
+                                    currentTypeDay = data[0];
+                                    // Ajouter la nouvelle journée dans la liste journees
+                                    journees.push(currentTypeDay);
+                                    // Ajouter la nouvelle journée dans le select
+                                    $('#daySelect').append('<option value"'+ currentTypeDay["id"] +'">' + currentTypeDay["libelle"] + '</option>');
                                 },
                                 error: function() {
                                     displayError("Erreur lors de la sauvegarde de la journée");
@@ -303,7 +314,61 @@ $.ajaxSetup({
                     $(this).dialog("close");
                 }
             }
-        });       
+        });
+        }   
+    });
+
+
+    $('#deleteDay').click(function () {
+        $( "#dialog-confirm" ).dialog({
+            resizable: false,
+            modal: true,
+            buttons: {
+                "Confirmer la suppression": function() {
+                    $.ajax({
+                        type: "POST",
+                        url: SITEURL + '/',
+                        data: {
+                                idJournee: currentTypeDay["id"],
+                                type: 'delete'
+                        },
+                        success: function (response) {
+                            $('#calendar').fullCalendar('removeEvents');
+                            displayMessage("Journée supprimée avec succès");
+                            // Supprimer la journée de la liste journees
+                            for (var i = 0; i < journees.length; i++) {
+                                if (journees[i]["id"] == currentTypeDay["id"]) {
+                                    journees.splice(i, 1);
+                                }
+                            }
+                            // Supprimer la journée du select
+                            $('#daySelect option[value="' + currentTypeDay["id"] + '"]').remove();
+                            // Charger la première journée
+                            currentTypeDay = journees[0];
+                            var events = [];
+                            var start_datetime;
+                            var end_datetime;
+                            var momentDay = moment().startOf('week').add(1,'days').format('YYYY-MM-DD');
+                            var planning = currentTypeDay["planning"];
+                            for (var plage in planning) {
+                                start_datetime = momentDay + 'T' + planning[plage]['start'] +':00.000000Z';
+                                end_datetime = momentDay + 'T' + planning[plage]['end'] +':00.000000Z';
+                                events.push({
+                                    start: start_datetime,
+                                    end: end_datetime,
+                                    color: planning[plage]['color'],
+                                });
+                            }
+                            $('#calendar').fullCalendar('addEventSource', events);
+                        }
+                    });
+                    $( this ).dialog( "close" );
+                },
+                "Annuler": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
     });
 
 // Mise en place du calendrier
@@ -405,86 +470,7 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
-
-        // Vérifiez si la date de début est passée
-        if (moment().isAfter(event.start) || moment().isAfter(event.end)) {
-            displayWarning("Vous ne pouvez pas modifier une plage passée ou en cours");
-        } else {
-            var eventAct = event;
-            $('#dialogModif').dialog({
-                modal: true,
-                closeOnEscape: true,
-                        open: function(event, ui) {
-                            //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'plage');
-                            //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
-                            $('.ui-widget-overlay').bind('click', function(){
-                                $('#dialogModif').dialog('close');
-                            });
-                        },
-                buttons: {
-                    "Modifier": function() {
-                            $.ajax({
-                                url: SITEURL + "/",
-                                data: {
-                                    id: eventAct.id,
-                                    employes_affecter: 0,
-                                    type: 'modify'
-                                },
-                                type: "POST",
-                                success: function (data) {
-                                    $('#dialogModif').dialog('close');
-
-                                    displaySuccess("Plage modifiée avec succès");
-
-                                    // Désélectionner après la sélection
-                                    $('#calendar').fullCalendar('unselect');
-
-                                    // Rafraîchir l'affichage du calendrier
-                                    $('#calendar').fullCalendar('refetchEvents');
-                                },
-                                error: function() {
-                                    $('#dialogTitre').dialog('close');
-                                    displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
-                                }
-                            });
-                    },
-                    "Supprimer": function() {
-                        $(this).dialog("close");
-                        $( "#dialog-confirm" ).dialog({
-                            resizable: false,
-                            modal: true,
-                            buttons: {
-                                "Confirmer la suppression": function() {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: SITEURL + '/',
-                                        data: {
-                                                id: eventAct.id,
-                                                type: 'delete'
-                                        },
-                                        success: function (response) {
-                                            calendar.fullCalendar('removeEvents', eventAct.id);
-                                            displayMessage("Plage supprimée avec succès");
-                                            // Rafraîchir l'affichage du calendrier
-                                            $('#calendar').fullCalendar('refetchEvents');
-                                        }
-                                    });
-                                    $( this ).dialog( "close" );
-                                    $('#dialogModif').dialog("close");
-                                },
-                                "Annuler": function() {
-                                    $( this ).dialog( "close" );
-                                    $('#dialogModif').dialog("open");
-                                }
-                            }
-                        });
-                    },
-                    "Annuler": function() {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-        }
+        
     },
     eventResize: function(event, delta, revertFunc) {
         if(selectable(event.start,event.end,event.id)){
