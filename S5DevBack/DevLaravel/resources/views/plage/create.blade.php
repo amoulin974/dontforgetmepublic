@@ -56,7 +56,7 @@
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
+            <p>Quelle activité chosir ?</p>
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
@@ -71,7 +71,7 @@
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
+            <p>Quelle activité chosir ?</p>
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
@@ -246,7 +246,7 @@ var calendar = $('#calendar').fullCalendar({
                             "Ajouter": function() {
                                 //var interv = $('#interv').val();
                                 if (checked.length == 0){
-                                displayWarning('Veuillez sélectionner au moins un employé.');
+                                displayWarning('Veuillez sélectionner au moins une activité.');
                                 }
                                 else {
                                     $.ajax({
@@ -256,8 +256,7 @@ var calendar = $('#calendar').fullCalendar({
                                             heureDeb: start.split(' ')[1],
                                             heureFin: end.split(' ')[1],
                                             interval: DUREE,
-                                            entreprise_id: {{ $entreprise->id }},
-                                            employes_affecter: checked,
+                                            activites_affecter: checked,
                                             type: 'add'
                                         },
                                         type: "POST",
@@ -342,7 +341,7 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
-        var alreadyChecked = [];        
+        var alreadyChecked = [];
         @foreach (App\Models\Plage::all() as $p)
             if(event.id == {{ $p->id }}){
                 @foreach($p->employes as $e)
@@ -352,7 +351,7 @@ var calendar = $('#calendar').fullCalendar({
         @endforeach
 
         alreadyChecked.forEach(userWorking => {
-            document.getElementById(userWorking+"Modif").checked = true;
+            $('#'+userWorking+"Modif").checked = true;
             checked.push(userWorking);
         });
 
@@ -384,7 +383,7 @@ var calendar = $('#calendar').fullCalendar({
                                 data: {
                                     id: eventAct.id,
                                     interval: DUREE,
-                                    employes_affecter: checked,
+                                    activites_affecter: checked,
                                     type: 'modify'
                                 },
                                 type: "POST",

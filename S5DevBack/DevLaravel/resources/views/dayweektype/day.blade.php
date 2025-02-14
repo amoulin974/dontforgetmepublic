@@ -326,6 +326,11 @@ $.ajaxSetup({
             modal: true,
             buttons: {
                 "Confirmer la suppression": function() {
+                    if(journees.length == 0){
+                        $('#calendar').fullCalendar('removeEvents');
+                        $( this ).dialog( "close" );
+                    } else {
+
                     $.ajax({
                         type: "POST",
                         url: SITEURL + '/',
@@ -373,6 +378,7 @@ $.ajaxSetup({
                         }
                     });
                     $( this ).dialog( "close" );
+                    }
                 },
                 "Annuler": function() {
                     $( this ).dialog( "close" );

@@ -176,14 +176,13 @@ class ActiviteController extends Controller
         if($request->ajax()) {
         // Cas employé
         if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
-          // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
-          $plages = User::where('id', $employe->id)->first()->plages;
-          $plages = $plages->where('idEntreprise', $entreprise->id)->get();
+          // Requête pour récupérer les plages spécifique à l'employé et à l'entreprise choisie
+          $plages = User::where('id', $employe->id)->first() ->plages()->where('entreprise_id', $entreprise->id)->get();
             if ($plages) {
-                return response()->json($data);
+                return response()->json($plages);
             } else {
                 // Handle the case where the activite is not found
-                return response()->json(['error' => 'Activite not found'], 404);
+                return response()->json(['error' => 'Plages not found'], 404);
             }
         }
         else {
@@ -204,7 +203,7 @@ class ActiviteController extends Controller
                      'datePlage' => $request->datePlage,
                      'interval' => '00:05:00',
                      'planTables' => json_encode(['UnTest']),
-                     'entreprise_id' => $request->entreprise_id,
+                     'entreprise_id' => $entreprise->id,
                  ]);
                }
                else {
@@ -214,13 +213,15 @@ class ActiviteController extends Controller
                      'datePlage' => $request->datePlage,
                      'interval' => $request->interval,
                      'planTables' => json_encode(['UnPlanDeTables']),
-                     'entreprise_id' => $request->entreprise_id,
+                     'entreprise_id' => $entreprise->id,
                  ]);
                }
-               
-                   $event->employes()->attach($employe->id);
 
-               $event->activites()->attach($id);
+               $event->employes()->attach($employe->id);
+
+               foreach($request->activites_affecter as $id){
+                    $event->activites()->attach($id);
+                }
                
                return response()->json($event);
               break;
@@ -236,7 +237,6 @@ class ActiviteController extends Controller
               break;
    
             case 'delete':
-                $activite = Activite::where("id",$id)->first();
                 $plage = Plage::where("id",$request->id)->first();
                 $plage->employes()->detach();
                 $plage->activites()->detach();

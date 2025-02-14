@@ -131,6 +131,6 @@ class User extends Authenticatable
      */
     public function plages(): BelongsToMany
     {
-        return $this->belongsToMany(Plage::class, 'placer', 'idActivite', 'idUser')->withTimestamps();
+        return $this->belongsToMany(Plage::class, 'placer', 'idUser', 'idPlage')->withTimestamps();
     }
 }
