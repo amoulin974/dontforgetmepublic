@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file Activite.php
+ * @brief Modèle Eloquent pour gérer les activités dans l'application Laravel.
+ * 
+ * Ce fichier contient la classe Activite qui définit les attributs et les relations associées 
+ * aux activités de l'application.
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -18,11 +26,9 @@ class Activite extends Model
     use HasFactory;
 
     // VARIABLES
-
     /**
-     * The attributes that are mass assignable.
-     * 
-     * @var array<int, string>
+     * @var array<int, string> $fillable
+     * Attributs pouvant être assignés en masse.
      */
     protected $fillable = [
         'libelle',
