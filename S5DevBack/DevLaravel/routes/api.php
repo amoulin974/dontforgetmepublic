@@ -16,4 +16,5 @@ Route::get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/details', [notificationController::class, 'getDetails']);
     Route::patch('/details/{id}', [notificationController::class, 'updateNotificationState']);
+    Route::delete('/details/{id}', [NotificationController::class, 'destroy']);
 });
