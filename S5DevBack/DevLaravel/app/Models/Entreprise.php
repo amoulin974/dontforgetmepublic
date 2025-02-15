@@ -74,7 +74,7 @@ class Entreprise extends Model
      */
     public function journeeTypes(): HasMany
     {
-        return $this->hasMany(JourneeType::class);
+        return $this->hasMany(JourneeType::class, 'idEntreprise');
     }
 
     /**
@@ -86,7 +86,7 @@ class Entreprise extends Model
      */
     public function semaineTypes(): HasMany
     {
-        return $this->hasMany(SemaineType::class);
+        return $this->hasMany(SemaineType::class, 'idEntreprise');
     }
 
     /**

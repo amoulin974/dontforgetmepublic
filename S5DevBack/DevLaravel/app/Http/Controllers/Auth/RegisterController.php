@@ -107,6 +107,7 @@ class RegisterController extends Controller
             'numTel' => ['nullable', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
             'email' => ['required', 'email', 'unique:users,email', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password_confirmation' => ['required'],
         ]);
 
         // Store user data

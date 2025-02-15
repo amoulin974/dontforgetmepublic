@@ -52,7 +52,8 @@
                 <div style="display: inline-flex; width: 100%;">
                 <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:1%;margin-right:10px;"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
                 @if ($isAdmin)
-                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="bi bi-tools"></i> Gérer les activités</a>
+                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:10px;"><i class="bi bi-tools"></i> Gérer les activités</a>
+                <a class="btn btn-primary light" href="{{ route('entreprise.week.indexWeek', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="bi bi-calendar-range"></i> Paramétrer les journées/semaines types</a>
                 @elseif(!$isInvite)
                 <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="fa fa-eye"></i> Visualiser vos plages</a>
                 @endif
