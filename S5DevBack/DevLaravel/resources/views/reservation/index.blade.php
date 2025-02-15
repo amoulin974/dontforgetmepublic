@@ -10,9 +10,9 @@
     </div>
 @endif
 
-<div class="res-container"><a href="{{ route('reserver.index') }}" class="btn btn-primary"><h2><i class="fa fa-plus-circle"></i> Ajouter une réservation</h2></a></div></div>{{-- Lien à modifier --}}
+<div class="res-container"><a href="{{ route('reserver.index') }}" class="btn btn-primary"><h2><i class="fa fa-plus-circle"></i> Ajouter une réservation</h2></a></div>
 
-
+{{-- Lien à modifier --}}
     @if($reservations == [])
     <div class="res-container">
         <p>Aucune réservation n'a été créée.</p>
@@ -24,14 +24,14 @@
                 <div class="col-lg-6 col-xxl-4">
                     <div class="res">
                         <div class="res-header" style="display: inline-flex; width: 100%;">
-                            
+
                             @auth
                                 @if(Auth::user()->id)
                                     <h3>{{ $reservation->effectuer_activites()->wherePivot('idUser',Auth::user()->id)->first()->libelle }}</h3>
-                                @else 
-                                <h3>{{ $reservation->id }}</h3>                                     
+                                @else
+                                <h3>{{ $reservation->id }}</h3>
                                 @endif
-                            @else 
+                            @else
                             <h3>{{ $reservation->id }}</h3>
                             @endauth
                         </div>
@@ -64,5 +64,5 @@
         });
     </script>
     @endif
-    
+
 @endsection

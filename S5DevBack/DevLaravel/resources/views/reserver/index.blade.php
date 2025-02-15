@@ -31,7 +31,7 @@
                                     </div>
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function() {
-                                            var swiper = new Swiper('.swiper{{ $entreprise->id }}', {
+                                            new Swiper('.swiper{{ $entreprise->id }}', {
                                                 slidesPerView: 1,
                                                 spaceBetween: 10,
                                                 grabCursor: true,
@@ -50,11 +50,11 @@
                             <h3>{{ $entreprise->libelle }}</h3>
                             <p>{{ $entreprise->adresse }}</p>
                             <div style="margin-bottom:15px;overflow:auto; max-height:14vh;">
-                            <p style="margin-bottom: 0px">{{ $entreprise->description }}</p>
+                            <p style="margin-bottom: 0">{{ $entreprise->description }}</p>
                             </div>
-                            <p style="margin-bottom: 0px"><strong>Email :</strong> {{ $entreprise->email }}</p>
-                            <p style="margin-bottom: 0px"><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                    </div> 
+                            <p style="margin-bottom: 0"><strong>Email :</strong> {{ $entreprise->email }}</p>
+                            <p style="margin-bottom: 0"><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
+                    </div>
                     <div class="col-md-4 text-center" style="margin-block: auto">
                         <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">Réserver une activité</a>
                     </div>
@@ -91,7 +91,6 @@
                     entreprises.forEach(entreprise => {
                         entreprise.style.display = 'block';
                     });
-                    return;
                 }
             });
         });

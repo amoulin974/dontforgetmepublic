@@ -11,32 +11,28 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
+/**
+ * @class RegisterController
+ *
+ * @brief Handles user registration and validation.
+ *
+ * This controller manages the registration of new users, their validation,
+ * and the creation of their accounts. It also provides account-type selection
+ * and user registration page views.
+ */
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
-     *
-     * @var string
+     * @var string $redirectTo The path to redirect users after registration.
      */
     protected $redirectTo = '/home';
 
     /**
-     * Create a new controller instance.
+     * @brief Initializes the controller instance.
      *
-     * @return void
+     * Applies middleware to restrict access to guest users only.
      */
     public function __construct()
     {
@@ -44,10 +40,10 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * @brief Validates an incoming registration request.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param array $data The user-provided data for validation.
+     * @return \Illuminate\Contracts\Validation\Validator The validation instance.
      */
     protected function validator(array $data)
     {
@@ -61,10 +57,10 @@ class RegisterController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * @brief Creates a new user instance after successful registration.
      *
-     * @param  array  $data
-     * @return \App\Models\User
+     * @param array $data The validated user data.
+     * @return \App\Models\User The created user instance.
      */
     protected function create(array $data)
     {
@@ -78,31 +74,32 @@ class RegisterController extends Controller
     }
 
     /**
-     * Show the page for the choice of the type of account (user or company).
-     * 
-     * @return \Illuminate\View\View
+     * @brief Displays the account type selection page.
+     *
+     * @return \Illuminate\View\View The view for selecting account type.
      */
-    public function showChoicePage() {
+    public function showChoicePage()
+    {
         return view('auth.choose-account-type');
     }
 
     /**
-     * Show the user registration page.
-     * 
-     * @return \Illuminate\View\View
+     * @brief Displays the user registration page.
+     *
+     * @return \Illuminate\View\View The view for user registration.
      */
-    public function showUserRegisterPage() {
+    public function showUserRegisterPage()
+    {
         return view('auth.user-register');
     }
 
-
     /**
-     * Store the user data in the database.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @brief Stores user data in the database after validation.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing user details.
+     * @return \Illuminate\Http\RedirectResponse A redirect response after successful registration.
      */
-    public function storeUser(Request $request) 
+    public function storeUser(Request $request)
     {
         $validated = $request->validate([
             'nom' => ['required', 'string', 'max:255'],
@@ -113,12 +110,12 @@ class RegisterController extends Controller
             'password_confirmation' => ['required'],
         ]);
 
-        // Stocker les données utilisateur
+        // Store user data
         $user = $this->create($validated);
-        
+
         Auth::login($user);
 
-        // Rediriger vers l'étape suivante : formulaire entreprise
-        return redirect()->route('entreprise.create')->with('success', 'Données utilisateur enregistrées.');
+        // Redirect to the next step: company form
+        return redirect()->route('entreprise.create')->with('success', 'User data saved.');
     }
 }

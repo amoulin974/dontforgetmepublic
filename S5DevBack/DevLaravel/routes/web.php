@@ -70,7 +70,7 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
         Route::get('/{entreprise}/edit', 'edit')->where([
             'id' => '[0-9]+',
         ])->name('edit');
-        
+
         Route::put('/{entreprise}', 'update')->where([
             'id' => '[0-9]+',
         ])->name('update');
@@ -120,17 +120,10 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('we
 
 Auth::routes();
 
-/*
-Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->middleware('throttle:5,1');
-Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])->middleware('throttle:3,1');
-*/
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/clear-session', function () {    
+Route::get('/clear-session', function () {
     session()->forget(['company', 'appointment']);
     return redirect()->route('home');
 })->name('clear.session');
@@ -140,7 +133,7 @@ Route::prefix('/register')->name('register.')->controller(RegisterController::cl
     Route::get('/choose-account-type', [RegisterController::class, 'showChoicePage'])->name('choose.account.type');
 
     Route::get('/user', [RegisterController::class, 'showUserRegisterPage'])->name('user.register');
-    
+
     Route::get('/userAccount', [RegisterController::class, 'showUserRegisterPage'])->name('company.register.user');
 
     Route::post('/user', 'storeUser')->name('user.store');
