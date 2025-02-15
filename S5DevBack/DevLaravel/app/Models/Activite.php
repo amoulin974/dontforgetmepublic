@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file Activite.php
+ * @brief Modèle Eloquent pour gérer les activités dans l'application Laravel.
+ * 
+ * Ce fichier contient la classe Activite qui définit les attributs et les relations associées 
+ * aux activités de l'application.
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @class Activite
  * @brief The Activite model represents an activity associated with an enterprise.
  *
  * This model defines the attributes and relationships for an activity.
@@ -19,7 +28,6 @@ class Activite extends Model
     use HasFactory;
 
     // VARIABLES
-
     /**
      * The attributes that are mass assignable.
      *

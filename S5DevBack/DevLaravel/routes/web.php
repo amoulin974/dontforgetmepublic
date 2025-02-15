@@ -10,6 +10,7 @@ use App\Http\Controllers\parametrageController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
 use App\Http\Controllers\userController;
+use App\Http\Controllers\weekdayController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -77,6 +78,16 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
         Route::get('/{entreprise}/activites', 'showActivites')->where([
             'id' => '[0-9]+',
         ])->name('activites');
+
+        Route::prefix('{entreprise}/week')->name('week.')->controller(weekdayController::class)->group(function() {
+            Route::get('/', 'indexWeek')->name('indexWeek');
+            Route::post('/', 'ajaxWeek')->name('ajaxWeek');
+        });
+
+        Route::prefix('{entreprise}/day')->name('day.')->controller(weekdayController::class)->group(function() {
+            Route::get('/', 'indexDay')->name('indexDay');
+            Route::post('/', 'ajaxDay')->name('ajaxDay');
+        });
 
         Route::prefix('{entreprise}/services')->name('services.')->controller(ActiviteController::class)->group(function() {
             Route::get('/', 'index')->name('index');
