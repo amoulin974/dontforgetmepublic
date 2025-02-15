@@ -97,4 +97,31 @@ class notificationController extends Controller
             return response()->json(['message' => 'Notification not found or could not be updated.'], 404);
         }
     }
+
+    /**
+     * Delete a notification and associated reservation details by notification ID.
+     *
+     * This method removes a notification, the associated reservation, and related entries in `effectuer`.
+     *
+     * @param int|string $notificationId The ID of the notification to delete.
+     *
+     * @return \Illuminate\Http\JsonResponse JSON response with a success or error message.
+     */
+    public function destroy($notificationId)
+    {
+        // Retrieve the associated reservation ID
+        $notification = DB::table('notifications')->where('id', $notificationId)->first();
+        if (!$notification) {
+            return response()->json(['message' => 'Notification not found.'], 404);
+        }
+        $reservationId = $notification->reservation_id;
+        // Delete the notification
+        DB::table('notifications')->where('id', $notificationId)->delete();
+        // Delete related entries in `effectuer`
+        DB::table('effectuer')->where('idReservation', $reservationId)->delete();
+        // Delete the reservation
+        DB::table('reservations')->where('id', $reservationId)->delete();
+
+        return response()->json(['message' => 'Notification and associated reservation details deleted successfully.'], 200);
+    }
 }
