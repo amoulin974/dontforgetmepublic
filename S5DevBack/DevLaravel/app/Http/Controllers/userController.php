@@ -48,7 +48,7 @@ class userController extends Controller
         $validatedData = $request->validate([
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'email' => ['required', 'email', 'lowercase', 'max:255', 'unique:users,email,' . $user->id],
             'numTel' => ['nullable', 'string', 'max:20', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
             'typeNotif' => ['nullable', 'in:SMS,Email'],
             'delaiAvantNotif' => ['nullable', 'in:1 jour,2 jours,1 semaine'],
