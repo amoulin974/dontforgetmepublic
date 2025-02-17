@@ -188,9 +188,10 @@ var calendar = $('#calendar').fullCalendar({
                     this.activites.forEach(act => {
                         actToPush += act.libelle + ", ";
                     });
+                    actToPush = actToPush.slice(0, -2);
                     events.push({
                         id: this.id,
-                        title: "Votre plage pour : ",
+                        title: "La plage de {{ $employe->nom }} {{ $employe->prenom }} pour : ",
                         start: start_datetime,
                         end: end_datetime,
                         interval: this.interval,
@@ -216,7 +217,7 @@ var calendar = $('#calendar').fullCalendar({
             element.css('border-color', couleurAjd);
             element.css('cursor', curseurUnclickable);
         }
-        if (event.interval) { // Si le nombre de personnes est renseigné
+        if (event.activites) { // Si le nombre de personnes est renseigné
             element.find('.fc-title').after("<span class=\"intervEvent\">" + event.activites + "</span>");
         }
         
@@ -377,7 +378,7 @@ var calendar = $('#calendar').fullCalendar({
                 buttons: {
                     "Modifier": function() {
                         if (checked.length == 0){
-                        displayWarning('Veuillez sélectionner au moins un employé.');
+                        displayWarning('Veuillez sélectionner au moins une activité.');
                         }
                         else {
                             $.ajax({
