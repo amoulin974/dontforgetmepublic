@@ -17,19 +17,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2️⃣ Vérification de la structure
-      - name: Show repository structure
-        run: ls -la && ls -la ./S5DevBack/DevLaravel/
-
-      # 3️⃣ Configuration de PHP
-      - name: Set up PHP
+      # 2️⃣ Configuration de PHP (version 8.2 requise)
+      - name: Set up PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.2 # Passer à PHP 8.2
           extensions: mbstring, pdo, pdo_sqlite, bcmath
           coverage: none
 
-      # 4️⃣ Installation des dépendances via Composer
+      # 3️⃣ Vérification de la structure
+      - name: Show repository structure
+        run: ls -la && ls -la ./S5DevBack/DevLaravel/
+
+      # 4️⃣ Installation des dépendances Composer
       - name: Install dependencies
         run: |
           composer install --no-progress --prefer-dist --optimize-autoloader
