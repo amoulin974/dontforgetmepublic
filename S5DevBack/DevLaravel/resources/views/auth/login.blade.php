@@ -53,7 +53,7 @@
                     Vous n'avez pas de compte ? <a href="{{ route('register.choose.account.type') }}">S'inscrire</a>
                 </p>
                 <p>
-                    Mot de passe oublié ? <a href="{{ route('password.request') }}">cliquez ici</a>
+                    Mot de passe oublié ? <a href="{{ route('password.request') }}">Cliquez ici</a>
                 </p>
             </div>
         </form>

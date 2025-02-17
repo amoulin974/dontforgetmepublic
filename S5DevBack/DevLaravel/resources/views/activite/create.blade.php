@@ -21,7 +21,7 @@
 
         <div class="form-group mb-3">
             <label for="duree">Durée du service (en minutes)</label>
-            <input type="number" name="duree" id="duree" class="form-control @error('duree') is-invalid @enderror" placeholder="Durée du service (en minutes)" value="{{ old('duree') }}" required>
+            <input type="time" name="duree" id="duree" class="form-control @error('duree') is-invalid @enderror" placeholder="Durée du service (en minutes)" value="{{ old('duree') }}" required>
             @error('duree')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror

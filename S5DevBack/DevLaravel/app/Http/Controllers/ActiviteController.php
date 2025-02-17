@@ -45,7 +45,6 @@ class ActiviteController extends Controller
 
     public function store(Request $request, Entreprise $entreprise)
     {
-        // \Log::info('Méthode HTTP utilisée : ' . $request->method());
         $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
         $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
@@ -53,32 +52,35 @@ class ActiviteController extends Controller
 
         if(!$isAllow){
             return redirect()->route('entreprise.index');
-        }
-        else{
+        } else {
             $request->validate([
-              'libelle' => 'required|string|max:255',
-              'duree' => 'required|integer|min:1', 
-          ]);
+                'libelle' => 'required|string|max:255',
+                'duree' => 'required|date_format:H:i', // Validation pour le format time
+            ]);
 
-          $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
+            // Conversion de la durée du format time (HH:MM) en minutes
+            list($heures, $minutes) = explode(':', $request->duree);
+            $dureeEnMinutes = ($heures * 60) + $minutes;
 
-          $activite = Activite::create([
-              'libelle' => $request->libelle,
-              'duree' => $dureeInTimeFormat,
-              'idEntreprise' => $entreprise->id
-          ]);
+            $dureeInTimeFormat = gmdate('H:i:s', $dureeEnMinutes * 60);
 
-          $activite->travailler_users()->attach(auth()->id(), [
-              'idEntreprise' => $entreprise->id,
-              'statut' => 'Admin',
-          ]);
+            $activite = Activite::create([
+                'libelle' => $request->libelle,
+                'duree' => $dureeInTimeFormat,
+                'idEntreprise' => $entreprise->id
+            ]);
 
-          // Ajouter les employés de l'entreprise à l'activité
+            $activite->travailler_users()->attach(auth()->id(), [
+                'idEntreprise' => $entreprise->id,
+                'statut' => 'Admin',
+            ]);
+
+            // Ajouter les employés de l'entreprise à l'activité
             $entreprise->travailler_users()->where('statut', 'Employé')->get()->each(function ($user) use ($activite, $entreprise) {
-                $activite->travailler_users()->attach($user->id, [
+                $activite->travailler_users()->syncWithoutDetaching([$user->id => [
                     'idEntreprise' => $entreprise->id,
                     'statut' => 'Employé',
-                ]);
+                ]]);
             });
             $entreprise->travailler_users()->where('statut', 'Admin')->get()->each(function ($user) use ($activite, $entreprise) {
                 if ($user->id != Auth::user()->id) {
@@ -89,13 +91,14 @@ class ActiviteController extends Controller
                 }
             });
 
-          if ($entreprise->activites()->count() === 1) {
-              $entreprise->update(['publier' => 1]);
-          }
-    
+            if ($entreprise->activites()->count() === 1) {
+                $entreprise->update(['publier' => 1]);
+            }
+
             return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service créé avec succès.');
         }
-    } 
+    }
+ 
 
     public function edit(Entreprise $entreprise, $id)
     {
@@ -127,14 +130,16 @@ class ActiviteController extends Controller
         else{
             $request->validate([
                 'libelle' => 'required|string|max:255',
-                'duree' => 'required|integer|min:1', // Durée en minutes
+                'duree' => 'required|date_format:H:i', // Durée en minutes
             ]);
     
             $service = Activite::findOrFail($id);
     
-            // Convertir la durée (minutes) en format H:i:s
-            $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
-            //dd($dureeInTimeFormat);
+            // Conversion de la durée du format time (HH:MM) en minutes
+            list($heures, $minutes) = explode(':', $request->duree);
+            $dureeEnMinutes = ($heures * 60) + $minutes;
+
+            $dureeInTimeFormat = gmdate('H:i:s', $dureeEnMinutes * 60);
     
             $service->update([
                 'libelle' => $request->libelle,
