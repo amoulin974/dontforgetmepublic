@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
  * planning time slots (plages) for an enterprise, handling invitation responses, and performing CRUD
  * operations on time slots.
  */
-class parametrageController extends Controller
+class ParametrageController extends Controller
 {
     /**
      * Display the main configuration view.

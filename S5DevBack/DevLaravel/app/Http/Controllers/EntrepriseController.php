@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
  * This controller handles listing, displaying, creating, updating, and managing
  * various aspects of enterprises including their activities, user roles, and registration.
  */
-class entrepriseController extends Controller
+class EntrepriseController extends Controller
 {
     /**
      * Display a paginated list of enterprises.

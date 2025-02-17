@@ -21,7 +21,7 @@ use App\Models\Activite;
  * It also manages the associated notifications and the relationships between reservations,
  * activities, and enterprises.
  */
-class reservationController extends Controller
+class ReservationController extends Controller
 {
     /**
      * Display a paginated list of reservations for the authenticated user.

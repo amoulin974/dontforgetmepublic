@@ -11,28 +11,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # 1️⃣ Récupération complète du dépôt
+      - name: Checkout full repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Set up PHP
+      # 2️⃣ Configuration de PHP (version 8.2 requise)
+      - name: Set up PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.2 # Passer à PHP 8.2
           extensions: mbstring, pdo, pdo_sqlite, bcmath
           coverage: none
 
+      # 3️⃣ Vérification de la structure
+      - name: Show repository structure
+        run: ls -la && ls -la ./S5DevBack/DevLaravel/
+
+      # 4️⃣ Installation des dépendances Composer
       - name: Install dependencies
         run: |
           composer install --no-progress --prefer-dist --optimize-autoloader
+        working-directory: ./S5DevBack/DevLaravel
 
+      # 5️⃣ Configuration de l'environnement
       - name: Set environment
         run: cp .env.testing .env
+        working-directory: ./S5DevBack/DevLaravel
 
+      # 6️⃣ Génération de la clé d'application
       - name: Generate application key
-        run: php artisan key:generate
+        run: php artisan key:generate --env=testing
+        working-directory: ./S5DevBack/DevLaravel
 
+      # 7️⃣ Exécution des migrations
+      - name: Run migrations
+        run: php artisan migrate --env=testing
+        working-directory: ./S5DevBack/DevLaravel
+
+      # 8️⃣ Lancement des tests
       - name: Run Unit Tests
-        run: php artisan test --testsuite=Unit --parallel
+        run: php artisan test --testsuite=Unit
+        working-directory: ./S5DevBack/DevLaravel
 
       - name: Run Feature Tests
-        run: php artisan test --testsuite=Feature --parallel
+        run: php artisan test --testsuite=Feature
+        working-directory: ./S5DevBack/DevLaravel

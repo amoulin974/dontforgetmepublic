@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
  * This controller manages displaying the calendar with reservations as well as
  * processing AJAX requests for adding, updating, deleting, and modifying reservations.
  */
-class calendrierController extends Controller
+class CalendrierController extends Controller
 {
     /**
      * Display the calendar with reservations.
