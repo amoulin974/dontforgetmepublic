@@ -65,6 +65,7 @@ var SITEURL = "{{ url('/parametrage/plage/') }}";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
 var curseurUnclickable = 'not-allowed';
+var curseurClickable = 'pointer';
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -134,6 +135,8 @@ var calendar = $('#calendar').fullCalendar({
         }
         if (event.activites) { // Si le nombre de personnes est renseigné
             element.find('.fc-title').after("<span class=\"intervEvent\">" + event.activites + "</span>");
+            element.css('cursor', curseurClickable);
+            element.find('.fc-list-item-title').append("<span class=\"intervEvent\">" + event.activites + "</span>");
         }
         
     },
@@ -141,6 +144,11 @@ var calendar = $('#calendar').fullCalendar({
     selectHelper: false,
     eventClick: function (event) {
         var eventAct = event;
+        // Vérifier que l'event n'est pas passé
+        if (moment(eventAct.end).isBefore(moment())) {
+            displayWarning("Vous ne pouvez pas modifier un évènement passé");
+        }
+        else{
         $( "#dialog-confirm" ).dialog({
             resizable: false,
             modal: true,
@@ -167,7 +175,7 @@ var calendar = $('#calendar').fullCalendar({
                     $( this ).dialog( "close" );
                 }
             }
-        });
+        });}
     },
 });
 
