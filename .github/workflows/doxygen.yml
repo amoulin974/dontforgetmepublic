@@ -1,4 +1,4 @@
-name: Doxygen Documentation
+name: Doxygen Documentation CI/CD
 
 on:
   push:
@@ -14,20 +14,20 @@ permissions:
 jobs:
   generate-docs:
     runs-on: ubuntu-latest
-    
+
     steps:
+    # 📥 Étape 1 : Récupère le code
     - name: Checkout repository
       uses: actions/checkout@v4
-      
-    - name: Install Doxygen
-      run: sudo apt-get install doxygen 
-      
-    - name: Run Doxygen
-      run: doxygen Doxyfile
 
+    # 📝 Étape 2 : Exécute Doxygen avec le chemin correct
+    - name: Run Doxygen
+      run: doxygen ./S5DevBack/DevLaravel/docs/Doxyfile
+
+    # 🚀 Étape 3 : Déploie la documentation sur GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/html
+        publish_dir: ./S5DevBack/DevLaravel/docs/html  # Sortie selon ton Doxyfile
         publish_branch: gh-pages
