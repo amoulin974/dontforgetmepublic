@@ -86,7 +86,7 @@
                         <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                         <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                         <div style="display: inline-flex; width: 100%;">
-                        <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong>
+                        <p style="margin:auto; margin-left:0%; margin-bottom: 0%; margin-right: 50px;"><strong><i>Vous</i></strong>
                         @if ($user->id == $entreprise->idCreateur)
                             <strong>(Créateur)</strong></p>
                             @if($isAdmin)
@@ -94,17 +94,20 @@
                                     <i class="fa fa-calendar"></i> Gérer les plages
                                 </a>
                             @endif
+                            <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'employe' => Auth::user()->id]) }}" style="margin-left:10px;margin-right:auto;" class="btn btn-link">
+                                <i class="fa fa-eye"></i> Voir vos plages
+                            </a>
                         @else
                         </p>
                         @if(!$isInvite)
+                        <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'employe' => Auth::user()->id]) }}" style="margin-left:10px;margin-right:auto;" class="btn btn-link">
+                            <i class="fa fa-eye"></i> Voir vos plages
+                        </a>
                         @if($isAdmin)
                         <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => Auth::user()->id]) }}" class="btn btn-link">
                             <i class="fa fa-calendar"></i> Gérer les plages
                         </a>
                         @endif
-                        <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => Auth::user()->id]) }}" class="btn btn-link">
-                            <i class="fa fa-eye"></i> Voir vos plages
-                        </a>
                         <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Quitter l'entreprise</a>
                         @endif
                         @endif

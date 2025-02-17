@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Models\Plage;
 use App\Models\Activite;
 use App\Models\Entreprise;
+use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
@@ -89,36 +90,24 @@ class parametrageController extends Controller
      *
      * @return response()
      */
-    public function indexPlageAsEmploye(Request $request, Entreprise $entreprise, Activite $activite)
+    public function indexPlageAsEmploye(Request $request, Entreprise $entreprise, User $employe)
     {
       // Pour récupérer les données
       if($request->ajax()) {
         if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
-          // à rajouter : récupérer les plages spécifiques à l'utilisateur
-
-          // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
-          $activites = Activite::where('id', $activite->id)->where('idEntreprise', $entreprise->id)->first();
-
-            if ($activites) {
-                $plageIds = $activites->plages()->pluck('idPlage');
-                $data = Plage::whereIn('id', $plageIds)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
-                return response()->json($data);
+          // Requête pour récupérer les plages spécifique à l'employé et à l'entreprise choisie
+          $plages = User::where('id', $employe->id)->first() ->plages()->where('entreprise_id', $entreprise->id)->get();
+            if ($plages) {
+                // Ajout des activités liées à chacune des plages
+                foreach ($plages as $plage) {
+                    $plage->activites = $plage->activites()->get();
+                }
+                return response()->json($plages);
             } else {
                 // Handle the case where the activite is not found
-                return response()->json(['error' => 'Activite not found'], 404);
+                return response()->json(['error' => 'Plages not found'], 404);
             }
         }
-        /* // Cas employé
-        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé') {
-          // Requête pour récupérer les plages
-          $data = Plage::where('entreprise_id', $entreprise->id)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
-          return response()->json($data);
-        }
-        elseif(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {
-          // Requête pour récupérer les plages
-          $data = Plage::where('entreprise_id', $entreprise->id)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
-          return response()->json($data);
-        } */
       }
       // Vérification utilisateur travaille
       if (!Auth::check()) {
@@ -133,7 +122,7 @@ class parametrageController extends Controller
           return view('plage.show', [
               'user' => Auth::user(),
               'entreprise' => $entreprise,
-              'activite' => $activite,
+              'employe' => $employe,
           ]);
         }
         else {
@@ -235,10 +224,12 @@ class parametrageController extends Controller
   
            case 'delete':
 
-              $event = Plage::findOrFail($request->id)->first();
+              $event = Plage::where("id",$request->id)->first();
 
               // Supprimer les relations
               $event->activites()->detach();
+
+              $event->employes()->detach();
 
               $event = $event->delete();
   

@@ -252,18 +252,12 @@ class ActiviteController extends Controller
               break;
  
             case 'modify':
-               /* $event = Plage::find($request->id)->update([
-                 'interval' => $request->interval,
-               ]); */
 
                $event = Plage::where("id",$request->id)->first();
-
-               $event->employes()->detach();
-
-               /* foreach($request->activites_affecter as $idEmploye){
-                    $event->employes()->attach($idEmploye);
+                $event->activites()->detach();
+                foreach($request->activites_affecter as $id){
+                    $event->activites()->attach($id);
                 }
-   */
                 $event->activites = $event->activites()->get();
 
                return response()->json($event);
