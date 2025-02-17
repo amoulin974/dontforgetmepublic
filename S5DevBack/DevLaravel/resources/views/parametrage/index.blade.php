@@ -45,7 +45,7 @@
             @foreach ($entreprise->activites as $activite)
             <div class="activity row">
                 <div class="activity-description col-lg-8">
-                    <strong>Activité :</strong> {{ $activite->libelle }}
+                    <strong>{{__('Activity')}} :</strong> {{ $activite->libelle }}
                 </div>
                 <div class="activity-button col-lg-4">
                     <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
@@ -61,7 +61,7 @@
             @foreach ($entreprise->activites as $activite)
             <div class="activity row">
                 <div class="activity-description col-lg-8">
-                    <strong>Activité :</strong> {{ $activite->libelle }}
+                    <strong>{{__('Activity')}} :</strong> {{ $activite->libelle }}
                 </div>
                 <div class="activity-button col-lg-4">
                     <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>

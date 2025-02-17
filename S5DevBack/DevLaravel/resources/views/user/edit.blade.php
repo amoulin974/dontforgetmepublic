@@ -70,7 +70,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Mettre à jour</button>
-        <a href="{{ route('profile.index') }}" class="btn btn-secondary">Annuler</a>
+        <a href="{{ route('profile.index') }}" class="btn btn-secondary">{{__('Cancel')}}</a>
     </form>
 </div>
 @endsection

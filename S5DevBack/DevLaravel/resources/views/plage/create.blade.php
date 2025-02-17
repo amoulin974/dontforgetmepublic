@@ -44,10 +44,10 @@
   
 <div class="container-calendar">
     <div class="header-profile mb-3">
-        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <h1>{{__("Calendar with slots of")}} {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
-    <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
+    <h4>{{__('Activity')}} : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>
     @php
         $userTravaillantSurAct = App\Models\User::whereIn("id",$entreprise->travailler_users()->wherePivot("idActivite",$activite->id)->pluck("idUser"))->get();
@@ -56,7 +56,7 @@
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
+            <p>{{__("Choose an employee")}}</p>
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
@@ -76,7 +76,7 @@
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
+            <p>{{__("Choose an employee")}}</p>
             {{-- <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
                 <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} ({{__('You')}})</option> --}}
             <div style="width: 100%;">

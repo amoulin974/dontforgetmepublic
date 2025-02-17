@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Détail de ' . $entreprise -> libelle)
+@section('title_base', __('Details of ') . $entreprise -> libelle)
 
 @section('content')
 
@@ -59,7 +59,7 @@
             </div>
             @else
                 <p><strong>Non publié (en attente de création de votre première activité)</strong></p>
-                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>
+                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">{{__("Create your first activity")}}</a>
             @endif
             @if($isInvite)
             <div id="invitation" style="display: inline-flex;  width: 100%;">

@@ -16,7 +16,7 @@
                 <tr>
                     <th>{{__('Name')}}</th>
                     <th>{{__('Duration')}}</th>
-                    <th>Actions</th>
+                    <th>{{__('Actions')}}</th>
                 </tr>
             </thead>
             <tbody>

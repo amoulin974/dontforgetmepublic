@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Modifier l'entreprise</h1>
+        <h1>{{__('Edit business')}}</h1>
         <form action="{{ route('entreprise.update', ['entreprise' => $entreprise->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -25,13 +25,13 @@
 
             {{-- Section 2 : Informations générales --}}
             <div class="mb-4">
-                <h3>Informations générales</h3>
+                <h3>{{__('General information')}}</h3>
                 <div class="mb-2">
                     <label for="libelle">{{__('Business name')}}</label>
                     <input type="text" name="libelle" id="libelle" value="{{ $entreprise->libelle }}" class="form-control" required>
                 </div>
                 <div class="mb-2">
-                    <label for="siren">SIREN</label>
+                    <label for="siren">{{__('SIREN')}}</label>
                     <input type="text" name="siren" id="siren" value="{{ $entreprise->siren }}" class="form-control" required>
                 </div>
                 <div class="mb-2">
@@ -68,16 +68,16 @@
 
             {{-- Section 3 : Paramètres des rendez-vous --}}
             <div class="mb-4">
-                <h3>Paramètres des rendez-vous</h3>
+                <h3>{{__('Booking settings')}}</h3>
                 {{-- Question 1 --}}
                 <div class="row align-items-center mb-3">
                     <div class="col-md-8">
-                        <label for="question_0" class="form-label">Traitez-vous un ou plusieurs clients par créneau ?</label>
+                        <label for="question_0" class="form-label">{{__('Do you treat one or several clients per schedule?')}}</label>
                     </div>
                     <div class="col-md-4">
                         <select name="question_0" id="question_0" class="form-select">
-                            <option value="0" {{ json_decode($entreprise->typeRdv)[0] == 0 ? 'selected' : '' }}>Un seul</option>
-                            <option value="1" {{ json_decode($entreprise->typeRdv)[0] == 1 ? 'selected' : '' }}>Plusieurs</option>
+                            <option value="0" {{ json_decode($entreprise->typeRdv)[0] == 0 ? 'selected' : '' }}>{{__('One')}}</option>
+                            <option value="1" {{ json_decode($entreprise->typeRdv)[0] == 1 ? 'selected' : '' }}>{{__('Several')}}</option>
                         </select>
                     </div>
                 </div>
@@ -85,12 +85,12 @@
                 {{-- Question 2 --}}
                 <div class="row align-items-center mb-3">
                     <div class="col-md-8">
-                        <label for="question_1" class="form-label">Qui sélectionne le créneau ?</label>
+                        <label for="question_1" class="form-label">{{__('Who chooses the schedule?')}}</label>
                     </div>
                     <div class="col-md-4">
                         <select name="question_1" id="question_1" class="form-select">
-                            <option value="0" {{ json_decode($entreprise->typeRdv)[1] == 0 ? 'selected' : '' }}>Seulement vous</option>
-                            <option value="1" {{ json_decode($entreprise->typeRdv)[1] == 1 ? 'selected' : '' }}>Le client et vous</option>
+                            <option value="0" {{ json_decode($entreprise->typeRdv)[1] == 0 ? 'selected' : '' }}>{{__('You only')}}</option>
+                            <option value="1" {{ json_decode($entreprise->typeRdv)[1] == 1 ? 'selected' : '' }}>{{__('You and the client')}}</option>
                         </select>
                     </div>
                 </div>
@@ -98,13 +98,13 @@
                 {{-- Question 3 --}}
                 <div class="row align-items-center mb-3">
                     <div class="col-md-8">
-                        <label for="question_2" class="form-label">Affectez-vous un salarié pour chaque client ?</label>
+                        <label for="question_2" class="form-label">{{__('Do you assign an employee to each client?')}}</label>
                     </div>
                     <div class="col-md-4">
                         <select name="question_2" id="question_2" class="form-select">
-                            <option value="0" {{ json_decode($entreprise->typeRdv)[2] == 0 ? 'selected' : '' }}>Aucun</option>
-                            <option value="1" {{ json_decode($entreprise->typeRdv)[2] == 1 ? 'selected' : '' }}>Un seul</option>
-                            <option value="2" {{ json_decode($entreprise->typeRdv)[2] == 2 ? 'selected' : '' }}>Plusieurs</option>
+                            <option value="0" {{ json_decode($entreprise->typeRdv)[2] == 0 ? 'selected' : '' }}>{{__('None')}}</option>
+                            <option value="1" {{ json_decode($entreprise->typeRdv)[2] == 1 ? 'selected' : '' }}>{{__('One')}}</option>
+                            <option value="2" {{ json_decode($entreprise->typeRdv)[2] == 2 ? 'selected' : '' }}>{{__('Several')}}</option>
                         </select>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                 {{-- Question 4 --}}
                 <div class="row align-items-center mb-3">
                     <div class="col-md-8">
-                        <label for="question_3" class="form-label">Placez-vous vos clients dans votre enseigne ?</label>
+                        <label for="question_3" class="form-label">{{__('Do you place your clients in your brand?')}}</label>
                     </div>
                     <div class="col-md-4">
                         <select name="question_3" id="question_3" class="form-select">
@@ -126,7 +126,7 @@
             {{-- Section 4 : Squelette des notifications --}}
             <div class="mb-4">
                 <h3>{{__('Notifications')}}</h3>
-                <p>Cette partie sera gérée ultérieurement.</p>
+                <p>{{__('That part will be managed later.')}}</p>
             </div>
 
             {{-- Bouton d'envoi --}}

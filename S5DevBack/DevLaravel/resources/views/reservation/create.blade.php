@@ -18,7 +18,7 @@
         <!-- Tableau des disponibilités -->
         <div class="availability">
 
-            <h4 class="text-center mb-4">Disponibilités pour {{ $activite->libelle}}</h4>
+            <h4 class="text-center mb-4">{{__('Available slots for ')}}{{ $activite->libelle}}</h4>
             @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
                 <label for="emplye" class="form-label mt-3">Veuillez Sélectionner un employé</label>
                 <select id="employe" class="form-select">
@@ -110,7 +110,7 @@
                         </li>
                     @endforeach
                 @else
-                    <p>Aucune plage horaire disponible.</p>
+                    <p>{{__('No available time slot.')}}</p>
                 @endif
             </ul>
         </div>
@@ -123,13 +123,13 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-primary" id="reservationModalLabel">
-                                <i class="bi bi-calendar-check"></i> Réserver une plage horaire
+                                <i class="bi bi-calendar-check"></i> {{__('"Book a time slot"')}}
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p>
-                                Vous êtes sur le point de réserver pour la plage horaire suivante :
+                                {{__("You're about to book for the following time slot")}} :
                                 <strong id="selectedHoraire" class="text-success"></strong>
                                 le <strong id="selectedDate" class="text-primary"></strong>.
                             </p>
@@ -141,7 +141,7 @@
                             <!-- Sélection de l'employé -->
                             @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
                                 <div class="form-group mb-3">
-                                    <label for="employeSelect" class="form-label">Sélectionnez un employé :</label>
+                                    <label for="employeSelect" class="form-label">{{__("Select an employee")}} :</label>
                                     <select name="employe_id" id="employeSelect" class="form-select" required>
                                         @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
                                             <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
@@ -154,7 +154,7 @@
                                 @endphp
                                 <input type="hidden" name="employe_id" value="{{ $employe->id }}">
                                 <p>
-                                    Employé affecté automatiquement : <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong>
+                                    {{__('Automatically assigned employee')}} : <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong>
                                 </p>
                             @endif
 
@@ -162,7 +162,7 @@
                             @if ($entreprise->typeRdv[0] == 1)
                                 <div class="form-group mb-3">
                                     <label for="nbPersonnes" class="form-label">
-                                        <i class="bi bi-people-fill"></i> Nombre de personnes :
+                                        <i class="bi bi-people-fill"></i> {{__("Number of people")}} :
                                     </label>
                                     <input
                                         type="number"
@@ -187,7 +187,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary w-100">Confirmer la réservation</button>
-                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">{{__('Cancel')}}</button>
                         </div>
                     </div>
                 </form>

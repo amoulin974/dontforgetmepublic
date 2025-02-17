@@ -43,7 +43,7 @@
   
 <div class="container-calendar">
     <div class="header-profile mb-3">
-        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <h1>{{__("Calendar with slots of")}} {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
     <p>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} pour l'activité <i>{{ $activite->libelle }}</i></p><br>
@@ -51,7 +51,7 @@
 
     <!-- Popup Dialog Suppression -->
     <div id="dialog-confirm" title="Voulez-vous signaler votre indisponibilité ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cet évènement sera définitivement supprimé. Voulez-vous continuer ?</p>
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This event will be permanently deleted. Continue?")}}</p>
     </div>
 </div>
    

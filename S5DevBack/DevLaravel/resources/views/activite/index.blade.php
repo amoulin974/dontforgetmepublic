@@ -2,29 +2,29 @@
 
 @include('base')
 
-@section('title', 'Activité de ' . $entreprise->libelle)
+@section('title', __('Activity for ') . $entreprise->libelle)
 
 @section('content')
 <div class="container">
     @if($services->isEmpty())
-        <h1 style="text-align:center;">Créez votre premier service</h1>
+        <h1 style="text-align:center;">{{__('Create your first service')}}</h1>
     @endif
-    <h2 class="mb-4">Mes Services</h2>
+    <h2 class="mb-4">{{__('My Services')}}</h2>
 
     @php
         $isAdmin = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null;
     @endphp
 
     @if($services->isEmpty())
-        <p>Aucun service n'a été créé pour {{ $entreprise->libelle }}.</p>
-        <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Créer un service</a>
+        <p>{{__('No service was created for')}} {{ $entreprise->libelle }}.</p>
+        <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">{{__('Create service')}}</a>
     @else
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>{{__('Name')}}</th>
                     <th>{{__('Duration')}}</th>
-                    <th>Actions</th>
+                    <th>{{__('Actions')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,16 +49,16 @@
                             </button>
                         </form>
                         <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
-                            <i class="fa fa-calendar"></i> Gérer les plages
+                            <i class="fa fa-calendar"></i> {{__('Manage slots')}}
                         </a>
                         @if($isWorkedByUser)
                         <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-link">
-                            <i class="fa fa-eye"></i> Voir vos plages
+                            <i class="fa fa-eye"></i> {{__('See your slots')}}
                         </a>
                         @endif
                         @else
                         <a href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-link">
-                            <i class="fa fa-calendar"></i> Voir les plages
+                            <i class="fa fa-calendar"></i> {{__('See slots')}}
                         </a>
                         @endif
                     </td>

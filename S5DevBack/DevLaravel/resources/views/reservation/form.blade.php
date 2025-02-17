@@ -30,7 +30,7 @@
         @enderror
     </div>
     <div class="form-group">
-        <label for="nbPersonnes">Nombre de personnes :</label>
+        <label for="nbPersonnes">{{__("Number of people")}} :</label>
         <input type="text" id="nbPersonnes" name="nbPersonnes"  value="{{ old('nbPersonnes', $reservation->nbPersonnes) }}">
         @error('nbPersonnes')
             <span class="error-message">{{ $message }}</span>

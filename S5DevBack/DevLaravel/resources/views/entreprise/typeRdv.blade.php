@@ -26,7 +26,7 @@
 
         {{-- Étape 1 : Nombre de clients par créneau --}}
         <div class="step" id="step1">
-            <h2 class="text-center mb-4 fw-bold">Traitez-vous un ou plusieurs clients lors d’un créneau ?</h2>
+            <h2 class="text-center mb-4 fw-bold">{{__('Do you treat one or several clients per schedule?')}}</h2>
             <div class="row text-center w-100">
                 {{-- Carte pour "Un seul client" --}}
                 <div class="col-md-6 mb-4">  
@@ -34,7 +34,7 @@
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="0">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/Consulting.png') }}" alt="Un seul client" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Un seul (type Avocat)</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('One')}} ({{__('ex: Lawyer')}})</p>
                             </div>
                         </button>
                     </div>
@@ -46,7 +46,7 @@
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="1">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/Restaurant.png') }}" alt="Plusieurs clients" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Plusieurs (type Coiffeur ou Restaurant)</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('Several')}} ({{__('ex: Hairdresser, Restaurant')}})</p>
                             </div>
                         </button>
                     </div>
@@ -57,7 +57,7 @@
 
         {{-- Étape 2 : Qui sélectionne le créneau ? --}}
         <div class="step d-none" id="step2">
-            <h2 class="text-center mb-4 fw-bold">Qui sélectionne le créneau ?</h2>
+            <h2 class="text-center mb-4 fw-bold">{{__('Who chooses the schedule?')}}</h2>
             <div class="row text-center w-100">
                 {{-- Carte pour "Seulement vous" --}}
                 <div class="col-md-6 mb-4">    
@@ -65,7 +65,7 @@
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="0">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/Booking.png') }}" alt="Seulement vous" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Seulement vous</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('You only')}}</p>
                             </div>
                         </button>
                     </div> 
@@ -77,7 +77,7 @@
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="1">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/BusinessDecision.png') }}" alt="Le client et vous" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Le client et vous</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('You and the client')}}</p>
                             </div>
                         </button>
                     </div>                    
@@ -87,7 +87,7 @@
 
         {{-- Étape 3 : Affectez-vous un salarié pour chaque client ? --}}
         <div class="step d-none" id="step3">
-            <h2 class="text-center mb-4 fw-bold">Affectez-vous un salarié pour chaque client ?</h2>
+            <h2 class="text-center mb-4 fw-bold">{{__('Do you assign an employee to each client?')}}</h2>
             <div class="row text-center w-100">
                 {{-- Carte pour "Aucun" --}}
                 <div class="col-md-4 mb-4"> 
@@ -95,7 +95,7 @@
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="0">    
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/None.png') }}" alt="Aucun" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Aucun</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('None')}}</p>
                             </div>
                         </button>
                     </div>                  
@@ -107,7 +107,7 @@
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="1">    
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/Barber.png') }}" alt="Un seul" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Un seul</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('One')}}</p>
                             </div>
                         </button>
                     </div>                  
@@ -119,7 +119,7 @@
                         <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="2">    
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/TeamMeeting.png') }}" alt="Plusieurs" style="width: 100px; height: auto;">
-                                <p class="mt-3 fw-bold text-dark">Plusieurs</p>
+                                <p class="mt-3 fw-bold text-dark">{{__('Several')}}</p>
                             </div>
                         </button>
                     </div>
@@ -129,7 +129,7 @@
 
         {{-- Étape 4 : Placez-vous vos clients dans votre enseigne ? --}}
         <div class="step d-none" id="step4">
-            <h2 class="text-center mb-4 fw-bold">Placez-vous vos clients dans votre enseigne ?</h2>
+            <h2 class="text-center mb-4 fw-bold">{{__('Do you place your clients in your brand?')}}</h2>
             <div class="row text-center w-100">
                 {{-- Carte pour "Oui" --}}
                 <div class="col-md-6 mb-4">

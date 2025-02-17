@@ -40,7 +40,7 @@
                    {{__(' for the date of ')}}<strong>{{ explode('-',explode(' ',$reservation->dateRdv)[0])[2] }}/{{ explode('-',explode(' ',$reservation->dateRdv)[0])[1] }}/{{ explode('-',explode(' ',$reservation->dateRdv)[0])[0] }}</strong>
                    {{__('From')}} <strong>{{ explode(':',$reservation->heureDeb)[0] }}h{{ explode(':',$reservation->heureDeb)[1] }}</strong> {{__('to2')}} <strong>{{ explode(':',$reservation->heureFin)[0] }}h{{ explode(':',$reservation->heureFin)[1] }}</strong>.</p>
                    @if($reservation->nbPersonnes > 1)
-                       <p>Vous y allez à <strong>{{ $reservation->nbPersonnes }}</strong></p>
+                       <p>{{__(':count people are coming', ['count' => $reservation->nbPersonnes] )}}</p>
                    @else
                        <p>{{__('You are coming ')}}<strong>{{__('by yourself')}}</strong></p>
                    @endif
@@ -52,7 +52,7 @@
             @foreach ($reservation->notifications as $notif)
                 <div class="info">
                     <p style="margin-bottom: 0px;"><i>Catégorie :</i> {{ $notif->categorie }}</p>
-                    <p style="margin-bottom: 0px;"><i>Délai :</i> {{ explode(':',explode(' ',$notif->delai)[1])[2] }} heures avant</p>
+                    <p style="margin-bottom: 0px;"><i>Délai :</i> {{ explode(':',explode(' ',$notif->delai)[1])[2] }} {{__('hours prior')}}</p>
                     <p style="margin-bottom: 0px;"><i>État :</i> {{ $notif->etat == 0 ? 'En attente' : 'Envoyé' }}</p>
                     <p><i>{{-- Contenu --}}À envoyer à :</i> {{ $notif->contenu }}</p>
                 </div>

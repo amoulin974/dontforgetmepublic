@@ -44,7 +44,7 @@
   
 <div class="container-calendar">
     <div class="header-profile mb-3">
-        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <h1>{{__("Calendar with slots of")}} {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
     <div id='calendar'></div>
@@ -52,7 +52,7 @@
     <!-- Popup Dialog Titre -->
     <div id="dialogTitre" title="Ajout d'un évènement" style="display:none;">
         <form>
-            <label for="eventTitle">Titre de l'évènement :</label>
+            <label for="eventTitle">{{__("Event title")}} :</label>
             <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
             <label for="interv">Intervalle de début d'activités :</label>
             {{-- <input type="time" id="interv" name="interv" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
@@ -76,7 +76,7 @@
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'un évènement" style="display:none;">
         <form>
-            <label for="eventTitleModif">Titre de l'évènement :</label>
+            <label for="eventTitleModif">{{__("Event title")}} :</label>
             <input type="text" id="eventTitleModif" name="eventTitleModif" class="text ui-widget-content ui-corner-all"><br><br>
             <label for="intervModif">Intervalle de débuts d'activités :</label>
             {{-- <input type="time" id="intervModif" name="intervModif" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
@@ -99,7 +99,7 @@
 
     <!-- Popup Dialog Suppression -->
     <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cet évènement sera définitivement supprimé. Voulez-vous continuer ?</p>
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This event will be permanently deleted. Continue?")}}</p>
     </div>
 </div>
    

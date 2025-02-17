@@ -49,13 +49,13 @@
     <!-- Popup Dialog Select -->
     <div id="dialogSelect" title="Ajout d'un évènement" style="display:none;">
         <form>
-            <label for="eventTitleSelect">Titre de l'évènement :</label>
+            <label for="eventTitleSelect">{{__("Event title")}} :</label>
             <input type="text" id="eventTitleSelect" name="eventTitleSelect" class="text ui-widget-content ui-corner-all" placeholder="Titre"><br><br>
             <label for="startDateSelect">Heure de début:</label>
             <input type="time" id="startDateSelect" name="startDateSelect" class="text ui-widget-content ui-corner-all" placeholder="08:00:00"><br><br>
             <label for="endDateSelect">Heure de fin :</label>
             <input type="time" id="endDateSelect" name="endDateSelect" class="text ui-widget-content ui-corner-all" placeholder="20:00:00"><br><br>
-            <label for="nbPersSelect">Nombre de personnes :</label>
+            <label for="nbPersSelect">{{__("Number of people")}} :</label>
             <input type="number" id="nbPersSelect" name="nbPersSelect" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
         </form>
     </div>
@@ -63,9 +63,9 @@
     <!-- Popup Dialog Titre -->
     <div id="dialogTitre" title="Ajout d'un évènement" style="display:none;">
         <form>
-            <label for="eventTitle">Titre de l'évènement :</label>
+            <label for="eventTitle">{{__("Event title")}} :</label>
             <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="nbPers">Nombre de personnes :</label>
+            <label for="nbPers">{{__("Number of people")}} :</label>
             <input type="number" id="nbPers" name="nbPers" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
         </form>
     </div>
@@ -73,16 +73,16 @@
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'un évènement" style="display:none;">
         <form>
-            <label for="eventTitleModif">Titre de l'évènement :</label>
+            <label for="eventTitleModif">{{__("Event title")}} :</label>
             <input type="text" id="eventTitleModif" name="eventTitleModif" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="nbPersModif">Nombre de personnes :</label>
+            <label for="nbPersModif">{{__("Number of people")}} :</label>
             <input type="number" id="nbPersModif" name="nbPersModif" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
         </form>
     </div>
 
     <!-- Popup Dialog Suppression -->
     <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cet évènement sera définitivement supprimé. Voulez-vous continuer ?</p>
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This event will be permanently deleted. Continue?")}}</p>
     </div>
 </div>
    

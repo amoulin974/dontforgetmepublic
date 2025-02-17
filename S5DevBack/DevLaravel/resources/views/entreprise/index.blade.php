@@ -79,7 +79,7 @@
                         <p style="text-align: center"><i>Vous êtes invités dans cette entreprise.</i></p>
                     @endif
                     @if($entreprise->idCreateur == Auth::user()->id && $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() == null)
-                    <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>
+                    <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">{{__("Create your first activity")}}</a>
                     @else
                     <a href="{{ route('entreprise.show', $entreprise->id) }}" class="secondary-button" style="display:block;margin-left:auto;margin-right:auto;">{{__('More')}}</a>
                     @endif

@@ -6,14 +6,14 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">Modifier un service</h2>
+    <h2 class="mb-4">{{__('Edit service')}}</h2>
 
     <form action="{{ route('entreprise.services.update', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" method="POST">
         @csrf
         @method('PUT')
 
         <div class="form-group mb-3">
-            <label for="libelle">Libellé du service</label>
+            <label for="libelle">{{__('Service label')}}</label>
             <input type="text" name="libelle" id="libelle" class="form-control @error('libelle') is-invalid @enderror" value="{{ old('libelle', $service->libelle) }}" required>
             @error('libelle')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -21,7 +21,7 @@
         </div>
 
         <div class="form-group mb-3">
-            <label for="duree">Durée du service (en minutes)</label>
+            <label for="duree">{{__('Service duration (in minutes)')}}</label>
             <input type="number" name="duree" id="duree" class="form-control @error('duree') is-invalid @enderror" value="{{ old('duree', $service->duree) }}" required>
             @error('duree')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -47,7 +47,7 @@
         </div> --}}
 
         <div class="d-flex justify-content-between">
-            <a href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" class="btn btn-light">Annuler</a>
+            <a href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" class="btn btn-light">{{__('Cancel')}}</a>
             <button type="submit" class="btn btn-dark">{{__('Validate')}}</button>
         </div>
     </form>
