@@ -19,6 +19,9 @@ jobs:
     # 📥 Étape 1 : Récupère le code
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        ref: develop
+        fetch-depth: 0 
 
     # 📦 Étape 2 : Installe Doxygen
     - name: Install Doxygen
