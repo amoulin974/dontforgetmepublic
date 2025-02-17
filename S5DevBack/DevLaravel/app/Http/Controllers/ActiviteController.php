@@ -179,6 +179,10 @@ class ActiviteController extends Controller
           // Requête pour récupérer les plages spécifique à l'employé et à l'entreprise choisie
           $plages = User::where('id', $employe->id)->first() ->plages()->where('entreprise_id', $entreprise->id)->get();
             if ($plages) {
+                // Ajout des activités liées à chacune des plages
+                foreach ($plages as $plage) {
+                    $plage->activites = $plage->activites()->get();
+                }
                 return response()->json($plages);
             } else {
                 // Handle the case where the activite is not found
@@ -222,12 +226,14 @@ class ActiviteController extends Controller
                foreach($request->activites_affecter as $id){
                     $event->activites()->attach($id);
                 }
+
+                $event->activites = $event->activites()->get();
                
                return response()->json($event);
               break;
    
             case 'update':
-               $event = Plage::where($request->id)->first()->update([
+               $event = Plage::where("id",$request->id)->first()->update([
                  'heureDeb' => $request->heureDeb,
                  'heureFin' => $request->heureFin,
                  'datePlage' => $request->datePlage,
@@ -258,6 +264,8 @@ class ActiviteController extends Controller
                     $event->employes()->attach($idEmploye);
                 }
    */
+                $event->activites = $event->activites()->get();
+
                return response()->json($event);
               break;
               

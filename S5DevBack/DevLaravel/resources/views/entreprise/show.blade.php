@@ -89,11 +89,16 @@
                         <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong>
                         @if ($user->id == $entreprise->idCreateur)
                             <strong>(Créateur)</strong></p>
+                            @if($isAdmin)
+                                <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => Auth::user()->id]) }}" class="btn btn-link">
+                                    <i class="fa fa-calendar"></i> Gérer les plages
+                                </a>
+                            @endif
                         @else
                         </p>
                         @if(!$isInvite)
                         @if($isAdmin)
-                        <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'id' => Auth::user()->id]) }}" class="btn btn-link">
+                        <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => Auth::user()->id]) }}" class="btn btn-link">
                             <i class="fa fa-calendar"></i> Gérer les plages
                         </a>
                         @endif

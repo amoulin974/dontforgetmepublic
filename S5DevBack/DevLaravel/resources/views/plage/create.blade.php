@@ -43,6 +43,7 @@
 <body>
   
 <div class="container-calendar">
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" style="left:20%; margin: 0; color:black;"><i class="fa fa-arrow-left"></i></a>
     <div class="header-profile mb-3">
         <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
         <br/>
@@ -77,7 +78,7 @@
             </div>
                 <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
                 @foreach($actWorkedByUser as $activite)
-                    <label for="{{ $activite->id }}Modif"><input type="checkbox" id="{{ $activite->id }}Modif" value="{{ $activite->id }}"> {{ $activite->libelle }}</label><br>
+                    <label for="{{ $activite->libelle }}Modif"><input type="checkbox" id="{{ $activite->libelle }}Modif" value="{{ $activite->id }}"> {{ $activite->libelle }}</label><br>
                 @endforeach
             </div><br>
         </form>
@@ -183,12 +184,17 @@ var calendar = $('#calendar').fullCalendar({
                     if (this.heureFin == '00:00:00') {
                         end_datetime = this.datePlage.split('T')[0] + 'T' + '23:59:59' + '.000000Z';
                     }
+                    var actToPush = "";
+                    this.activites.forEach(act => {
+                        actToPush += act.libelle + ", ";
+                    });
                     events.push({
                         id: this.id,
-                        title: this.id,
+                        title: "Votre plage pour : ",
                         start: start_datetime,
                         end: end_datetime,
                         interval: this.interval,
+                        activites: actToPush,
                     });
                 });
                 callback(events);
@@ -211,7 +217,7 @@ var calendar = $('#calendar').fullCalendar({
             element.css('cursor', curseurUnclickable);
         }
         if (event.interval) { // Si le nombre de personnes est renseigné
-            element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
+            element.find('.fc-title').after("<span class=\"intervEvent\">" + event.activites + "</span>");
         }
         
     },
@@ -342,17 +348,14 @@ var calendar = $('#calendar').fullCalendar({
     },
     eventClick: function (event) {
         var alreadyChecked = [];
-        @foreach (App\Models\Plage::all() as $p)
-            if(event.id == {{ $p->id }}){
-                @foreach($p->employes as $e)
-                    alreadyChecked.push({{ $e->id }});
-                @endforeach
+        event.activites.split(', ').forEach(act => {
+            if(act.split(' ')[0] != '') {
+                alreadyChecked.push(act.split(' ')[0]);
             }
-        @endforeach
-
-        alreadyChecked.forEach(userWorking => {
-            $('#'+userWorking+"Modif").checked = true;
-            checked.push(userWorking);
+        });
+        alreadyChecked.forEach(actPlaced => {
+            $('#'+actPlaced+"Modif").prop('checked', true);
+            checked.push($('#'+actPlaced+"Modif").val());
         });
 
         // Vérifiez si la date de début est passée
@@ -377,7 +380,6 @@ var calendar = $('#calendar').fullCalendar({
                         displayWarning('Veuillez sélectionner au moins un employé.');
                         }
                         else {
-                            console.log(checked);
                             $.ajax({
                                 url: SITEURL + "/",
                                 data: {
