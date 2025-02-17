@@ -20,7 +20,7 @@ class BugReportMail extends Mailable
     public function build()
     {
         return $this->from(config('mail.from.address'))
-            ->to('johanrouyer2@gmail.com') // Remplace avec l'adresse du support
+            ->to('dontforgetmepro@gmail.com') // Remplace avec l'adresse du support
             ->subject('Nouveau rapport de bug')
             ->view('emails.bug_report')
             ->with(['description' => $this->description]);

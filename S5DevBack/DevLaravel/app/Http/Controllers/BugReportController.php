@@ -14,7 +14,7 @@ class BugReportController extends Controller
         ]);
 
         // Envoi de l'e-mail au support
-        Mail::to('johanrouyer2@gmail.com')->send(new BugReportMail($request->description));
+        Mail::to('dontforgetmepro@gmail.com')->send(new BugReportMail($request->description));
 
         return back()->with('success', 'Votre rapport de bug a été envoyé avec succès.');
     }
