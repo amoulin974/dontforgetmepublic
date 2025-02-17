@@ -20,14 +20,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # 📝 Étape 2 : Exécute Doxygen avec le chemin correct
+    # 📦 Étape 2 : Installe Doxygen
+    - name: Install Doxygen
+      run: sudo apt-get update && sudo apt-get install doxygen -y
+
+    # 📝 Étape 3 : Génère la documentation avec le bon chemin
     - name: Run Doxygen
       run: doxygen ./S5DevBack/DevLaravel/docs/Doxyfile
 
-    # 🚀 Étape 3 : Déploie la documentation sur GitHub Pages
+    # 🚀 Étape 4 : Déploie la documentation sur GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./S5DevBack/DevLaravel/docs/html  # Sortie selon ton Doxyfile
+        publish_dir: ./S5DevBack/DevLaravel/docs/html
         publish_branch: gh-pages
