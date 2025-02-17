@@ -63,6 +63,7 @@ $(document).ready(function () {
 var SITEURL = "{{ url('/parametrage/plage/') }}";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
+var curseurUnclickable = 'not-allowed';
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -82,6 +83,7 @@ var calendar = $('#calendar').fullCalendar({
     locale: 'fr',
     /* initialView: 'agendaWeek', */
     editable: false,
+    allDaySlot: false,
     events: function(start, end, timezone, callback) {
         $.ajax({
             url: SITEURL + "/" + {{ $entreprise->id }},
@@ -117,9 +119,11 @@ var calendar = $('#calendar').fullCalendar({
         if (moment(event.end).isBefore(moment())) {
             element.css('background-color', couleurPasses); // Couleur pour les événements passés
             element.css('border-color', couleurPasses);
+            element.css('cursor', curseurUnclickable);
         } else if (moment(event.start).isSame(moment(), 'day')) {
             element.css('background-color', couleurAjd); // Couleur pour les événements futurs
             element.css('border-color', couleurAjd);
+            element.css('cursor', curseurUnclickable);
         }
         if (event.interval) { // Si le nombre de personnes est renseigné
             element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");

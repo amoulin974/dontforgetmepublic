@@ -10,6 +10,7 @@ use App\Http\Controllers\parametrageController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
 use App\Http\Controllers\userController;
+use App\Http\Controllers\weekdayController;
 
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
@@ -69,7 +70,7 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
         Route::get('/{entreprise}/edit', 'edit')->where([
             'id' => '[0-9]+',
         ])->name('edit');
-        
+
         Route::put('/{entreprise}', 'update')->where([
             'id' => '[0-9]+',
         ])->name('update');
@@ -77,6 +78,16 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
         Route::get('/{entreprise}/activites', 'showActivites')->where([
             'id' => '[0-9]+',
         ])->name('activites');
+
+        Route::prefix('{entreprise}/week')->name('week.')->controller(weekdayController::class)->group(function() {
+            Route::get('/', 'indexWeek')->name('indexWeek');
+            Route::post('/', 'ajaxWeek')->name('ajaxWeek');
+        });
+
+        Route::prefix('{entreprise}/day')->name('day.')->controller(weekdayController::class)->group(function() {
+            Route::get('/', 'indexDay')->name('indexDay');
+            Route::post('/', 'ajaxDay')->name('ajaxDay');
+        });
 
         Route::prefix('{entreprise}/services')->name('services.')->controller(ActiviteController::class)->group(function() {
             Route::get('/', 'index')->name('index');
@@ -109,17 +120,10 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('we
 
 Auth::routes();
 
-/*
-Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->middleware('throttle:5,1');
-Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-Route::get('register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])->middleware('throttle:3,1');
-*/
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/clear-session', function () {    
+Route::get('/clear-session', function () {
     session()->forget(['company', 'appointment']);
     return redirect()->route('home');
 })->name('clear.session');
@@ -129,7 +133,7 @@ Route::prefix('/register')->name('register.')->controller(RegisterController::cl
     Route::get('/choose-account-type', [RegisterController::class, 'showChoicePage'])->name('choose.account.type');
 
     Route::get('/user', [RegisterController::class, 'showUserRegisterPage'])->name('user.register');
-    
+
     Route::get('/userAccount', [RegisterController::class, 'showUserRegisterPage'])->name('company.register.user');
 
     Route::post('/user', 'storeUser')->name('user.store');

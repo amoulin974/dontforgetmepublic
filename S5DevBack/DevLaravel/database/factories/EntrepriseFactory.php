@@ -4,12 +4,20 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @file EntrepriseFactory.php
+ * @brief Factory class for generating fake Entreprise model data.
+ *
+ * Provides a set of random values for the attributes of the Entreprise model,
+ * useful for seeding and testing the application.
+ */
 class EntrepriseFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @brief Returns random values for creating a fake Entreprise instance.
+     * @return array<string, mixed> An associative array of fake attributes.
      */
     public function definition(): array
     {

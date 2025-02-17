@@ -12,8 +12,10 @@
             {{-- Section 1 : Images --}}
             <div class="mb-4">
                 <h3>Images</h3>
+                {{-- Si l'entreprise a une image, elle est affichée --}}
                 @if($entreprise->cheminImg)
                     <img src="{{ json_decode($entreprise->cheminImg)[0] }}" style="display: block; margin:auto;" alt="{{ $entreprise->libelle }}" height="100vh" width="100vh">
+                    {{-- Sinon, une image par défaut est affichée --}}
                 @else
                     <img src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" style="display: block; margin:auto;" alt="{{ $entreprise->libelle }}" height="100vh" width="100vh">
                 @endif
@@ -26,10 +28,12 @@
             {{-- Section 2 : Informations générales --}}
             <div class="mb-4">
                 <h3>Informations générales</h3>
+                {{-- Champ pour le nom de l'entreprise --}}
                 <div class="mb-2">
                     <label for="libelle">Nom de l'entreprise</label>
                     <input type="text" name="libelle" id="libelle" value="{{ $entreprise->libelle }}" class="form-control" required>
                 </div>
+                {{-- Champ pour le numéro SIREN --}}
                 <div class="mb-2">
                     <label for="siren">SIREN</label>
                     <input type="text" name="siren" id="siren" value="{{ $entreprise->siren }}" class="form-control" required>
@@ -45,30 +49,35 @@
                 </div>
                 <div class="mb-2">
                     <label for="rue">Rue</label>
-                    <input type="text" name="rue" id="rue" 
-                           value="{{ explode(',', $entreprise->adresse)[0] ?? '' }}" 
+                    <input type="text" name="rue" id="rue"
+                           value="{{ explode(',', $entreprise->adresse)[0] ?? '' }}"
                            class="form-control" required>
                 </div>
+                {{-- Champ pour le code postal --}}
                 <div class="mb-2">
                     <label for="codePostal">Code postal</label>
-                    <input type="text" name="codePostal" id="codePostal" 
-                           value="{{ explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? ''))[0] ?? '' }}" 
+                    <input type="text" name="codePostal" id="codePostal"
+                           value="{{ explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? ''))[0] ?? '' }}"
                            class="form-control" required>
                 </div>
+                {{-- Champ pour la ville --}}
                 <div class="mb-2">
                     <label for="ville">Ville</label>
-                    <input type="text" name="ville" id="ville" 
-                           value="{{ implode(' ', array_slice(explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? '')), 1)) }}" 
+                    <input type="text" name="ville" id="ville"
+                           value="{{ implode(' ', array_slice(explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? '')), 1)) }}"
                            class="form-control" required>
                 </div>
+                {{-- Champ pour la description de l'entreprise --}}
                 <div class="mb-2">
                     <label for="description">Description</label>
                     <textarea name="description" id="description" class="form-control" rows="4">{{ $entreprise->description }}</textarea>
                 </div>
+                {{-- Champ pour l'adresse email --}}
                 <div class="mb-2">
                     <label for="email">Adresse email</label>
                     <input type="email" name="email" id="email" value="{{ $entreprise->email }}" class="form-control" required>
                 </div>
+                {{-- Champ pour le numéro de téléphone --}}
                 <div class="mb-2">
                     <label for="numTel">Numéro de téléphone</label>
                     <input type="text" name="numTel" id="numTel" value="{{ $entreprise->numTel }}" class="form-control" required>
@@ -78,7 +87,7 @@
             {{-- Section 3 : Paramètres des rendez-vous --}}
             <div class="mb-4">
                 <h3>Paramètres des rendez-vous</h3>
-                {{-- Question 1 --}}
+                {{-- Question 1 : Traitez-vous un ou plusieurs clients par créneau ? --}}
                 <div class="row align-items-center mb-3">
                     <div class="col-md-8">
                         <label for="question_0" class="form-label">Traitez-vous un ou plusieurs clients par créneau ?</label>
@@ -134,7 +143,7 @@
                     </div>
                 </div>
 
-                {{-- Question 3 --}}
+                {{-- Question 3 : Affectez-vous un salarié pour chaque client ? --}}
                 <div class="row align-items-center mb-3">
                     <div class="col-md-8">
                         <label for="question_2" class="form-label">Affectez-vous un salarié pour chaque client ?</label>
@@ -148,7 +157,7 @@
                     </div>
                 </div>
 
-                {{-- Question 4 --}}
+                {{-- Question 4 : Placez-vous vos clients dans votre enseigne ? --}}
                 <div class="row align-items-center mb-3">
                     <div class="col-md-8">
                         <label for="question_3" class="form-label">Placez-vous vos clients dans votre enseigne ?</label>
@@ -165,6 +174,7 @@
             {{-- Section 4 : Squelette des notifications --}}
             <div class="mb-4">
                 <h3>Notifications</h3>
+                {{-- Notification qui sera ajoutée plus tard --}}
                 <p>Cette partie sera gérée ultérieurement.</p>
             </div>
 

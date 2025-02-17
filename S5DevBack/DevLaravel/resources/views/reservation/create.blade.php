@@ -20,21 +20,27 @@
 
             <h4 class="text-center mb-4">Disponibilités pour {{ $activite->libelle}}</h4>
             @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
-                <label for="emplye" class="form-label mt-3">Veuillez Sélectionner un employé</label>
+                <label for="employe" class="form-label mt-3">Veuillez Sélectionner un employé</label>
                 <select id="employe" class="form-select">
+                    <option value="default">Sélectionnez un employé</option>
                     @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
                         <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                     @endforeach
                 </select>
             @endif
 
-            <ul class="list-unstyled">
+            <ul class="list-unstyled" style="margin-top: 40px;">
                 @if ($activite->plages->count() > 0)
                     @foreach ($activite->plages->groupBy('datePlage') as $date => $plages)
                         <li class="mb-4">
                             <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach ($plages as $plage)
+                                {{-- <script>
+                                    @foreach ($plage->employes as $ePlacer)
+                                        document.cookie = "employe{{ $ePlacer->id }}={{ $plage->id }};";
+                                    @endforeach
+                                </script> --}}
                                     @php
                                         try {
                                             $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
@@ -130,6 +136,7 @@
                                             <!-- Si pas réservé, on affiche le bouton -->
                                             <button
                                                 class="btn btn-outline-primary flex-grow-1 horaire-btn"
+                                                id="plage{{ $plage->id }}"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#reservationModal"
                                                 data-horaire="{{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}"
@@ -359,4 +366,21 @@
         </div>
     </div>
     <script src="{{ asset('js/reservation.js') }}"></script>
+    <script>
+        $document.ready(function () {
+            $('#employe').change(function () {
+                if ($(this).val() !== 'default') {
+                    document.cookie = "employe=0";
+                    let cookieToAdd = 'employe=' + $(this).val();
+                    document.cookie = cookieToAdd;
+                    @foreach(App\Models\User::where("id",$_COOKIE['employe'])->first()->plages as $plage)
+                        // Disable all the plage button
+                        $('.horaire-btn').prop('disabled', true);
+                        // Enable the concerned ones
+                        $('#plage{{ $plage->id }}').prop('disabled', false);
+                    @endforeach
+                }
+            });
+        });
+    </script>
 @endsection

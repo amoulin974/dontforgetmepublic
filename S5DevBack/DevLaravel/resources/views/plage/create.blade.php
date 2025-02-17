@@ -6,7 +6,7 @@
 @section('content')
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-  
+
     <!-- Pour le calendrier -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" /> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -16,7 +16,7 @@
     <!-- Import FullCalendar locales CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale-all.js"></script>
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
-  
+
     <!-- Pour les notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
@@ -41,7 +41,7 @@
 
 </head>
 <body>
-  
+
 <div class="container-calendar">
     <div class="header-profile mb-3">
         <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
@@ -49,62 +49,49 @@
     </div>
     <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
     <div id='calendar'></div>
+    @php
+        $userTravaillantSurAct = App\Models\User::whereIn("id",$entreprise->travailler_users()->wherePivot("idActivite",$activite->id)->pluck("idUser"))->get();
+    @endphp
 
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
-            <label for="employe">Quel employé chosir ?</label>
-            <select name="employe" id="employe" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }}(Vous)</option>
-                @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
-                    <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+            <p>Quel employé chosir ?</p>
+            <div style="width: 100%;">
+                <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
+            </div>
+            <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
+                @foreach($userTravaillantSurAct as $employe)
+                    @if($employe->id == Auth::user()->id)
+                    <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
+                    @else
+                    <label for="{{ $employe->id }}"><input type="checkbox" id="{{ $employe->id }}" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
+                    @endif
                 @endforeach
-              </select><br><br>
-            {{--<label for="interv">Intervalle de début d'activités :</label>
-            <select name="interv" id="interv" class="text ui-widget-content ui-corner-all">
-                <option value="00:05:00">5 min</option>
-                <option value="00:10:00">10 min</option>
-                <option value="00:15:00">15 min</option>
-                <option value="00:20:00">20 min</option>
-                <option value="00:25:00">25 min</option>
-                <option value="00:30:00">30 min</option>
-                <option value="00:35:00">35 min</option>
-                <option value="00:40:00">40 min</option>
-                <option value="00:45:00">45 min</option>
-                <option value="00:50:00">50 min</option>
-                <option value="00:55:00">55 min</option>
-                <option value="01:00:00">1 h</option>
-              </select>--}}
-            <p><strong>Intervalle entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+            </div><br>
+            <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
-            <label for="employeModif">Quel employé chosir ?</label>
-            <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
-                <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</option>
-                @foreach(App\Models\User::where('id',$entreprise->travailler_users()->wherePivot('idActivite',$activite->id)->pluck('idUser')) as $employe)
-                    <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+            <p>Quel employé chosir ?</p>
+
+            <div style="width: 100%;">
+                <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
+            </div>
+                <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
+                @foreach($userTravaillantSurAct as $employe)
+                    @if($employe->id == Auth::user()->id)
+                    <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
+                    @else
+                    <label for="{{ $employe->id }}Modif"><input type="checkbox" id="{{ $employe->id }}Modif" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
+                    @endif
                 @endforeach
-              </select><br><br>
-            {{--<label for="intervModif">Intervalle de débuts d'activités :</label>
-            <select name="intervModif" id="intervModif" class="text ui-widget-content ui-corner-all">
-                <option value="00:05:00">5 min</option>
-                <option value="00:10:00">10 min</option>
-                <option value="00:15:00">15 min</option>
-                <option value="00:20:00">20 min</option>
-                <option value="00:25:00">25 min</option>
-                <option value="00:30:00">30 min</option>
-                <option value="00:35:00">35 min</option>
-                <option value="00:40:00">40 min</option>
-                <option value="00:45:00">45 min</option>
-                <option value="00:50:00">50 min</option>
-                <option value="00:55:00">55 min</option>
-                <option value="01:00:00">1 h</option>
-              </select>--}}
-              <p><strong>Intervalle entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+            </div><br>
+              {{-- </select> --}}
+              <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
@@ -115,7 +102,57 @@
 </div>
 
 <script>
+var checked = [];
+
+function checkAll() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checked = [];
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = true;
+        // Vérifier si l'id fini par Modif avec une regex
+        if(checkbox.id.match(/Modif$/)){
+            checkbox.checked = false;
+        }
+        else {
+            checked.push(checkbox.value);
+        }
+    });
+    checked = checked.splice(1,checked.length);
+}
+
+function checkAllModif() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checked = [];
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+        // Vérifier si l'id fini par Modif avec une regex
+        if(checkbox.id.match(/Modif$/)){
+            checkbox.checked = true;
+            checked.push(checkbox.value);
+        }
+    });
+    checked = checked.splice(1,checked.length);
+}
+
+function uncheckAll() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+    });
+    checked = [];
+}
 $(document).ready(function () {
+
+    $("input[type='checkbox']").change(function(){
+        if(this.checked){
+            checked.push($(this).val());
+        }
+        else{
+            checked.splice(checked.indexOf($(this).val()), 1);
+        }
+    });
+
+
 
 // VARIABLES GLOBALES
 // URL dans le site
@@ -123,6 +160,7 @@ var SITEURL = "{{ url('/entreprise/') }}";
 SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/services/" + {{ $activite->id }} + "/plage";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
+var curseurUnclickable = 'not-allowed';
 var DUREE = '{{ $activite->duree }}';
 var DUREE_EN_MS = moment.duration(DUREE).asMilliseconds();
 
@@ -178,14 +216,16 @@ var calendar = $('#calendar').fullCalendar({
         if (moment(event.end).isBefore(moment())) {
             element.css('background-color', couleurPasses); // Couleur pour les événements passés
             element.css('border-color', couleurPasses);
+            element.css('cursor', curseurUnclickable);
         } else if (moment(event.start).isSame(moment(), 'day')) {
             element.css('background-color', couleurAjd); // Couleur pour les événements futurs
             element.css('border-color', couleurAjd);
+            element.css('cursor', curseurUnclickable);
         }
         if (event.interval) { // Si le nombre de personnes est renseigné
             element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
         }
-        
+
     },
     //slotDuration: '{{ $activite->duree }}',
     snapDuration: DUREE,
@@ -197,6 +237,7 @@ var calendar = $('#calendar').fullCalendar({
     selectable: true,
     nowIndicator: true,
     selectHelper: true,
+    allDaySlot: false,
     select: function (start, end, allDay) {
         // Vérifiez si l'événement est sur la même journée
         if (selectable(start,end,true)) {
@@ -216,13 +257,16 @@ var calendar = $('#calendar').fullCalendar({
                                         //$('#interv').val('00:05:00');
                                         $('#employe').val('{{ Auth::user()->id }}');
                                         $('#dialogTitre').dialog('close');
+                                        uncheckAll();
                                     });
                                 },
                         buttons: {
                             "Ajouter": function() {
-                                var employe = $('#employe').val();
                                 //var interv = $('#interv').val();
-                                if (employe /* && interv */) {
+                                if (checked.length == 0){
+                                displayWarning('Veuillez sélectionner au moins un employé.');
+                                }
+                                else {
                                     $.ajax({
                                         url: SITEURL + "/",
                                         data: {
@@ -231,12 +275,13 @@ var calendar = $('#calendar').fullCalendar({
                                             heureFin: end.split(' ')[1],
                                             interval: '{{ $activite->duree }}',
                                             entreprise_id: {{ $entreprise->id }},
-                                            employe_affecter: employe,
+                                            employes_affecter: checked,
                                             type: 'add'
                                         },
                                         type: "POST",
                                         success: function (data) {
                                             $('#dialogTitre').dialog('close');
+                                            uncheckAll();
                                             displaySuccess("Plage ajoutée avec succès");
 
                                             // Désélectionner après la sélection
@@ -250,13 +295,9 @@ var calendar = $('#calendar').fullCalendar({
                                         }
                                     });
                                 }
-                                else {
-                                    displayWarning("Informations manquantes");
-                                }
-                                //$(this).dialog("close");
                             },
                             "Annuler": function() {
-                                $('#interv').val('00:05:00');
+                                uncheckAll();
                                 $(this).dialog("close");
                             }
                         }
@@ -277,8 +318,16 @@ var calendar = $('#calendar').fullCalendar({
             $('#calendar').fullCalendar('unselect');
         }
     },
-    eventDrop: function (event, delta) {
-        if(selectable(event.start,event.end,event.id)){
+    eventDrop: function (event, delta, revertFunc) {
+        var originalStart = moment(event.start).subtract(delta);
+        var originalEnd = event.end ? moment(event.end).subtract(delta) : originalStart;
+
+        if (originalStart.isBefore(moment())) {
+            displayWarning("Impossible de déplacer un événement passé ou en cours");
+            $('#calendar').fullCalendar('unselect');
+            revertFunc();
+        }
+        else if(selectable(event.start,event.end,event.id)){
             // Vérifiez si l'événement dépasse une journée
             if (moment(event.start).isSame(event.end, 'day')) {
                 var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
@@ -306,90 +355,116 @@ var calendar = $('#calendar').fullCalendar({
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
             // Rafraîchir l'affichage du calendrier
-            $('#calendar').fullCalendar('refetchEvents');
+            revertFunc();
+            //$('#calendar').fullCalendar('refetchEvents');
         }
     },
     eventClick: function (event) {
-        var eventAct = event;
-        $('#dialogModif').dialog({
-            modal: true,
-            closeOnEscape: true,
-                    open: function(event, ui) {
-                        //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'plage');
-                        //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
-                        $('.ui-widget-overlay').bind('click', function(){
-                            $('#dialogModif').dialog('close');
+        var alreadyChecked = [];
+        @foreach (App\Models\Plage::all() as $p)
+            if(event.id == {{ $p->id }}){
+                @foreach($p->employes as $e)
+                    alreadyChecked.push({{ $e->id }});
+                @endforeach
+            }
+        @endforeach
+
+        alreadyChecked.forEach(userWorking => {
+            document.getElementById(userWorking+"Modif").checked = true;
+            checked.push(userWorking);
+        });
+
+        // Vérifiez si la date de début est passée
+        if (moment().isAfter(event.start) || moment().isAfter(event.end)) {
+            displayWarning("Vous ne pouvez pas modifier une plage passée ou en cours");
+        } else {
+            var eventAct = event;
+            $('#dialogModif').dialog({
+                modal: true,
+                closeOnEscape: true,
+                        open: function(event, ui) {
+                            //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'plage');
+                            //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
+                            $('.ui-widget-overlay').bind('click', function(){
+                                $('#dialogModif').dialog('close');
+                                uncheckAll();
+                            });
+                        },
+                buttons: {
+                    "Modifier": function() {
+                        if (checked.length == 0){
+                        displayWarning('Veuillez sélectionner au moins un employé.');
+                        }
+                        else {
+                            console.log(checked);
+                            $.ajax({
+                                url: SITEURL + "/",
+                                data: {
+                                    id: eventAct.id,
+                                    interval: '{{ $activite->duree }}',
+                                    employes_affecter: checked,
+                                    type: 'modify'
+                                },
+                                type: "POST",
+                                success: function (data) {
+                                    $('#dialogModif').dialog('close');
+                                    uncheckAll();
+
+                                    displaySuccess("Plage modifiée avec succès");
+
+                                    // Désélectionner après la sélection
+                                    $('#calendar').fullCalendar('unselect');
+
+                                    // Rafraîchir l'affichage du calendrier
+                                    $('#calendar').fullCalendar('refetchEvents');
+                                },
+                                error: function() {
+                                    $('#dialogTitre').dialog('close');
+                                    displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
+                                }
+                            });
+                        }
+                    },
+                    "Supprimer": function() {
+                        $(this).dialog("close");
+                        $( "#dialog-confirm" ).dialog({
+                            resizable: false,
+                            modal: true,
+                            buttons: {
+                                "Confirmer la suppression": function() {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: SITEURL + '/',
+                                        data: {
+                                                id: eventAct.id,
+                                                type: 'delete'
+                                        },
+                                        success: function (response) {
+                                            calendar.fullCalendar('removeEvents', eventAct.id);
+                                            displayMessage("Plage supprimée avec succès");
+                                            // Rafraîchir l'affichage du calendrier
+                                            $('#calendar').fullCalendar('refetchEvents');
+                                        }
+                                    });
+                                    $( this ).dialog( "close" );
+                                    uncheckAll();
+                                    $('#dialogModif').dialog("close");
+                                },
+                                "Annuler": function() {
+                                    $( this ).dialog( "close" );
+                                    uncheckAll();
+                                    $('#dialogModif').dialog("open");
+                                }
+                            }
                         });
                     },
-            buttons: {
-                "Modifier": function() {
-                    var employe = $('#employeModif').val();
-                    //var interv = $('#intervModif').val();
-                    if (employe/*  && interv */) {
-                        $.ajax({
-                            url: SITEURL + "/",
-                            data: {
-                                id: eventAct.id,
-                                interval: '{{ $activite->duree }}',
-                                employe_affecter: employe,
-                                type: 'modify'
-                            },
-                            type: "POST",
-                            success: function (data) {
-                                $('#dialogModif').dialog('close');
-
-                                displaySuccess("Plage modifiée avec succès");
-
-                                // Désélectionner après la sélection
-                                $('#calendar').fullCalendar('unselect');
-
-                                // Rafraîchir l'affichage du calendrier
-                                $('#calendar').fullCalendar('refetchEvents');
-                            },
-                            error: function() {
-                                $('#dialogTitre').dialog('close');
-                                displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
-                            }
-                        });
+                    "Annuler": function() {
+                        uncheckAll();
+                        $(this).dialog("close");
                     }
-                    else {
-                        displayWarning("Informations manquantes");
-                    }
-                },
-                "Supprimer": function() {
-                    $(this).dialog("close");
-                    $( "#dialog-confirm" ).dialog({
-                        resizable: false,
-                        modal: true,
-                        buttons: {
-                            "Confirmer la suppression": function() {
-                                $.ajax({
-                                    type: "POST",
-                                    url: SITEURL + '/',
-                                    data: {
-                                            id: eventAct.id,
-                                            type: 'delete'
-                                    },
-                                    success: function (response) {
-                                        calendar.fullCalendar('removeEvents', eventAct.id);
-                                        displayMessage("Plage supprimée avec succès");
-                                    }
-                                });
-                                $( this ).dialog( "close" );
-                                $('#dialogModif').dialog("close");
-                            },
-                            "Annuler": function() {
-                                $( this ).dialog( "close" );
-                                $('#dialogModif').dialog("open");
-                            }
-                        }
-                    });
-                },
-                "Annuler": function() {
-                    $(this).dialog("close");
                 }
-            }
-        });
+            });
+        }
     },
     eventResize: function(event, delta, revertFunc) {
         if(selectable(event.start,event.end,event.id)){
@@ -557,8 +632,8 @@ function displayErrorWithButton(message) {
         extendedTimeOut: 0
     });
 }
-  
+
 </script>
-  
+
 </body>
 @endsection

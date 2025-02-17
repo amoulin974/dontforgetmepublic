@@ -319,6 +319,32 @@ margin-right: auto;
   transform: translateY(1px); /* Décale le bouton vers le bas au clic */
 }
 
+.btn-danger {
+  display: inline-block; /* Utilisation de display inline-block pour s'aligner correctement */
+  background-color: #eeeeff; /* Couleur primaire */
+  color: #fd0a0a /* 1dacff*/;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  width: 80%;
+  padding: 10px 20px;
+  margin: 10px; /* Espacement du bas */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.btn-danger:hover,
+.btn-danger:focus { /* Ajout de :focus pour assurer la cohérence des styles au focus */
+  background-color: #fd0a0a /* 1dacff*/; /* Couleur primaire légèrement plus foncée au survol */
+  color: #eeeeff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.btn-danger:active {
+  transform: translateY(1px); /* Décale le bouton vers le bas au clic */
+}
+
 .image {
   text-align: center;
   margin-bottom: 10px;

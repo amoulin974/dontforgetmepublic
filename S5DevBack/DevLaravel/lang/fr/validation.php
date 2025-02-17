@@ -189,7 +189,7 @@ return [
         'excerpt'                  => 'extrait',
         'filter'                   => 'filtre',
         'finished_at'              => 'date de fin',
-        'first_name'               => 'prénom',
+        'first_name'               => 'prenom',
         'gender'                   => 'genre',
         'grand_prize'              => 'grand prix',
         'group'                    => 'groupe',

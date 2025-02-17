@@ -6,22 +6,34 @@ use Illuminate\Http\Request;
 use App\Models\Entreprise;
 use Illuminate\Contracts\Pagination\Paginator;
 
+/**
+ * @brief Controller responsible for handling the application's home page.
+ *
+ * This controller manages the display of the main dashboard (welcome page),
+ * which shows the list of published enterprises.
+ */
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Constructor for the HomeController.
+     *
+     * This constructor applies the authentication middleware; however, it is commented out
+     * to allow the home page to be accessed without authentication.
      *
      * @return void
      */
     /* public function __construct()
     {
         $this->middleware('auth');
-    } // En commentaire car sinon nécessite d'être authentifié pour être utilisé */
+    } // Commented out to allow unauthenticated access */
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * This method retrieves enterprises that are marked as published and paginates them,
+     * then returns the welcome view with the retrieved data.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable Returns a view instance for the welcome page.
      */
     public function index()
     {
