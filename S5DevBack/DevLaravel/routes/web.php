@@ -11,7 +11,9 @@ use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\weekdayController;
+use App\Http\Controllers\BugReportController;
 
+Route::post('/bug-report', [BugReportController::class, 'store'])->name('bug.report');
 Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {

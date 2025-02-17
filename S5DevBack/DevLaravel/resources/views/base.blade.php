@@ -99,9 +99,8 @@
       <img src="{{ asset('favicon.ico') }}" alt="Logo">
     </a>
   </div>
-
-
 </header>
+
 <script>
 function displaySuccess(message) {
     toastr.options = {
@@ -167,5 +166,39 @@ $(document).ready(function() {
 </script>
 
     @yield('content')
+
+<button id="bug-report-btn" class="bug-report-button">
+    <i class="fa fa-bug"></i> Signaler un bug
+</button>
+<div id="bugReportModal" class="modal fade" tabindex="-1" aria-labelledby="bugReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bugReportModalLabel">Signaler un bug</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bugReportForm" method="POST" action="{{ route('bug.report') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="bugDescription">Description du bug :</label>
+                        <textarea id="bugDescription" name="description" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#bug-report-btn").click(function () {
+            $("#bugReportModal").modal("show");
+        });
+    });
+</script>
+
 </body>
 </html>
