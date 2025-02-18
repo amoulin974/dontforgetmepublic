@@ -54,12 +54,6 @@
                                     @while ($heureDeb->lessThan($heureFin))
                                         @php
                                             // On calcule les bornes de l’intervalle courant
-                                            // $currentEnd   = $heureDeb->copy()->addMinutes($interval);
-                                            /*$currentStart = \Carbon\Carbon::createFromFormat(
-                                                'Y-m-d H:i:s',
-                                                $plage->datePlage->format('Y-m-d') . ' ' . $plage->heureDeb
-                                            );
-                                            dd($currentStart);*/
                                             $currentStart = $plage->datePlage->copy()->setTimeFromTimeString($heureDeb->format('H:i:s'));
                                             //dd($currentStart);
                                             $currentEnd = $currentStart->copy()->addMinutes($interval);
@@ -67,9 +61,6 @@
                                             // On va déterminer si ce créneau est déjà réservé
                                             $isReserved = $reservations->contains(function($res) use ($date, $currentStart, $currentEnd) {
                                                 // 1. Vérifier la date
-                                                //    Attention à bien comparer des chaînes identiques
-                                                //dd($res->dateRdv->format('Y-m-d 00:00:00'));
-                                                //dd($date);
                                                 if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
                                                     return false;
                                                 }

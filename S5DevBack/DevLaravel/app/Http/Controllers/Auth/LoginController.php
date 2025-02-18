@@ -8,33 +8,29 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @class LoginController
+ *
+ * @brief Handles user authentication and login functionalities.
+ *
+ * This controller manages authentication using Laravel's built-in authentication system.
+ * It provides functionalities for user login, token-based authentication, and redirections.
+ */
 class LoginController extends Controller
 {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
+     * @var string $redirectTo The path to redirect users after login.
      */
     protected $redirectTo = '/home';
 
     /**
-     * Create a new controller instance.
+     * @brief Initializes the controller instance.
      *
-     * @return void
+     * Applies middleware to restrict access:
+     * - Guest users can access login methods.
+     * - Authenticated users can only access logout.
      */
     public function __construct()
     {
@@ -42,28 +38,34 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
+    /**
+     * @brief Authenticates a user and returns a token if credentials are valid.
+     *
+     * @param Request $request The HTTP request containing login credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the token or an error message.
+     */
     public function tokenLogin(Request $request)
     {
-        // Validation des données de la requête
+        // Validate request data
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
 
-        // Chercher l'utilisateur par son email
+        // Retrieve the user by email
         $user = User::where('email', $request->email)->first();
 
-        // Vérifier si l'utilisateur existe et si le mot de passe est correct
+        // Check if user exists and password is correct
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
-
-        // Vérifier si le champ superadmin est à 1
+        // Check if the user is a superadmin
         if ($user->superadmin != 1) {
-            return response()->json(['message' => 'Unauthorized'], 403);  // 403 Forbidden
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        // Créer un token pour l'utilisateur avec superadmin à 1
+        // Generate a token for the authenticated superadmin user
         $token = $user->createToken('YourAppName')->plainTextToken;
 
         return response()->json(['token' => $token]);

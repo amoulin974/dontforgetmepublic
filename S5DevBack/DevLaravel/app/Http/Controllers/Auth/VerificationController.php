@@ -5,32 +5,29 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
+/**
+ * @class VerificationController
+ *
+ * @brief Handles email verification for registered users.
+ *
+ * This controller manages the process of verifying user email addresses
+ * after registration. It allows users to verify their emails and resend
+ * verification emails if needed.
+ */
 class VerificationController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Email Verification Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling email verification for any
-    | user that recently registered with the application. Emails may also
-    | be re-sent if the user didn't receive the original email message.
-    |
-    */
-
     use VerifiesEmails;
 
     /**
-     * Where to redirect users after verification.
-     *
-     * @var string
+     * @var string $redirectTo The path to redirect users after verification.
      */
     protected $redirectTo = '/home';
 
     /**
-     * Create a new controller instance.
+     * @brief Initializes the controller instance.
      *
-     * @return void
+     * Applies middleware to restrict access to authenticated users,
+     * enforce signed verification links, and throttle email verification attempts.
      */
     public function __construct()
     {

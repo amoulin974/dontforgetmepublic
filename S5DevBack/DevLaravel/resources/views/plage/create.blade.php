@@ -6,7 +6,7 @@
 @section('content')
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-  
+
     <!-- Pour le calendrier -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" /> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -16,7 +16,7 @@
     <!-- Import FullCalendar locales CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale-all.js"></script>
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
-  
+
     <!-- Pour les notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
@@ -41,7 +41,7 @@
 
 </head>
 <body>
-  
+
 <div class="container-calendar">
     <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" style="left:20%; margin: 0; color:black;"><i class="fa fa-arrow-left"></i></a>
     <div class="header-profile mb-3">
@@ -57,7 +57,7 @@
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quelle activité chosir ?</p>
+            <p>Quelle activité choisir ?</p>
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
@@ -72,7 +72,7 @@
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quelle activité chosir ?</p>
+            <p>Quelle activité choisir ?</p>
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
@@ -220,7 +220,7 @@ var calendar = $('#calendar').fullCalendar({
         if (event.activites) { // Si le nombre de personnes est renseigné
             element.find('.fc-title').after("<span class=\"intervEvent\">" + event.activites + "</span>");
         }
-        
+
     },
     snapDuration: DUREE,
     selectable: true,
@@ -616,8 +616,8 @@ function displayErrorWithButton(message) {
         extendedTimeOut: 0
     });
 }
-  
+
 </script>
-  
+
 </body>
 @endsection

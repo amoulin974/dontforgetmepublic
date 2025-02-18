@@ -44,23 +44,12 @@
                         </div>
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
-                                var swiper = new Swiper('.swiper{{ $entreprise->id }}', {
+                                new Swiper('.swiper{{ $entreprise->id }}', {
                                     slidesPerView: 1,
                                     spaceBetween: 10,
                                     grapCursor: true,
-                                    /* pagination: {
-                                        el: '.swiperPag{{ $entreprise->id }}',
-                                        clickable: true,
-                                        type: 'bullets', // Utiliser des puces pour la pagination
-                                        dynamicBullets: true, // Activer les puces dynamiques
-                                    }, *//* 
-                                    autoplay: {
-                                        delay: 2500,
-                                        disableOnInteraction: true,
-                                    }, */
                                     loop: true,
                                 });
-                                
                                 $('.swiperPag{{ $entreprise->id }}').on('mouseout', function() {
                                     $('.swiperPag{{ $entreprise->id }}').css('visibility', 'hidden');
                                 });
@@ -91,5 +80,5 @@
     </div>
 
     {{ $entreprises -> links() }}
-    
+
 @endsection
