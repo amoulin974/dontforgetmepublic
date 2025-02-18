@@ -1,9 +1,9 @@
-name: Doxygen Documentation CI/CD
+name: Doxygen Documentation 
 
 on:
   push:
     branches:
-      - develop  # Relance à chaque push sur develop
+      - develop  
   pull_request:
     branches:
       - develop
@@ -16,26 +16,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 📥 Étape 1 : Récupère le code (develop branch)
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
         ref: develop
         fetch-depth: 0
 
-    # 🛠️ Étape 2 : Installe Doxygen
     - name: Install Doxygen
       run: sudo apt-get update && sudo apt-get install doxygen -y
 
-    # 📝 Étape 3 : Génère la documentation avec Doxygen
     - name: Run Doxygen
       run: doxygen ./S5DevBack/DevLaravel/docs/Doxyfile
 
-    # 🚀 Étape 4 : Déploie la documentation sur GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./S5DevBack/DevLaravel/docs/html  # Chemin vers la doc générée
+        publish_dir: ./S5DevBack/DevLaravel/docs/html  
         publish_branch: gh-pages
-        force_orphan: true  # Remplace entièrement la branche
+        force_orphan: true 
