@@ -48,10 +48,16 @@
         <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
+    <div style="text-align: center; width: 100%;">
     <h4>Employé : {{ $employe->nom }} {{ $employe->prenom }}</h4>
+    <button id="loadDayType" class="secondary-button" style="width:auto !important;"><i class="fa fa-location-arrow"></i> <i class="fa fa-plus"></i> Select a day type to place</button>
+    <button id="loadWeekType" class="secondary-button" style="width:auto !important;"><i class="fa fa-location-arrow"></i> <i class="fa fa-calendar-plus"></i> Select a week type to place</button>
+    </div>
     <div id='calendar'></div>
     @php
         $actWorkedByUser = App\Models\Activite::whereIn("id",$employe->travailler_entreprises()->wherePivot("idEntreprise",$entreprise->id)->pluck("idActivite"))->get();
+        $semaines = $entreprise->semaineTypes;
+        $journees = $entreprise->journeeTypes;
     @endphp
 
     <!-- Popup Dialog -->
@@ -87,6 +93,48 @@
     <!-- Popup Dialog Suppression -->
     <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
         <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette plage sera définitivement supprimé. Voulez-vous continuer ?</p>
+    </div>
+
+    <!-- Popup Dialog Sélection Semaine -->
+    <div id="dialogWeekSelect" title="Charger une semaine type" style="display:none;">
+        <form>
+            <p>Quelle semaine chosir ?</p>
+            <p>Attention, cela écrasera les plages déjà présentes</p>
+            <select id="weekSelect" name="weekSelect">
+                @foreach ($semaines as $semaine)
+                    <option value="{{ $semaine->id }}">{{ $semaine->libelle }}</option>
+                @endforeach
+            </select>
+        </form>
+    </div>
+
+    <!-- Popup Dialog Sélection Journée -->
+    <div id="dialogDaySelect" title="Charger une journée type à placer" style="display:none;">
+        <form>
+            <p>Quelle journée chosir ?</p>
+            <p>Attention, cela écrasera les plages déjà présentes</p>
+            <select id="daySelect" name="daySelect">
+                @foreach ($journees as $jour)
+                    <option value="{{ $jour->id }}">{{ $jour->libelle }}</option>
+                @endforeach
+            </select>
+        </form>
+    </div>
+
+    <!-- Popup Dialog Placement Journée -->
+    <div id="dialogDayPlace" title="Charger une journée type à placer" style="display:none;">
+        <form>
+            <p>Quel placer la journée chosie ?</p>
+            <select id="dayPlace" name="dayPlace">
+                <option value="lundi">Lundi</option>
+                <option value="mardi">Mardi</option>
+                <option value="mercredi">Mercredi</option>
+                <option value="jeudi">Jeudi</option>
+                <option value="vendredi">Vendredi</option>
+                <option value="samedi">Samedi</option>
+                <option value="dimanche">Dimanche</option>
+            </select>
+        </form>
     </div>
 </div>
 
@@ -152,6 +200,15 @@ var couleurAjd = 'green';
 var curseurUnclickable = 'not-allowed';
 var DUREE = "00:30:00";
 var DUREE_EN_MS = moment.duration(DUREE).asMilliseconds();
+var semainier = {
+    "lundi" : 0,
+    "mardi" : 1,
+    "mercredi" : 2,
+    "jeudi" : 3,
+    "vendredi" : 4,
+    "samedi" : 5,
+    "dimanche" : 6
+};
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -159,6 +216,138 @@ $.ajaxSetup({
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
+$('#loadWeek').click(function() {
+        // Popup pour sélectionner quelle semaine charger
+        $('#dialogWeekSelect').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogWeekSelect').dialog('close');
+                });
+            },
+            buttons: {
+                "Charger": function() {
+                    var day = $('#weekSelect').val();
+                    $.ajax({
+                        url: "{{ url('/entreprise/') }}" + "/" + {{ $entreprise->id }} + "/week" + "/",
+                        data: {
+                            idSemaine: day,
+                            type: 'get'
+                        },
+                        type: 'POST',
+                        success: function(data) {
+                            currentTypeWeek = data[0];
+                            var events = [];
+                            var start_datetime;
+                            var end_datetime;
+                            var planningOfWeek = data[0].planning;
+                            for (var dayFullLetter in planningOfWeek) {
+                                var momentDay =  $('#calendar').fullCalendar('getView').intervalStart.add(semainier[dayFullLetter],'days').format('YYYY-MM-DD');
+                                var dayPlanning = planningOfWeek[dayFullLetter];
+                                for (var indexPlage in planningOfWeek[dayFullLetter]) {
+                                    start_datetime = momentDay + 'T' + dayPlanning[indexPlage]['start'] +':00.000000Z';
+                                    end_datetime = momentDay + 'T' + dayPlanning[indexPlage]['end'] +':00.000000Z';
+                                    events.push({
+                                        start: start_datetime,
+                                        end: end_datetime,
+                                        color: currentColor,
+                                    });
+                                }
+                            }
+                            $('#calendar').fullCalendar('addEventSource', events);
+                            displayMessage("Journée chargée avec succès");
+                        },
+                        error: function() {
+                            displayError("Erreur lors de la récupération des plages");
+                        }
+                    });
+                    $('#dialogWeekSelect').dialog('close');
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+    $('#loadDayType').click(function() {
+        // Popup pour sélectionner quelle journée charger
+        $('#dialogDaySelect').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogDaySelect').dialog('close');
+                });
+            },
+            buttons: {
+                "Suivant": function() {
+                    $('#dialogDayPlace').dialog({
+                        modal: true,
+                        closeOnEscape: true,
+                        open: function(event, ui) {
+                            $('#dialogDaySelect').dialog('close');
+                            $('.ui-widget-overlay').bind('click', function(){
+                                $('#dialogDayPlace').dialog('close');
+                            });
+                        },
+                        buttons: {
+                            "Charger": function() {
+                                var dayType = $('#daySelect').val();
+                                var day = $('#dayPlace').val();
+                                $.ajax({
+                                    url: "{{ url('/entreprise/') }}" + "/" + {{ $entreprise->id }} + "/week" + "/",
+                                    data: {
+                                        idJournee: dayType,
+                                        type: 'getDay'
+                                    },
+                                    type: 'POST',
+                                    success: function(data) {
+                                        var events = [];
+                                        var start_datetime;
+                                        var end_datetime;
+                                        // Retirer les plages présentes sur la journée sélectionée
+                                        /* $('#calendar').fullCalendar('removeEvents', function(event) {
+                                            return event.start.format('YYYY-MM-DD') == $('#calendar').fullCalendar('getView').intervalStart.add(semainier[day],'days').format('YYYY-MM-DD');
+                                        }); */
+                                        // Placer la journée type dans la semaine actuellement en vue
+                                        var momentDay =  $('#calendar').fullCalendar('getView').intervalStart.add(semainier[day],'days').format('YYYY-MM-DD');
+                                        var planning = data[0].planning;
+                                        for (var plage in planning) {
+                                            start_datetime = momentDay + 'T' + planning[plage]['start'] +':00.000000Z';
+                                            end_datetime = momentDay + 'T' + planning[plage]['end'] +':00.000000Z';
+                                            events.push({
+                                                start: start_datetime,
+                                                end: end_datetime,
+                                                color: planning[plage]['color'],
+                                            });
+                                        }
+                                        $('#calendar').fullCalendar('addEventSource', events);
+                                        displayMessage("Journée chargée avec succès");
+                                    },
+                                    error: function() {
+                                        displayError("Erreur lors de la récupération des plages");
+                                    }
+                                });
+                                $('#dialogDayPlace').dialog('close');
+                                $('#dayPlace').val("lundi");
+                            },
+                            "Retour": function() {
+                                $(this).dialog("close");
+                                $('#dialogDaySelect').dialog('open');
+                            }
+                        }
+                    });
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                    $('#dayPlace').val("lundi");
+                }
+            }
+        });
+    });
 
 // Mise en place du calendrier
 var calendar = $('#calendar').fullCalendar({
