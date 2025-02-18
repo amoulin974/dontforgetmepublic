@@ -319,9 +319,9 @@ class LoginTest extends TestCase
             __('auth.throttle', ['seconds' => 59]),
             session('errors')->first('email')
         ); */
-        $this->assertStringContainsString(
-            'essayer de nouveau dans',
-            session('errors')->first('email')
+        $this->assertTrue(
+            str_contains(session('errors')->first('email'), __('auth.throttle', ['seconds' => 59])) ||
+            str_contains(session('errors')->first('email'), __('auth.throttle', ['seconds' => 60]))
         );
     }
 }

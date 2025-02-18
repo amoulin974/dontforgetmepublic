@@ -17,19 +17,20 @@
                 <tr>
                     <th>Nom</th>
                     <th>Durée</th>
+                    <th>Nombre de places</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($services as $service)
-                    <tr>
-                        <td>{{ $service->libelle }}</td>
-                        <td>{{ $service->duree }}</td>
-                        <td>
-                            <!-- Lien pour réserver un service -->
-                            <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-primary">Réserver</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ $service->libelle }}</td>
+                    <td>{{ $service->duree }}</td>
+                    <td>{{ $service->nbrPlaces }}</td>
+                    <td>
+                        <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-primary">Réserver</a>
+                    </td>
+                </tr>
                 @endforeach
                 </tbody>
             </table>

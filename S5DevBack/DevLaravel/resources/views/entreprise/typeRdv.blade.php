@@ -43,7 +43,7 @@
                 {{-- Carte pour "Plusieurs clients" --}}
                 <div class="col-md-6 mb-4">
                     <div class="card border border-danger shadow-sm h-100 w-100" style="cursor: pointer;">
-                        <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" style="border: none;" answer="1">
+                        <button class="btn btn-nav w-100 py-4 d-flex flex-column align-items-center" id="manyClients" style="border: none;" answer="1">
                             <div class="card-body d-flex flex-column align-items-center">
                                 <img src="{{ asset('images/Restaurant.png') }}" alt="Plusieurs clients" style="width: 100px; height: auto;">
                                 <p class="mt-3 fw-bold text-dark">Plusieurs (type Coiffeur ou Restaurant)</p>
@@ -53,6 +53,28 @@
                 </div>
             </div>
         </div>
+
+
+        {{-- Etape parallèle : Définition de la capacité maximale de l'entreprise --}}
+        <!-- Modale pour définir la capacité max -->
+        <div class="modal fade" id="capacityModal" tabindex="-1" aria-labelledby="capacityModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="capacityModalLabel">Définir la capacité maximale</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="capacityInput" class="form-label">Capacité maximale :</label>
+                        <input type="number" id="capacityInput" class="form-control" min="1" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="confirmCapacity">Confirmer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
         {{-- Étape 2 : Qui sélectionne le créneau ? --}}
@@ -159,5 +181,6 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/register.js') }}"></script>
 @endsection

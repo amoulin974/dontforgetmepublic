@@ -18,10 +18,10 @@ class UpdateUserProfileTest extends TestCase
     protected function profileEditData($overrides = [])
     {
         return array_merge([
-            'nom' => 'Victora', 
-            'prenom' => 'Dylann', 
+            'last_name' => 'Victora', 
+            'first_name' => 'Dylann', 
             'email' => 'victodydy64wii@gmail.com',
-            'numTel' => '0651334645',
+            'phone' => '0651334645',
             'typeNotif' => 'SMS',
             'delaiAvantNotif' => '1 jour'
         ], $overrides);
@@ -75,23 +75,23 @@ class UpdateUserProfileTest extends TestCase
 
         // WHEN
         $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData([
-            'nom' => '', 
-            'prenom' => '', 
+            'last_name' => '', 
+            'first_name' => '', 
             'email' => '',
-            'numTel' => '',
+            'phone' => '',
             'typeNotif' => '',
             'delaiAvantNotif' => '',
         ]));
 
         // THEN
-        $response->assertSessionHasErrors(['nom', 'prenom', 'email']);
+        $response->assertSessionHasErrors(['last_name', 'first_name', 'email']);
         $this->assertEquals(
-            __('validation.required', ['attribute' => __('validation.attributes.name')]),
-            session('errors')->first('nom')
+            __('validation.required', ['attribute' => __('validation.attributes.last_name')]),
+            session('errors')->first('last_name')
         );
         $this->assertEquals(
             __('validation.required', ['attribute' => __('validation.attributes.first_name')]),
-            session('errors')->first('prenom')
+            session('errors')->first('first_name')
         );
         $this->assertEquals(
             __('validation.required', ['attribute' => __('validation.attributes.email')]),
@@ -112,13 +112,13 @@ class UpdateUserProfileTest extends TestCase
         $user = $this->userDefaultData();
 
         // WHEN
-        $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData(['nom' => '']));
+        $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData(['last_name' => '']));
 
         // THEN
-        $response->assertSessionHasErrors(['nom']);
+        $response->assertSessionHasErrors(['last_name']);
         $this->assertEquals(
-            __('validation.required', ['attribute' => __('validation.attributes.name')]),
-            session('errors')->first('nom')
+            __('validation.required', ['attribute' => __('validation.attributes.last_name')]),
+            session('errors')->first('last_name')
         );
     }
 
@@ -135,13 +135,13 @@ class UpdateUserProfileTest extends TestCase
         $user = $this->userDefaultData();
 
         // WHEN
-        $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData(['prenom' => '']));
+        $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData(['first_name' => '']));
 
         // THEN
-        $response->assertSessionHasErrors(['prenom']);
+        $response->assertSessionHasErrors(['first_name']);
         $this->assertEquals(
             __('validation.required', ['attribute' => __('validation.attributes.first_name')]),
-            session('errors')->first('prenom')
+            session('errors')->first('first_name')
         );
     }
 
@@ -158,14 +158,14 @@ class UpdateUserProfileTest extends TestCase
         $user = $this->userDefaultData();
 
         // WHEN
-        $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData(['numTel' => 'OGSIEE4G4S']));
+        $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData(['phone' => 'OGSIEE4G4S']));
 
         // THEN
-        $response->assertSessionHasErrors(['numTel']);
-        /* $this->assertEquals(
+        $response->assertSessionHasErrors(['phone']);
+        $this->assertEquals(
             __('validation.regex', ['attribute' => __('validation.attributes.phone')]),
-            session('errors')->first('numTel')
-        ); */
+            session('errors')->first('phone')
+        );
     }
 
     /**
@@ -181,14 +181,14 @@ class UpdateUserProfileTest extends TestCase
         $user = $this->userDefaultData();
 
         // WHEN
-        $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData(['numTel' => '065133464']));
+        $response = $this->actingAs($user)->put('/profile/update', $this->profileEditData(['phone' => '065133464']));
 
         // THEN
-        $response->assertSessionHasErrors(['numTel']);
-        /* $this->assertEquals(
+        $response->assertSessionHasErrors(['phone']);
+        $this->assertEquals(
             __('validation.regex', ['attribute' => __('validation.attributes.phone')]),
-            session('errors')->first('numTel')
-        ); */
+            session('errors')->first('phone')
+        ); 
     }
 
     /**

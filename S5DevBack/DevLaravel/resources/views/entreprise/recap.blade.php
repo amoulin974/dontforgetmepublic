@@ -15,22 +15,19 @@
             <h3 style="font-weight: bold;">Récapitulatif</h3>
         </div>
 
-        {{-- Informations sur l'entreprise récupérées depuis la session --}}
-        <div class="mt-4">
-            <h4>Informations sur l'entreprise</h4>
-            <ul>
-                {{-- Affichage du nom de l'entreprise --}}
-                <li><strong>Nom de l'entreprise :</strong> {{ session('company.nomEntreprise') }}</li>
-                {{-- Affichage du numéro de SIREN --}}
-                <li><strong>Numéro de SIREN :</strong> {{ session('company.siren') }}</li>
-                {{-- Affichage du numéro de téléphone --}}
-                <li><strong>Numéro de téléphone :</strong> {{ session('company.numTel') }}</li>
-                {{-- Affichage de l'adresse email --}}
-                <li><strong>Adresse email :</strong> {{ session('company.email') }}</li>
-                {{-- Affichage de l'adresse complète (rue, code postal, ville) --}}
-                <li><strong>Adresse :</strong> {{ session('company.rue') }}, {{ session('company.codePostal') }} {{ session('company.ville') }}</li>
-            </ul>
-        </div>
+    {{-- Informations sur l'entreprise --}}
+    <div class="mt-4">
+        <h4>Informations sur l'entreprise</h4>
+        <ul>
+            <li><strong>Nom de l'entreprise :</strong> {{ session('company.nomEntreprise') }}</li>
+            <li><strong>Numéro de SIREN :</strong> {{ session('company.siren') }}</li>
+            <li><strong>Métier :</strong> {{ session('company.metier') }}</li>
+            <li><strong>Numéro de téléphone :</strong> {{ session('company.numTel') }}</li>
+            <li><strong>Adresse email :</strong> {{ session('company.email') }}</li>
+            <li><strong>Adresse :</strong> {{ session('company.rue') }}, {{ session('company.codePostal') }} {{ session('company.ville') }}</li>
+            <li><strong>Description :</strong> {{ session('company.description') }}</li>
+        </ul>
+    </div>
 
         {{-- Informations sur le type de rendez-vous --}}
         <div class="mt-4">
@@ -41,12 +38,12 @@
                     $keys = array_keys($appointment); // Récupère les clés du tableau
                 @endphp
 
-                {{-- Première question sur le nombre de clients par créneau --}}
-                @if($appointment[$keys[0]] == 0)
-                    <li>Vous traitez un client par créneau.</li>
-                @elseif($appointment[$keys[0]] == 1)
-                    <li>Vous traitez plusieurs clients par créneau.</li>
-                @endif
+            {{-- Première réponse --}}
+            @if($appointment[$keys[0]] == 0)
+                <li>Vous traitez un client par créneau.</li>
+            @elseif($appointment[$keys[0]] == 1)
+                <li>Vous traitez plusieurs clients (maximum {{ session('capacity') }} personnes) par créneau.</li>
+            @endif
 
                 {{-- Deuxième question sur la possibilité de sélection des créneaux --}}
                 @if($appointment[$keys[1]] == 0)

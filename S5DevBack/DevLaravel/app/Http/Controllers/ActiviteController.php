@@ -110,62 +110,56 @@ class ActiviteController extends Controller
 
         if (!$isAllow) {
             return redirect()->route('entreprise.index');
-        } else {
-            // Validate the request inputs.
+        }
+        else{
             $request->validate([
                 'libelle' => 'required|string|max:255',
-                'duree'   => 'required|integer|min:1',
+                'duree' => 'required|date_format:H:i', // Validation pour le format time
+                'nbrPlaces' => 'required|integer|min:1'
             ]);
 
-            // Convert duration from minutes to time format (H:i:s).
-            $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
+            // Conversion de la durée du format time (HH:MM) en minutes
+            list($heures, $minutes) = explode(':', $request->duree);
+            $dureeEnMinutes = ($heures * 60) + $minutes;
 
-            // Create the new activity.
+            // Convert duration from minutes to time format (H:i:s).
+            $dureeInTimeFormat = gmdate('H:i:s', $dureeEnMinutes * 60);
+
             $activite = Activite::create([
-                'libelle'      => $request->libelle,
-                'duree'        => $dureeInTimeFormat,
+                'libelle' => $request->libelle,
+                'duree' => $dureeInTimeFormat,
+                'nbrPlaces' => $request->nbrPlaces,
                 'idEntreprise' => $entreprise->id
             ]);
 
-            // Attach the current user as an Admin for the new activity.
             $activite->travailler_users()->attach(auth()->id(), [
                 'idEntreprise' => $entreprise->id,
                 'statut'       => 'Admin',
             ]);
 
-            // Attach all employees of the company to the activity.
-            $entreprise->travailler_users()
-                ->where('statut', 'Employé')
-                ->get()
-                ->each(function ($user) use ($activite, $entreprise) {
+            // Ajouter les employés de l'entreprise à l'activité
+            $entreprise->travailler_users()->where('statut', 'Employé')->get()->each(function ($user) use ($activite, $entreprise) {
+                $activite->travailler_users()->syncWithoutDetaching([$user->id => [
+                    'idEntreprise' => $entreprise->id,
+                    'statut'       => 'Employé',
+                ]]);
+            });
+            $entreprise->travailler_users()->where('statut', 'Admin')->get()->each(function ($user) use ($activite, $entreprise) {
+                if ($user->id != Auth::user()->id) {
                     $activite->travailler_users()->attach($user->id, [
                         'idEntreprise' => $entreprise->id,
-                        'statut'       => 'Employé',
+                        'statut' => 'Admin',
                     ]);
-                });
+                }
+            });
 
-            // Attach other admins (excluding the current user) to the activity.
-            $entreprise->travailler_users()
-                ->where('statut', 'Admin')
-                ->get()
-                ->each(function ($user) use ($activite, $entreprise) {
-                    if ($user->id != Auth::user()->id) {
-                        $activite->travailler_users()->attach($user->id, [
-                            'idEntreprise' => $entreprise->id,
-                            'statut'       => 'Admin',
-                        ]);
-                    }
-                });
-
-            // If this is the first activity of the company, update its published status.
-            if ($entreprise->activites()->count() === 1) {
-                $entreprise->update(['publier' => 1]);
-            }
-
-            return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])
-                ->with('success', 'Service created successfully.');
+          if ($entreprise->activites()->count() === 1) {
+              $entreprise->update(['publier' => 1]);
+          }
+    
+            return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service créé avec succès.');
         }
-    }
+    } 
 
     /**
      * Show the form for editing the specified activity.
@@ -212,39 +206,43 @@ class ActiviteController extends Controller
      */
     public function update(Request $request, Entreprise $entreprise, $id)
     {
-        // Check if the user is an Admin.
         $isAdmin = Auth::user()->travailler_entreprises()
-                ->wherePivot('statut', 'Admin')
-                ->wherePivot('idEntreprise', $entreprise->id)
-                ->count() > 0;
-
-        // Check if the user is the creator.
+            ->wherePivot('statut', 'Admin')
+            ->wherePivot('idEntreprise', $entreprise->id)
+            ->count() > 0;
         $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
         $isAllow = $isAdmin || $isCreator;
         if (!$isAllow) {
             return redirect()->route('entreprise.index');
         } else {
-            // Validate the request inputs.
             $request->validate([
                 'libelle' => 'required|string|max:255',
-                'duree'   => 'required|integer|min:1', // Duration in minutes.
+                'duree' => 'required|date_format:H:i', // Durée en minutes
+                'nbrPlaces' => [
+                    'required',
+                    'integer',
+                    'min:1',
+                    'max:' . $entreprise->capaciteMax, // Limite le nombre de places à la capacité de l'entreprise
+                ]
             ]);
 
-            // Retrieve the activity.
             $service = Activite::findOrFail($id);
+    
+            // Conversion de la durée du format time (HH:MM) en minutes
+            list($heures, $minutes) = explode(':', $request->duree);
+            $dureeEnMinutes = ($heures * 60) + $minutes;
 
-            // Convert duration from minutes to time format (H:i:s).
-            $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
-
-            // Update the activity with the new values.
+            $dureeInTimeFormat = gmdate('H:i:s', $dureeEnMinutes * 60);
+    
             $service->update([
                 'libelle' => $request->libelle,
-                'duree'   => $dureeInTimeFormat,
+                'duree' => $dureeInTimeFormat,
+                'nbrPlaces' => $request->nbrPlaces
             ]);
 
             return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])
-                ->with('success', 'Service updated successfully.');
+                ->with('success', 'Service mis à jour avec succès.');
         }
     }
 

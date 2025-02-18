@@ -30,87 +30,51 @@
             @endif
 
             <ul class="list-unstyled" style="margin-top: 40px;">
-                @if ($activite->plages->count() > 0)
-                    @foreach ($activite->plages->groupBy('datePlage') as $date => $plages)
+                @if (count($timeSlots) > 0)
+                    @foreach (collect($timeSlots)->groupBy('date') as $date => $slots)
                         <li class="mb-4">
-                            <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
+                            {{-- Date du créneau --}}
+                            <h5 class="text-primary">
+                                {{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}
+                            </h5>
+                            
+                            {{-- Créneaux horaires --}}
                             <div class="d-flex flex-wrap gap-2">
-                                @foreach ($plages as $plage)
-                                {{-- <script>
-                                    @foreach ($plage->employes as $ePlacer)
-                                        document.cookie = "employe{{ $ePlacer->id }}={{ $plage->id }};";
-                                    @endforeach
-                                </script> --}}
-                                    @php
-                                        try {
-                                            $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                            $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                            $interval = \Carbon\Carbon::parse($plage->activites->first()->duree)->minute + \Carbon\Carbon::parse($plage->interval)->hour * 60;
-                                        } catch (\Exception $e) {
-                                            displayWarning('Erreur de formatage des plages horaires.');
-                                            continue;
-                                        }
-                                    @endphp
-                                    @while ($heureDeb->lessThan($heureFin))
-                                        @php
-                                            // On calcule les bornes de l’intervalle courant
-                                            $currentStart = $plage->datePlage->copy()->setTimeFromTimeString($heureDeb->format('H:i:s'));
-                                            //dd($currentStart);
-                                            $currentEnd = $currentStart->copy()->addMinutes($interval);
-
-                                            // On va déterminer si ce créneau est déjà réservé
-                                            $isReserved = $reservations->contains(function($res) use ($date, $currentStart, $currentEnd) {
-                                                // 1. Vérifier la date
-                                                if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
-                                                    return false;
-                                                }
-
-                                                // 2. Vérifier le chevauchement d’horaire
-                                                //    On parse l’heureDeb/heureFin de la réservation
-                                                $resStart = \Carbon\Carbon::createFromFormat(
-                                                    'Y-m-d H:i:s',
-                                                    $res->dateRdv->format('Y-m-d').' '.$res->heureDeb
-                                                );
-                                                $resEnd = \Carbon\Carbon::createFromFormat(
-                                                    'Y-m-d H:i:s',
-                                                    $res->dateRdv->format('Y-m-d').' '.$res->heureFin
-                                                );
-
-                                                // Condition de chevauchement : (start < resEnd) ET (end > resStart)
-                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
-                                            });
-                                        @endphp
-
-                                        @if (! $isReserved)
-                                            {{-- Si pas réservé, on affiche le bouton --}}
-                                            <button
-                                                class="btn btn-outline-primary flex-grow-1 horaire-btn"
-                                                id="plage{{ $plage->id }}"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#reservationModal"
-                                                data-horaire="{{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}"
-                                                data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}"
-                                            >
-                                                {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}
-                                            </button>
-                                        @endif
-
-                                        {{-- On passe à l’intervalle suivant --}}
-                                        @php
-                                            $heureDeb->addMinutes($interval);
-                                            //dd($heureDeb);
-                                        @endphp
-                                    @endwhile
+                                @foreach ($slots as $slot)
+                                    @if ($slot['remaining_places'] > 0)
+                                        {{-- Bouton actif --}}
+                                        <button
+                                            class="btn btn-outline-primary flex-grow-1 horaire-btn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#reservationModal"
+                                            data-horaire="{{ $slot['time_range'] }}"
+                                            data-date="{{ $slot['date'] }}"
+                                            data-places-restantes="{{ $slot['remaining_places'] }}"
+                                        >
+                                            {{ $slot['time_range'] }}
+                                            @if ($entreprise->typeRdv[0] == 1)
+                                                ({{ $slot['remaining_places'] }} places restantes)
+                                            @endif
+                                        </button>
+                                    @else
+                                        {{-- Bouton désactivé --}}
+                                        <button
+                                            class="btn btn-secondary flex-grow-1"
+                                            disabled
+                                        >
+                                            {{ $slot['time_range'] }} (Complet)
+                                        </button>
+                                    @endif
                                 @endforeach
-
-
                             </div>
                         </li>
                     @endforeach
                 @else
-                    <p>Aucune plage horaire disponible.</p>
+                    <p class="text-muted">Aucune plage horaire disponible.</p>
                 @endif
             </ul>
+            
+                     
         </div>
 
         <!-- MODAL 1 : Réservation -->
