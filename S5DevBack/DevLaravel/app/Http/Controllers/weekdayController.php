@@ -15,20 +15,17 @@ class WeekdayController extends Controller
 
     public function indexWeek(Request $request, Entreprise $entreprise)
     {
-        $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
-        $isCreator = $entreprise->idCreateur == Auth::user()->id;
+      $isAdmin = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->wherePivot('idEntreprise',$entreprise->id)->count() > 0;
+      $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
-        $isAllow = $isAdmin || $isCreator;
+      $isAllow = $isAdmin || $isCreator;
 
-        if($isAllow){
-            if($entreprise->journeeTypes->count() == 0){
-                return redirect()->route('entreprise.day.indexDay', ['entreprise' => $entreprise]);
-            }
-            return view('dayweektype.week', ['entreprise' => $entreprise]);
-        }
-        else {
-            return redirect()->route('entreprise.show', ['entreprise' => $entreprise]);
-        }
+      if($isAllow){
+          return view('dayweektype.week', ['entreprise' => $entreprise]);
+      }
+      else {
+          return redirect()->route('entreprise.show', ['entreprise' => $entreprise]);
+      }
     }
 
     public function indexDay(Request $request, Entreprise $entreprise)
@@ -48,79 +45,50 @@ class WeekdayController extends Controller
 
     public function ajaxWeek(Request $request, Entreprise $entreprise)
     {
-        switch ($request->type) {
-            case 'add':
-               if (!$request->interval){
-                 $event = Plage::create([
-                     'heureDeb' => $request->heureDeb,
-                     'heureFin' => $request->heureFin,
-                     'datePlage' => $request->datePlage,
-                     'interval' => '00:05:00',
-                     'planTables' => json_encode(['UnTest']),
-                     'entreprise_id' => $request->entreprise_id,
-                 ]);
-               }
-               else {
-                 $event = Plage::create([
-                     'heureDeb' => $request->heureDeb,
-                     'heureFin' => $request->heureFin,
-                     'datePlage' => $request->datePlage,
-                     'interval' => $request->interval,
-                     'planTables' => json_encode(['UnPlanDeTables']),
-                     'entreprise_id' => $request->entreprise_id,
-                 ]);
-               }
+      switch ($request->type) {
+        case 'get':
+          $data = SemaineType::where('idEntreprise', $entreprise->id)->where("id",$request->idSemaine)->get();
+           return response()->json($data);
+          break;
+        
+        case 'getDay':
+          $data = JourneeType::where('idEntreprise', $entreprise->id)->where("id",$request->idJournee)->get();
+            return response()->json($data);
+          break;
 
-               //Auth::user()->travailler_activites()->attach($id, ['idEntreprise'=>$entreprise->id,'statut' => 'Admin']);
-               foreach($request->employes_affecter as $idEmploye){
-                   $event->employes()->attach($idEmploye);
-               }
+        case 'add':
+             $event = SemaineType::create([
+                 'libelle' => $request->libelle,
+                 'planning' => $request->planning,
+                 'idEntreprise' => $entreprise->id,
+             ]);
 
-               $event->activites()->attach($id);
+             $event = SemaineType::where('idEntreprise', $entreprise->id)->where("id",$event->id)->get();
+           
+           return response()->json($event);
+          break;
 
-               return response()->json($event);
-              break;
-  
-            case 'update':
-               $event = Plage::where($request->id)->first()->update([
-                 'heureDeb' => $request->heureDeb,
-                 'heureFin' => $request->heureFin,
-                 'datePlage' => $request->datePlage,
-               ]);
-  
-               return response()->json($event);
-              break;
-   
-            case 'delete':
-                $activite = Activite::where("id",$id)->first();
-                $plage = Plage::where("id",$request->id)->first();
-                $plage->employes()->detach();
-                $plage->activites()->detach();
-                $event = $plage->delete();
-   
-               return response()->json($event);
-              break;
- 
-            case 'modify':
-               /* $event = Plage::find($request->id)->update([
-                 'interval' => $request->interval,
-               ]); */
+        case 'update':
+           $event = SemaineType::where("id",$request->idSemaine)->first()->update([
+            'libelle' => $request->libelle,
+            'planning' => $request->planning,
+           ]);
 
-               $event = Plage::where("id",$request->id)->first();
+           return response()->json($event);
+          break;
 
-               $event->employes()->detach();
+        case 'delete':
+            $semaine = SemaineType::where("id",$request->idSemaine)->first();
+            
+            $event = $semaine->delete();
 
-               foreach($request->employes_affecter as $idEmploye){
-                    $event->employes()->attach($idEmploye);
-                }
-  
-               return response()->json($event);
-              break;
-              
-            default:
-              # code...
-              break;
-         }
+           return response()->json($event);
+          break;
+          
+        default:
+          # code...
+          break;
+     }
     }
 
     public function ajaxDay(Request $request, Entreprise $entreprise)
@@ -158,22 +126,6 @@ class WeekdayController extends Controller
                 
                 $event = $journee->delete();
    
-               return response()->json($event);
-              break;
- 
-            case 'modify':
-               /* $event = Plage::find($request->id)->update([
-                 'interval' => $request->interval,
-               ]); */
-
-               $event = Plage::where("id",$request->id)->first();
-
-               $event->employes()->detach();
-
-               foreach($request->employes_affecter as $idEmploye){
-                    $event->employes()->attach($idEmploye);
-                }
-  
                return response()->json($event);
               break;
               

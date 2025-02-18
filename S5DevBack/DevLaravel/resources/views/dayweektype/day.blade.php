@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
+@section('title_base', 'Journées type de ' . $entreprise -> libelle)
 @section('parametrage_active', 'active')
 
 @section('content')
@@ -77,11 +77,11 @@
 
     <!-- Popup Dialog -->
     <div id="dialogNew" title="Créer une nouvelle journée type ?" style="display:none;">
-            <p><span class="ui-icon ui-icon-alert" style="float:left;">Êtes-vous sûr(e) de vouloir créer une nouvelle journée type ?<br/>Toute progression sera perdue.</p>
+            <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Êtes-vous sûr(e) de vouloir créer une nouvelle journée type ?<br/>Toute progression sera perdue.</p>
     </div>
 
     <!-- Popup Dialog Sélection Journée -->
-    <div id="dialogDaySelect" title="Charger une plage" style="display:none;">
+    <div id="dialogDaySelect" title="Charger une journée type" style="display:none;">
         <form>
             <p>Quelle journée chosir ?</p>
             <select id="daySelect" name="daySelect">
@@ -139,7 +139,7 @@ $.ajaxSetup({
 
 
     $('#loadDay').click(function() {
-        // Popup pour sélectionner quel journée charger
+        // Popup pour sélectionner quelle journée charger
         $('#dialogDaySelect').dialog({
             modal: true,
             closeOnEscape: true,
