@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\notificationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Auth\LoginController;
 
 Route::post('/login', [LoginController::class, 'tokenLogin']);
@@ -14,7 +14,7 @@ Route::get('/user', function (Request $request) {
 
 // Groupe de routes sécurisées par Sanctum
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/details', [notificationController::class, 'getDetails']);
-    Route::patch('/details/{id}', [notificationController::class, 'updateNotificationState']);
+    Route::get('/details', [NotificationController::class, 'getDetails']);
+    Route::patch('/details/{id}', [NotificationController::class, 'updateNotificationState']);
     Route::delete('/details/{id}', [NotificationController::class, 'destroy']);
 });
