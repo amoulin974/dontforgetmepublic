@@ -29,19 +29,19 @@ jobs:
 
     - name: Set cache store to file (avoid MySQL for cache)
       run: echo -e "\nCACHE_STORE=file" >> .env
-  
-    - name: Install Dependencies
-      run: composer install --ignore-platform-reqs --prefer-dist --no-progress
 
-    - name: Regenerate autoload (load new tests)
-      run: composer dump-autoload
-
-    - name: Clear Caches
+    - name: Clear Caches (Config, Route, View)
       run: |
         php artisan config:clear
         php artisan route:clear
         php artisan view:clear
         php artisan cache:clear
+
+    - name: Regenerate autoload (load new tests)
+      run: composer dump-autoload
+
+    - name: Install Dependencies
+      run: composer install --ignore-platform-reqs --prefer-dist --no-progress
 
     - name: Generate key
       run: php artisan key:generate
