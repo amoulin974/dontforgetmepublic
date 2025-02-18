@@ -3,7 +3,6 @@
 namespace Tests\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Notification;
@@ -64,9 +63,6 @@ class UserApiTest extends TestCase
         $this->assertDatabaseHas('notifications', ['id' => $notification->id, 'etat' => true]);
     }
 
-    /**
-     * CASE 3 - Invalid update notification state (invalid data)
-     */
     /**
      * CASE 3 - Invalid update notification state (invalid data)
      */
