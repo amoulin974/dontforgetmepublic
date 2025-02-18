@@ -33,6 +33,7 @@ class EntrepriseFactory extends Factory
             'publier' => fake()->numberBetween(0, 1),
             'typeRdv' => json_encode(['Test']),
             'idCreateur' => fake()->numberBetween(1, 2),
+            'capaciteMax' => fake()->numberBetween(1, 100)
         ];
     }
 }

@@ -18,6 +18,7 @@ class AddActivitiesTest extends TestCase
         return array_merge([
             'libelle' => 'Test',
             'duree' => '00:30',
+            'nbrPlaces' => 10,
         ], $overrides);
     }
 

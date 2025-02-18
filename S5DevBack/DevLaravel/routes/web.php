@@ -2,17 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\reservationController;
-use App\Http\Controllers\entrepriseController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\calendrierController;
+use App\Http\Controllers\CalendrierController;
 use App\Http\Controllers\ParametrageController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
-use App\Http\Controllers\userController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\weekdayController;
 
-Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
+Route::prefix('/reservation')->name('reservation.')->controller(ReservationController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
@@ -51,7 +51,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(ParametrageContr
 
 });
 
-Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){
+Route::prefix('/entreprise')->name('entreprise.')->controller(EntrepriseController::class)->group(function(){
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/create', 'create')->name('create');
@@ -108,7 +108,7 @@ Route::prefix('/reserver')->name('reserver.')->controller(ReserverController::cl
     Route::get('/', 'index')->name('index');
 });
 
-Route::prefix('/profile')->name('profile.')->controller(userController::class)->group(function(){
+Route::prefix('/profile')->name('profile.')->controller(UserController::class)->group(function(){
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/edit', 'edit')->name('edit');

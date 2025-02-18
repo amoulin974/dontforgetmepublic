@@ -10,7 +10,7 @@ use App\Models\SemaineType;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
-class WeekdayController extends Controller
+class weekdayController extends Controller
 {
 
     public function indexWeek(Request $request, Entreprise $entreprise)
