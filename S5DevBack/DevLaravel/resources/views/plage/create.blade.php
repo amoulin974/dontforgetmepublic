@@ -43,55 +43,44 @@
 <body>
 
 <div class="container-calendar">
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" style="left:20%; margin: 0; color:black;"><i class="fa fa-arrow-left"></i></a>
     <div class="header-profile mb-3">
         <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
-    <h4>Activité : {{ $activite->libelle }} ({{ explode(':',$activite->duree)[0] }}h{{ explode(':',$activite->duree)[1] }})</h4>
+    <h4>Employé : {{ $employe->nom }} {{ $employe->prenom }}</h4>
     <div id='calendar'></div>
     @php
-        $userTravaillantSurAct = App\Models\User::whereIn("id",$entreprise->travailler_users()->wherePivot("idActivite",$activite->id)->pluck("idUser"))->get();
+        $actWorkedByUser = App\Models\Activite::whereIn("id",$employe->travailler_entreprises()->wherePivot("idEntreprise",$entreprise->id)->pluck("idActivite"))->get();
     @endphp
 
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
+            <p>Quelle activité choisir ?</p>
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
             <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
-                @foreach($userTravaillantSurAct as $employe)
-                    @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}"><input type="checkbox" id="{{ Auth::user()->id }}" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                    @else
-                    <label for="{{ $employe->id }}"><input type="checkbox" id="{{ $employe->id }}" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
-                    @endif
+                @foreach($actWorkedByUser as $activite)
+                    <label for="{{ $activite->id }}"><input type="checkbox" id="{{ $activite->id }}" value="{{ $activite->id }}"> {{ $activite->libelle }}</label><br>
                 @endforeach
             </div><br>
-            <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
         <form>
-            <p>Quel employé chosir ?</p>
-
+            <p>Quelle activité choisir ?</p>
             <div style="width: 100%;">
                 <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
             </div>
                 <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
-                @foreach($userTravaillantSurAct as $employe)
-                    @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                    @else
-                    <label for="{{ $employe->id }}Modif"><input type="checkbox" id="{{ $employe->id }}Modif" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
-                    @endif
+                @foreach($actWorkedByUser as $activite)
+                    <label for="{{ $activite->libelle }}Modif"><input type="checkbox" id="{{ $activite->libelle }}Modif" value="{{ $activite->id }}"> {{ $activite->libelle }}</label><br>
                 @endforeach
             </div><br>
-              {{-- </select> --}}
-              <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
@@ -157,11 +146,11 @@ $(document).ready(function () {
 // VARIABLES GLOBALES
 // URL dans le site
 var SITEURL = "{{ url('/entreprise/') }}";
-SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/services/" + {{ $activite->id }} + "/plage";
+SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/services/" + {{ $employe->id }} + "/plage";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
 var curseurUnclickable = 'not-allowed';
-var DUREE = '{{ $activite->duree }}';
+var DUREE = "00:30:00";
 var DUREE_EN_MS = moment.duration(DUREE).asMilliseconds();
 
 // Mise en place du setup du ajax avec le token CSRF
@@ -195,12 +184,18 @@ var calendar = $('#calendar').fullCalendar({
                     if (this.heureFin == '00:00:00') {
                         end_datetime = this.datePlage.split('T')[0] + 'T' + '23:59:59' + '.000000Z';
                     }
+                    var actToPush = "";
+                    this.activites.forEach(act => {
+                        actToPush += act.libelle + ", ";
+                    });
+                    actToPush = actToPush.slice(0, -2);
                     events.push({
                         id: this.id,
-                        title: this.id,
+                        title: "La plage de {{ $employe->nom }} {{ $employe->prenom }} pour : ",
                         start: start_datetime,
                         end: end_datetime,
                         interval: this.interval,
+                        activites: actToPush,
                     });
                 });
                 callback(events);
@@ -222,18 +217,12 @@ var calendar = $('#calendar').fullCalendar({
             element.css('border-color', couleurAjd);
             element.css('cursor', curseurUnclickable);
         }
-        if (event.interval) { // Si le nombre de personnes est renseigné
-            element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
+        if (event.activites) { // Si le nombre de personnes est renseigné
+            element.find('.fc-title').after("<span class=\"intervEvent\">" + event.activites + "</span>");
         }
 
     },
-    //slotDuration: '{{ $activite->duree }}',
     snapDuration: DUREE,
-    /* selectConstraint: {
-        start: tatat,
-        end: '23:59:59'
-    }, */
-    /* selectOverlap:false, */
     selectable: true,
     nowIndicator: true,
     selectHelper: true,
@@ -243,7 +232,7 @@ var calendar = $('#calendar').fullCalendar({
         if (selectable(start,end,true)) {
             // Vérifiez que l'événement fait au moins la durée d'une activité
             let diffTime = (moment(end).diff(moment(start), 'hours').toString().length == 1 ? "0" + moment(end).diff(moment(start), 'hours') : moment(end).diff(moment(start), 'hours')) + ":" + ((moment(end).diff(moment(start), 'minutes')%60).toString().length == 1 ? "0" + (moment(end).diff(moment(start), 'minutes')%60) : moment(end).diff(moment(start), 'minutes')%60) + ":00";
-            if (diffTime >= '{{ $activite->duree }}') {
+            if (diffTime >= DUREE) {
                 // Vérifiez si l'événement dépasse une journée
                 if (moment(start).isSame(end, 'day')) {
                     var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
@@ -264,7 +253,7 @@ var calendar = $('#calendar').fullCalendar({
                             "Ajouter": function() {
                                 //var interv = $('#interv').val();
                                 if (checked.length == 0){
-                                displayWarning('Veuillez sélectionner au moins un employé.');
+                                displayWarning('Veuillez sélectionner au moins une activité.');
                                 }
                                 else {
                                     $.ajax({
@@ -273,9 +262,8 @@ var calendar = $('#calendar').fullCalendar({
                                             datePlage: start.split(' ')[0],
                                             heureDeb: start.split(' ')[1],
                                             heureFin: end.split(' ')[1],
-                                            interval: '{{ $activite->duree }}',
-                                            entreprise_id: {{ $entreprise->id }},
-                                            employes_affecter: checked,
+                                            interval: DUREE,
+                                            activites_affecter: checked,
                                             type: 'add'
                                         },
                                         type: "POST",
@@ -308,7 +296,7 @@ var calendar = $('#calendar').fullCalendar({
                     $('#calendar').fullCalendar('unselect');
                 }
             } else {
-                displayWarning("Impossible de créer une plage de moins de {{ $activite->duree }} minutes");
+                displayWarning("Impossible de créer une plage de moins de DUREE minutes");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -361,17 +349,14 @@ var calendar = $('#calendar').fullCalendar({
     },
     eventClick: function (event) {
         var alreadyChecked = [];
-        @foreach (App\Models\Plage::all() as $p)
-            if(event.id == {{ $p->id }}){
-                @foreach($p->employes as $e)
-                    alreadyChecked.push({{ $e->id }});
-                @endforeach
+        event.activites.split(', ').forEach(act => {
+            if(act.split(' ')[0] != '') {
+                alreadyChecked.push(act.split(' ')[0]);
             }
-        @endforeach
-
-        alreadyChecked.forEach(userWorking => {
-            document.getElementById(userWorking+"Modif").checked = true;
-            checked.push(userWorking);
+        });
+        alreadyChecked.forEach(actPlaced => {
+            $('#'+actPlaced+"Modif").prop('checked', true);
+            checked.push($('#'+actPlaced+"Modif").val());
         });
 
         // Vérifiez si la date de début est passée
@@ -393,16 +378,15 @@ var calendar = $('#calendar').fullCalendar({
                 buttons: {
                     "Modifier": function() {
                         if (checked.length == 0){
-                        displayWarning('Veuillez sélectionner au moins un employé.');
+                        displayWarning('Veuillez sélectionner au moins une activité.');
                         }
                         else {
-                            console.log(checked);
                             $.ajax({
                                 url: SITEURL + "/",
                                 data: {
                                     id: eventAct.id,
-                                    interval: '{{ $activite->duree }}',
-                                    employes_affecter: checked,
+                                    interval: DUREE,
+                                    activites_affecter: checked,
                                     type: 'modify'
                                 },
                                 type: "POST",
@@ -470,7 +454,7 @@ var calendar = $('#calendar').fullCalendar({
         if(selectable(event.start,event.end,event.id)){
             // Vérifiez que l'événement fait au moins la durée d'une activité
             let diffTime = (moment(event.end).diff(moment(event.start), 'hours').toString().length == 1 ? "0" + moment(event.end).diff(moment(event.start), 'hours') : moment(event.end).diff(moment(event.start), 'hours')) + ":" + ((moment(event.end).diff(moment(event.start), 'minutes')%60).toString().length == 1 ? "0" + (moment(event.end).diff(moment(event.start), 'minutes')%60) : moment(event.end).diff(moment(event.start), 'minutes')%60) + ":00";
-            if (diffTime >= '{{ $activite->duree }}') {
+            if (diffTime >= DUREE) {
                 // Vérifiez si l'événement dépasse une journée
                 if (moment(event.start).isSame(event.end, 'day')) {
                     var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
@@ -502,7 +486,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             } else {
                 revertFunc(); // Revert the change if the update fails
-                displayWarning("Impossible de modifier une plage pour qu'elle ait un intervalle de moins de {{ $activite->duree }} minutes");
+                displayWarning("Impossible de modifier une plage pour qu'elle ait un intervalle de moins de DUREE minutes");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }

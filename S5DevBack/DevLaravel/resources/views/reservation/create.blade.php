@@ -45,7 +45,7 @@
                                         try {
                                             $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
                                             $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                            $interval = \Carbon\Carbon::parse($plage->interval)->minute + \Carbon\Carbon::parse($plage->interval)->hour * 60;
+                                            $interval = \Carbon\Carbon::parse($plage->activites->first()->duree)->minute + \Carbon\Carbon::parse($plage->interval)->hour * 60;
                                         } catch (\Exception $e) {
                                             displayWarning('Erreur de formatage des plages horaires.');
                                             continue;
@@ -262,7 +262,7 @@
         </div>
     </div>
     <script src="{{ asset('js/reservation.js') }}"></script>
-    <script>
+    {{-- <script>
         $document.ready(function () {
             $('#employe').change(function () {
                 if ($(this).val() !== 'default') {
@@ -278,5 +278,5 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 @endsection
