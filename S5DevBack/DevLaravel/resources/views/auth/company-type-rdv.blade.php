@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Choix du type de rdv')
+@section('title', __('Choose appointment type'))
 
 @section('content')
 

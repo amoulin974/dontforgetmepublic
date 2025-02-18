@@ -1,13 +1,13 @@
 @extends('base')
 
-@section('title_base', 'Détail réservation n°' . $reservation -> id)
+@section('title_base', __('Details of booking #') . $reservation -> id)
 
 @section('content')
 
 @if(Auth::check())
 <div  style="display: inline-flex; width: 100%; margin-top:15px;margin-bottom:5px;">
     <a class="btn btn-primary" style="display: block; margin-left:auto; margin-right:1%;" href="{{ route('reservation.edit', $reservation->id) }}" >
-        <span>Modifier la réservation</span>
+        <span>{{__('Edit booking')}}</span>
         <i class="fa fa-edit"></i>
     </a>
     {{-- Formulaire pour SUPPRIMER la réservation --}}
@@ -16,7 +16,7 @@
         @method('DELETE')
         <button type="submit" class="btn btn-danger"
                 onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')">
-            Supprimer la réservation
+            {{__('Delete booking')}}
         </button>
     </form>
 </div>
@@ -51,10 +51,10 @@
             <div style="overflow: auto; max-height:230px;">
             @foreach ($reservation->notifications as $notif)
                 <div class="info">
-                    <p style="margin-bottom: 0px;"><i>Catégorie :</i> {{ $notif->categorie }}</p>
-                    <p style="margin-bottom: 0px;"><i>Délai :</i> {{ explode(':',explode(' ',$notif->delai)[1])[2] }} {{__('hours prior')}}</p>
-                    <p style="margin-bottom: 0px;"><i>État :</i> {{ $notif->etat == 0 ? 'En attente' : 'Envoyé' }}</p>
-                    <p><i>{{-- Contenu --}}À envoyer à :</i> {{ $notif->contenu }}</p>
+                    <p style="margin-bottom: 0px;"><i>{{__('Category')}} :</i> {{ $notif->categorie }}</p>
+                    <p style="margin-bottom: 0px;"><i>{{__('Delay')}} :</i> {{ explode(':',explode(' ',$notif->delai)[1])[2] }} {{__('hours prior')}}</p>
+                    <p style="margin-bottom: 0px;"><i>{{__('State')}} :</i> {{ $notif->etat == 0 ? 'En attente' : 'Envoyé' }}</p>
+                    <p><i>{{-- Contenu --}}{{__('Send to')}} :</i> {{ $notif->contenu }}</p>
                 </div>
             @endforeach
         </div>

@@ -10,7 +10,7 @@
         <br>
         <br><br>
         <br>
-            <h3>Vous ne travaillez, n'êtes invité ou n'avez créé aucune entreprise</h3>
+            <h3>{{__("You haven't worked for, been invited to or created any business yet")}}</h3>
         @else
         @foreach ($entreprises as $entreprise)
         <div class="col-md-6 col-xl-4">
@@ -23,7 +23,7 @@
                     <h5 style="color:blue;">[ {{__('Creator')}} ]</h5>
                 @endif
                 <div class="info">
-                    <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
+                    <p><strong>{{__('SIREN')}} :</strong> {{ $entreprise->siren }}</p>
                     <p><strong>{{__('Address')}} :</strong> {{ $entreprise->adresse }}</p>
                     <p><strong>{{__('Job')}} :</strong> {{ $entreprise->metier }}</p>
                     <p><strong>{{__('Description')}} :</strong> {{ $entreprise->description }}</p>
@@ -73,10 +73,10 @@
                                 <img class="info-image" src="https://www.map24.com/wp-content/uploads/2021/11/6784174_s.jpg" alt="{{ $entreprise->libelle }}" height="250vh" width="250vh">
                         @endif
                     @if($entreprise->publier)
-                    <p class="text-center"><i><strong>{{__('Posted!')}}</strong></i></p>
+                    <p class="text-center"><i><strong>{{__('Published!')}}</strong></i></p>
                     @endif
                     @if($entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->count() > 0)
-                        <p style="text-align: center"><i>Vous êtes invités dans cette entreprise.</i></p>
+                        <p style="text-align: center"><i>{{__("You're invited to this business.")}}</i></p>
                     @endif
                     @if($entreprise->idCreateur == Auth::user()->id && $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() == null)
                     <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">{{__("Create your first activity")}}</a>

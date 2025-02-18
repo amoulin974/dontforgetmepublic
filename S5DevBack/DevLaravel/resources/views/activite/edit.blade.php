@@ -2,7 +2,7 @@
 
 @include('base')
 
-@section('title', 'Modification du service ' . $service->libelle)
+@section('title', __('Editing the service ') . $service->libelle)
 
 @section('content')
 <div class="container">

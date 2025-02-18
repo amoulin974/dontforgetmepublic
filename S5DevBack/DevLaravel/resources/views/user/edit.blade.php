@@ -53,7 +53,7 @@
         <div class="mb-3 d-flex align-items-center">
             <label for="typeNotif" class="form-label me-2 mb-0">Type de notification par défaut : </label>
             <select name="typeNotif" id="typeNotif" class="form-select w-auto">
-                <option value="" {{ empty(old('typeNotif', $user->typeNotif)) ? 'selected' : '' }}>Sélectionner</option>
+                <option value="" {{ empty(old('typeNotif', $user->typeNotif)) ? 'selected' : '' }}>{{("Select")}}</option>
                 <option value="SMS" {{ old('typeNotif', $user->typeNotif) == 'SMS' ? 'selected' : '' }}>SMS</option>
                 <option value="Email" {{ old('typeNotif', $user->typeNotif) == 'Email' ? 'selected' : '' }}>Email</option>
             </select>
@@ -62,14 +62,14 @@
         <div class="mb-3 d-flex align-items-center">
             <label for="delaiAvantNotif" class="form-label me-2 mb-0">Délai d'envoi avant le rendez-vous :</label>
             <select name="delaiAvantNotif" id="delaiAvantNotif" class="form-select w-auto">
-                <option value="" {{ empty(old('delaiAvantNotif', $user->delaiAvantNotif)) ? 'selected' : '' }}>Sélectionner</option>
-                <option value="1 jour" {{ old('delaiAvantNotif', $user->delaiAvantNotif) == '1 jour' ? 'selected' : '' }}>1 jour</option>
-                <option value="2 jours" {{ old('delaiAvantNotif', $user->delaiAvantNotif) == '2 jours' ? 'selected' : '' }}>2 jours</option>
-                <option value="1 semaine" {{ old('delaiAvantNotif', $user->delaiAvantNotif) == '1 semaine' ? 'selected' : '' }}>1 semaine</option>
+                <option value="" {{ empty(old('delaiAvantNotif', $user->delaiAvantNotif)) ? 'selected' : '' }}>{{("Select")}}</option>
+                <option value="1 jour" {{ old('delaiAvantNotif', $user->delaiAvantNotif) == '1 jour' ? 'selected' : '' }}>{{__("1 day")}}</option>
+                <option value="2 jours" {{ old('delaiAvantNotif', $user->delaiAvantNotif) == '2 jours' ? 'selected' : '' }}>{{__("2 days")}}</option>
+                <option value="1 semaine" {{ old('delaiAvantNotif', $user->delaiAvantNotif) == '1 semaine' ? 'selected' : '' }}>{{__("1 week")}}</option>
             </select>
         </div>
 
-        <button type="submit" class="btn btn-success">Mettre à jour</button>
+        <button type="submit" class="btn btn-success">{{__("Update")}}</button>
         <a href="{{ route('profile.index') }}" class="btn btn-secondary">{{__('Cancel')}}</a>
     </form>
 </div>

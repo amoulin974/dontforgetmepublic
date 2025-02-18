@@ -125,21 +125,21 @@
                             @if ($entreprise->typeRdv[0] == 1)
                                 <div class="form-group mb-3">
                                     <label for="nbPersonnes" class="form-label">
-                                        <i class="bi bi-people-fill"></i> {{__("Number of people")}} :
+                                        <i class="bi bi-people-fill"></i> {{__("Amount of people")}} :
                                     </label>
                                     <input
                                         type="number"
                                         name="nbPersonnes"
                                         id="nbPersonnes"
                                         class="form-control"
-                                        placeholder="Entrez le nombre de personnes"
+                                        placeholder="{{('Enter the amount of people')}}"
                                         min="1"
                                         required
                                     >
                                 </div>
                             @endif
 
-                            <h5 class="mt-4">Notifications ajoutées :</h5>
+                            <h5 class="mt-4">{{__("Added notifications")}} :</h5>
                             <ul id="notificationsList" class="list-group"></ul>
 
                             <button type="button" class="btn btn-success w-100 mt-3" id="addNotificationBtn" data-bs-toggle="modal" data-bs-target="#notificationModal">
@@ -147,7 +147,7 @@
                             </button>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary w-100">Confirmer la réservation</button>
+                            <button type="submit" class="btn btn-primary w-100">{{__("Confirm booking")}}</button>
                             <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">{{__('Cancel')}}</button>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <p>Ajouter une notification pour la plage horaire suivante : <strong id="horaireSelection" class="text-success"></strong>.</p>
+                        <p>{{__("Add a notification for the following time slot")}} : <strong id="horaireSelection" class="text-success"></strong>.</p>
 
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="radio" name="typeNotification" id="smsOption" value="SMS" checked>
@@ -191,16 +191,16 @@
                             <input type="email" id="mailInput" class="form-control" placeholder="exemple@domaine.com" value="{{ Auth::user()->email }}">
                         </div>
 
-                        <label for="duree" class="form-label mt-3">Durée avant rendez-vous :</label>
+                        <label for="duree" class="form-label mt-3">{{__('Time before appointment')}} :</label>
                         <select id="duree" class="form-select">
-                            <option value="1jour">1 jour</option>
-                            <option value="2jours">2 jours</option>
-                            <option value="1semaine">1 semaine</option>
+                            <option value="1jour">{{__("1 day")}}</option>
+                            <option value="2jours">{{__("2 days")}}</option>
+                            <option value="1semaine">{{__("1 week")}}</option>
                         </select>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="goBackBtn">Précédent</button>
+                        <button type="button" class="btn btn-secondary" id="goBackBtn">{{__('Previous')}}</button>
                         <button type="button" class="btn btn-primary" id="saveNotificationBtn">{{__('Validate')}}</button>
                     </div>
                 </div>

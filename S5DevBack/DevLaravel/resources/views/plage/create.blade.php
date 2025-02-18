@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
+@section('title_base', __('Slot settings for business #') . $entreprise -> id)
 @section('parametrage_active', 'active')
 
 @section('content')
@@ -54,11 +54,11 @@
     @endphp
 
     <!-- Popup Dialog -->
-    <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
+    <div id="dialogTitre" title="{{__('Add slot')}}" style="display:none;">
         <form>
             <p>{{__("Choose an employee")}}</p>
             <div style="width: 100%;">
-                <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
+                <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">{{__("Select All")}}</button>
             </div>
             <div id="employes" name="employes" style="overflow: auto; display:block; max-height:50%;">
                 @foreach($userTravaillantSurAct as $employe)
@@ -69,18 +69,18 @@
                     @endif
                 @endforeach
             </div><br>
-            <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+            <p><strong>{{__("Interval between activity starts")}} :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
     <!-- Popup Dialog Modif -->
-    <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
+    <div id="dialogModif" title="{{__('Add slot')}}" style="display:none;">
         <form>
             <p>{{__("Choose an employee")}}</p>
             {{-- <select name="employeModif" id="employeModif" class="text ui-widget-content ui-corner-all">
                 <option value="{{ Auth::user()->id }}">{{ Auth::user()->nom }} {{ Auth::user()->prenom }} ({{__('You')}})</option> --}}
             <div style="width: 100%;">
-                <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
+                <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">{{__("Select All")}}</button>
             </div>
                 <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
                 @foreach($userTravaillantSurAct as $employe)
@@ -93,13 +93,13 @@
                 @endforeach
             </div><br>
               {{-- </select> --}}
-              <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
+              <p><strong>{{__("Interval between activity starts")}} :</strong> {{ $activite->duree }}</p>
         </form>
     </div>
 
     <!-- Popup Dialog Suppression -->
-    <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette plage sera définitivement supprimé. Voulez-vous continuer ?</p>
+    <div id="dialog-confirm" title="{{__('Are you sure you would like to delete it?')}}" style="display:none;">
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This time slot will be permanently deleted. Continue?")}}</p>
     </div>
 </div>
 

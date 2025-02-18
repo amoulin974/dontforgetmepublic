@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
+@section('title_base', __('Slot settings for business #') . $entreprise -> id)
 @section('parametrage_active', 'active')
 
 @section('content')
@@ -46,11 +46,11 @@
         <h1>{{__("Calendar with slots of")}} {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
-    <p>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} pour l'activité <i>{{ $activite->libelle }}</i></p><br>
+    <p>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} {{__("on activity")}} <i>{{ $activite->libelle }}</i></p><br>
     <div id='calendar'></div>
 
     <!-- Popup Dialog Suppression -->
-    <div id="dialog-confirm" title="Voulez-vous signaler votre indisponibilité ?" style="display:none;">
+    <div id="dialog-confirm" title="{{__("Do you want to report your unavailability ?")}}" style="display:none;">
         <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This event will be permanently deleted. Continue?")}}</p>
     </div>
 </div>

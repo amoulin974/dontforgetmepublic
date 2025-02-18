@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
+@section('title_base', __('Slot settings for business #') . $entreprise -> id)
 @section('parametrage_active', 'active')
 
 @section('content')
@@ -54,7 +54,7 @@
         <form>
             <label for="eventTitle">{{__("Event title")}} :</label>
             <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="interv">Intervalle de début d'activités :</label>
+            <label for="interv">{{__("Interval between activity starts")}} :</label>
             {{-- <input type="time" id="interv" name="interv" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
             <select name="interv" id="interv" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
@@ -78,7 +78,7 @@
         <form>
             <label for="eventTitleModif">{{__("Event title")}} :</label>
             <input type="text" id="eventTitleModif" name="eventTitleModif" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="intervModif">Intervalle de débuts d'activités :</label>
+            <label for="intervModif">{{__("Interval between activity starts")}} :</label>
             {{-- <input type="time" id="intervModif" name="intervModif" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
             <select name="intervModif" id="intervModif" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
@@ -98,7 +98,7 @@
     </div>
 
     <!-- Popup Dialog Suppression -->
-    <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
+    <div id="dialog-confirm" title="{{__('Are you sure you would like to delete it?')}}" style="display:none;">
         <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This event will be permanently deleted. Continue?")}}</p>
     </div>
 </div>

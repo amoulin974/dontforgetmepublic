@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Choix du type de compte à créer')
+@section('title', __('Choosing your account type'))
 
 @section('content')
 <div class="container d-flex flex-column align-items-center" style="min-height: 100vh;">

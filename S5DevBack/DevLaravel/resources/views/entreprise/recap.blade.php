@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Récapitulatif de la création d\'entreprise')
+@section('title', __('Business creation summary'))
 
 @section('content')
 <div class="container my-5">

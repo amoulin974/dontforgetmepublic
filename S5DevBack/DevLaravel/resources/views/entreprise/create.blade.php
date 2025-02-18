@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Créer votre entreprise')
+@section('title', __('Create business2'))
 
 @section('content')
 <div class="container d-flex flex-column" style="min-height: 100vh; margin-bottom: 2rem;">
@@ -13,9 +13,9 @@
     </div>
 
     {{-- Titre --}}
-    <h3 class="text-center mb-3">Créer le profil de votre entreprise</h3>
+    <h3 class="text-center mb-3">{{__("Create your business' profile")}}</h3>
 
-    <p class="text-center mb-3">Attention, notre plateforme n'est pas destinée aux professionnels de santé !</p>
+    <p class="text-center mb-3">{{__("Warning: Our platform isn't for healthcare professionals!")}}</p>
 
     <form method="POST" action="{{ route('entreprise.typeRdv') }}">
         @csrf

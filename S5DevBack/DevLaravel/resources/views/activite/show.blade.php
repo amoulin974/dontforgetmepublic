@@ -9,7 +9,7 @@
     <h2 class="mb-4">{{__('Available services')}}</h2>
 
     @if($services->isEmpty())
-        <p>Aucun service n'a été créé pour {{ $entreprise->libelle }}.</p>
+        <p>{{__('No service was created for')}} {{ $entreprise->libelle }}.</p>
     @else
         <table class="table table-striped">
             <thead>

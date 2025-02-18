@@ -2,7 +2,7 @@
 
 @include('base')
 
-@section('title', 'Création d\'un service')
+@section('title', __('Create service2'))
 
 @section('content')
 <div class="container">
