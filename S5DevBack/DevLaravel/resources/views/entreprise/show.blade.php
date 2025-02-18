@@ -123,15 +123,18 @@
                                 @if ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {{-- isAdmin --}}
                                         <a onclick="retrograder({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Rétrograder</a>
                                         <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
+                                        <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => $user->id]) }}" class="btn btn-link">
+                                            <i class="fa fa-calendar"></i> Gérer les plages
+                                        </a>
                                     @elseif ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé') {{-- isEmploye --}}
                                         <a onclick="promouvoir({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary accept">Promouvoir</a>
                                         <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
+                                        <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => $user->id]) }}" class="btn btn-link">
+                                            <i class="fa fa-calendar"></i> Gérer les plages
+                                        </a>
                                     @else {{-- isInvite --}}
                                         <a onclick="annulerInvit({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Annuler l'invitation</a>
                                 @endif
-                                <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => $user->id]) }}" class="btn btn-link">
-                                    <i class="fa fa-calendar"></i> Gérer les plages
-                                </a>
                             @endif
                         </div>
                     @endif

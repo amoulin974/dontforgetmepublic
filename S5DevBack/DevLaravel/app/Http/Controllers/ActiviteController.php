@@ -303,14 +303,14 @@ class ActiviteController extends Controller
      * @param int $id The ID of the activity.
      * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View Returns a JSON response or a view.
      */
-    public function createPlage(Request $request, Entreprise $entreprise, $id)
+    public function createPlage(Request $request, Entreprise $entreprise, User $employe)
     {
         // Pour récupérer les données
         if($request->ajax()) {
         // Cas employé
         if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
           // Requête pour récupérer les plages spécifique à l'employé et à l'entreprise choisie
-          $plages = User::where('id', $employe->id)->first() ->plages()->where('entreprise_id', $entreprise->id)->get();
+          $plages = User::where('id', $employe->id)->first()->plages()->where('entreprise_id', $entreprise->id)->get();
             if ($plages) {
                 // Ajout des activités liées à chacune des plages
                 foreach ($plages as $plage) {
