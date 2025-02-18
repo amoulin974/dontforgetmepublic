@@ -1,4 +1,4 @@
-name: Laravel
+name: Laravel-tests
 
 on:
   push:
@@ -8,6 +8,11 @@ on:
 
 jobs:
   laravel-tests:
+
+    strategy:
+      matrix:
+        suite: [Unit, Feature, Api]
+      fail-fast: false 
 
     runs-on: ubuntu-latest
 
@@ -54,8 +59,8 @@ jobs:
         mkdir -p database
         touch database/database.sqlite
 
-    - name: Execute tests (Unit and Feature tests)
+    - name: Execute ${{ matrix.suite }} tests
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: php artisan test
+      run: php artisan test --testsuite=${{ matrix.sui
