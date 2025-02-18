@@ -1,4 +1,4 @@
-name: Laravel-tests
+name: Laravel tests
 
 on:
   push:
@@ -63,4 +63,4 @@ jobs:
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: php artisan test --testsuite=${{ matrix.sui
+      run: php artisan test --testsuite=${{ matrix.suite }}
