@@ -29,103 +29,20 @@
                 </select>
             @endif
 
-{{--             <ul class="list-unstyled" style="margin-top: 40px;">
-                @if ($activite->plages->count() > 0)
-                    @foreach ($activite->plages->groupBy('datePlage') as $date => $plages)
-                        <li class="mb-4">
-                            <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
-                            <div class="d-flex flex-wrap gap-2">
-                                @foreach ($plages as $plage)
-
-                                    @php
-                                        try {
-                                            $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                            $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                            $interval = \Carbon\Carbon::parse($plage->interval)->minute + \Carbon\Carbon::parse($plage->interval)->hour * 60;
-                                        } catch (\Exception $e) {
-                                            displayWarning('Erreur de formatage des plages horaires.');
-                                            continue;
-                                        }
-                                    @endphp
-                                    @while ($heureDeb->lessThan($heureFin))
-                                        @php
-                                            // On calcule les bornes de l’intervalle courant
-                                            // $currentEnd   = $heureDeb->copy()->addMinutes($interval);
-                                            $currentStart = $plage->datePlage->copy()->setTimeFromTimeString($heureDeb->format('H:i:s'));
-                                            //dd($currentStart);
-                                            $currentEnd = $currentStart->copy()->addMinutes($interval);
-
-                                            $reservationsActivity = $reservations->filter(function($res) use ($date, $currentStart, $currentEnd) {
-                                                if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
-                                                    return false;
-                                                }
-
-                                                // Vérifier le chevauchement avec d'autres réservations
-                                                $resStart = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureDeb);
-                                                $resEnd = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureFin);
-
-                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
-                                            })->sum('nbPersonnes'); // Somme des personnes déjà réservées
-
-                                            $reservationsGlobal = $reservationsEntreprise->filter(function($res) use ($date, $currentStart, $currentEnd) {
-                                                if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
-                                                    return false;
-                                                }
-                                                $resStart = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureDeb);
-                                                $resEnd = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d').' '.$res->heureFin);
-
-                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
-                                            })->sum('nbPersonnes');
-
-                                            // Places restantes au niveau global (entreprise)
-                                            $placesRestantesGlobal = $entreprise->capaciteMax - $reservationsGlobal;
-
-                                            // Places restantes au niveau de l'activité
-                                            $placesRestantesActivite = $activite->nbrPlaces - $reservationsActivity;
-
-                                            // Prendre la valeur minimale entre les deux
-                                            $placesRestantes = min($placesRestantesGlobal, $placesRestantesActivite);
-
-                                        @endphp
-
-                                        @if ($placesRestantes > 0)
-                                        <button
-                                            class="btn btn-outline-primary flex-grow-1 horaire-btn"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#reservationModal"
-                                            data-horaire="{{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}"
-                                            data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}"
-                                            data-places-restantes="{{ $placesRestantes }}"
-                                        >
-                                            {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }} ({{ $placesRestantes }} places restantes)
-                                        </button>
-                                        @endif
-                                        @php
-                                            $heureDeb->addMinutes($interval);
-                                        @endphp
-                                    @endwhile
-                                @endforeach
-                            
-                            </div>
-                        </li>
-                    @endforeach
-                @else
-                    <p>Aucune plage horaire disponible.</p>
-                @endif
-            </ul> --}}
             <ul class="list-unstyled" style="margin-top: 40px;">
                 @if (count($timeSlots) > 0)
                     @foreach (collect($timeSlots)->groupBy('date') as $date => $slots)
                         <li class="mb-4">
-                            {{-- Display Date Header --}}
+                            {{-- Date du créneau --}}
                             <h5 class="text-primary">
                                 {{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}
                             </h5>
-                            {{-- Display Time Slots --}}
+                            
+                            {{-- Créneaux horaires --}}
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach ($slots as $slot)
                                     @if ($slot['remaining_places'] > 0)
-                                        {{-- Active Button for Available Slots --}}
+                                        {{-- Bouton actif --}}
                                         <button
                                             class="btn btn-outline-primary flex-grow-1 horaire-btn"
                                             data-bs-toggle="modal"
@@ -134,10 +51,13 @@
                                             data-date="{{ $slot['date'] }}"
                                             data-places-restantes="{{ $slot['remaining_places'] }}"
                                         >
-                                            {{ $slot['time_range'] }} ({{ $slot['remaining_places'] }} places restantes)
+                                            {{ $slot['time_range'] }}
+                                            @if ($entreprise->typeRdv[0] == 1)
+                                                ({{ $slot['remaining_places'] }} places restantes)
+                                            @endif
                                         </button>
                                     @else
-                                        {{-- Disabled Button for Fully Booked Slots --}}
+                                        {{-- Bouton désactivé --}}
                                         <button
                                             class="btn btn-secondary flex-grow-1"
                                             disabled
@@ -152,7 +72,9 @@
                 @else
                     <p class="text-muted">Aucune plage horaire disponible.</p>
                 @endif
-            </ul>            
+            </ul>
+            
+                     
         </div>
 
         <!-- MODAL 1 : Réservation -->

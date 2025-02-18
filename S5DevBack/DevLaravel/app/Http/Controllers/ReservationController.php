@@ -24,6 +24,25 @@ use App\Models\Activite;
 class ReservationController extends Controller
 {
     /**
+     * @brief Retrieve all reservations for the enterprise.
+     * 
+     * @param Entreprise $entreprise The enterprise for which reservations are retrieved.
+     * @return array Array of reservation objects.
+     */
+    private function getReservationsEntreprise(Entreprise $entreprise): array
+    {
+        return Reservation::whereIn('id', function ($query) use ($entreprise) {
+            $query->select('idReservation')
+                ->from('effectuer')
+                ->whereIn('idActivite', function ($subQuery) use ($entreprise) {
+                    $subQuery->select('id')
+                            ->from('activites')
+                            ->where('idEntreprise', $entreprise->id);
+                });
+        })->get()->toArray();
+    }
+    
+    /**
      * Display a paginated list of reservations for the authenticated user.
      *
      * The method checks if the authenticated user has any reservations performed via the
@@ -70,38 +89,12 @@ class ReservationController extends Controller
      */
     public function create(Entreprise $entreprise, Activite $activite): View
     {
-        // Récupérer les réservations spécifiques à l'activité
-        /* $reservations = Reservation::whereIn('id', function ($query) use ($activite) {
-            $query->select('idReservation')
-                  ->from('effectuer')
-                  ->where('idActivite', $activite->id);
-        })->get();
-    
-        // Récupérer toutes les réservations de l’entreprise (toutes activités confondues)
-        $reservationsEntreprise = Reservation::whereIn('id', function ($query) use ($entreprise) {
-            $query->select('idReservation')
-                  ->from('effectuer')
-                  ->whereIn('idActivite', function ($subQuery) use ($entreprise) {
-                      $subQuery->select('id')
-                               ->from('activites')
-                               ->where('idEntreprise', $entreprise->id);
-                  });
-        })->get();
-    
-        return view('reservation.create', [
-            'entreprise' => $entreprise,
-            'activite' => $activite,
-            'reservations' => $reservations,
-            'reservationsEntreprise' => $reservationsEntreprise, // Ajout pour vérification globale
-        ]); */
-        $reservations = $this->getReservations($activite);
         $reservationsEntreprise = $this->getReservationsEntreprise($entreprise);
-        $plages = $this->getPlages($activite);
+        $plagesActivite = $activite->plages()->with('activites')->get();
 
         // Calculate available time slots
         $timeSlots = $this->calculateTimeSlots(
-            $plages,
-            $reservations,
+            $plagesActivite,
             $reservationsEntreprise,
             $entreprise,
             $activite,
@@ -111,7 +104,6 @@ class ReservationController extends Controller
         return view('reservation.create', [
             'entreprise' => $entreprise,
             'activite' => $activite,
-            'reservations' => $reservations,
             'reservationsEntreprise' => $reservationsEntreprise,
             'timeSlots' => $timeSlots,
         ]);
@@ -324,54 +316,6 @@ class ReservationController extends Controller
     }
 
     /**
-     * @brief Retrieve the time slots (plages) for the current activity.
-     * 
-     * This method queries the activity's associated time slots.
-     * 
-     * @param Activite $activite The activity for which time slots are retrieved.
-     * @return array Array of time slot objects.
-     */
-    private function getPlages(Activite $activite): array
-    {
-        return $activite->plages()->get()->toArray();
-    }
-
-    /**
-     * @brief Retrieve reservations for the specified activity.
-     * 
-     * @param Activite $activite The activity whose reservations are retrieved.
-     * @return array Array of reservation objects.
-     */
-    private function getReservations(Activite $activite): array
-    {
-        return Reservation::whereIn('id', function ($query) use ($activite) {
-            $query->select('idReservation')
-                ->from('effectuer')
-                ->where('idActivite', $activite->id);
-        })->get()->toArray();
-    }
-
-    /**
-     * @brief Retrieve all reservations for the enterprise.
-     * 
-     * @param Entreprise $entreprise The enterprise for which reservations are retrieved.
-     * @return array Array of reservation objects.
-     */
-    private function getReservationsEntreprise(Entreprise $entreprise): array
-    {
-        return Reservation::whereIn('id', function ($query) use ($entreprise) {
-            $query->select('idReservation')
-                ->from('effectuer')
-                ->whereIn('idActivite', function ($subQuery) use ($entreprise) {
-                    $subQuery->select('id')
-                            ->from('activites')
-                            ->where('idEntreprise', $entreprise->id);
-                });
-        })->get()->toArray();
-    }
-
-
-    /**
      * @brief Calculates available time slots for reservations.
      * 
      * Processes defined time slots, existing reservations, 
@@ -388,136 +332,63 @@ class ReservationController extends Controller
      * 
      * @throws \Exception If an error occurs during time parsing with Carbon.
      */
-    /* public function calculateTimeSlots(
-        array $slots, 
+    public function calculateTimeSlots(
+        \Illuminate\Support\Collection $slots, 
         array $reservations, 
-        array $companyReservations, 
         object $company, 
         object $activity, 
         string $date
     ): array {
         $timeSlots = [];
-
-        // Loop through all defined time slots
+    
         foreach ($slots as $slot) {
+            $plageStart = Carbon::parse($slot->datePlage)->setTimeFromTimeString($slot->heureDeb);
+            $plageEnd = Carbon::parse($slot->datePlage)->setTimeFromTimeString($slot->heureFin);
+            if ($plageEnd->lessThan(now())) continue;
+    
+            if (!$slot->relationLoaded('activites') || $slot->activites->isEmpty()) continue;
+    
             try {
-                $startTime = Carbon::parse($slot->heureDeb);
-                $endTime = Carbon::parse($slot->heureFin);
-                $interval = Carbon::parse($slot->activites->first()->duree)->minute + Carbon::parse($slot->activites->first()->duree)->hour * 60;
+                $startTime = $plageStart;
+                $endTime = $plageEnd;
+                $interval = Carbon::parse($activity->duree)->hour * 60 + Carbon::parse($activity->duree)->minute;
             } catch (\Exception $e) {
-                // Skip this slot if time parsing fails
                 continue;
             }
-
-            // Iterate through intervals within the time slot
+    
             while ($startTime->lessThan($endTime)) {
-                // Set current time range
-                $currentStart = $slot->datePlage->copy()->setTimeFromTimeString($startTime->format('H:i:s'));
+                $currentStart = Carbon::parse($slot->datePlage)->setTimeFromTimeString($startTime->format('H:i:s'));
                 $currentEnd = $currentStart->copy()->addMinutes($interval);
-
-                // Calculate reserved places for the activity
-                $activityReservations = array_reduce($reservations, function ($sum, $res) use ($date, $currentStart, $currentEnd) {
-                    if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
-                        return $sum;
-                    }
-
-                    $resStart = Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d') . ' ' . $res->heureDeb);
-                    $resEnd = Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d') . ' ' . $res->heureFin);
-
-                    // Check for time overlap
-                    if ($currentStart->lt($resEnd) && $currentEnd->gt($resStart)) {
-                        return $sum + $res->nbPersonnes;
-                    }
-                    return $sum;
-                }, 0);
-
-                // Calculate reserved places for the entire company
-                $companyReservationsCount = array_reduce($companyReservations, function ($sum, $res) use ($date, $currentStart, $currentEnd) {
-                    if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
-                        return $sum;
-                    }
-
-                    $resStart = Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d') . ' ' . $res->heureDeb);
-                    $resEnd = Carbon::createFromFormat('Y-m-d H:i:s', $res->dateRdv->format('Y-m-d') . ' ' . $res->heureFin);
-
-                    // Check for time overlap
-                    if ($currentStart->lt($resEnd) && $currentEnd->gt($resStart)) {
-                        return $sum + $res->nbPersonnes;
-                    }
-                    return $sum;
-                }, 0);
-
-                // Calculate remaining places
-                $globalRemaining = $company->capaciteMax - $companyReservationsCount;
-                $activityRemaining = $activity->nbrPlaces - $activityReservations;
+    
+                if ($currentStart->lessThan(now())) {
+                    $startTime->addMinutes($interval);
+                    continue;
+                }
+    
+                $totalReservations = collect($reservations)->filter(function ($res) use ($currentStart, $currentEnd) {
+                    $dateRdv = Carbon::parse($res['dateRdv'])->format('Y-m-d');
+                    $resStart = Carbon::createFromFormat('Y-m-d H:i:s', "{$dateRdv} {$res['heureDeb']}");
+                    $resEnd = Carbon::createFromFormat('Y-m-d H:i:s', "{$dateRdv} {$res['heureFin']}");
+                    return $resStart->lt($currentEnd) && $resEnd->gt($currentStart);
+                })->sum('nbPersonnes');
+    
+                $globalRemaining = $company->capaciteMax - $totalReservations;
+                $activityRemaining = $activity->nbrPlaces - $totalReservations;
                 $remainingPlaces = min($globalRemaining, $activityRemaining);
-
-                // Add current time slot to the result array
+    
                 $timeSlots[] = [
                     'time_range' => $currentStart->format('H:i') . ' - ' . $currentEnd->format('H:i'),
                     'date' => $currentStart->format('Y-m-d'),
-                    'remaining_places' => $remainingPlaces,
+                    'remaining_places' => max(0, $remainingPlaces),
                     'start' => $currentStart->format('H:i'),
                     'end' => $currentEnd->format('H:i'),
                 ];
-
-                // Move to the next interval
+    
                 $startTime->addMinutes($interval);
             }
         }
-
-        return $timeSlots;
-    } */
-    public function calculateTimeSlots(
-        array $plages, 
-        array $reservations, 
-        array $reservationsEntreprise, 
-        object $entreprise, 
-        object $activite, 
-        string $date
-    ): array {
-        $timeSlots = [];
-    
-        foreach ($plages as $plage) {
-            try {
-                $heureDeb = \Carbon\Carbon::parse($plage['heureDeb']);
-                $heureFin = \Carbon\Carbon::parse($plage['heureFin']);
-                $interval = \Carbon\Carbon::parse($plage['interval'])->hour * 60 
-                          + \Carbon\Carbon::parse($plage['interval'])->minute;
-                
-                // ✅ Vérification correcte du format
-                //dump("Plage Start: {$heureDeb}, End: {$heureFin}, Interval: {$interval} min");
-            } catch (\Exception $e) {
-                //dump("Error parsing plage: " . $e->getMessage());
-                continue;
-            }
-    
-            // 🟡 Correction ici : Ajouter une condition pour éviter boucle infinie
-            $loopCount = 0;
-            while ($heureDeb->lessThan($heureFin) && $loopCount < 100) {
-                $currentStart = \Carbon\Carbon::parse($plage['datePlage'])
-                                              ->setTimeFromTimeString($heureDeb->format('H:i:s'));
-                $currentEnd = $currentStart->copy()->addMinutes($interval);
-    
-                //dump("Interval: {$currentStart->format('H:i')} - {$currentEnd->format('H:i')}");
-    
-                // Ajoute un créneau au tableau
-                $timeSlots[] = [
-                    'date' => $currentStart->format('Y-m-d'),
-                    'time_range' => $currentStart->format('H:i') . ' - ' . $currentEnd->format('H:i'),
-                    'remaining_places' => 10, // Test fixe
-                ];
-    
-                $heureDeb->addMinutes($interval);
-                $loopCount++;
-            }
-        }
-    
-        // ✅ Vérification finale
-        //dd('Calculated timeSlots:', $timeSlots);
-    
         return $timeSlots;
     }
-    
+        
 }
 

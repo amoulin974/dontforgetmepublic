@@ -6,7 +6,7 @@ use App\Http\Controllers\reservationController;
 use App\Http\Controllers\entrepriseController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\calendrierController;
-use App\Http\Controllers\parametrageController;
+use App\Http\Controllers\ParametrageController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
 use App\Http\Controllers\userController;
@@ -33,7 +33,7 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     });
 });
 
-Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageController::class)->group(function(){
+Route::prefix('/parametrage')->name('parametrage.')->controller(ParametrageController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
 
@@ -44,7 +44,7 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
         Route::prefix('/plage')->name('plage.')->group(function(){
             Route::post('/', 'ajax')->name('ajax');
             Route::get('/{entreprise}', 'indexPlage')->name('idEntreprise');
-            Route::get('/{entreprise}/look/{activite}', 'indexPlageAsEmploye')->name('idEntrepriseAsEmploye');
+            Route::get('/{entreprise}/look/{employe}', 'indexPlageAsEmploye')->name('idEntrepriseAsEmploye');
         });
 
     });
@@ -97,8 +97,8 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
-            Route::get('/{id}/plage', 'createPlage')->name('createPlage');
-            Route::post('/{id}/plage', 'ajaxPlage')->name('ajaxPlage');
+            Route::get('/{employe}/plage', 'createPlage')->name('createPlage');
+            Route::post('/{employe}/plage', 'ajaxPlage')->name('ajaxPlage');
         });
     });
 });

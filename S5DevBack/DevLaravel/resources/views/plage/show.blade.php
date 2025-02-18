@@ -42,11 +42,12 @@
 <body>
   
 <div class="container-calendar">
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" style="left:20%; margin: 0; color:black;"><i class="fa fa-arrow-left"></i></a>
     <div class="header-profile mb-3">
         <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
-    <p>{{ Auth::user()->nom }} {{ Auth::user()->prenom }} pour l'activité <i>{{ $activite->libelle }}</i></p><br>
+    <h4>Vous ({{ Auth::user()->nom }} {{ Auth::user()->prenom }})</h4><br>
     <div id='calendar'></div>
 
     <!-- Popup Dialog Suppression -->
@@ -64,6 +65,7 @@ var SITEURL = "{{ url('/parametrage/plage/') }}";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
 var curseurUnclickable = 'not-allowed';
+var curseurClickable = 'pointer';
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -86,7 +88,7 @@ var calendar = $('#calendar').fullCalendar({
     allDaySlot: false,
     events: function(start, end, timezone, callback) {
         $.ajax({
-            url: SITEURL + "/" + {{ $entreprise->id }},
+            url: SITEURL + "/" + {{ $entreprise->id }} + "/look/" + {{ Auth::user()->id }} + "/",
             type: 'GET',
             success: function(data) {
                 var events = [];
@@ -98,12 +100,18 @@ var calendar = $('#calendar').fullCalendar({
                     if (this.heureFin == '00:00:00') {
                         end_datetime = this.datePlage.split('T')[0] + 'T' + '23:59:59' + '.000000Z';
                     }
+                    var actToPush = "";
+                    this.activites.forEach(act => {
+                        actToPush += act.libelle + ", ";
+                    });
+                    actToPush = actToPush.slice(0, -2);
                     events.push({
                         id: this.id,
-                        title: this.id,
+                        title: "Votre plage pour : ",
                         start: start_datetime,
                         end: end_datetime,
                         interval: this.interval,
+                        activites: actToPush,
                     });
                 });
                 callback(events);
@@ -125,8 +133,10 @@ var calendar = $('#calendar').fullCalendar({
             element.css('border-color', couleurAjd);
             element.css('cursor', curseurUnclickable);
         }
-        if (event.interval) { // Si le nombre de personnes est renseigné
-            element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
+        if (event.activites) { // Si le nombre de personnes est renseigné
+            element.find('.fc-title').after("<span class=\"intervEvent\">" + event.activites + "</span>");
+            element.css('cursor', curseurClickable);
+            element.find('.fc-list-item-title').append("<span class=\"intervEvent\">" + event.activites + "</span>");
         }
         
     },
@@ -134,6 +144,11 @@ var calendar = $('#calendar').fullCalendar({
     selectHelper: false,
     eventClick: function (event) {
         var eventAct = event;
+        // Vérifier que l'event n'est pas passé
+        if (moment(eventAct.end).isBefore(moment())) {
+            displayWarning("Vous ne pouvez pas modifier un évènement passé");
+        }
+        else{
         $( "#dialog-confirm" ).dialog({
             resizable: false,
             modal: true,
@@ -144,7 +159,6 @@ var calendar = $('#calendar').fullCalendar({
                         url: SITEURL + '/',
                         data: {
                                 id: eventAct.id,
-                                id_activite: {{ $activite->id }},
                                 type: 'delete'
                         },
                         success: function (response) {
@@ -161,7 +175,7 @@ var calendar = $('#calendar').fullCalendar({
                     $( this ).dialog( "close" );
                 }
             }
-        });
+        });}
     },
 });
 

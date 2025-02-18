@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Activite;
 use App\Models\Entreprise;
 use App\Models\Plage;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -292,39 +293,30 @@ class ActiviteController extends Controller
      * @param int $id The ID of the activity.
      * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View Returns a JSON response or a view.
      */
-    public function createPlage(Request $request, Entreprise $entreprise, $id)
+    public function createPlage(Request $request, Entreprise $entreprise, User $employe)
     {
-        // If the request is an AJAX call.
-        if ($request->ajax()) {
-            // For non-guest users.
-            if (Auth::user()->travailler_entreprises
-                    ->where('id', $entreprise->id)
-                    ->first()->pivot->statut != 'Invité') {
-                // Retrieve the specified activity.
-                $activite = Activite::where('id', $id)
-                    ->where('idEntreprise', $entreprise->id)
-                    ->first();
-
-                if ($activite) {
-                    // Get the list of time slot IDs associated with the activity.
-                    $plageIds = $activite->plages()->pluck('idPlage');
-                    // Retrieve the time slots data.
-                    $data = Plage::whereIn('id', $plageIds)
-                        ->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
-                    return response()->json($data);
-                } else {
-                    // Return an error if the activity is not found.
-                    return response()->json(['error' => 'Activite not found'], 404);
+        // Pour récupérer les données
+        if($request->ajax()) {
+        // Cas employé
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
+          // Requête pour récupérer les plages spécifique à l'employé et à l'entreprise choisie
+          $plages = User::where('id', $employe->id)->first()->plages()->where('entreprise_id', $entreprise->id)->get();
+            if ($plages) {
+                // Ajout des activités liées à chacune des plages
+                foreach ($plages as $plage) {
+                    $plage->activites = $plage->activites()->get();
                 }
+                return response()->json($plages);
             } else {
-                // If the user is a guest, return the view for creating a time slot.
-                $service = Activite::findOrFail($id);
-                return view('plage.create', ['entreprise' => $entreprise, 'activite' => $service]);
+                // Handle the case where the activite is not found
+                return response()->json(['error' => 'Plages not found'], 404);
             }
         }
-        // For non-AJAX requests, return the view.
-        $service = Activite::findOrFail($id);
-        return view('plage.create', ['entreprise' => $entreprise, 'activite' => $service]);
+        else {
+            return view('plage.create', ['entreprise' => $entreprise, 'employe' => $employe]);
+        }
+      }
+        return view('plage.create', ['entreprise' => $entreprise, 'employe' => $employe]);
     }
 
     /**
@@ -338,58 +330,54 @@ class ActiviteController extends Controller
      * @param int $id The ID of the activity.
      * @return \Illuminate\Http\JsonResponse Returns a JSON response with the result of the operation.
      */
-    public function ajaxPlage(Request $request, Entreprise $entreprise, $id)
+    public function ajaxPlage(Request $request, Entreprise $entreprise, User $employe)
     {
         switch ($request->type) {
             case 'add':
-                // Create a new time slot with a default interval if none is provided.
-                if (!$request->interval) {
-                    $event = Plage::create([
-                        'heureDeb'      => $request->heureDeb,
-                        'heureFin'      => $request->heureFin,
-                        'datePlage'     => $request->datePlage,
-                        'interval'      => '00:05:00',
-                        'planTables'    => json_encode(['UnTest']),
-                        'entreprise_id' => $request->entreprise_id,
-                    ]);
-                } else {
-                    $event = Plage::create([
-                        'heureDeb'      => $request->heureDeb,
-                        'heureFin'      => $request->heureFin,
-                        'datePlage'     => $request->datePlage,
-                        'interval'      => $request->interval,
-                        'planTables'    => json_encode(['UnPlanDeTables']),
-                        'entreprise_id' => $request->entreprise_id,
-                    ]);
+               if (!$request->interval){
+                 $event = Plage::create([
+                     'heureDeb' => $request->heureDeb,
+                     'heureFin' => $request->heureFin,
+                     'datePlage' => $request->datePlage,
+                     'interval' => '00:05:00',
+                     'planTables' => json_encode(['UnTest']),
+                     'entreprise_id' => $entreprise->id,
+                 ]);
+               }
+               else {
+                 $event = Plage::create([
+                     'heureDeb' => $request->heureDeb,
+                     'heureFin' => $request->heureFin,
+                     'datePlage' => $request->datePlage,
+                     'interval' => $request->interval,
+                     'planTables' => json_encode(['UnPlanDeTables']),
+                     'entreprise_id' => $entreprise->id,
+                 ]);
+               }
+
+               $event->employes()->attach($employe->id);
+
+               foreach($request->activites_affecter as $id){
+                    $event->activites()->attach($id);
                 }
 
-                // Attach the selected employees to the time slot.
-                foreach ($request->employes_affecter as $idEmploye) {
-                    $event->employes()->attach($idEmploye);
-                }
-
-                // Link the time slot to the specified activity.
-                $event->activites()->attach($id);
-
-                return response()->json($event);
-                break;
-
+                $event->activites = $event->activites()->get();
+               
+               return response()->json($event);
+              break;
+   
             case 'update':
-                // Update the time slot's start time, end time, and date.
-                $event = Plage::where($request->id)->first()->update([
-                    'heureDeb'  => $request->heureDeb,
-                    'heureFin'  => $request->heureFin,
-                    'datePlage' => $request->datePlage,
-                ]);
-
-                return response()->json($event);
-                break;
-
+               $event = Plage::where("id",$request->id)->first()->update([
+                 'heureDeb' => $request->heureDeb,
+                 'heureFin' => $request->heureFin,
+                 'datePlage' => $request->datePlage,
+               ]);
+  
+               return response()->json($event);
+              break;
+   
             case 'delete':
-                // Retrieve the activity and the time slot to delete.
-                $activite = Activite::where("id", $id)->first();
-                $plage = Plage::where("id", $request->id)->first();
-                // Detach all associated employees and activities.
+                $plage = Plage::where("id",$request->id)->first();
                 $plage->employes()->detach();
                 $plage->activites()->detach();
                 $event = $plage->delete();
@@ -398,20 +386,17 @@ class ActiviteController extends Controller
                 break;
 
             case 'modify':
-                // Modify the time slot by updating the employee assignments.
-                $event = Plage::where("id", $request->id)->first();
 
-                // Detach current employee assignments.
-                $event->employes()->detach();
-
-                // Attach the newly selected employees.
-                foreach ($request->employes_affecter as $idEmploye) {
-                    $event->employes()->attach($idEmploye);
+               $event = Plage::where("id",$request->id)->first();
+                $event->activites()->detach();
+                foreach($request->activites_affecter as $id){
+                    $event->activites()->attach($id);
                 }
+                $event->activites = $event->activites()->get();
 
-                return response()->json($event);
-                break;
-
+               return response()->json($event);
+              break;
+              
             default:
                 // If the operation type is not recognized, do nothing.
                 break;
