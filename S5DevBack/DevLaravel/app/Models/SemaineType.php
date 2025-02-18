@@ -27,7 +27,8 @@ class SemaineType extends Model
      */
     protected $fillable = [
         'libelle',
-        'planning'
+        'planning',
+        'idEntreprise'
     ];
 
     /**
@@ -36,7 +37,8 @@ class SemaineType extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'planning' => 'array'
+        'planning' => 'array',
+        'idEntreprise' => 'integer'
     ];
 
     // METHODS
