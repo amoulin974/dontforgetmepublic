@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Plage;
 use App\Models\Activite;
 use App\Models\Entreprise;
+use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
  * planning time slots (plages) for an enterprise, handling invitation responses, and performing CRUD
  * operations on time slots.
  */
-class parametrageController extends Controller
+class ParametrageController extends Controller
 {
     /**
      * Display the main configuration view.
@@ -114,46 +115,44 @@ class parametrageController extends Controller
      *
      * @return \Illuminate\Http\Response The response containing JSON data or the scheduling view.
      */
-    public function indexPlageAsEmploye(Request $request, Entreprise $entreprise, Activite $activite)
+    public function indexPlageAsEmploye(Request $request, Entreprise $entreprise, User $employe)
     {
-        // For AJAX requests, return time slots specific to the activity.
-        if ($request->ajax()) {
-            if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
-                // Retrieve the activity record for the given enterprise.
-                $activites = Activite::where('id', $activite->id)
-                    ->where('idEntreprise', $entreprise->id)
-                    ->first();
-
-                if ($activites) {
-                    $plageIds = $activites->plages()->pluck('idPlage');
-                    $data = Plage::whereIn('id', $plageIds)
-                        ->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
-                    return response()->json($data);
+        // Pour récupérer les données
+        if($request->ajax()) {
+            if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
+            // Requête pour récupérer les plages spécifique à l'employé et à l'entreprise choisie
+            $plages = User::where('id', $employe->id)->first() ->plages()->where('entreprise_id', $entreprise->id)->get();
+                if ($plages) {
+                    // Ajout des activités liées à chacune des plages
+                    foreach ($plages as $plage) {
+                        $plage->activites = $plage->activites()->get();
+                    }
+                    return response()->json($plages);
                 } else {
-                    // Return an error if the activity is not found.
-                    return response()->json(['error' => 'Activite not found'], 404);
+                    // Handle the case where the activite is not found
+                    return response()->json(['error' => 'Plages not found'], 404);
                 }
             }
         }
-        // For non-AJAX requests, verify user authentication and enterprise association.
+        // Vérification utilisateur travaille
         if (!Auth::check()) {
             return redirect()->route('login');
-        } else if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->isEmpty()) {
+        }
+        else if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->isEmpty()) {
             return redirect()->route('parametrage.index');
-        } else {
-            if (
-                Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé' ||
-                Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin'
-            ) {
-                // Return the scheduling view with the specified activity.
-                return view('plage.show', [
-                    'user'       => Auth::user(),
-                    'entreprise' => $entreprise,
-                    'activite'   => $activite,
-                ]);
-            } else {
-                // Fallback redirection (normally not reached).
-                return redirect()->route('parametrage.index');
+        }
+        else {
+            if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé' || Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {
+            // Sinon on renvoie la vue admin
+            return view('plage.show', [
+                'user' => Auth::user(),
+                'entreprise' => $entreprise,
+                'employe' => $employe,
+            ]);
+            }
+            else {
+            // Sinon erreur normalement non atteint
+            return redirect()->route('parametrage.index');
             }
         }
     }
@@ -262,9 +261,10 @@ class parametrageController extends Controller
 
             case 'delete':
                 // Find the time slot. Note: findOrFail returns a model, so "first()" is not needed.
-                $event = Plage::findOrFail($request->id);
+                $event = Plage::where("id",$request->id)->first();
                 // Detach all related activities.
                 $event->activites()->detach();
+                $event->employes()->detach();
                 // Delete the time slot.
                 $event = $event->delete();
                 return response()->json($event);

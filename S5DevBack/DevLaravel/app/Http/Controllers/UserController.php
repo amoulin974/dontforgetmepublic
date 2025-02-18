@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
  *
  * This controller handles displaying the user profile, editing the profile form, and updating the user's information.
  */
-class userController extends Controller
+class UserController extends Controller
 {
     /**
      * Display the user profile index view.
