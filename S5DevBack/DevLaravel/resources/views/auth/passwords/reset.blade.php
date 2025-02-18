@@ -1,76 +1,68 @@
 @extends('layouts.app')
 
-@section('title', 'Réinitialiser votre mdp')
+@section('title', 'Réinitialiser votre mot de passe')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <!-- En-tête de la carte pour réinitialisation du mot de passe -->
-                    <div class="card-header">{{ __('Reset Password') }}</div>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-md-6">
+        <a href="/" class="btn btn-outline-secondary mb-3">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <h3 class="text-center mb-4">
+            {{ __('Reset Password') }}
+        </h3>
+        <form method="POST" action="{{ route('password.update') }}">
+            @csrf
 
-                    <div class="card-body">
-                        <!-- Formulaire pour réinitialiser le mot de passe -->
-                        <form method="POST" action="{{ route('password.update') }}">
-                            @csrf
+            <input type="hidden" name="token" value="{{ $token }}">
 
-                            <!-- Champ caché pour le token de réinitialisation -->
-                            <input type="hidden" name="token" value="{{ $token }}">
+            <!-- Adresse Email -->
+            <div class="mb-4">
+                <label for="email" class="form-label">
+                    {{ __('Email Address') }}
+                </label>
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
+                       name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus 
+                       placeholder="Adresse Email">
 
-                            <div class="row mb-3">
-                                <!-- Champ de saisie pour l'adresse email -->
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-
-                                    <!-- Message d'erreur en cas de validation incorrecte de l'email -->
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <!-- Champ de saisie pour le nouveau mot de passe -->
-                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                    <!-- Message d'erreur en cas de validation incorrecte du mot de passe -->
-                                    @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <!-- Champ de confirmation du mot de passe -->
-                                <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                </div>
-                            </div>
-
-                            <div class="row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <!-- Bouton pour réinitialiser le mot de passe -->
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Reset Password') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
-        </div>
+
+            <!-- Nouveau mot de passe -->
+            <div class="mb-4">
+                <label for="password" class="form-label">
+                    {{ __('Password') }}
+                </label>
+                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
+                       name="password" required autocomplete="new-password" placeholder="Entrez un nouveau mot de passe">
+
+                @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <!-- Confirmer le mot de passe -->
+            <div class="mb-4">
+                <label for="password-confirm" class="form-label">
+                    {{ __('Confirm Password') }}
+                </label>
+                <input id="password-confirm" type="password" class="form-control" 
+                       name="password_confirmation" required autocomplete="new-password" placeholder="Confirmez le mot de passe">
+            </div>
+
+            <!-- Bouton de réinitialisation -->
+            <div class="d-grid mb-4">
+                <button type="submit" class="btn btn-dark">
+                    {{ __('Reset Password') }}
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 @endsection

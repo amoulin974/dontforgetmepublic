@@ -52,16 +52,16 @@
                     </button>
                 </div>
 
-                <!-- Liens d'aide supplémentaires -->
-                <div class="text-center">
-                    <p class="mb-1">
-                        Vous n'avez pas de compte ? <a href="{{ route('register.choose.account.type') }}">S'inscrire</a>
-                    </p>
-                    <p>
-                        Mot de passe oublié ? <a href="{{ route('password.request') }}">cliquez ici</a>
-                    </p>
-                </div>
-            </form>
-        </div>
+            <!-- Liens supplémentaires -->
+            <div class="text-center">
+                <p class="mb-1">
+                    Vous n'avez pas de compte ? <a href="{{ route('register.choose.account.type') }}">S'inscrire</a>
+                </p>
+                <p>
+                    Mot de passe oublié ? <a href="{{ route('password.request') }}">Cliquez ici</a>
+                </p>
+            </div>
+        </form>
     </div>
+</div>
 @endsection
