@@ -266,7 +266,7 @@ var calendar = $('#calendar').fullCalendar({
                             "Ajouter": function() {
                                 //var interv = $('#interv').val();
                                 if (checked.length == 0){
-                                displayWarning('Veuillez sélectionner au moins un employé.');
+                                displayWarning('{{__("Please select one or more employees")}}');
                                 }
                                 else {
                                     $.ajax({
@@ -284,7 +284,7 @@ var calendar = $('#calendar').fullCalendar({
                                         success: function (data) {
                                             $('#dialogTitre').dialog('close');
                                             uncheckAll();
-                                            displaySuccess("Plage ajoutée avec succès");
+                                            displaySuccess("{{__('Slot successfully modified')}}");
 
                                             // Désélectionner après la sélection
                                             $('#calendar').fullCalendar('unselect');
@@ -310,7 +310,7 @@ var calendar = $('#calendar').fullCalendar({
                     $('#calendar').fullCalendar('unselect');
                 }
             } else {
-                displayWarning("Impossible de créer une plage de moins de {{ $activite->duree }} minutes");
+                displayWarning("{{__('Unable to create a time slot which is less than ')}}{{ $activite->duree }}{{(' minutes long')}}");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -325,7 +325,7 @@ var calendar = $('#calendar').fullCalendar({
         var originalEnd = event.end ? moment(event.end).subtract(delta) : originalStart;
 
         if (originalStart.isBefore(moment())) {
-            displayWarning("Impossible de déplacer un événement passé ou en cours");
+            displayWarning("{{__('Unable to move a past or ongoing event')}}");
             $('#calendar').fullCalendar('unselect');
             revertFunc();
         }
@@ -378,7 +378,7 @@ var calendar = $('#calendar').fullCalendar({
 
         // Vérifiez si la date de début est passée
         if (moment().isAfter(event.start) || moment().isAfter(event.end)) {
-            displayWarning("Vous ne pouvez pas modifier une plage passée ou en cours");
+            displayWarning("{{__('You cant edit a past or ongoing event')}}");
         } else {
             var eventAct = event;
             $('#dialogModif').dialog({
@@ -395,7 +395,7 @@ var calendar = $('#calendar').fullCalendar({
                 buttons: {
                     "Modifier": function() {
                         if (checked.length == 0){
-                        displayWarning('Veuillez sélectionner au moins un employé.');
+                        displayWarning('{{__("Please select one or more employees")}}');
                         }
                         else {
                             console.log(checked);
@@ -412,7 +412,7 @@ var calendar = $('#calendar').fullCalendar({
                                     $('#dialogModif').dialog('close');
                                     uncheckAll();
 
-                                    displaySuccess("Plage modifiée avec succès");
+                                    displaySuccess("{{__('Slot successfully modified')}}");
 
                                     // Désélectionner après la sélection
                                     $('#calendar').fullCalendar('unselect');
@@ -504,7 +504,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             } else {
                 revertFunc(); // Revert the change if the update fails
-                displayWarning("Impossible de modifier une plage pour qu'elle ait un intervalle de moins de {{ $activite->duree }} minutes");
+                displayWarning("{{__('Unable to give a time slot an interval which is less than')}} {{ $activite->duree }}{{(' minutes long')}}");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -519,26 +519,26 @@ var calendar = $('#calendar').fullCalendar({
 function selectable(start, end, idEvent) {
     // Vérifiez si la date de début est passée
     if (moment().isAfter(start)) {
-        displayWarning("Impossible de créer une plage dans le passé");
+        displayWarning("{{__('Unable to create a time slot in the past')}}");
         return false;
     }
     // Vérifiez si la date de fin est passée
     if (moment().isAfter(end)) {
-        displayWarning("Impossible de créer une plage dans le passé");
+        displayWarning("{{__('Unable to create a time slot in the past')}}");
         return false;
     }
     var events = $('#calendar').fullCalendar('clientEvents');
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
         if (start.isBefore(event.end) && end.isAfter(event.start) && event.id != idEvent) {
-            displayWarning("Impossible de créer une plage en même temps qu'une autre");
+            displayWarning("{{__('Unable to create 2 time slots simultaneously')}}");
             return false;
         }
     }
 
     // Vérifiez que la plage est un multiple de la durée de l'activité
     if(moment(end).diff(moment(start), 'milliseconds') % DUREE_EN_MS != 0){
-        displayWarning("Impossible de créer une plage qui ne respecte pas l'intervalle de l'activité");
+        displayWarning("{{__('Unable to create a time slot that doesn't suit the activitys interval')}}");
         return false;
     }
 
@@ -593,7 +593,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succès !');
+    toastr.success(message, '{{__("Success!")}}');
 }
 
 function displayError(message) {
@@ -602,7 +602,7 @@ function displayError(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !');
+    toastr.error(message, '! {{__("Error")}} !');
 }
 
 function displayMessage(message) {
@@ -629,7 +629,7 @@ function displayErrorWithButton(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !', {
+    toastr.error(message, '! {{__("Error")}} !', {
         timeOut: 0,
         extendedTimeOut: 0
     });

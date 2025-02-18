@@ -213,7 +213,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succès !');
+    toastr.success(message, '{{__("Success!")}}');
 }
 
 function displayError(message) {
@@ -222,7 +222,7 @@ function displayError(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !');
+    toastr.error(message, '! {{__("Error")}} !');
 }
 
 function displayMessage(message) {
@@ -249,7 +249,7 @@ function displayErrorWithButton(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !', {
+    toastr.error(message, '! {{__("Error")}} !', {
         timeOut: 0,
         extendedTimeOut: 0
     });

@@ -106,7 +106,7 @@ function accepterInvit(eId, eLib) {
             idEntreprise: eId,
         },
         success: function (data) {
-            displaySuccess('Vous avez accepté l\'invitation.\nVous travaillez maintenant pour ' + eLib);
+            displaySuccess('{{__("You accepted the invite. Now, you work for ")}}' + eLib);
             // Transformer la possibilité d'accepter en la possibilité de visualiser
             location.reload();
             /* $("#entreprise" + eId + " a").remove();

@@ -166,7 +166,7 @@
                     $("#user" + uId + " a").remove();
                     $("#user" + uId).append('<a onclick="retrograder('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">{{__("Downgrade")}}</a>');
                     $("#user" + uId).append('<a onclick="supprimer('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">{{__("Delete")}}</a>');
-                    displaySuccess('Vous avez promu ' +  uName +' ' + uPrenom + '. Il est maintenant administrateur.');
+                    displaySuccess('{{__("You upgraded ")}}' +  uName +' ' + uPrenom + '{{__(". Now hes an administrator")}}');
                 },
                 error: function (data) {
                     displayError('Erreur lors de la promotion. Réessayez...');
@@ -188,7 +188,7 @@
                     $("#user" + uId + " a").remove();
                     $("#user" + uId).append('<a onclick="promouvoir('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary accept">{{__("Upgrade")}}</a>');
                     $("#user" + uId).append('<a onclick="supprimer('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">{{__("Delete")}}</a>');
-                    displayMessage('Vous avez rétrogrdé ' +  uName +' ' + uPrenom + '. Il est maintenant employé.');
+                    displayMessage('{{__("You downgraded ")}}' +  uName +' ' + uPrenom + '{{__(". Now hes an employee")}}');
                 },
                 error: function (data) {
                     displayError('Erreur lors du rétrogradage. Réessayez...');
@@ -309,13 +309,13 @@
                                 }
                             @endforeach
                             if(email == ""){
-                                displayWarning('Veuillez saisir un email.');
+                                displayWarning('{{__("Please enter an email")}}');
                             }
                             else if(boolExist == false){
                                 displayError('Cet email ne correspond à aucun compte.');
                             }
                             if (checked.length == 0){
-                                displayWarning('Veuillez sélectionner au moins une activité.');
+                                displayWarning('{{__("Please select one or more activities")}}');
                             }
                             if (checked.length != 0 && boolExist){
                                 $.ajax({
@@ -328,8 +328,8 @@
                                         activites: checked,
                                     },
                                     success: function (data) {
-                                        displaySuccess('Vous avez invité ' + email + ' (' + data.nom + ' ' + data.prenom + ') à rejoindre votre entreprise.');
-                                        $(".container-entreprise").last().after('<div class="container-entreprise" id="user'+data.id+'"> <p><strong>{{__("User")}} :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>{{__("Status")}} :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
+                                        displaySuccess('{{("You invited")}} ' + email + ' (' + data.nom + ' ' + data.prenom + ') {{("to join your business.")}}');
+                                        $(".container-entreprise").last().after('<div class="container-entreprise" id="user'+data.id+'"> <p><strong>{{__("User")}} :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>{{__("Status")}} :</strong> {{__("Guest")}}</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">{{__("Cancel invite")}}</a> </div>');
 
                                         $('#dialog').dialog('close');
                                         $("#employe").val('');
@@ -385,7 +385,7 @@ function accepterInvit(eId, eLib) {
             idEntreprise: eId,
         },
         success: function (data) {
-            displaySuccess('Vous avez accepté l\'invitation.\nVous travaillez maintenant pour ' + eLib);
+            displaySuccess('{{__("You accepted the invite. Now, you work for ")}}' + eLib);
             // Retirer l'invitation
             $("#invitation").remove();
             // Retirer l'employé correspondant

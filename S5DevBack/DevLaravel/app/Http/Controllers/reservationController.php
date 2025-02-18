@@ -158,7 +158,7 @@ class reservationController extends Controller
 
         return redirect()
             ->route('reservation.index')
-            ->with('success', 'Votre réservation a été enregistrée avec succès !');
+            ->with('success', __('Your booking has been successfully modified !'));
     }
 
 

@@ -236,7 +236,7 @@ var calendar = $('#calendar').fullCalendar({
                                         type: "POST",
                                         success: function (data) {
                                             $('#dialogSelect').dialog('close');
-                                            displaySuccess("Évènement ajouté avec succès");
+                                            displaySuccess("{{__('Event successfully added')}}");
 
                                             /* calendar.fullCalendar('renderEvent', // eventRender
                                                 {
@@ -258,7 +258,7 @@ var calendar = $('#calendar').fullCalendar({
                                     });
                                 }
                                 else {
-                                    displayWarning("Informations manquantes");
+                                    displayWarning("{{__('Missing information')}}");
                                 }
                                 //$(this).dialog("close");
                             },
@@ -304,7 +304,7 @@ var calendar = $('#calendar').fullCalendar({
                                 type: "POST",
                                 success: function (data) {
                                     $('#dialogTitre').dialog('close');
-                                    displaySuccess("Évènement ajouté avec succès");
+                                    displaySuccess("{{__('Event successfully added')}}");
 
                                     // Désélectionner après la sélection
                                     $('#calendar').fullCalendar('unselect');
@@ -318,7 +318,7 @@ var calendar = $('#calendar').fullCalendar({
                             });
                         }
                         else {
-                            displayWarning("Informations manquantes");
+                            displayWarning("{{__('Missing information')}}");
                         }
                         //$(this).dialog("close");
                     },
@@ -388,7 +388,7 @@ var calendar = $('#calendar').fullCalendar({
                             success: function (data) {
                                 $('#dialogModif').dialog('close');
 
-                                displaySuccess("Évènement modifié avec succès");
+                                displaySuccess("{{__('Event successfully modified')}}");
 
                                 // Désélectionner après la sélection
                                 $('#calendar').fullCalendar('unselect');
@@ -403,7 +403,7 @@ var calendar = $('#calendar').fullCalendar({
                         });
                     }
                     else {
-                        displayWarning("Informations manquantes");
+                        displayWarning("{{__('Missing information')}}");
                     }
                 },
                 "Supprimer": function() {
@@ -546,7 +546,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succès !');
+    toastr.success(message, '{{__("Success!")}}');
 }
 
 function displayError(message) {
@@ -555,7 +555,7 @@ function displayError(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !');
+    toastr.error(message, '! {{__("Error")}} !');
 }
 
 function displayMessage(message) {
@@ -582,7 +582,7 @@ function displayErrorWithButton(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !', {
+    toastr.error(message, '! {{__("Error")}} !', {
         timeOut: 0,
         extendedTimeOut: 0
     });

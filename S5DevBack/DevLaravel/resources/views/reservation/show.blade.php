@@ -42,7 +42,7 @@
                    @if($reservation->nbPersonnes > 1)
                        <p>{{__(':count people are coming', ['count' => $reservation->nbPersonnes] )}}</p>
                    @else
-                       <p>{{__('You are coming ')}}<strong>{{__('by yourself')}}</strong></p>
+                       <p>{{__('You are coming ')}}<strong>{{__('alone')}}</strong></p>
                    @endif
             </div>
         </div>

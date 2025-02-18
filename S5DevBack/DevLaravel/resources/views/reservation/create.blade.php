@@ -41,7 +41,7 @@
                                             $heureFin = \Carbon\Carbon::parse($plage->heureFin);
                                             $interval = \Carbon\Carbon::parse($plage->interval)->minute + \Carbon\Carbon::parse($plage->interval)->hour * 60;
                                         } catch (\Exception $e) {
-                                            displayWarning('Erreur de formatage des plages horaires.');
+                                            displayWarning('{{__("Time slot formatting error")}}');
                                             continue;
                                         }
                                     @endphp
@@ -123,7 +123,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-primary" id="reservationModalLabel">
-                                <i class="bi bi-calendar-check"></i> {{__('"Book a time slot"')}}
+                                <i class="bi bi-calendar-check"></i> {{__('Book a time slot')}}
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>

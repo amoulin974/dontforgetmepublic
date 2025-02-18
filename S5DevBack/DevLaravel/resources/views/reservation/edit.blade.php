@@ -91,7 +91,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-primary" id="reservationModalLabel">
-                                <i class="bi bi-calendar-check"></i> {{__('"Book a time slot"')}}
+                                <i class="bi bi-calendar-check"></i> {{__('Book a time slot')}}
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
