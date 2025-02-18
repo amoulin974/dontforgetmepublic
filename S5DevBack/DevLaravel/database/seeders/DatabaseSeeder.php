@@ -190,6 +190,7 @@ class DatabaseSeeder extends Seeder
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne', 'en personne']),
                 'idCreateur' => 1,
+                'capaciteMax' => 10,
             ],
             [
                 'libelle' => 'Innovative Solutions',
@@ -203,6 +204,7 @@ class DatabaseSeeder extends Seeder
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne']),
                 'idCreateur' => 2,
+                'capaciteMax' => 10,
             ],
             [
                 'libelle' => 'HealthCare Pro',
@@ -216,6 +218,7 @@ class DatabaseSeeder extends Seeder
                 'publier' => 1,
                 'typeRdv' => json_encode(['en personne']),
                 'idCreateur' => 3,
+                'capaciteMax' => 10,
             ],
             [
                 'libelle' => 'Green Energy Co.',
@@ -229,6 +232,7 @@ class DatabaseSeeder extends Seeder
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne', 'en personne']),
                 'idCreateur' => 4,
+                'capaciteMax' => 10,
             ],
             [
                 'libelle' => 'EduTech Solutions',
@@ -242,6 +246,7 @@ class DatabaseSeeder extends Seeder
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne']),
                 'idCreateur' => 5,
+                'capaciteMax' => 10,
             ],
         ];
 
@@ -257,51 +262,61 @@ class DatabaseSeeder extends Seeder
                 'libelle' => 'Développement Web Frontend',
                 'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Consultation en Stratégie Digitale',
                 'duree' => '01:30:00',
                 'idEntreprise' => 2, // Innovative Solutions
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Soin Médical (Consultation)',
                 'duree' => '01:30:00',
                 'idEntreprise' => 3, // HealthCare Pro
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Installation de Panneaux Solaires',
                 'duree' => '01:30:00',
                 'idEntreprise' => 4, // Green Energy Co.
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Formation en Programmation Python',
                 'duree' => '01:30:00',
                 'idEntreprise' => 5, // TechCorp
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Réparation Informatique',
                 'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Consultation en Énergie Durable',
                 'duree' => '01:30:00',
                 'idEntreprise' => 4, // Green Energy Co.
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Coaching Professionnel',
                 'duree' => '01:30:00',
                 'idEntreprise' => 2, // Innovative Solutions
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Suivi Préventif Santé',
                 'duree' => '01:30:00',
                 'idEntreprise' => 3, // HealthCare Pro
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Développement d\'Applications Mobiles',
                 'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
+                'nbrPlaces' => 10,
             ],
         ];
 
