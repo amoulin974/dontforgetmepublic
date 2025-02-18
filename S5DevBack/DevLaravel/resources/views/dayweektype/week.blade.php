@@ -124,6 +124,15 @@
 </div>
 
 <script>
+var SEMAINIER = {
+    "lundi" : 0,
+    "mardi" : 1,
+    "mercredi" : 2,
+    "jeudi" : 3,
+    "vendredi" : 4,
+    "samedi" : 5,
+    "dimanche" : 6
+};
 $(document).ready(function () {
 
 var currentColor = $('#inputColor').val();
@@ -145,15 +154,6 @@ var currentColor = $('#inputColor').val();
 var SITEURL = "{{ url('/entreprise/') }}";
 SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/week";
 var DUREE_EN_MS = 1;
-var semainier = {
-    "lundi" : 0,
-    "mardi" : 1,
-    "mercredi" : 2,
-    "jeudi" : 3,
-    "vendredi" : 4,
-    "samedi" : 5,
-    "dimanche" : 6
-};
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -190,7 +190,7 @@ $.ajaxSetup({
                             var end_datetime;
                             var planningOfWeek = data[0].planning;
                             for (var dayFullLetter in planningOfWeek) {
-                                var momentDay =  moment().startOf('week').add(1,'days').add(semainier[dayFullLetter],'days').format('YYYY-MM-DD');
+                                var momentDay =  moment().startOf('week').add(1,'days').add(SEMAINIER[dayFullLetter],'days').format('YYYY-MM-DD');
                                 var dayPlanning = planningOfWeek[dayFullLetter];
                                 for (var indexPlage in planningOfWeek[dayFullLetter]) {
                                     start_datetime = momentDay + 'T' + dayPlanning[indexPlage]['start'] +':00.000000Z';
@@ -255,7 +255,7 @@ $.ajaxSetup({
                                         var events = [];
                                         var start_datetime;
                                         var end_datetime;
-                                        var momentDay = moment().startOf('week').add(1,'days').add(semainier[day],'days').format('YYYY-MM-DD');
+                                        var momentDay = moment().startOf('week').add(1,'days').add(SEMAINIER[day],'days').format('YYYY-MM-DD');
                                         var planning = data[0].planning;
                                         for (var plage in planning) {
                                             start_datetime = momentDay + 'T' + planning[plage]['start'] +':00.000000Z';
@@ -466,7 +466,7 @@ $.ajaxSetup({
                             var end_datetime;
                             var planningOfWeek = data[0].planning;
                             for (var dayFullLetter in planningOfWeek) {
-                                var momentDay =  moment().startOf('week').add(1,'days').add(semainier[dayFullLetter],'days').format('YYYY-MM-DD');
+                                var momentDay =  moment().startOf('week').add(1,'days').add(SEMAINIER[dayFullLetter],'days').format('YYYY-MM-DD');
                                 var dayPlanning = planningOfWeek[dayFullLetter];
                                 for (var indexPlage in planningOfWeek[dayFullLetter]) {
                                     start_datetime = momentDay + 'T' + dayPlanning[indexPlage]['start'] +':00.000000Z';
@@ -526,7 +526,7 @@ var calendar = $('#calendar').fullCalendar({
                 var end_datetime;
                 var planningOfWeek = data[0].planning;
                 for (var dayFullLetter in planningOfWeek) {
-                    var momentDay =  moment().startOf('week').add(1,'days').add(semainier[dayFullLetter],'days').format('YYYY-MM-DD');
+                    var momentDay =  moment().startOf('week').add(1,'days').add(SEMAINIER[dayFullLetter],'days').format('YYYY-MM-DD');
                     var dayPlanning = planningOfWeek[dayFullLetter];
                     for (var indexPlage in planningOfWeek[dayFullLetter]) {
                         start_datetime = momentDay + 'T' + dayPlanning[indexPlage]['start'] +':00.000000Z';

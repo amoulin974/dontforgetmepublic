@@ -82,7 +82,8 @@
                 @endphp
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
-                    <div class="container-entreprise" id="user{{$user->id}}" style="width:100%;">
+                    <div class="container-entreprise" id="user{{$user->id}}" style="width:100%; display:flex;">
+                        <div style="flex-basis: 60%">
                         <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                         <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                         <div style="display: inline-flex; width: 100%;">
@@ -112,9 +113,18 @@
                         @endif
                         @endif
                         </div>
+                        </div>
+                        <div style="flex-basis: 40%">
+                        <ul><strong>Activité :</strong>
+                            @foreach($user->travailler_entreprises->where('id', $entreprise->id)->first()->activites as $activite)
+                                <li>{{ $activite->libelle }}</li>
+                            @endforeach
+                        </ul>
+                        </div>
                     </div>
                     @else
-                        <div class="container-entreprise" id="user{{$user->id}}" {{-- style="display: inline-flex; flex:1" --}}>
+                        <div class="container-entreprise" id="user{{$user->id}}" style="display: flex;">
+                            <div style="flex-basis: 60%">
                             <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
                             <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                             @if ($user->id == $entreprise->idCreateur)
@@ -136,6 +146,14 @@
                                         <a onclick="annulerInvit({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Annuler l'invitation</a>
                                 @endif
                             @endif
+                            </div>
+                            <div style="flex-basis: 40%">
+                            <ul><strong>Activité :</strong>
+                                @foreach($user->travailler_entreprises->where('id', $entreprise->id)->first()->activites as $activite)
+                                    <li>{{ $activite->libelle }}</li>
+                                @endforeach
+                            </ul>
+                            </div>
                         </div>
                     @endif
                 @endforeach
