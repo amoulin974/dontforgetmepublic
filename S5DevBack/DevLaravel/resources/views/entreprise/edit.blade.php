@@ -45,6 +45,8 @@
                         <option value="Restaurant" {{ old('metier', $entreprise->metier) == 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
                         <option value="Coiffeur" {{ old('metier', $entreprise->metier) == 'Coiffeur' ? 'selected' : '' }}>Coiffeur</option>
                         <option value="Avocat" {{ old('metier', $entreprise->metier)  == 'Avocat' ? 'selected' : '' }}>Avocat</option>
+                        <option value="Auto-école" {{ old('metier', $entreprise->metier) == 'Auto-école' ? 'selected' : '' }}>Auto-école</option>
+                        <option value="Autres" {{ old('metier', $entreprise->metier)  == 'Autres' ? 'selected' : '' }}>Autres</option>
                     </select>
                 </div>
                 <div class="mb-2">

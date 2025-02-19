@@ -57,6 +57,8 @@
                 <option value="Restaurant" {{ old('metier', session('company.metier')) == 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
                 <option value="Coiffeur" {{ old('metier', session('company.metier')) == 'Coiffeur' ? 'selected' : '' }}>Coiffeur</option>
                 <option value="Avocat" {{ old('metier', session('company.metier')) == 'Avocat' ? 'selected' : '' }}>Avocat</option>
+                <option value="Auto-école" {{ old('metier', session('company.metier')) == 'Auto-école' ? 'selected' : '' }}>Auto-école</option>
+                <option value="Autres" {{ old('metier', session('company.metier')) == 'Autres' ? 'selected' : '' }}>Autres</option>
                 {{-- Ajoute ici la liste des métiers pertinents --}}
             </select>
             @error('metier')

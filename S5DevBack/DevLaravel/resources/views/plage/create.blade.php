@@ -432,7 +432,7 @@ $('#loadWeekType').click(function() {
                                                             }); */
                                                             var eventsAct = $('#calendar').fullCalendar('clientEvents');
                                                             eventsAct.forEach(function(eventAct) {
-                                                                if (moment(eventAct.end).isAfter(minStart_datetime) && moment(eventAct.start).isBefore(maxEnd_datetime)) {
+                                                                if (moment(eventAct.end).isAfter(minStart_datetime) && moment(eventAct.start).isBefore(maxEnd_datetime) && eventAct.start.format('dddd') == day) {
                                                                     $('#calendar').fullCalendar('removeEvents', eventAct.id);
                                                                     $.ajax({
                                                                         type: "POST",

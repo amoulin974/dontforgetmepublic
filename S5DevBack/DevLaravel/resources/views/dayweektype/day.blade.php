@@ -69,10 +69,8 @@
 
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
-        <form>
             <label for="titre">Libellé de la plage :</label>
             <input type="text" id="titre" name="titre" style="width: 100%;"><br>
-        </form>
     </div>
 
     <!-- Popup Dialog -->
@@ -82,14 +80,12 @@
 
     <!-- Popup Dialog Sélection Journée -->
     <div id="dialogDaySelect" title="Charger une journée type" style="display:none;">
-        <form>
             <p>Quelle journée chosir ?</p>
             <select id="daySelect" name="daySelect">
                 @foreach ($jours as $jour)
                     <option value="{{ $jour->id }}">{{ $jour->libelle }}</option>
                 @endforeach
             </select>
-        </form>
     </div>
 
     <!-- Popup Dialog Suppression -->
