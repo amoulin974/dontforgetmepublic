@@ -40,6 +40,7 @@ class EditActivityTest extends TestCase
         ]); 
 
         $activite = Activite::factory()->create([
+            'nbrPlaces' => 10,
             'idEntreprise' => $entreprise->id, 
         ]); 
 
