@@ -991,9 +991,10 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../app \
-                         ../python-scripts \
-                         mainpage.dox
+INPUT                  = ../python-scripts \
+                         mainpage.dox \
+                         ../app/Http/Controllers \
+                         ../app/Models
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -2949,8 +2950,6 @@ GENERATE_LEGEND        = YES
 # The default value is: YES.
 
 DOT_CLEANUP            = NO
-
-DOT_EXTRA_ARGS         = -Grankdir=LR
 
 # You can define message sequence charts within Doxygen comments using the \msc
 # command. If the MSCGEN_TOOL tag is left empty (the default), then Doxygen will

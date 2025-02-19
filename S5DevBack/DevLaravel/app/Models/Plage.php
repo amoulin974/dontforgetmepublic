@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file Plage.php
+ * @brief Eloquent model to manage time slots in the Laravel application.
+ */
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +14,8 @@ use App\Models\Activite;
 use App\Models\User;
 
 /**
- * @brief The Plage model represents a time slot.
+ * @class Plage
+ * @brief Represents a time slot.
  *
  * This model defines the attributes and relationships for a time slot (Plage).
  * A Plage is associated with an enterprise, may have many activities, and can be linked
@@ -22,7 +26,6 @@ class Plage extends Model
     use HasFactory;
 
     // VARIABLES
-
     /**
      * The attributes that are mass assignable.
      *
@@ -52,7 +55,6 @@ class Plage extends Model
     ];
 
     // METHODS
-
     /**
      * Define a many-to-one relationship with the Entreprise model.
      *

@@ -1,4 +1,5 @@
 <map id="Activite" name="Activite">
-<area shape="rect" id="node1" title="Modèle Eloquent pour gérer les activités dans l&#39;application Laravel." alt="" coords="5,81,71,109"/>
-<area shape="rect" id="node2" title=" " alt="" coords="10,5,66,33"/>
+<area shape="rect" id="Node000001" title="Represents an activity entity in the system." alt="" coords="5,80,71,107"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="10,5,66,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="41,48,41,80,35,80,35,48"/>
 </map>

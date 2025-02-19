@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file Notification.php
+ * @brief Eloquent model to manage notifications in the Laravel application.
+ */
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -7,7 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @brief The Notification model represents a notification related to a reservation.
+ * @class Notification
+ * @brief Represents a notification related to a reservation.
  *
  * This model defines the attributes, type casting, and relationships for notifications.
  * A notification is associated with a single reservation and contains details such as its
@@ -18,7 +22,6 @@ class Notification extends Model
     use HasFactory;
 
     // VARIABLES
-
     /**
      * The attributes that are mass assignable.
      *
@@ -44,7 +47,6 @@ class Notification extends Model
     ];
 
     // METHODS
-
     /**
      * Define a many-to-one relationship with the Reservation model.
      *

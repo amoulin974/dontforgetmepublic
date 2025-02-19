@@ -1,20 +1,37 @@
 <map id="Controller" name="Controller">
-<area shape="rect" id="node1" title=" " alt="" coords="161,396,238,424"/>
-<area shape="rect" id="node3" href="$classApp_1_1Http_1_1Controllers_1_1ActiviteController.html" title="Controller class for managing activities." alt="" coords="316,5,437,33"/>
-<area shape="rect" id="node4" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ConfirmPasswordController.html" title=" " alt="" coords="286,57,467,85"/>
-<area shape="rect" id="node5" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ForgotPasswordController.html" title=" " alt="" coords="290,109,463,137"/>
-<area shape="rect" id="node6" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1LoginController.html" title="Handles user authentication and login functionalities." alt="" coords="322,161,431,189"/>
-<area shape="rect" id="node7" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html" title="Handles user registration and validation." alt="" coords="314,213,440,241"/>
-<area shape="rect" id="node8" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ResetPasswordController.html" title="Handles password reset requests." alt="" coords="292,265,462,293"/>
-<area shape="rect" id="node9" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html" title="Handles email verification for registered users." alt="" coords="306,317,447,345"/>
-<area shape="rect" id="node10" href="$classApp_1_1Http_1_1Controllers_1_1CalendrierController.html" title="Controller for handling calendar&#45;related operations." alt="" coords="308,369,445,397"/>
-<area shape="rect" id="node11" href="$classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html" title="Controller class for managing enterprises." alt="" coords="308,421,445,449"/>
-<area shape="rect" id="node12" href="$classApp_1_1Http_1_1Controllers_1_1HomeController.html" title="Controller responsible for handling the application&#39;s home page." alt="" coords="320,473,433,501"/>
-<area shape="rect" id="node13" href="$classApp_1_1Http_1_1Controllers_1_1NotificationController.html" title="Controller for handling notification operations." alt="" coords="305,525,448,553"/>
-<area shape="rect" id="node14" href="$classApp_1_1Http_1_1Controllers_1_1ParametrageController.html" title="Controller for handling configuration and scheduling functionalities." alt="" coords="301,577,452,605"/>
-<area shape="rect" id="node15" href="$classApp_1_1Http_1_1Controllers_1_1ReservationController.html" title="Controller for managing reservation&#45;related operations." alt="" coords="303,629,450,657"/>
-<area shape="rect" id="node16" href="$classApp_1_1Http_1_1Controllers_1_1ReserverController.html" title="Controller for handling enterprise reservation functionalities." alt="" coords="312,681,442,709"/>
-<area shape="rect" id="node17" href="$classApp_1_1Http_1_1Controllers_1_1UserController.html" title="Controller for managing user profile operations." alt="" coords="324,733,429,761"/>
-<area shape="rect" id="node18" href="$classApp_1_1Http_1_1Controllers_1_1weekdayController.html" title=" " alt="" coords="312,785,441,813"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,396,113,424"/>
+<area shape="rect" id="Node000001" title="Base controller for handling common operations in the Laravel application." alt="" coords="161,385,238,412"/>
+<area shape="rect" id="Node000003" href="$classApp_1_1Http_1_1Controllers_1_1ActiviteController.html" title="Controller class for managing activities." alt="" coords="316,5,437,32"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,370,211,294,229,196,253,103,267,67,284,42,298,31,315,24,317,29,301,36,288,46,272,70,258,105,234,197,217,294,206,371"/>
+<area shape="rect" id="Node000004" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ConfirmPasswordController.html" title="Controller for handling password confirmations in the Laravel application." alt="" coords="286,56,467,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="197,370,200,312,212,238,223,199,238,160,258,124,284,93,300,81,303,85,288,97,263,127,243,163,228,200,217,239,206,313,203,370"/>
+<area shape="rect" id="Node000005" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ForgotPasswordController.html" title="Controller for handling password reset emails in the Laravel application." alt="" coords="290,107,463,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="199,369,205,321,219,260,244,198,262,169,284,143,301,132,304,136,288,147,266,172,249,200,224,262,210,322,205,370"/>
+<area shape="rect" id="Node000006" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1LoginController.html" title="Controller for handling user authentication and login in the Laravel application." alt="" coords="322,157,431,184"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="202,370,211,330,226,283,250,235,266,213,284,194,302,182,321,175,323,180,304,187,288,198,270,217,255,238,231,285,216,332,207,371"/>
+<area shape="rect" id="Node000007" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html" title="Controller for handling user registration in the Laravel application." alt="" coords="314,208,440,235"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="207,370,234,307,256,273,284,245,312,230,314,234,288,249,260,276,239,309,211,372"/>
+<area shape="rect" id="Node000008" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ResetPasswordController.html" title="Controller for handling password resets in the Laravel application." alt="" coords="292,259,462,285"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="214,370,244,331,263,312,285,295,308,284,310,288,287,300,267,316,248,335,219,374"/>
+<area shape="rect" id="Node000009" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html" title="Controller for handling email verification in the Laravel application." alt="" coords="306,309,447,336"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="232,374,285,346,317,334,319,339,287,350,234,379"/>
+<area shape="rect" id="Node000010" href="$classApp_1_1Http_1_1Controllers_1_1CalendrierController.html" title="Controller for handling calendar&#45;related operations." alt="" coords="308,360,445,387"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="253,388,308,380,308,386,254,394"/>
+<area shape="rect" id="Node000011" href="$classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html" title="Controller class for managing enterprises." alt="" coords="308,411,445,437"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="254,404,308,412,308,417,253,409"/>
+<area shape="rect" id="Node000012" href="$classApp_1_1Http_1_1Controllers_1_1HomeController.html" title="Controller responsible for handling the application&#39;s home page." alt="" coords="320,461,433,488"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="234,418,287,447,321,459,319,464,285,452,232,423"/>
+<area shape="rect" id="Node000013" href="$classApp_1_1Http_1_1Controllers_1_1NotificationController.html" title="Controller for handling notification operations." alt="" coords="305,512,448,539"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="219,424,248,462,267,482,287,498,310,509,308,514,285,502,263,485,244,466,214,427"/>
+<area shape="rect" id="Node000014" href="$classApp_1_1Http_1_1Controllers_1_1ParametrageController.html" title="Controller for handling configuration and scheduling functionalities." alt="" coords="301,563,452,589"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="211,426,239,488,260,521,288,549,307,560,304,564,284,553,256,524,234,491,207,428"/>
+<area shape="rect" id="Node000015" href="$classApp_1_1Http_1_1Controllers_1_1ReservationController.html" title="Controller for managing reservation&#45;related operations." alt="" coords="303,613,450,640"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="207,426,216,466,231,512,255,559,270,581,288,599,305,611,302,615,284,603,266,584,250,562,226,514,211,467,202,428"/>
+<area shape="rect" id="Node000016" href="$classApp_1_1Http_1_1Controllers_1_1ReserverController.html" title="Controller for handling enterprise reservation functionalities." alt="" coords="312,664,442,691"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="205,427,210,476,224,536,249,597,266,625,288,650,313,665,310,670,284,654,262,629,244,600,219,537,205,477,199,428"/>
+<area shape="rect" id="Node000017" href="$classApp_1_1Http_1_1Controllers_1_1UserController.html" title="Controller for managing user profile operations." alt="" coords="324,715,429,741"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="203,427,206,485,217,558,228,597,243,635,263,670,288,701,305,713,324,720,322,725,302,717,284,705,258,673,238,637,223,599,212,559,200,485,197,428"/>
+<area shape="rect" id="Node000018" href="$classApp_1_1Http_1_1Controllers_1_1WeekdayController.html" title=" " alt="" coords="311,765,442,792"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="206,427,217,503,234,600,258,692,272,728,288,751,312,767,309,772,284,755,267,730,253,694,229,601,211,504,201,427"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,385,113,412"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,396,160,396,160,401,128,401"/>
 </map>

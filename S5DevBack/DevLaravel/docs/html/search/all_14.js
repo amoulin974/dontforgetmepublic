@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['validator_0',['validator',['../classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html#aa47350de63ea5295d9c9718e3d09135c',1,'App::Http::Controllers::Auth::RegisterController']]],
-  ['verificationcontroller_1',['VerificationController',['../classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html',1,'App::Http::Controllers::Auth']]]
+  ['weekdaycontroller_0',['WeekdayController',['../classApp_1_1Http_1_1Controllers_1_1WeekdayController.html',1,'App::Http::Controllers']]],
+  ['weekdaycontroller_2ephp_1',['WeekdayController.php',['../WeekdayController_8php.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['journeetypes_0',['journeeTypes',['../classApp_1_1Models_1_1Entreprise.html#aea8a5b735b59c3acdbd68e20eb8493ee',1,'App\Models\Entreprise\journeeTypes()'],['../classApp_1_1Models_1_1SemaineType.html#aea8a5b735b59c3acdbd68e20eb8493ee',1,'App\Models\SemaineType\journeeTypes()']]]
+  ['notifications_0',['notifications',['../classApp_1_1Models_1_1Reservation.html#aa65a67a965dd532b6961b4100d467e55',1,'App::Models::Reservation']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['notifications_0',['notifications',['../classApp_1_1Models_1_1Reservation.html#aa65a67a965dd532b6961b4100d467e55',1,'App::Models::Reservation']]]
+  ['reservations_0',['reservations',['../classApp_1_1Models_1_1Notification.html#acd46bb5db7c65f6df55165c85e9979c5',1,'App::Models::Notification']]]
 ];

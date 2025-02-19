@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file ParametrageController.php
+ * @brief Controller for handling configuration and scheduling functionalities.
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,6 +14,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
 /**
+ * @class ParametrageController
  * @brief Controller for handling configuration and scheduling functionalities.
  *
  * This controller manages various functionalities such as displaying the main configuration view,

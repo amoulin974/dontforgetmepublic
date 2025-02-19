@@ -1,14 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Don&#39;t Forget Me: Champs de donnée</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -19,9 +24,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
+ <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
-  <td id="projectalign" style="padding-left: 0.5em;">
+  <td id="projectalign">
    <div id="projectname">Don&#39;t Forget Me<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">Outil de prise de rendez-vous</div>
@@ -31,10 +36,15 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Généré par Doxygen 1.9.2 -->
+<!-- Généré par Doxygen 1.13.2 -->
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
 /* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
@@ -42,13 +52,19 @@ var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Recherche');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="doc-content">
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){ initResizable(false); });
+/* @license-end */
+</script>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,16 +74,24 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
 </div>
 
 <div class="contents">
 <div class="textblock">Liste de tous les champs de structure et d'union documentés avec des liens vers la documentation de structure/union de chaque champ :</div>
 
 <h3><a id="index__24" name="index__24"></a>- $ -</h3><ul>
-<li>$fillable&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Activite.html#a3778a1d8a064a89429be46ae78c2101a">Activite</a></li>
+<li>$fillable&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Activite.html#a6a90e74ccdf5efd70d51d10c906f8e32">Activite</a></li>
+<li>$redirectTo&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ConfirmPasswordController.html#a1d19101ee5de7186666ce86a530cd501">ConfirmPasswordController</a></li>
 </ul>
 
 
@@ -81,64 +105,56 @@ $(function() {
 <li>affecter_reservations()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1User.html#a7884242a4571fd1dd44e946d07297ef6">User</a></li>
 <li>affecter_users()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Reservation.html#a218e188926b14e177c90838265026691">Reservation</a></li>
 <li>ajax()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1CalendrierController.html#a25fee1c3f5db769c336186ba1bce898f">CalendrierController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a25fee1c3f5db769c336186ba1bce898f">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html#a25fee1c3f5db769c336186ba1bce898f">ParametrageController</a></li>
+<li>ajaxDay()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1WeekdayController.html#a97b0a10352959f9daad1a51380617cd3">WeekdayController</a></li>
 <li>ajaxPlage()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a241d5f3235be71fd02a011c5ef724291">ActiviteController</a></li>
-<li>authorize()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Requests_1_1FormPostRequest.html#a49fd51a5864a57e7549db5c97c1fb610">FormPostRequest</a></li>
-</ul>
-
-
-<h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
-<li>boot()&#160;:&#160;<a class="el" href="classApp_1_1Providers_1_1AppServiceProvider.html#a8814ea4b5beba763c570b4818980814e">AppServiceProvider</a></li>
+<li>ajaxWeek()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1WeekdayController.html#a2ba4c7fd092aa6546bcfaa3c543b5ad9">WeekdayController</a></li>
 </ul>
 
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>calculateTimeSlots()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a03b7afbc3437b4cebaec10d8729b1672">ReservationController</a></li>
 <li>casts()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1User.html#a991278a84e53f7912aff45bcfc4cc912">User</a></li>
-<li>create()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a642462248c28420b716a48f5bedcd31f">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html#a791ba6c150a0a3047c7d8735e62cad02">RegisterController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a435e7d7525d4bcd0ed5e34a469f3adf6">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a8f1aaef8b3c7a9f2fd711052e409af26">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html#a435e7d7525d4bcd0ed5e34a469f3adf6">ReserverController</a></li>
+<li>create()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a642462248c28420b716a48f5bedcd31f">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html#a791ba6c150a0a3047c7d8735e62cad02">RegisterController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a435e7d7525d4bcd0ed5e34a469f3adf6">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a8f1aaef8b3c7a9f2fd711052e409af26">ReservationController</a></li>
 <li>createPlage()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#ade7596551b2751f735c0060fd0bf4feb">ActiviteController</a></li>
 <li>creneaux()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Entreprise.html#a0dda1b60a4dec1e2e677db8fec70cbad">Entreprise</a>, <a class="el" href="classApp_1_1Models_1_1Reservation.html#a0dda1b60a4dec1e2e677db8fec70cbad">Reservation</a></li>
 </ul>
 
 
 <h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
-<li>destroy()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a4dd2020b0e9f2c9893136cdcede3c53f">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1NotificationController.html#afb30705f2d7ca73a4ea8974cc9d18aef">NotificationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a8ea3618343da075d85087219c4d1bda2">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html#a0fdd66e92be5c0f832383e1d2162563f">ReserverController</a></li>
+<li>destroy()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a4dd2020b0e9f2c9893136cdcede3c53f">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1NotificationController.html#afb30705f2d7ca73a4ea8974cc9d18aef">NotificationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a8ea3618343da075d85087219c4d1bda2">ReservationController</a></li>
 <li>disponible_creneaux()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1User.html#a1427e229eebdeafad381e95a0c660a04">User</a></li>
-<li>disponible_users()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Creneau.html#a039075396e7c9e664ad2d05d71f07eaa">Creneau</a></li>
 </ul>
 
 
 <h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
-<li>edit()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a730162bc1c9b73d8c104e065090f7978">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#aa5b18b49a793af0b4e8b12e398e8ae4a">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#ac4f002bb64c7fcb6d434deebd5938a25">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html#a770dc774eb0c503adc8523130d7872a9">ReserverController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1UserController.html#a5cb75cbb16467eb1768837d126dc535b">UserController</a></li>
+<li>edit()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a730162bc1c9b73d8c104e065090f7978">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#aa5b18b49a793af0b4e8b12e398e8ae4a">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#ac4f002bb64c7fcb6d434deebd5938a25">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1UserController.html#a5cb75cbb16467eb1768837d126dc535b">UserController</a></li>
 <li>effectuer_activites()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Reservation.html#ac1a79abdde611f55c2583a98b93460f7">Reservation</a>, <a class="el" href="classApp_1_1Models_1_1User.html#ac1a79abdde611f55c2583a98b93460f7">User</a></li>
 <li>effectuer_reservations()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Activite.html#ad86d48787afc8cf8a63a0d58e248a3a7">Activite</a>, <a class="el" href="classApp_1_1Models_1_1User.html#ad86d48787afc8cf8a63a0d58e248a3a7">User</a></li>
 <li>effectuer_users()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Activite.html#acf4a4cf49bb95713bcf69d8028f21157">Activite</a>, <a class="el" href="classApp_1_1Models_1_1Reservation.html#acf4a4cf49bb95713bcf69d8028f21157">Reservation</a></li>
 <li>employes()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Plage.html#af3430a7924a9ad310d08dbe84023a821">Plage</a></li>
 <li>entreprise()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Activite.html#ad51130e7e8195d53e3670bb41642cb14">Activite</a>, <a class="el" href="classApp_1_1Models_1_1JourneeType.html#ad51130e7e8195d53e3670bb41642cb14">JourneeType</a>, <a class="el" href="classApp_1_1Models_1_1Plage.html#ad51130e7e8195d53e3670bb41642cb14">Plage</a>, <a class="el" href="classApp_1_1Models_1_1SemaineType.html#ad51130e7e8195d53e3670bb41642cb14">SemaineType</a></li>
-<li>entreprises()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Creneau.html#ab94ff808610c4b03c9097e8ee08f2324">Creneau</a></li>
 </ul>
 
 
 <h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
 <li>getDetails()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1NotificationController.html#a67bcdf2ca053bbc348983454239ea980">NotificationController</a></li>
+<li>getFormattedDureeAttribute()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Activite.html#a6ba95f66dc36987b19448ec6180ed239">Activite</a></li>
 </ul>
 
 
 <h3><a id="index_i" name="index_i"></a>- i -</h3><ul>
 <li>index()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a141c24aee3191f21ee3a5a6694f1fe06">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1CalendrierController.html#ab567a949f50e20ea3d95ad062a17e3c3">CalendrierController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a149eb92716c1084a935e04a8d95f7347">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1HomeController.html#a149eb92716c1084a935e04a8d95f7347">HomeController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html#a149eb92716c1084a935e04a8d95f7347">ParametrageController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a149eb92716c1084a935e04a8d95f7347">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html#a149eb92716c1084a935e04a8d95f7347">ReserverController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1UserController.html#a149eb92716c1084a935e04a8d95f7347">UserController</a></li>
+<li>indexDay()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1WeekdayController.html#ae30c93c2d1758411f0379ca9e774c790">WeekdayController</a></li>
 <li>indexPlage()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html#a6414fecc91c1dc0a391a6e104af43f31">ParametrageController</a></li>
 <li>indexPlageAsEmploye()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html#affac6d972c0bc82336e0100c15266483">ParametrageController</a></li>
 <li>indexUser()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a1b54af1cb5cc696e35e7c2e507f366a6">EntrepriseController</a></li>
+<li>indexWeek()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1WeekdayController.html#acf620c96f5b034dc0ec6da668fbfac41">WeekdayController</a></li>
 <li>invit()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html#aca37ba7573cab1615fa77213d160e475">ParametrageController</a></li>
 </ul>
 
 
 <h3><a id="index_j" name="index_j"></a>- j -</h3><ul>
 <li>journeeTypes()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Entreprise.html#aea8a5b735b59c3acdbd68e20eb8493ee">Entreprise</a>, <a class="el" href="classApp_1_1Models_1_1SemaineType.html#aea8a5b735b59c3acdbd68e20eb8493ee">SemaineType</a></li>
-</ul>
-
-
-<h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
-<li>messages()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Requests_1_1FormPostRequest.html#af2cb60735cac74cfa9da534eea973929">FormPostRequest</a></li>
 </ul>
 
 
@@ -153,21 +169,19 @@ $(function() {
 
 
 <h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
-<li>register()&#160;:&#160;<a class="el" href="classApp_1_1Providers_1_1AppServiceProvider.html#acc294a6cc8e69743746820e3d15e3f78">AppServiceProvider</a></li>
-<li>reservations()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Creneau.html#acd46bb5db7c65f6df55165c85e9979c5">Creneau</a>, <a class="el" href="classApp_1_1Models_1_1Notification.html#acd46bb5db7c65f6df55165c85e9979c5">Notification</a></li>
-<li>rules()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Requests_1_1FormPostRequest.html#a17dba92d96b9dd48c62f3ede3eef94d4">FormPostRequest</a></li>
+<li>reservations()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Notification.html#acd46bb5db7c65f6df55165c85e9979c5">Notification</a></li>
 </ul>
 
 
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>semaineTypes()&#160;:&#160;<a class="el" href="classApp_1_1Models_1_1Entreprise.html#a609ee202624341f4671fed2b28f283f2">Entreprise</a>, <a class="el" href="classApp_1_1Models_1_1JourneeType.html#a609ee202624341f4671fed2b28f283f2">JourneeType</a></li>
-<li>show()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a00ff23cfe37c8a482c0aff53299595f5">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#afb568cd974b792089d77c98432510b6d">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html#aa1084dca2023d0205f4d383a4fa3276d">ReserverController</a></li>
+<li>show()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a00ff23cfe37c8a482c0aff53299595f5">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#afb568cd974b792089d77c98432510b6d">ReservationController</a></li>
 <li>showActivites()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a344aa93c0481887bd86b01a10294c14d">EntrepriseController</a></li>
 <li>showChoicePage()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html#a78bf187994ba1aa580503754ddcbff1a">RegisterController</a></li>
 <li>showRecapPage()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#ab1f73ca687f2f0d28cb6dd99597e7a97">EntrepriseController</a></li>
 <li>showTypeRdvPage()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a6b14ee948ea9c8493dc6a7f7fd0fa90f">EntrepriseController</a></li>
 <li>showUserRegisterPage()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html#aba3d985e72d19d47566720703949e19f">RegisterController</a></li>
-<li>store()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a44c6dacaefc845b60cd3d25dee705e78">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a98e4b7b7529a9a5f6d7e96909cba8bfe">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#af7fb399e5e39a4c8447171cba0916b6d">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html#a9ef485163104597c12185b53cdacf638">ReserverController</a></li>
+<li>store()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a44c6dacaefc845b60cd3d25dee705e78">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a98e4b7b7529a9a5f6d7e96909cba8bfe">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#af7fb399e5e39a4c8447171cba0916b6d">ReservationController</a></li>
 <li>storeAppointments()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#af7c6c3d79256217ed741f9188c2b602c">EntrepriseController</a></li>
 <li>storeUser()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html#a969f4dbd9d2d1de6298b7273fa3c40ab">RegisterController</a></li>
 </ul>
@@ -182,7 +196,7 @@ $(function() {
 
 
 <h3><a id="index_u" name="index_u"></a>- u -</h3><ul>
-<li>update()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a3095f8f322f1d7b5f7a1447e7ce182a2">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a11670fec4f62dc581b40303a438b4e66">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#ac6ad0e103c9e9dcbc89b06ab42bcb959">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html#af528c99cc6b6d8f4bb8c2876533b4abc">ReserverController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1UserController.html#afdc1029c759eec7e6241e0265b43551a">UserController</a></li>
+<li>update()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a3095f8f322f1d7b5f7a1447e7ce182a2">ActiviteController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html#a11670fec4f62dc581b40303a438b4e66">EntrepriseController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html#ac6ad0e103c9e9dcbc89b06ab42bcb959">ReservationController</a>, <a class="el" href="classApp_1_1Http_1_1Controllers_1_1UserController.html#afdc1029c759eec7e6241e0265b43551a">UserController</a></li>
 <li>updateNotificationState()&#160;:&#160;<a class="el" href="classApp_1_1Http_1_1Controllers_1_1NotificationController.html#ac3d7f75ed0c739ffbd13f4bbaca7abff">NotificationController</a></li>
 </ul>
 
@@ -193,7 +207,8 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
+</div><!-- doc-content -->
 </body>
 </html>

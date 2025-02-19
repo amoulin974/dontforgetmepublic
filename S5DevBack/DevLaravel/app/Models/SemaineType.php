@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file SemaineType.php
+ * @brief Eloquent model to manage week types in the Laravel application.
+ */
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @brief The SemaineType model represents a week schedule type.
+ * @class SemaineType
+ * @brief Represents a week schedule type.
  *
  * This model defines the attributes and relationships for a SemaineType.
  * A SemaineType is associated with a single enterprise and can be linked to
@@ -19,7 +23,6 @@ class SemaineType extends Model
     use HasFactory;
 
     // VARIABLES
-
     /**
      * The attributes that are mass assignable.
      *
@@ -42,7 +45,6 @@ class SemaineType extends Model
     ];
 
     // METHODS
-
     /**
      * Define a many-to-one relationship with the Entreprise model.
      *

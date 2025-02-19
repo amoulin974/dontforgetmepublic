@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file Entreprise.php
+ * @brief Eloquent model to manage companies in the Laravel application.
+ */
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @brief The Entreprise model represents a company.
+ * @class Entreprise
+ * @brief Represents a company entity in the system.
  *
  * This model defines the attributes and relationships for a company. An Entreprise
  * may have multiple related activities, schedules, and users.
@@ -18,7 +22,6 @@ class Entreprise extends Model
     use HasFactory;
 
     // VARIABLES
-
     /**
      * The attributes that are mass assignable.
      *
@@ -39,6 +42,7 @@ class Entreprise extends Model
         'idCreateur'
     ];
 
+    // METHODS
     /**
      * The attributes that should be cast to native types.
      *
@@ -52,7 +56,6 @@ class Entreprise extends Model
     ];
 
     // METHODS
-
     /**
      * Define a one-to-many relationship with the Activite model.
      *

@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file VerificationController.php
+ * @brief Controller for handling email verification in the Laravel application.
+ */
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -7,8 +10,7 @@ use Illuminate\Foundation\Auth\VerifiesEmails;
 
 /**
  * @class VerificationController
- *
- * @brief Handles email verification for registered users.
+ * @brief Controller for handling email verification in the Laravel application.
  *
  * This controller manages the process of verifying user email addresses
  * after registration. It allows users to verify their emails and resend

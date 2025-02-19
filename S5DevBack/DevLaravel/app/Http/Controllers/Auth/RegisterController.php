@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file RegisterController.php
+ * @brief Controller for handling user registration in the Laravel application.
+ */
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -13,8 +16,7 @@ use Illuminate\Http\Request;
 
 /**
  * @class RegisterController
- *
- * @brief Handles user registration and validation.
+ * @brief Controller for handling user registration in the Laravel application.
  *
  * This controller manages the registration of new users, their validation,
  * and the creation of their accounts. It also provides account-type selection

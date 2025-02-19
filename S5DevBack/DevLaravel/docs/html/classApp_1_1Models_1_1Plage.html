@@ -1,14 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Don&#39;t Forget Me: Référence de la classe Plage</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -19,9 +24,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
+ <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
-  <td id="projectalign" style="padding-left: 0.5em;">
+  <td id="projectalign">
    <div id="projectname">Don&#39;t Forget Me<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">Outil de prise de rendez-vous</div>
@@ -31,10 +36,15 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Généré par Doxygen 1.9.2 -->
+<!-- Généré par Doxygen 1.13.2 -->
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
 /* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
@@ -42,12 +52,17 @@ var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Recherche');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){ initResizable(false); });
+/* @license-end */
+</script>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -57,9 +72,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
 </div>
 
 <div id="nav-path" class="navpath">
@@ -67,6 +89,7 @@ $(function() {
 <li class="navelem"><b>App</b></li><li class="navelem"><b>Models</b></li><li class="navelem"><a class="el" href="classApp_1_1Models_1_1Plage.html">Plage</a></li>  </ul>
 </div>
 </div><!-- top -->
+<div id="doc-content">
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Fonctions membres publiques</a> &#124;
@@ -75,15 +98,16 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="classApp_1_1Models_1_1Plage.html" title="The Plage model represents a time slot.">Plage</a> model represents a time slot.  
- <a href="classApp_1_1Models_1_1Plage.html#details">Plus de détails...</a></p>
+<p>Represents a time slot.  
+ <a href="#details">Plus de détails...</a></p>
 <div class="dynheader">
 Graphe d'héritage de Plage:</div>
 <div class="dyncontent">
 <div class="center"><img src="classApp_1_1Models_1_1Plage__inherit__graph.png" border="0" usemap="#aPlage_inherit__map" alt="Inheritance graph"/></div>
 <map name="aPlage_inherit__map" id="aPlage_inherit__map">
-<area shape="rect" title="The Plage model represents a time slot." alt="" coords="6,81,61,109"/>
-<area shape="rect" title=" " alt="" coords="5,5,62,33"/>
+<area shape="rect" title="Represents a time slot." alt="" coords="6,80,61,107"/>
+<area shape="rect" title=" " alt="" coords="5,5,62,32"/>
+<area shape="poly" title=" " alt="" coords="36,48,36,80,31,80,31,48"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">légende</a>]</span></center></div>
 <div class="dynheader">
@@ -91,35 +115,36 @@ Graphe de collaboration de Plage:</div>
 <div class="dyncontent">
 <div class="center"><img src="classApp_1_1Models_1_1Plage__coll__graph.png" border="0" usemap="#aPlage_coll__map" alt="Collaboration graph"/></div>
 <map name="aPlage_coll__map" id="aPlage_coll__map">
-<area shape="rect" title="The Plage model represents a time slot." alt="" coords="6,81,61,109"/>
-<area shape="rect" title=" " alt="" coords="5,5,62,33"/>
+<area shape="rect" title="Represents a time slot." alt="" coords="6,80,61,107"/>
+<area shape="rect" title=" " alt="" coords="5,5,62,32"/>
+<area shape="poly" title=" " alt="" coords="36,48,36,80,31,80,31,48"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">légende</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Fonctions membres publiques</h2></td></tr>
-<tr class="memitem:ad51130e7e8195d53e3670bb41642cb14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApp_1_1Models_1_1Plage.html#ad51130e7e8195d53e3670bb41642cb14">entreprise</a> ()</td></tr>
+<tr class="memitem:ad51130e7e8195d53e3670bb41642cb14" id="r_ad51130e7e8195d53e3670bb41642cb14"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad51130e7e8195d53e3670bb41642cb14">entreprise</a> ()</td></tr>
 <tr class="separator:ad51130e7e8195d53e3670bb41642cb14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0f6c02fb34704b23ec5b56d5d0edf91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApp_1_1Models_1_1Plage.html#aa0f6c02fb34704b23ec5b56d5d0edf91">activites</a> ()</td></tr>
+<tr class="memitem:aa0f6c02fb34704b23ec5b56d5d0edf91" id="r_aa0f6c02fb34704b23ec5b56d5d0edf91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0f6c02fb34704b23ec5b56d5d0edf91">activites</a> ()</td></tr>
 <tr class="separator:aa0f6c02fb34704b23ec5b56d5d0edf91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3430a7924a9ad310d08dbe84023a821"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApp_1_1Models_1_1Plage.html#af3430a7924a9ad310d08dbe84023a821">employes</a> ()</td></tr>
+<tr class="memitem:af3430a7924a9ad310d08dbe84023a821" id="r_af3430a7924a9ad310d08dbe84023a821"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3430a7924a9ad310d08dbe84023a821">employes</a> ()</td></tr>
 <tr class="separator:af3430a7924a9ad310d08dbe84023a821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Attributs protégés</h2></td></tr>
-<tr class="memitem:a6a90e74ccdf5efd70d51d10c906f8e32"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApp_1_1Models_1_1Plage.html#a6a90e74ccdf5efd70d51d10c906f8e32">$fillable</a></td></tr>
+<tr class="memitem:a6a90e74ccdf5efd70d51d10c906f8e32" id="r_a6a90e74ccdf5efd70d51d10c906f8e32"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a90e74ccdf5efd70d51d10c906f8e32">$fillable</a></td></tr>
 <tr class="separator:a6a90e74ccdf5efd70d51d10c906f8e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1649e00448c72a723c2c79fe5f915b97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApp_1_1Models_1_1Plage.html#a1649e00448c72a723c2c79fe5f915b97">$casts</a></td></tr>
+<tr class="memitem:a1649e00448c72a723c2c79fe5f915b97" id="r_a1649e00448c72a723c2c79fe5f915b97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1649e00448c72a723c2c79fe5f915b97">$casts</a></td></tr>
 <tr class="separator:a1649e00448c72a723c2c79fe5f915b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
-<div class="textblock"><p >The <a class="el" href="classApp_1_1Models_1_1Plage.html" title="The Plage model represents a time slot.">Plage</a> model represents a time slot. </p>
-<p >This model defines the attributes and relationships for a time slot (<a class="el" href="classApp_1_1Models_1_1Plage.html" title="The Plage model represents a time slot.">Plage</a>). A <a class="el" href="classApp_1_1Models_1_1Plage.html" title="The Plage model represents a time slot.">Plage</a> is associated with an enterprise, may have many activities, and can be linked to employees via a pivot table. </p>
+<div class="textblock"><p>Represents a time slot. </p>
+<p>This model defines the attributes and relationships for a time slot (Plage). A Plage is associated with an enterprise, may have many activities, and can be linked to employees via a pivot table. </p>
 
-<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00020">20</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
+<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00024">24</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
 </div><h2 class="groupheader">Documentation des fonctions membres</h2>
 <a id="aa0f6c02fb34704b23ec5b56d5d0edf91" name="aa0f6c02fb34704b23ec5b56d5d0edf91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0f6c02fb34704b23ec5b56d5d0edf91">&#9670;&nbsp;</a></span>activites()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0f6c02fb34704b23ec5b56d5d0edf91">&#9670;&#160;</a></span>activites()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -127,21 +152,21 @@ Attributs protégés</h2></td></tr>
         <tr>
           <td class="memname">activites </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Define a many-to-many relationship with the <a class="el" href="classApp_1_1Models_1_1Activite.html" title="Modèle Eloquent pour gérer les activités dans l&#39;application Laravel.">Activite</a> model via the "composer" pivot table.</p>
-<p >This relationship associates a <a class="el" href="classApp_1_1Models_1_1Plage.html" title="The Plage model represents a time slot.">Plage</a> with one or more <a class="el" href="classApp_1_1Models_1_1Activite.html" title="Modèle Eloquent pour gérer les activités dans l&#39;application Laravel.">Activite</a> entries.</p>
+<p>Define a many-to-many relationship with the Activite model via the "composer" pivot table.</p>
+<p>This relationship associates a Plage with one or more Activite entries.</p>
 <dl class="section return"><dt>Renvoie</dt><dd>BelongsToMany Returns a belongs-to-many relationship instance. </dd></dl>
 
-<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00075">75</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
+<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00077">77</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
 
 </div>
 </div>
 <a id="af3430a7924a9ad310d08dbe84023a821" name="af3430a7924a9ad310d08dbe84023a821"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3430a7924a9ad310d08dbe84023a821">&#9670;&nbsp;</a></span>employes()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af3430a7924a9ad310d08dbe84023a821">&#9670;&#160;</a></span>employes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -149,21 +174,21 @@ Attributs protégés</h2></td></tr>
         <tr>
           <td class="memname">employes </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Define a many-to-many relationship with the <a class="el" href="classApp_1_1Models_1_1User.html" title="The User model represents an application user.">User</a> model via the "placer" pivot table.</p>
-<p >This relationship associates a <a class="el" href="classApp_1_1Models_1_1Plage.html" title="The Plage model represents a time slot.">Plage</a> with employees.</p>
+<p>Define a many-to-many relationship with the User model via the "placer" pivot table.</p>
+<p>This relationship associates a Plage with employees.</p>
 <dl class="section return"><dt>Renvoie</dt><dd>BelongsToMany Returns a belongs-to-many relationship instance linking time slots to users. </dd></dl>
 
-<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00088">88</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
+<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00090">90</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
 
 </div>
 </div>
 <a id="ad51130e7e8195d53e3670bb41642cb14" name="ad51130e7e8195d53e3670bb41642cb14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad51130e7e8195d53e3670bb41642cb14">&#9670;&nbsp;</a></span>entreprise()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad51130e7e8195d53e3670bb41642cb14">&#9670;&#160;</a></span>entreprise()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,22 +196,22 @@ Attributs protégés</h2></td></tr>
         <tr>
           <td class="memname">entreprise </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Define a many-to-one relationship with the <a class="el" href="classApp_1_1Models_1_1Entreprise.html" title="The Entreprise model represents a company.">Entreprise</a> model.</p>
-<p >Each <a class="el" href="classApp_1_1Models_1_1Plage.html" title="The Plage model represents a time slot.">Plage</a> is associated with exactly one <a class="el" href="classApp_1_1Models_1_1Entreprise.html" title="The Entreprise model represents a company.">Entreprise</a>.</p>
+<p>Define a many-to-one relationship with the Entreprise model.</p>
+<p>Each Plage is associated with exactly one Entreprise.</p>
 <dl class="section return"><dt>Renvoie</dt><dd>BelongsTo Returns a belongs-to relationship instance linking this time slot to an enterprise. </dd></dl>
 
-<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00063">63</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
+<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00065">65</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Documentation des champs</h2>
 <a id="a1649e00448c72a723c2c79fe5f915b97" name="a1649e00448c72a723c2c79fe5f915b97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1649e00448c72a723c2c79fe5f915b97">&#9670;&nbsp;</a></span>$casts</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1649e00448c72a723c2c79fe5f915b97">&#9670;&#160;</a></span>$casts</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -200,7 +225,7 @@ Attributs protégés</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -213,12 +238,12 @@ Attributs protégés</h2></td></tr>
 <div class="line">        <span class="stringliteral">&#39;entreprise_id&#39;</span> =&gt; <span class="stringliteral">&#39;integer&#39;</span>,</div>
 <div class="line">    ]</div>
 </div><!-- fragment -->
-<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00045">45</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
+<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00048">48</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
 
 </div>
 </div>
 <a id="a6a90e74ccdf5efd70d51d10c906f8e32" name="a6a90e74ccdf5efd70d51d10c906f8e32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a90e74ccdf5efd70d51d10c906f8e32">&#9670;&nbsp;</a></span>$fillable</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a90e74ccdf5efd70d51d10c906f8e32">&#9670;&#160;</a></span>$fillable</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,7 +257,7 @@ Attributs protégés</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -245,7 +270,7 @@ Attributs protégés</h2></td></tr>
 <div class="line">        <span class="stringliteral">&#39;entreprise_id&#39;</span>, </div>
 <div class="line">    ]</div>
 </div><!-- fragment -->
-<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00031">31</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
+<p class="definition">Définition à la ligne <a class="el" href="Plage_8php_source.html#l00034">34</a> du fichier <a class="el" href="Plage_8php_source.html">Plage.php</a>.</p>
 
 </div>
 </div>
@@ -255,7 +280,8 @@ Attributs protégés</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
+</div><!-- doc-content -->
 </body>
 </html>

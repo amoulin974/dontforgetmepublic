@@ -1,4 +1,5 @@
 <map id="plages" name="plages">
-<area shape="rect" id="node1" title=" " alt="" coords="205,21,264,49"/>
-<area shape="rect" id="node2" href="$classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a8f1aaef8b3c7a9f2fd711052e409af26" title=" " alt="" coords="5,5,157,65"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="205,21,264,48"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a8f1aaef8b3c7a9f2fd711052e409af26" title=" " alt="" coords="5,5,157,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,37,157,37,157,32,189,32"/>
 </map>

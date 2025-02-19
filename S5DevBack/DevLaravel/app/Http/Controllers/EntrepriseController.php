@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file EntrepriseController.php
+ * @brief Controller class for managing enterprises.
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -12,6 +15,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
 /**
+ * @class EntrepriseController
  * @brief Controller class for managing enterprises.
  *
  * This controller handles listing, displaying, creating, updating, and managing
@@ -46,18 +50,15 @@ class EntrepriseController extends Controller
     {
         $userId = Auth::user()->id;
 
-        // Check user roles within enterprises.
         $isAdmin    = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->exists();
         $isEmploye  = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Employé')->exists();
         $isInvite   = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Invité')->exists();
         $isCreator  = Entreprise::where('idCreateur', $userId)->exists();
 
-        // Retrieve enterprise IDs based on user roles.
         $adminEntrepriseIds   = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Admin')->pluck('idEntreprise')->toArray();
         $employeEntrepriseIds = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Employé')->pluck('idEntreprise')->toArray();
         $inviteEntrepriseIds  = Auth::user()->travailler_entreprises()->wherePivot('statut', 'Invité')->pluck('idEntreprise')->toArray();
 
-        // Retrieve the corresponding enterprises.
         $entreprises = Entreprise::query()
             ->where('idCreateur', $userId)
             ->orWhereIn('id', $adminEntrepriseIds)
@@ -125,7 +126,6 @@ class EntrepriseController extends Controller
     {
         switch ($request->type) {
             case 'invite':
-                // For each activity, attach the user (identified by email) as an Invite.
                 foreach ($request->activites as $idActivite) {
                     User::where('email', $request->email)
                         ->first()
@@ -135,13 +135,11 @@ class EntrepriseController extends Controller
                             'statut'     => 'Invité'
                         ]);
                 }
-                // Return the user information.
                 $event = User::where('email', $request->email)->first();
                 return response()->json($event);
                 break;
 
             case 'upgrade':
-                // Upgrade the employee's status to Admin for the enterprise.
                 $event = User::where('id', $request->idEmploye)
                     ->first()
                     ->travailler_entreprises
@@ -155,7 +153,6 @@ class EntrepriseController extends Controller
                 break;
 
             case 'downgrade':
-                // Downgrade the employee's status to Employé for the enterprise.
                 $event = User::where('id', $request->idEmploye)
                     ->first()
                     ->travailler_entreprises
@@ -169,13 +166,11 @@ class EntrepriseController extends Controller
                 break;
 
             case 'delete':
-                // Retrieve all activity IDs related to the enterprise.
                 $activitesEntreprise = Entreprise::where('id', $request->idEntreprise)
                     ->first()
                     ->activites()
                     ->get('id');
 
-                // Detach the user from each activity.
                 foreach ($activitesEntreprise as $idActivite) {
                     $event = User::where('id', $request->idEmploye)
                         ->first()
@@ -187,7 +182,6 @@ class EntrepriseController extends Controller
                 break;
 
             default:
-                // No action for other types.
                 break;
         }
     }
@@ -214,7 +208,6 @@ class EntrepriseController extends Controller
     public function showTypeRdvPage(Request $request)
     {
         if ($request->isMethod('post')) {
-            // Validate the enterprise data.
             $validated = $request->validate([
                 'nomEntreprise' => ['required', 'string', 'max:255'],
                 'siren'         => ['required', 'string', 'max:14', 'unique:entreprises,siren', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'],
@@ -227,14 +220,11 @@ class EntrepriseController extends Controller
                 'description'   => ['nullable', 'string', 'max:255'],
             ]);
 
-            // Store the validated enterprise data in the session.
             session(['company' => $validated]);
 
-            // Redirect to the appointment type form.
             return view('entreprise.typeRdv');
         }
 
-        // Display the enterprise registration form.
         return view('entreprise.typeRdv');
     }
 
@@ -249,18 +239,15 @@ class EntrepriseController extends Controller
      */
     public function showRecapPage(Request $request)
     {
-        // Retrieve company and appointment data from the session.
         $company     = session('company', []);
         $appointment = session('appointment', []);
         $capacity    = session('capacity', []);
 
-        // Ensure all necessary information is available.
         if (empty($company) || empty($appointment)) {
             return redirect()->route('entreprise.create')
                 ->with('error', 'Veuillez compléter toutes les étapes avant de visualiser le récapitulatif.');
         }
 
-        // Display the recap page with the gathered data.
         return view('entreprise.recap', compact('company', 'appointment', 'capacity'));
     }
 
@@ -274,27 +261,22 @@ class EntrepriseController extends Controller
      */
     public function storeAppointments(Request $request)
     {
-        // Séparer la capacité des autres réponses
-        $responses = $request->except('capacity'); // Récupère tout sauf capacity
-        $capacity = $request->input('capacity'); // Récupère capacity
+        $responses = $request->except('capacity'); 
+        $capacity = $request->input('capacity'); 
 
-        // Valider les réponses (chaînes de caractères)
         $validatedResponses = validator($responses, [
             '*' => 'required|string|max:255',
         ])->validate();
     
-        // Valider la capacité (entier requis, positif)
         $validatedCapacity = validator(['capacity' => $capacity], [
             'capacity' => 'nullable|integer|min:1'
         ])->validate();
     
-        // Stocker toutes les données en session
         session([
             'appointment' => $validatedResponses,
-            'capacity' => $validatedCapacity['capacity'] ?? null // Met null si vide
+            'capacity' => $validatedCapacity['capacity'] ?? null 
         ]);
     
-        // Retourner une réponse JSON
         return response()->json([
             'message' => 'Réponses enregistrées avec succès.',
             'responses' => $validatedResponses,
@@ -318,14 +300,12 @@ class EntrepriseController extends Controller
         $appointment = session('appointment');
         $capacity = session('capacity');
 
-        // Verify that both company and appointment data exist.
         if (empty($company) || empty($appointment)) {
             throw \Illuminate\Validation\ValidationException::withMessages([
                 'error' => 'Données d\'inscription incomplètes. Veuillez recommencer le processus.',
             ]);
         }
 
-        // Create a new enterprise record.
         $newCompany = Entreprise::create([
             'libelle'    => $company['nomEntreprise'],
             'siren'      => $company['siren'],
@@ -339,7 +319,6 @@ class EntrepriseController extends Controller
             'idCreateur' => Auth::id()
         ]);
 
-        // Clear the registration session data.
         session()->forget(['company', 'appointment', 'capacity']);
 
         return redirect()->route('entreprise.services.index', ['entreprise' => $newCompany->id])
@@ -371,7 +350,6 @@ class EntrepriseController extends Controller
      */
     public function update(Request $request, Entreprise $entreprise)
     {
-        // Validate the input fields.
         $validated = $request->validate([
             'libelle'     => ['required', 'string', 'max:255'],
             'siren'       => ['required', 'string', 'max:14', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'],
@@ -385,7 +363,6 @@ class EntrepriseController extends Controller
             'capaciteMax' => ['nullable', 'integer', 'min:1'],
         ]);
 
-        // Update the enterprise properties.
         $entreprise->libelle   = $validated['libelle'];
         $entreprise->siren     = $validated['siren'];
         $entreprise->metier    = $validated['metier'];
@@ -394,7 +371,6 @@ class EntrepriseController extends Controller
         $entreprise->email     = $validated['email'];
         $entreprise->numTel    = $validated['numTel'];
 
-        // Retrieve and update appointment type responses.
         $typeRdv = $entreprise->typeRdv ? json_decode($entreprise->typeRdv, true) : [];
         $typeRdv[0] = $request->input('question_0', $typeRdv[0] ?? 0);
         $typeRdv[1] = $request->input('question_1', $typeRdv[1] ?? 0);
@@ -404,7 +380,6 @@ class EntrepriseController extends Controller
         $entreprise->typeRdv = json_encode($typeRdv);
         $entreprise->capaciteMax = ($typeRdv[0] == 0) ? 1 : $validated['capaciteMax'];
 
-        // Save the updated enterprise.
         $entreprise->save();
 
         return redirect()->route('entreprise.show', $entreprise)

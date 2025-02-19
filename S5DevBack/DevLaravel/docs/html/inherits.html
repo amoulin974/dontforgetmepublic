@@ -1,14 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Don&#39;t Forget Me: Hiérarchie des classes</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -19,9 +24,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
+ <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
-  <td id="projectalign" style="padding-left: 0.5em;">
+  <td id="projectalign">
    <div id="projectname">Don&#39;t Forget Me<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">Outil de prise de rendez-vous</div>
@@ -31,10 +36,15 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Généré par Doxygen 1.9.2 -->
+<!-- Généré par Doxygen 1.13.2 -->
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
 /* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
@@ -42,13 +52,19 @@ var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Recherche');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="doc-content">
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){ initResizable(false); });
+/* @license-end */
+</script>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,9 +74,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
 </div>
 
 <div class="header">
@@ -70,63 +93,77 @@ $(function() {
 <div class="textblock">
 <p><a href="hierarchy.html">Aller à la hiérarchie des classes en mode texte</a></p>
 </div><table border="0" cellspacing="10" cellpadding="0">
-<tr><td><img src="inherit_graph_0.png" border="0" usemap="#aActivite" alt=""/>
-<map name="aActivite" id="aActivite">
-<area shape="rect" title=" " alt="" coords="5,188,62,216"/>
-<area shape="rect" href="classApp_1_1Models_1_1Activite.html" title="Modèle Eloquent pour gérer les activités dans l&#39;application Laravel." alt="" coords="127,5,192,33"/>
-<area shape="rect" href="classApp_1_1Models_1_1Creneau.html" title="The Creneau model represents a time slot." alt="" coords="125,57,195,85"/>
-<area shape="rect" href="classApp_1_1Models_1_1Entreprise.html" title="The Entreprise model represents a company." alt="" coords="120,109,200,137"/>
-<area shape="rect" href="classApp_1_1Models_1_1JourneeType.html" title="The JourneeType model represents a type of day schedule." alt="" coords="112,161,208,189"/>
-<area shape="rect" href="classApp_1_1Models_1_1Notification.html" title="The Notification model represents a notification related to a reservation." alt="" coords="116,213,204,241"/>
-<area shape="rect" href="classApp_1_1Models_1_1Plage.html" title="The Plage model represents a time slot." alt="" coords="133,265,187,293"/>
-<area shape="rect" href="classApp_1_1Models_1_1Reservation.html" title="The Reservation model represents a reservation made by a user." alt="" coords="114,317,206,345"/>
-<area shape="rect" href="classApp_1_1Models_1_1SemaineType.html" title="The SemaineType model represents a week schedule type." alt="" coords="110,369,210,397"/>
+<tr><td><img src="inherit_graph_0.png" border="0" usemap="#aAuthenticatable" alt=""/>
+<map name="aAuthenticatable" id="aAuthenticatable">
+<area shape="rect" title=" " alt="" coords="5,5,117,32"/>
+<area shape="rect" href="classApp_1_1Models_1_1User.html" title="Represents an application user." alt="" coords="165,5,214,32"/>
+<area shape="poly" title=" " alt="" coords="132,16,165,16,165,21,132,21"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_1.png" border="0" usemap="#aAppServiceProvider" alt=""/>
-<map name="aAppServiceProvider" id="aAppServiceProvider">
-<area shape="rect" title=" " alt="" coords="5,5,119,33"/>
-<area shape="rect" href="classApp_1_1Providers_1_1AppServiceProvider.html" title=" " alt="" coords="167,5,303,33"/>
+<tr><td><img src="inherit_graph_1.png" border="0" usemap="#aBaseController" alt=""/>
+<map name="aBaseController" id="aBaseController">
+<area shape="rect" title=" " alt="" coords="5,385,113,412"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Controller.html" title="Base controller for handling common operations in the Laravel application." alt="" coords="161,385,238,412"/>
+<area shape="poly" title=" " alt="" coords="128,396,160,396,160,401,128,401"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html" title="Controller class for managing activities." alt="" coords="316,5,437,32"/>
+<area shape="poly" title=" " alt="" coords="201,370,211,294,229,196,253,103,267,67,284,42,298,31,315,24,317,29,301,36,288,46,272,70,258,105,234,197,217,294,206,371"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ConfirmPasswordController.html" title="Controller for handling password confirmations in the Laravel application." alt="" coords="286,56,467,83"/>
+<area shape="poly" title=" " alt="" coords="197,370,200,312,212,238,223,199,238,160,258,124,284,93,300,81,303,85,288,97,263,127,243,163,228,200,217,239,206,313,203,370"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ForgotPasswordController.html" title="Controller for handling password reset emails in the Laravel application." alt="" coords="290,107,463,133"/>
+<area shape="poly" title=" " alt="" coords="199,369,205,321,219,260,244,198,262,169,284,143,301,132,304,136,288,147,266,172,249,200,224,262,210,322,205,370"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1LoginController.html" title="Controller for handling user authentication and login in the Laravel application." alt="" coords="322,157,431,184"/>
+<area shape="poly" title=" " alt="" coords="202,370,211,330,226,283,250,235,266,213,284,194,302,182,321,175,323,180,304,187,288,198,270,217,255,238,231,285,216,332,207,371"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html" title="Controller for handling user registration in the Laravel application." alt="" coords="314,208,440,235"/>
+<area shape="poly" title=" " alt="" coords="207,370,234,307,256,273,284,245,312,230,314,234,288,249,260,276,239,309,211,372"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ResetPasswordController.html" title="Controller for handling password resets in the Laravel application." alt="" coords="292,259,462,285"/>
+<area shape="poly" title=" " alt="" coords="214,370,244,331,263,312,285,295,308,284,310,288,287,300,267,316,248,335,219,374"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html" title="Controller for handling email verification in the Laravel application." alt="" coords="306,309,447,336"/>
+<area shape="poly" title=" " alt="" coords="232,374,285,346,317,334,319,339,287,350,234,379"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1CalendrierController.html" title="Controller for handling calendar&#45;related operations." alt="" coords="308,360,445,387"/>
+<area shape="poly" title=" " alt="" coords="253,388,308,380,308,386,254,394"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html" title="Controller class for managing enterprises." alt="" coords="308,411,445,437"/>
+<area shape="poly" title=" " alt="" coords="254,404,308,412,308,417,253,409"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1HomeController.html" title="Controller responsible for handling the application&#39;s home page." alt="" coords="320,461,433,488"/>
+<area shape="poly" title=" " alt="" coords="234,418,287,447,321,459,319,464,285,452,232,423"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1NotificationController.html" title="Controller for handling notification operations." alt="" coords="305,512,448,539"/>
+<area shape="poly" title=" " alt="" coords="219,424,248,462,267,482,287,498,310,509,308,514,285,502,263,485,244,466,214,427"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html" title="Controller for handling configuration and scheduling functionalities." alt="" coords="301,563,452,589"/>
+<area shape="poly" title=" " alt="" coords="211,426,239,488,260,521,288,549,307,560,304,564,284,553,256,524,234,491,207,428"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html" title="Controller for managing reservation&#45;related operations." alt="" coords="303,613,450,640"/>
+<area shape="poly" title=" " alt="" coords="207,426,216,466,231,512,255,559,270,581,288,599,305,611,302,615,284,603,266,584,250,562,226,514,211,467,202,428"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html" title="Controller for handling enterprise reservation functionalities." alt="" coords="312,664,442,691"/>
+<area shape="poly" title=" " alt="" coords="205,427,210,476,224,536,249,597,266,625,288,650,313,665,310,670,284,654,262,629,244,600,219,537,205,477,199,428"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1UserController.html" title="Controller for managing user profile operations." alt="" coords="324,715,429,741"/>
+<area shape="poly" title=" " alt="" coords="203,427,206,485,217,558,228,597,243,635,263,670,288,701,305,713,324,720,322,725,302,717,284,705,258,673,238,637,223,599,212,559,200,485,197,428"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1WeekdayController.html" title=" " alt="" coords="311,765,442,792"/>
+<area shape="poly" title=" " alt="" coords="206,427,217,503,234,600,258,692,272,728,288,751,312,767,309,772,284,755,267,730,253,694,229,601,211,504,201,427"/>
 </map>
 </td></tr>
-<tr><td><img src="inherit_graph_2.png" border="0" usemap="#aController" alt=""/>
-<map name="aController" id="aController">
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ForgotPasswordController.html" title=" " alt="" coords="5,369,178,397"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Controller.html" title=" " alt="" coords="226,369,303,397"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html" title="Controller class for managing activities." alt="" coords="381,5,502,33"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ConfirmPasswordController.html" title=" " alt="" coords="351,57,532,85"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1LoginController.html" title="Handles user authentication and login functionalities." alt="" coords="388,109,496,137"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html" title="Handles user registration and validation." alt="" coords="378,161,505,189"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ResetPasswordController.html" title="Handles password reset requests." alt="" coords="356,213,527,241"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html" title="Handles email verification for registered users." alt="" coords="371,265,512,293"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1CalendrierController.html" title="Controller for handling calendar&#45;related operations." alt="" coords="374,317,510,345"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html" title="Controller class for managing enterprises." alt="" coords="374,369,510,397"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1HomeController.html" title="Controller responsible for handling the application&#39;s home page." alt="" coords="386,421,498,449"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1NotificationController.html" title="Controller for handling notification operations." alt="" coords="370,473,513,501"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html" title="Controller for handling configuration and scheduling functionalities." alt="" coords="366,525,517,553"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html" title="Controller for managing reservation&#45;related operations." alt="" coords="368,577,515,605"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html" title="Controller for handling enterprise reservation functionalities." alt="" coords="376,629,507,657"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1UserController.html" title="Controller for managing user profile operations." alt="" coords="389,681,494,709"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1weekdayController.html" title=" " alt="" coords="377,733,506,761"/>
-</map>
-</td></tr>
-<tr><td><img src="inherit_graph_3.png" border="0" usemap="#aFormPostRequest" alt=""/>
-<map name="aFormPostRequest" id="aFormPostRequest">
-<area shape="rect" title=" " alt="" coords="5,5,106,33"/>
-<area shape="rect" href="classApp_1_1Http_1_1Requests_1_1FormPostRequest.html" title=" " alt="" coords="154,5,281,33"/>
-</map>
-</td></tr>
-<tr><td><img src="inherit_graph_4.png" border="0" usemap="#aUser" alt=""/>
-<map name="aUser" id="aUser">
-<area shape="rect" title=" " alt="" coords="5,5,117,33"/>
-<area shape="rect" href="classApp_1_1Models_1_1User.html" title="The User model represents an application user." alt="" coords="165,5,214,33"/>
+<tr><td><img src="inherit_graph_2.png" border="0" usemap="#aModel" alt=""/>
+<map name="aModel" id="aModel">
+<area shape="rect" title=" " alt="" coords="5,157,62,184"/>
+<area shape="rect" href="classApp_1_1Models_1_1Activite.html" title="Represents an activity entity in the system." alt="" coords="127,5,192,32"/>
+<area shape="poly" title=" " alt="" coords="44,141,69,92,87,66,108,42,125,30,128,34,111,46,91,69,73,95,48,144"/>
+<area shape="rect" href="classApp_1_1Models_1_1Entreprise.html" title="Represents a company entity in the system." alt="" coords="120,56,200,83"/>
+<area shape="poly" title=" " alt="" coords="54,144,79,118,108,93,127,81,130,85,111,97,82,122,57,148"/>
+<area shape="rect" href="classApp_1_1Models_1_1JourneeType.html" title="The JourneeType model represents a type of day schedule." alt="" coords="112,107,208,133"/>
+<area shape="poly" title=" " alt="" coords="75,151,123,131,126,136,77,156"/>
+<area shape="rect" href="classApp_1_1Models_1_1Notification.html" title="Represents a notification related to a reservation." alt="" coords="116,157,204,184"/>
+<area shape="poly" title=" " alt="" coords="78,168,116,168,116,173,78,173"/>
+<area shape="rect" href="classApp_1_1Models_1_1Plage.html" title="Represents a time slot." alt="" coords="133,208,187,235"/>
+<area shape="poly" title=" " alt="" coords="77,185,133,208,131,213,75,190"/>
+<area shape="rect" href="classApp_1_1Models_1_1Reservation.html" title="Represents a reservation made by a user." alt="" coords="114,259,206,285"/>
+<area shape="poly" title=" " alt="" coords="57,194,82,220,111,245,130,256,127,260,108,249,79,223,54,197"/>
+<area shape="rect" href="classApp_1_1Models_1_1SemaineType.html" title="Represents a week schedule type." alt="" coords="110,309,210,336"/>
+<area shape="poly" title=" " alt="" coords="48,197,73,247,91,272,111,295,127,307,124,311,108,299,87,276,69,249,44,200"/>
 </map>
 </td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
+</div><!-- doc-content -->
 </body>
 </html>

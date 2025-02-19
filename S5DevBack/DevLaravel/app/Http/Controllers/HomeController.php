@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file HomeController.php
+ * @brief Controller responsible for handling the application's home page.
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,6 +10,7 @@ use App\Models\Entreprise;
 use Illuminate\Contracts\Pagination\Paginator;
 
 /**
+ * @class HomeController
  * @brief Controller responsible for handling the application's home page.
  *
  * This controller manages the display of the main dashboard (welcome page),
@@ -14,19 +18,6 @@ use Illuminate\Contracts\Pagination\Paginator;
  */
 class HomeController extends Controller
 {
-    /**
-     * Constructor for the HomeController.
-     *
-     * This constructor applies the authentication middleware; however, it is commented out
-     * to allow the home page to be accessed without authentication.
-     *
-     * @return void
-     */
-    /* public function __construct()
-    {
-        $this->middleware('auth');
-    } // Commented out to allow unauthenticated access */
-
     /**
      * Show the application dashboard.
      *

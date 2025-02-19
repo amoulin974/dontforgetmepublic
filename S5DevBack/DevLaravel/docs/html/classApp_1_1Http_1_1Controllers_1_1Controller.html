@@ -1,14 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Don&#39;t Forget Me: Référence de la classe Controller</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -19,9 +24,9 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
+ <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
-  <td id="projectalign" style="padding-left: 0.5em;">
+  <td id="projectalign">
    <div id="projectname">Don&#39;t Forget Me<span id="projectnumber">&#160;1.0</span>
    </div>
    <div id="projectbrief">Outil de prise de rendez-vous</div>
@@ -31,10 +36,15 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Généré par Doxygen 1.9.2 -->
+<!-- Généré par Doxygen 1.13.2 -->
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
 /* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
@@ -42,12 +52,17 @@ var searchBox = new SearchBox("searchBox", "search",'Recherche','.html');
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Recherche');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Recherche',false);
+  $(function() { init_search(); });
 });
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){ initResizable(false); });
+/* @license-end */
+</script>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -57,9 +72,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
 </div>
 
 <div id="nav-path" class="navpath">
@@ -67,33 +89,54 @@ $(function() {
 <li class="navelem"><b>App</b></li><li class="navelem"><b>Http</b></li><li class="navelem"><b>Controllers</b></li><li class="navelem"><a class="el" href="classApp_1_1Http_1_1Controllers_1_1Controller.html">Controller</a></li>  </ul>
 </div>
 </div><!-- top -->
+<div id="doc-content">
 <div class="header">
   <div class="headertitle"><div class="title">Référence de la classe Controller</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Base controller for handling common operations in the Laravel application.  
+ <a href="#details">Plus de détails...</a></p>
 <div class="dynheader">
 Graphe d'héritage de Controller:</div>
 <div class="dyncontent">
 <div class="center"><img src="classApp_1_1Http_1_1Controllers_1_1Controller__inherit__graph.png" border="0" usemap="#aController_inherit__map" alt="Inheritance graph"/></div>
 <map name="aController_inherit__map" id="aController_inherit__map">
-<area shape="rect" title=" " alt="" coords="161,396,238,424"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html" title="Controller class for managing activities." alt="" coords="316,5,437,33"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ConfirmPasswordController.html" title=" " alt="" coords="286,57,467,85"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ForgotPasswordController.html" title=" " alt="" coords="290,109,463,137"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1LoginController.html" title="Handles user authentication and login functionalities." alt="" coords="322,161,431,189"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html" title="Handles user registration and validation." alt="" coords="314,213,440,241"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ResetPasswordController.html" title="Handles password reset requests." alt="" coords="292,265,462,293"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html" title="Handles email verification for registered users." alt="" coords="306,317,447,345"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1CalendrierController.html" title="Controller for handling calendar&#45;related operations." alt="" coords="308,369,445,397"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html" title="Controller class for managing enterprises." alt="" coords="308,421,445,449"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1HomeController.html" title="Controller responsible for handling the application&#39;s home page." alt="" coords="320,473,433,501"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1NotificationController.html" title="Controller for handling notification operations." alt="" coords="305,525,448,553"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html" title="Controller for handling configuration and scheduling functionalities." alt="" coords="301,577,452,605"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html" title="Controller for managing reservation&#45;related operations." alt="" coords="303,629,450,657"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html" title="Controller for handling enterprise reservation functionalities." alt="" coords="312,681,442,709"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1UserController.html" title="Controller for managing user profile operations." alt="" coords="324,733,429,761"/>
-<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1weekdayController.html" title=" " alt="" coords="312,785,441,813"/>
-<area shape="rect" title=" " alt="" coords="5,396,113,424"/>
+<area shape="rect" title="Base controller for handling common operations in the Laravel application." alt="" coords="161,385,238,412"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ActiviteController.html" title="Controller class for managing activities." alt="" coords="316,5,437,32"/>
+<area shape="poly" title=" " alt="" coords="201,370,211,294,229,196,253,103,267,67,284,42,298,31,315,24,317,29,301,36,288,46,272,70,258,105,234,197,217,294,206,371"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ConfirmPasswordController.html" title="Controller for handling password confirmations in the Laravel application." alt="" coords="286,56,467,83"/>
+<area shape="poly" title=" " alt="" coords="197,370,200,312,212,238,223,199,238,160,258,124,284,93,300,81,303,85,288,97,263,127,243,163,228,200,217,239,206,313,203,370"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ForgotPasswordController.html" title="Controller for handling password reset emails in the Laravel application." alt="" coords="290,107,463,133"/>
+<area shape="poly" title=" " alt="" coords="199,369,205,321,219,260,244,198,262,169,284,143,301,132,304,136,288,147,266,172,249,200,224,262,210,322,205,370"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1LoginController.html" title="Controller for handling user authentication and login in the Laravel application." alt="" coords="322,157,431,184"/>
+<area shape="poly" title=" " alt="" coords="202,370,211,330,226,283,250,235,266,213,284,194,302,182,321,175,323,180,304,187,288,198,270,217,255,238,231,285,216,332,207,371"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html" title="Controller for handling user registration in the Laravel application." alt="" coords="314,208,440,235"/>
+<area shape="poly" title=" " alt="" coords="207,370,234,307,256,273,284,245,312,230,314,234,288,249,260,276,239,309,211,372"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1ResetPasswordController.html" title="Controller for handling password resets in the Laravel application." alt="" coords="292,259,462,285"/>
+<area shape="poly" title=" " alt="" coords="214,370,244,331,263,312,285,295,308,284,310,288,287,300,267,316,248,335,219,374"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html" title="Controller for handling email verification in the Laravel application." alt="" coords="306,309,447,336"/>
+<area shape="poly" title=" " alt="" coords="232,374,285,346,317,334,319,339,287,350,234,379"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1CalendrierController.html" title="Controller for handling calendar&#45;related operations." alt="" coords="308,360,445,387"/>
+<area shape="poly" title=" " alt="" coords="253,388,308,380,308,386,254,394"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html" title="Controller class for managing enterprises." alt="" coords="308,411,445,437"/>
+<area shape="poly" title=" " alt="" coords="254,404,308,412,308,417,253,409"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1HomeController.html" title="Controller responsible for handling the application&#39;s home page." alt="" coords="320,461,433,488"/>
+<area shape="poly" title=" " alt="" coords="234,418,287,447,321,459,319,464,285,452,232,423"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1NotificationController.html" title="Controller for handling notification operations." alt="" coords="305,512,448,539"/>
+<area shape="poly" title=" " alt="" coords="219,424,248,462,267,482,287,498,310,509,308,514,285,502,263,485,244,466,214,427"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ParametrageController.html" title="Controller for handling configuration and scheduling functionalities." alt="" coords="301,563,452,589"/>
+<area shape="poly" title=" " alt="" coords="211,426,239,488,260,521,288,549,307,560,304,564,284,553,256,524,234,491,207,428"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ReservationController.html" title="Controller for managing reservation&#45;related operations." alt="" coords="303,613,450,640"/>
+<area shape="poly" title=" " alt="" coords="207,426,216,466,231,512,255,559,270,581,288,599,305,611,302,615,284,603,266,584,250,562,226,514,211,467,202,428"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1ReserverController.html" title="Controller for handling enterprise reservation functionalities." alt="" coords="312,664,442,691"/>
+<area shape="poly" title=" " alt="" coords="205,427,210,476,224,536,249,597,266,625,288,650,313,665,310,670,284,654,262,629,244,600,219,537,205,477,199,428"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1UserController.html" title="Controller for managing user profile operations." alt="" coords="324,715,429,741"/>
+<area shape="poly" title=" " alt="" coords="203,427,206,485,217,558,228,597,243,635,263,670,288,701,305,713,324,720,322,725,302,717,284,705,258,673,238,637,223,599,212,559,200,485,197,428"/>
+<area shape="rect" href="classApp_1_1Http_1_1Controllers_1_1WeekdayController.html" title=" " alt="" coords="311,765,442,792"/>
+<area shape="poly" title=" " alt="" coords="206,427,217,503,234,600,258,692,272,728,288,751,312,767,309,772,284,755,267,730,253,694,229,601,211,504,201,427"/>
+<area shape="rect" title=" " alt="" coords="5,385,113,412"/>
+<area shape="poly" title=" " alt="" coords="128,396,160,396,160,401,128,401"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">légende</a>]</span></center></div>
 <div class="dynheader">
@@ -101,20 +144,24 @@ Graphe de collaboration de Controller:</div>
 <div class="dyncontent">
 <div class="center"><img src="classApp_1_1Http_1_1Controllers_1_1Controller__coll__graph.png" border="0" usemap="#aController_coll__map" alt="Collaboration graph"/></div>
 <map name="aController_coll__map" id="aController_coll__map">
-<area shape="rect" title=" " alt="" coords="20,81,98,109"/>
-<area shape="rect" title=" " alt="" coords="5,5,113,33"/>
+<area shape="rect" title="Base controller for handling common operations in the Laravel application." alt="" coords="20,80,98,107"/>
+<area shape="rect" title=" " alt="" coords="5,5,113,32"/>
+<area shape="poly" title=" " alt="" coords="62,48,62,80,56,80,56,48"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">légende</a>]</span></center></div>
 <a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
-<div class="textblock">
-<p class="definition">Définition à la ligne <a class="el" href="Controller_8php_source.html#l00009">9</a> du fichier <a class="el" href="Controller_8php_source.html">Controller.php</a>.</p>
+<div class="textblock"><p>Base controller for handling common operations in the Laravel application. </p>
+<p>This class provides authorization and validation functionalities for controllers in the application. </p>
+
+<p class="definition">Définition à la ligne <a class="el" href="Controller_8php_source.html#l00018">18</a> du fichier <a class="el" href="Controller_8php_source.html">Controller.php</a>.</p>
 </div><hr/>La documentation de cette classe a été générée à partir du fichier suivant :<ul>
 <li>C:/wamp64/www/DontForgetMe/S5DevBack/DevLaravel/app/Http/Controllers/<a class="el" href="Controller_8php_source.html">Controller.php</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
+</div><!-- doc-content -->
 </body>
 </html>

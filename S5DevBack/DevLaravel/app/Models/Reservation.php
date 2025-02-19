@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file Reservation.php
+ * @brief Eloquent model to manage reservations in the Laravel application.
+ */
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +15,8 @@ use App\Models\User;
 use App\Models\Activite;
 
 /**
- * @brief The Reservation model represents a reservation made by a user.
+ * @class Reservation
+ * @brief Represents a reservation made by a user.
  *
  * This model defines the attributes and relationships for a reservation. A reservation
  * includes details such as the appointment date, start time, end time, and the number of people.
@@ -23,7 +27,6 @@ class Reservation extends Model
     use HasFactory;
 
     // ATTRIBUTES
-
     /**
      * The attributes that are mass assignable.
      *
@@ -50,7 +53,6 @@ class Reservation extends Model
     ];
 
     // METHODS
-
     /**
      * Define a one-to-many relationship with the Notification model.
      *

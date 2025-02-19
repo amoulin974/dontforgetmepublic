@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file UserController.php
+ * @brief Controller for managing user profile operations.
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,6 +14,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
 /**
+ * @class UserController
  * @brief Controller for managing user profile operations.
  *
  * This controller handles displaying the user profile, editing the profile form, and updating the user's information.

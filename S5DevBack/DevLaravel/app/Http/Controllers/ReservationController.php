@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file ReservationController.php
+ * @brief Controller for managing reservation-related operations.
+ */
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
@@ -15,6 +18,7 @@ use App\Models\Notification;
 use App\Models\Activite;
 
 /**
+ * @class ReservationController
  * @brief Controller for managing reservation-related operations.
  *
  * This controller handles listing, viewing, creating, updating, and deleting reservations.

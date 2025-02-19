@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file Activite.php
+ * @brief Eloquent model to manage activities in the Laravel application.
+ */
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +12,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @class Activite
- * @brief Modèle Eloquent pour gérer les activités dans l'application Laravel.
+ * @brief Represents an activity entity in the system.
+ *
+ * This model handles the relationship with other models such as Entreprise, Plage, User, and Reservation.
  */
 class Activite extends Model
 {
@@ -17,8 +22,9 @@ class Activite extends Model
 
     // VARIABLES
     /**
+     * Attributes that are mass assigned.
+     * 
      * @var array<int, string> $fillable
-     * Attributs pouvant être assignés en masse.
      */
     protected $fillable = [
         'libelle',
@@ -28,18 +34,16 @@ class Activite extends Model
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Attributes that can be mass assigned.
+     * 
+     * @var array<int, string> $fillable
      */
     protected $casts = [
-        //'duree' => 'datetime:H:i:s'
         'duree' => 'string'
     ];
 
 
-    // METHODES 
-    
+    // METHODS 
     /**
      * Define a many-to-one relationship with the Entreprise model.
      *
@@ -106,7 +110,11 @@ class Activite extends Model
                     ->withTimestamps();
     }
 
-
+    /**
+     * Formats the activity duration into a human-readable string.
+     *
+     * @return string The formatted duration string.
+     */
     public function getFormattedDureeAttribute()
     {
         $timeParts = explode(':', $this->duree);

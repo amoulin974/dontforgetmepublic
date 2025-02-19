@@ -1,5 +1,7 @@
 <map id="store" name="store">
-<area shape="rect" id="node1" title=" " alt="" coords="5,48,56,76"/>
-<area shape="rect" id="node2" href="$classApp_1_1Models_1_1Entreprise.html#aa0f6c02fb34704b23ec5b56d5d0edf91" title=" " alt="" coords="104,5,257,49"/>
-<area shape="rect" id="node3" href="$classApp_1_1Models_1_1Entreprise.html#a560726b9d08a4cedde5bf2bc1dabbb62" title=" " alt="" coords="104,73,257,117"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,47,56,73"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Models_1_1Entreprise.html#aa0f6c02fb34704b23ec5b56d5d0edf91" title=" " alt="" coords="104,5,257,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,52,88,45,89,50,57,57"/>
+<area shape="rect" id="Node000003" href="$classApp_1_1Models_1_1Entreprise.html#a560726b9d08a4cedde5bf2bc1dabbb62" title=" " alt="" coords="104,72,257,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="57,63,89,70,88,75,56,68"/>
 </map>

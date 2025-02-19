@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file JourneeType.php
+ * @brief Eloquent model to manage day types in the Laravel application.
+ */
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @brief The JourneeType model represents a type of day schedule.
+ * @class JourneeType
+ * @brief Represents a type of day schedule.
  *
  * This model defines the attributes and relationships for a day type schedule,
  * including its planning details and its relationships with an enterprise and week types.
@@ -18,7 +22,6 @@ class JourneeType extends Model
     use HasFactory;
 
     // VARIABLES
-
     /**
      * The attributes that are mass assignable.
      *
@@ -41,7 +44,6 @@ class JourneeType extends Model
     ];
 
     // METHODS
-
     /**
      * Define a many-to-one relationship with the Entreprise model.
      *

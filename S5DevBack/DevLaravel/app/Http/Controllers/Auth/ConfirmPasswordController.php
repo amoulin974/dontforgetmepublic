@@ -1,10 +1,19 @@
 <?php
-
+/**
+ * @file ConfirmPasswordController.php
+ * @brief Controller for handling password confirmations in the Laravel application.
+ */
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ConfirmsPasswords;
 
+/**
+ * @class ConfirmPasswordController
+ * @brief Controller for handling password confirmations in the Laravel application.
+ * 
+ * This controller is responsible for handling password confirmations and uses a simple trait to include the behavior.
+ */
 class ConfirmPasswordController extends Controller
 {
     /*
@@ -21,14 +30,17 @@ class ConfirmPasswordController extends Controller
     use ConfirmsPasswords;
 
     /**
-     * Where to redirect users when the intended url fails.
+     * Redirect path when the intended URL fails.
      *
-     * @var string
+     * @var string $redirectTo
      */
     protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
+     *
+     * This applies the authentication middleware to ensure only logged-in users
+     * can access password confirmation operations.
      *
      * @return void
      */

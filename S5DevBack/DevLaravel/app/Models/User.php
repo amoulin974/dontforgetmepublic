@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file User.php
+ * @brief Eloquent model to manage users in the Laravel application.
+ */
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,7 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @brief The User model represents an application user.
+ * @class User
+ * @brief Represents an application user.
  *
  * This model handles the authentication details, attributes, and relationships
  * associated with a user. It includes methods to retrieve related activities,
@@ -18,11 +22,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     // ATTRIBUTES
-
     /**
      * The attributes that are mass assignable.
      *
@@ -59,14 +61,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
-            // 'delaiAvantNotif' => 'datetime',
             'delaiAvantNotif'   => 'string',
             'superadmin'        => 'integer',
         ];
     }
 
     // METHODS
-
     /**
      * Get the activities associated with the user via the "travailler" pivot table.
      *

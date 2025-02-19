@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @file LoginController.php
+ * @brief Controller for handling user authentication and login in the Laravel application.
+ */
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -10,8 +13,7 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * @class LoginController
- *
- * @brief Handles user authentication and login functionalities.
+ * @brief Controller for handling user authentication and login in the Laravel application.
  *
  * This controller manages authentication using Laravel's built-in authentication system.
  * It provides functionalities for user login, token-based authentication, and redirections.

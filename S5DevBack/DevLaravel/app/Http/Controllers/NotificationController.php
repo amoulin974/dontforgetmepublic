@@ -1,11 +1,15 @@
 <?php
-
+/**
+ * @file NotificationController.php
+ * @brief Controller for handling notification operations.
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
+ * @class NotificationController
  * @brief Controller for handling notification operations.
  *
  * This controller provides methods to retrieve detailed notification data and update
@@ -25,7 +29,7 @@ class NotificationController extends Controller
      */
     public function getDetails()
     {
-        $data = //DB::connection('userLecture')
+        $data = 
             DB::table('effectuer')
                 ->join('users', 'effectuer.idUser', '=', 'users.id')
                 ->join('reservations', 'effectuer.idReservation', '=', 'reservations.id')
@@ -78,19 +82,16 @@ class NotificationController extends Controller
      */
     public function updateNotificationState(Request $request, $notificationId)
     {
-        // Validate that the 'etat' field is provided and is a boolean.
         $request->validate([
             'etat' => 'required|boolean',
         ]);
 
-        // Update the notification state in the database.
         $updated = DB::table('notifications')
             ->where('id', $notificationId)
             ->update([
                 'etat' => $request->etat,
             ]);
 
-        // Check if the update was successful.
         if ($updated) {
             return response()->json(['message' => 'Notification updated successfully.'], 200);
         } else {
@@ -109,7 +110,6 @@ class NotificationController extends Controller
      */
     public function destroy($notificationId)
     {
-        // Retrieve the associated reservation ID
         $notification = DB::table('notifications')->where('id', $notificationId)->first();
         if (!$notification) {
             return response()->json(['message' => 'Notification not found.'], 404);
