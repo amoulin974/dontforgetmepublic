@@ -49,7 +49,8 @@
 
     <!-- Popup Dialog -->
     <div id="dialog-show" title="Informations pour contacter" style="display:none;">
-        <ul>Contact de l'entreprise {{ $entreprise->libelle }} :
+        <p>Contact de l'entreprise {{ $entreprise->libelle }} :</p>
+        <ul>
             <li><a href="mailto:{{$entreprise->email}}" style="text-decoration: none;">Email : <i>{{ $entreprise->email }}</i></a></li>
             <li><a href="tel:{{$entreprise->telephone}}" style="text-decoration: none;"> Téléphone : <i>{{ $entreprise->telephone }}</i></a></li>
         </ul>
