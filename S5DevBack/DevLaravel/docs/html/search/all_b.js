@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['logincontroller_0',['LoginController',['../class_app_1_1_http_1_1_controllers_1_1_auth_1_1_login_controller.html',1,'App::Http::Controllers::Auth']]]
+  ['journeetype_0',['JourneeType',['../classApp_1_1Models_1_1JourneeType.html',1,'App::Models']]],
+  ['journeetypes_1',['journeeTypes',['../classApp_1_1Models_1_1Entreprise.html#aea8a5b735b59c3acdbd68e20eb8493ee',1,'App\Models\Entreprise\journeeTypes()'],['../classApp_1_1Models_1_1SemaineType.html#aea8a5b735b59c3acdbd68e20eb8493ee',1,'App\Models\SemaineType\journeeTypes()']]]
 ];

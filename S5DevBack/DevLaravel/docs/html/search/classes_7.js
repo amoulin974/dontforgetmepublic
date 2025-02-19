@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['notification_0',['Notification',['../class_app_1_1_models_1_1_notification.html',1,'App::Models']]],
-  ['notificationcontroller_1',['notificationController',['../class_app_1_1_http_1_1_controllers_1_1notification_controller.html',1,'App::Http::Controllers']]]
+  ['notification_0',['Notification',['../classApp_1_1Models_1_1Notification.html',1,'App::Models']]],
+  ['notificationcontroller_1',['NotificationController',['../classApp_1_1Http_1_1Controllers_1_1NotificationController.html',1,'App::Http::Controllers']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['entreprise_0',['Entreprise',['../class_app_1_1_models_1_1_entreprise.html',1,'App::Models']]],
-  ['entreprisecontroller_1',['entrepriseController',['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html',1,'App::Http::Controllers']]]
+  ['entreprise_0',['Entreprise',['../classApp_1_1Models_1_1Entreprise.html',1,'App::Models']]],
+  ['entreprisecontroller_1',['EntrepriseController',['../classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html',1,'App::Http::Controllers']]]
 ];

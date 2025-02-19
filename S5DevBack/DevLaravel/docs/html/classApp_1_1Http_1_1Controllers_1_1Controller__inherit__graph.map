@@ -1,0 +1,20 @@
+<map id="Controller" name="Controller">
+<area shape="rect" id="node1" title=" " alt="" coords="161,396,238,424"/>
+<area shape="rect" id="node3" href="$classApp_1_1Http_1_1Controllers_1_1ActiviteController.html" title="Controller class for managing activities." alt="" coords="316,5,437,33"/>
+<area shape="rect" id="node4" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ConfirmPasswordController.html" title=" " alt="" coords="286,57,467,85"/>
+<area shape="rect" id="node5" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ForgotPasswordController.html" title=" " alt="" coords="290,109,463,137"/>
+<area shape="rect" id="node6" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1LoginController.html" title="Handles user authentication and login functionalities." alt="" coords="322,161,431,189"/>
+<area shape="rect" id="node7" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html" title="Handles user registration and validation." alt="" coords="314,213,440,241"/>
+<area shape="rect" id="node8" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1ResetPasswordController.html" title="Handles password reset requests." alt="" coords="292,265,462,293"/>
+<area shape="rect" id="node9" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html" title="Handles email verification for registered users." alt="" coords="306,317,447,345"/>
+<area shape="rect" id="node10" href="$classApp_1_1Http_1_1Controllers_1_1CalendrierController.html" title="Controller for handling calendar&#45;related operations." alt="" coords="308,369,445,397"/>
+<area shape="rect" id="node11" href="$classApp_1_1Http_1_1Controllers_1_1EntrepriseController.html" title="Controller class for managing enterprises." alt="" coords="308,421,445,449"/>
+<area shape="rect" id="node12" href="$classApp_1_1Http_1_1Controllers_1_1HomeController.html" title="Controller responsible for handling the application&#39;s home page." alt="" coords="320,473,433,501"/>
+<area shape="rect" id="node13" href="$classApp_1_1Http_1_1Controllers_1_1NotificationController.html" title="Controller for handling notification operations." alt="" coords="305,525,448,553"/>
+<area shape="rect" id="node14" href="$classApp_1_1Http_1_1Controllers_1_1ParametrageController.html" title="Controller for handling configuration and scheduling functionalities." alt="" coords="301,577,452,605"/>
+<area shape="rect" id="node15" href="$classApp_1_1Http_1_1Controllers_1_1ReservationController.html" title="Controller for managing reservation&#45;related operations." alt="" coords="303,629,450,657"/>
+<area shape="rect" id="node16" href="$classApp_1_1Http_1_1Controllers_1_1ReserverController.html" title="Controller for handling enterprise reservation functionalities." alt="" coords="312,681,442,709"/>
+<area shape="rect" id="node17" href="$classApp_1_1Http_1_1Controllers_1_1UserController.html" title="Controller for managing user profile operations." alt="" coords="324,733,429,761"/>
+<area shape="rect" id="node18" href="$classApp_1_1Http_1_1Controllers_1_1weekdayController.html" title=" " alt="" coords="312,785,441,813"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,396,113,424"/>
+</map>

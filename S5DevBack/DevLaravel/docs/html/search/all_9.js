@@ -1,9 +1,4 @@
 var searchData=
 [
-  ['index_0',['index',['../class_app_1_1_http_1_1_controllers_1_1calendrier_controller.html#ab567a949f50e20ea3d95ad062a17e3c3',1,'App\Http\Controllers\calendrierController\index()'],['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html#a149eb92716c1084a935e04a8d95f7347',1,'App\Http\Controllers\entrepriseController\index()'],['../class_app_1_1_http_1_1_controllers_1_1_home_controller.html#a149eb92716c1084a935e04a8d95f7347',1,'App\Http\Controllers\HomeController\index()'],['../class_app_1_1_http_1_1_controllers_1_1parametrage_controller.html#a149eb92716c1084a935e04a8d95f7347',1,'App\Http\Controllers\parametrageController\index()'],['../class_app_1_1_http_1_1_controllers_1_1reservation_controller.html#a149eb92716c1084a935e04a8d95f7347',1,'App\Http\Controllers\reservationController\index()'],['../class_app_1_1_http_1_1_controllers_1_1_reserver_controller.html#a149eb92716c1084a935e04a8d95f7347',1,'App\Http\Controllers\ReserverController\index()'],['../class_app_1_1_http_1_1_controllers_1_1user_controller.html#a149eb92716c1084a935e04a8d95f7347',1,'App\Http\Controllers\userController\index()']]],
-  ['indexplage_1',['indexPlage',['../class_app_1_1_http_1_1_controllers_1_1parametrage_controller.html#a6414fecc91c1dc0a391a6e104af43f31',1,'App::Http::Controllers::parametrageController']]],
-  ['indexplageasemploye_2',['indexPlageAsEmploye',['../class_app_1_1_http_1_1_controllers_1_1parametrage_controller.html#abe36355d484e9ecdd298e04cd20b5b8e',1,'App::Http::Controllers::parametrageController']]],
-  ['indexuser_3',['indexUser',['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html#a1b54af1cb5cc696e35e7c2e507f366a6',1,'App::Http::Controllers::entrepriseController']]],
-  ['introduction_4',['Introduction',['../index.html#intro_sec',1,'']]],
-  ['invit_5',['invit',['../class_app_1_1_http_1_1_controllers_1_1parametrage_controller.html#aca37ba7573cab1615fa77213d160e475',1,'App::Http::Controllers::parametrageController']]]
+  ['homecontroller_0',['HomeController',['../classApp_1_1Http_1_1Controllers_1_1HomeController.html',1,'App::Http::Controllers']]]
 ];

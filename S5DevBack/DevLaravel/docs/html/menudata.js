@@ -27,7 +27,7 @@ var menudata={children:[
 {text:"Structures de données",url:"annotated.html",children:[
 {text:"Structures de données",url:"annotated.html"},
 {text:"Index des structures de données",url:"classes.html"},
-{text:"Hiérarchie des classes",url:"hierarchy.html"},
+{text:"Hiérarchie des classes",url:"inherits.html"},
 {text:"Champs de donnée",url:"functions.html",children:[
 {text:"Tout",url:"functions.html",children:[
 {text:"$",url:"functions.html#index__24"},
@@ -37,6 +37,7 @@ var menudata={children:[
 {text:"c",url:"functions.html#index_c"},
 {text:"d",url:"functions.html#index_d"},
 {text:"e",url:"functions.html#index_e"},
+{text:"g",url:"functions.html#index_g"},
 {text:"i",url:"functions.html#index_i"},
 {text:"j",url:"functions.html#index_j"},
 {text:"m",url:"functions.html#index_m"},
@@ -54,6 +55,7 @@ var menudata={children:[
 {text:"c",url:"functions_func.html#index_c"},
 {text:"d",url:"functions_func.html#index_d"},
 {text:"e",url:"functions_func.html#index_e"},
+{text:"g",url:"functions_func.html#index_g"},
 {text:"i",url:"functions_func.html#index_i"},
 {text:"j",url:"functions_func.html#index_j"},
 {text:"m",url:"functions_func.html#index_m"},

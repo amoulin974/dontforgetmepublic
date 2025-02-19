@@ -1,14 +1,11 @@
 var searchData=
 [
-  ['semainetype_0',['SemaineType',['../class_app_1_1_models_1_1_semaine_type.html',1,'App::Models']]],
-  ['semainetypes_1',['semaineTypes',['../class_app_1_1_models_1_1_entreprise.html#a609ee202624341f4671fed2b28f283f2',1,'App\Models\Entreprise\semaineTypes()'],['../class_app_1_1_models_1_1_journee_type.html#a609ee202624341f4671fed2b28f283f2',1,'App\Models\JourneeType\semaineTypes()']]],
-  ['show_2',['show',['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html#a00ff23cfe37c8a482c0aff53299595f5',1,'App\Http\Controllers\entrepriseController\show()'],['../class_app_1_1_http_1_1_controllers_1_1reservation_controller.html#afb568cd974b792089d77c98432510b6d',1,'App\Http\Controllers\reservationController\show()'],['../class_app_1_1_http_1_1_controllers_1_1_reserver_controller.html#aa1084dca2023d0205f4d383a4fa3276d',1,'App\Http\Controllers\ReserverController\show()']]],
-  ['showactivites_3',['showActivites',['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html#a344aa93c0481887bd86b01a10294c14d',1,'App::Http::Controllers::entrepriseController']]],
-  ['showchoicepage_4',['showChoicePage',['../class_app_1_1_http_1_1_controllers_1_1_auth_1_1_register_controller.html#a78bf187994ba1aa580503754ddcbff1a',1,'App::Http::Controllers::Auth::RegisterController']]],
-  ['showrecappage_5',['showRecapPage',['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html#ab1f73ca687f2f0d28cb6dd99597e7a97',1,'App::Http::Controllers::entrepriseController']]],
-  ['showtyperdvpage_6',['showTypeRdvPage',['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html#a6b14ee948ea9c8493dc6a7f7fd0fa90f',1,'App::Http::Controllers::entrepriseController']]],
-  ['showuserregisterpage_7',['showUserRegisterPage',['../class_app_1_1_http_1_1_controllers_1_1_auth_1_1_register_controller.html#aba3d985e72d19d47566720703949e19f',1,'App::Http::Controllers::Auth::RegisterController']]],
-  ['store_8',['store',['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html#a98e4b7b7529a9a5f6d7e96909cba8bfe',1,'App\Http\Controllers\entrepriseController\store()'],['../class_app_1_1_http_1_1_controllers_1_1reservation_controller.html#af7fb399e5e39a4c8447171cba0916b6d',1,'App\Http\Controllers\reservationController\store()'],['../class_app_1_1_http_1_1_controllers_1_1_reserver_controller.html#a9ef485163104597c12185b53cdacf638',1,'App\Http\Controllers\ReserverController\store()']]],
-  ['storeappointments_9',['storeAppointments',['../class_app_1_1_http_1_1_controllers_1_1entreprise_controller.html#af7c6c3d79256217ed741f9188c2b602c',1,'App::Http::Controllers::entrepriseController']]],
-  ['storeuser_10',['storeUser',['../class_app_1_1_http_1_1_controllers_1_1_auth_1_1_register_controller.html#a969f4dbd9d2d1de6298b7273fa3c40ab',1,'App::Http::Controllers::Auth::RegisterController']]]
+  ['register_0',['register',['../classApp_1_1Providers_1_1AppServiceProvider.html#acc294a6cc8e69743746820e3d15e3f78',1,'App::Providers::AppServiceProvider']]],
+  ['registercontroller_1',['RegisterController',['../classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html',1,'App::Http::Controllers::Auth']]],
+  ['reservation_2',['Reservation',['../classApp_1_1Models_1_1Reservation.html',1,'App::Models']]],
+  ['reservationcontroller_3',['ReservationController',['../classApp_1_1Http_1_1Controllers_1_1ReservationController.html',1,'App::Http::Controllers']]],
+  ['reservations_4',['reservations',['../classApp_1_1Models_1_1Creneau.html#acd46bb5db7c65f6df55165c85e9979c5',1,'App\Models\Creneau\reservations()'],['../classApp_1_1Models_1_1Notification.html#acd46bb5db7c65f6df55165c85e9979c5',1,'App\Models\Notification\reservations()']]],
+  ['reservercontroller_5',['ReserverController',['../classApp_1_1Http_1_1Controllers_1_1ReserverController.html',1,'App::Http::Controllers']]],
+  ['resetpasswordcontroller_6',['ResetPasswordController',['../classApp_1_1Http_1_1Controllers_1_1Auth_1_1ResetPasswordController.html',1,'App::Http::Controllers::Auth']]],
+  ['rules_7',['rules',['../classApp_1_1Http_1_1Requests_1_1FormPostRequest.html#a17dba92d96b9dd48c62f3ede3eef94d4',1,'App::Http::Requests::FormPostRequest']]]
 ];
