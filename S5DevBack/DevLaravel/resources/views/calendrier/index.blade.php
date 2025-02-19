@@ -144,7 +144,7 @@ var calendar = $('#calendar').fullCalendar({
                 callback(events);
             },
             error: function() {
-                displayError("Erreur lors de la récupération des évènements");
+                displayError("{{__('Event recovery error')}}");
             }
         });
     },
@@ -253,7 +253,7 @@ var calendar = $('#calendar').fullCalendar({
                                             $('#calendar').fullCalendar('refetchEvents');
                                         },
                                         error: function() {
-                                            displayError("Erreur lors de l'ajout de l'évènement. Résseayez...");
+                                            displayError("{{__('Adding event error. Try again...')}}");
                                         }
                                     });
                                 }
@@ -268,7 +268,7 @@ var calendar = $('#calendar').fullCalendar({
                         }
                     });
             } else {
-                displayError("Impossible de créer un évènement sur plusieurs jours");
+                displayError("{{__('Unable to create an multi-day event')}}");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -313,7 +313,7 @@ var calendar = $('#calendar').fullCalendar({
                                     $('#calendar').fullCalendar('refetchEvents');
                                 },
                                 error: function() {
-                                    displayError("Erreur lors de l'ajout de l'évènement. Réssayez...");
+                                    displayError("{{__('Adding event error. Try again...')}}");
                                 }
                             });
                         }
@@ -328,7 +328,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             });
         } else {
-            displayError("Impossible de créer un évènement sur plusieurs jours");
+            displayError("{{__('Unable to create an multi-day event')}}");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
@@ -354,7 +354,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             });
         } else {
-            displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+            displayError("{{__('Unable to create an multi-day event')}}");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
@@ -462,12 +462,12 @@ var calendar = $('#calendar').fullCalendar({
                 },
                 error: function() {
                     revertFunc(); // Revert the change if the update fails
-                    displayError("Erreur lors de la modification de l'évènement");
+                    displayError("{{__('Event edit error')}}");
                 }
             });
         } else {
             revertFunc(); // Revert the change if the update fails
-            displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+            displayError("{{__('Event edit error')}}");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }

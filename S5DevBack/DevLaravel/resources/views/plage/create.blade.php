@@ -208,7 +208,7 @@ var calendar = $('#calendar').fullCalendar({
                 callback(events);
             },
             error: function() {
-                displayError("Erreur lors de la récupération des plages");
+                displayError("{{__('Time slot recovery error'}}");
             }
         });
     },
@@ -293,7 +293,7 @@ var calendar = $('#calendar').fullCalendar({
                                             $('#calendar').fullCalendar('refetchEvents');
                                         },
                                         error: function() {
-                                            displayError("Erreur lors de l'ajout de la plage. Réssayez...");
+                                            displayError("{{__('Adding time slot error. Try again...'}}");
                                         }
                                     });
                                 }
@@ -305,7 +305,7 @@ var calendar = $('#calendar').fullCalendar({
                         }
                     });
                 } else {
-                    displayError("Impossible de créer une plage sur plusieurs jours");
+                    displayError("{{__('Unable to create a multi-day slot'}}");
                     // Désélectionner après la sélection
                     $('#calendar').fullCalendar('unselect');
                 }
@@ -349,7 +349,7 @@ var calendar = $('#calendar').fullCalendar({
                     }
                 });
             } else {
-                displayError("Les plages ne peuvent pas dépasser plusieurs jours");
+                displayError("{{__('Time slots cant exceed several days'}}");
                 // Désélectionner après la sélection
                 $('#calendar').fullCalendar('unselect');
             }
@@ -493,12 +493,12 @@ var calendar = $('#calendar').fullCalendar({
                         },
                         error: function() {
                             revertFunc(); // Revert the change if the update fails
-                            displayError("Erreur lors de la modification de la plage");
+                            displayError("{{__('Time slot editing error'}}");
                         }
                     });
                 } else {
                     revertFunc(); // Revert the change if the update fails
-                    displayError("Les plages ne peuvent pas dépasser plusieurs jours");
+                    displayError("{{__('Time slots cant exceed several days'}}");
                     // Désélectionner après la sélection
                     $('#calendar').fullCalendar('unselect');
                 }

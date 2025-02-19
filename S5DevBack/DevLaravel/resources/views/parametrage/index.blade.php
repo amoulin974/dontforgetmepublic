@@ -114,7 +114,7 @@ function accepterInvit(eId, eLib) {
             $("#entreprise" + eId).append('<a class="btn btn-primary light" href="/parametrage/plage/'+eId+'">{{__(`View your time slots`)}}</a>'); {{-- {{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }} --}} */
         },
         error: function (data) {
-            displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');
+            displayError('{{__("Accepting invite error. Try again..."}}');
         }
     });
 }
@@ -134,7 +134,7 @@ function refuserInvit(eId, eLib) {
             $("#entreprise" + eId).remove();
         },
         error: function (data) {
-            displayError('Erreur lors du refus de l\'invitation. Réessayez...');
+            displayError('{{__("Refusing invite error. Try again..."}}');
         }
     });
 }

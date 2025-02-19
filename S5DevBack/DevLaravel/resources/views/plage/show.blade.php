@@ -109,7 +109,7 @@ var calendar = $('#calendar').fullCalendar({
                 callback(events);
             },
             error: function() {
-                displayError("Erreur lors de la récupération des évènements");
+                displayError("{{__('Event recovery error')}}");
             }
         });
     },
@@ -149,10 +149,10 @@ var calendar = $('#calendar').fullCalendar({
                         },
                         success: function (response) {
                             calendar.fullCalendar('removeEvents', eventAct.id);
-                            displayMessage("Évènement supprimé avec succès");
+                            displayMessage("{{__('Event successfully deleted'}}");
                         },
                         error: function() {
-                            displayError("Erreur lors de la suppression de la disponibilité");
+                            displayError("{{__('Availability deleting error'}}");
                         }
                     });
                     $( this ).dialog( "close" );
