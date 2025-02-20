@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Paramétrage')
+@section('title_base', __('Configuration'))
 @section('parametrage_active', 'active')
 
 @section('content')
@@ -26,7 +26,7 @@
 
 <div class="container">
     <div class="header-profile">
-        <h1>Les entreprises dans lesquels vous travaillez</h1>
+        <h1>{{__("Businesses you work for")}}</h1>
         <br/>
     </div>
     <div class="container-entreprise">
@@ -35,42 +35,42 @@
         <div style="margin-bottom:10px;">
             <h2>{{ $entreprise->libelle }}</h2>
         </div>
-        <p style="margin-bottom:10px;"><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
+        <p style="margin-bottom:10px;"><strong>{{__('Address')}} : </strong>{{ $entreprise->adresse }}</p>
         <div style="display: inline-flex;  width: 100%;">
         @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
             <div class="activity-container">
             @foreach ($entreprise->activites as $activite)
             <div class="activity row">
                 <div class="activity-description col-lg-8">
-                    <strong>Activité :</strong> {{ $activite->libelle }}
+                    <strong>{{__('Activity')}} :</strong> {{ $activite->libelle }}
                 </div>
                 <div class="activity-button col-lg-4">
-                    <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+                    <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> {{__('View your time slots')}}</a>
                 </div>
             </div>
             @endforeach
             </div>
             <div style="margin-top:10px;">
-                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="margin:auto;"><i class="fa fa-wrench"></i> Paramétrer les plages</a>
+                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="margin:auto;"><i class="fa fa-wrench"></i> {{__("Slot settings")}}</a>
             </div>
         @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
             <div class="activity-container">
             @foreach ($entreprise->activites as $activite)
             <div class="activity row">
                 <div class="activity-description col-lg-8">
-                    <strong>Activité :</strong> {{ $activite->libelle }}
+                    <strong>{{__('Activity')}} :</strong> {{ $activite->libelle }}
                 </div>
                 <div class="activity-button col-lg-4">
-                    <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+                    <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntrepriseAsEmploye', ['entreprise' => $entreprise->id, 'activite' => $activite->id]) }}"><i class="fa fa-eye"></i> {{__('View your time slots')}}</a>
                 </div>
             </div>
             @endforeach
             </div>
         @else
         <div style="display: inline-flex;  width: 100%;">
-            <p style="margin: auto;"><i>Vous êtes invité dans cette entreprise :</i></p>
-            <a style="margin:auto; margin-right: 1%;" onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
-            <a style="margin:auto; margin-left:0px;" onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
+            <p style="margin: auto;"><i>{{__("You got invited in this business")}} :</i></p>
+            <a style="margin:auto; margin-right: 1%;" onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">{{__('Accept invite')}}</a>
+            <a style="margin:auto; margin-left:0px;" onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">{{__('Refuse invite')}}</a>
         </div>
         @endif
     </div>
@@ -103,12 +103,15 @@ function accepterInvit(eId, eLib) {
             idEntreprise: eId,
         },
         success: function (data) {
-            displaySuccess('Vous avez accepté l\'invitation.\nVous travaillez maintenant pour ' + eLib);
+            displaySuccess('{{__("You accepted the invite. Now, you work for ")}}' + eLib);
             // Transformer la possibilité d'accepter en la possibilité de visualiser
             location.reload();
+            /* $("#entreprise" + eId + " a").remove();
+            $("#entreprise" + eId + " i").remove();
+            $("#entreprise" + eId).append('<a class="btn btn-primary light" href="/parametrage/plage/'+eId+'">{{__(`View your time slots`)}}</a>'); {{-- {{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }} --}} */
         },
         error: function (data) {
-            displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');
+            displayError('{{__("Accepting invite error. Try again..."}}');
         }
     });
 }
@@ -128,7 +131,7 @@ function refuserInvit(eId, eLib) {
             $("#entreprise" + eId).remove();
         },
         error: function (data) {
-            displayError('Erreur lors du refus de l\'invitation. Réessayez...');
+            displayError('{{__("Refusing invite error. Try again..."}}');
         }
     });
 }

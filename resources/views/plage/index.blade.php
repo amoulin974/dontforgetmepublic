@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
+@section('title_base', __('Slot settings for business #') . $entreprise -> id)
 @section('parametrage_active', 'active')
 
 @section('content')
@@ -44,7 +44,7 @@
   
 <div class="container-calendar">
     <div class="header-profile mb-3">
-        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <h1>{{__("Calendar with slots of")}} {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
     <div id='calendar'></div>
@@ -52,9 +52,9 @@
     <!-- Popup Dialog Titre -->
     <div id="dialogTitre" title="Ajout d'un évènement" style="display:none;">
         <form>
-            <label for="eventTitle">Titre de l'évènement :</label>
+            <label for="eventTitle">{{__("Event title")}} :</label>
             <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="interv">Intervalle de début d'activités :</label>
+            <label for="interv">{{__("Interval between activity starts")}} :</label>
             {{-- <input type="time" id="interv" name="interv" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
             <select name="interv" id="interv" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
@@ -76,9 +76,9 @@
     <!-- Popup Dialog Modif -->
     <div id="dialogModif" title="Ajout d'un évènement" style="display:none;">
         <form>
-            <label for="eventTitleModif">Titre de l'évènement :</label>
+            <label for="eventTitleModif">{{__("Event title")}} :</label>
             <input type="text" id="eventTitleModif" name="eventTitleModif" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="intervModif">Intervalle de débuts d'activités :</label>
+            <label for="intervModif">{{__("Interval between activity starts")}} :</label>
             {{-- <input type="time" id="intervModif" name="intervModif" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
             <select name="intervModif" id="intervModif" class="text ui-widget-content ui-corner-all">
                 <option value="00:05:00">5 min</option>
@@ -98,8 +98,8 @@
     </div>
 
     <!-- Popup Dialog Suppression -->
-    <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cet évènement sera définitivement supprimé. Voulez-vous continuer ?</p>
+    <div id="dialog-confirm" title="{{__('Are you sure you would like to delete it?')}}" style="display:none;">
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This event will be permanently deleted. Continue?")}}</p>
     </div>
 </div>
    
@@ -155,7 +155,7 @@ var calendar = $('#calendar').fullCalendar({
                 callback(events);
             },
             error: function() {
-                displayError("Erreur lors de la récupération des évènements");
+                displayError("{{__('Adding event error. Try again...')}}");
             }
         });
     },
@@ -209,7 +209,7 @@ var calendar = $('#calendar').fullCalendar({
                                 type: "POST",
                                 success: function (data) {
                                     $('#dialogTitre').dialog('close');
-                                    displaySuccess("Évènement ajouté avec succès");
+                                    displaySuccess("{{__('Event successfully added')}}");
 
                                     // Désélectionner après la sélection
                                     $('#calendar').fullCalendar('unselect');
@@ -218,12 +218,12 @@ var calendar = $('#calendar').fullCalendar({
                                     $('#calendar').fullCalendar('refetchEvents');
                                 },
                                 error: function() {
-                                    displayError("Erreur lors de l'ajout de l'évènement. Réssayez...");
+                                    displayError("{{__('Adding event error. Try again...')}}");
                                 }
                             });
                         }
                         else {
-                            displayWarning("Informations manquantes");
+                            displayWarning("{{__('Missing information')}}");
                         }
                         //$(this).dialog("close");
                     },
@@ -234,7 +234,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             });
         } else {
-            displayError("Impossible de créer un évènement sur plusieurs jours");
+            displayError("{{__('Unable to create an multi-day event')}}");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
@@ -259,7 +259,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             });
         } else {
-            displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+            displayError("{{__('Events cant exceed several days')}}");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
@@ -293,7 +293,7 @@ var calendar = $('#calendar').fullCalendar({
                             success: function (data) {
                                 $('#dialogModif').dialog('close');
 
-                                displaySuccess("Évènement modifié avec succès");
+                                displaySuccess("{{__('Event successfully modified')}}");
 
                                 // Désélectionner après la sélection
                                 $('#calendar').fullCalendar('unselect');
@@ -308,7 +308,7 @@ var calendar = $('#calendar').fullCalendar({
                         });
                     }
                     else {
-                        displayWarning("Informations manquantes");
+                        displayWarning("{{__('Missing information')}}");
                     }
                 },
                 "Supprimer": function() {
@@ -367,12 +367,12 @@ var calendar = $('#calendar').fullCalendar({
                 },
                 error: function() {
                     revertFunc(); // Revert the change if the update fails
-                    displayError("Erreur lors de la modification de l'évènement");
+                    displayError("{{__('Event edit error')}}");
                 }
             });
         } else {
             revertFunc(); // Revert the change if the update fails
-            displayError("Les évènements ne peuvent pas dépasser plusieurs jours");
+            displayError("{{__('Events cant exceed several days')}}");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
@@ -427,7 +427,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succès !');
+    toastr.success(message, '{{__("Success!")}}');
 }
 
 function displayError(message) {
@@ -436,7 +436,7 @@ function displayError(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !');
+    toastr.error(message, '! {{__("Error")}} !');
 }
 
 function displayMessage(message) {
@@ -463,7 +463,7 @@ function displayErrorWithButton(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !', {
+    toastr.error(message, '! {{__("Error")}} !', {
         timeOut: 0,
         extendedTimeOut: 0
     });

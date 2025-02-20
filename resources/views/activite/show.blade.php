@@ -2,23 +2,22 @@
 
 @include('base')
 
-@section('title', 'Activités proposés par ' . $entreprise->libelle)
+@section('title', __('Activities proposed by ') . $entreprise->libelle)
 
 @section('content')
-    <div class="container">
-        <h2 class="mb-4">Services proposés</h2>
+<div class="container">
+    <h2 class="mb-4">{{__('Available services')}}</h2>
 
-        @if($services->isEmpty())
-            <p>Aucun service n'a été créé pour {{ $entreprise->libelle }}.</p>
-        @else
-            <!-- Tableau listant les services disponibles -->
-            <table class="table table-striped">
-                <thead>
+    @if($services->isEmpty())
+        <p>{{__('No service was created for')}} {{ $entreprise->libelle }}.</p>
+    @else
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Durée</th>
+                    <th>{{__('Name')}}</th>
+                    <th>{{__('Duration')}}</th>
                     <th>Nombre de places</th>
-                    <th>Actions</th>
+                    <th>{{__('Actions')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -28,14 +27,13 @@
                     <td>{{ $service->duree }}</td>
                     <td>{{ $service->nbrPlaces }}</td>
                     <td>
-                        <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-primary">Réserver</a>
+                        <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-primary">{{ __('Book') }}</a>
                     </td>
                 </tr>
                 @endforeach
-                </tbody>
-            </table>
-        @endif
-        <!-- Bouton de retour à la liste principale -->
-        <a href="{{ route('reserver.index') }}" class="btn btn-secondary">Retour</a>
-    </div>
+            </tbody>
+        </table>
+    @endif
+    <a href="{{ route('reserver.index') }}" class="btn btn-secondary">{{__('Back')}}</a>
+</div>
 @endsection

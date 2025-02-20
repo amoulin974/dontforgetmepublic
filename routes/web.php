@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\CalendrierController;
 use App\Http\Controllers\ParametrageController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
@@ -18,15 +17,9 @@ Route::prefix('/reservation')->name('reservation.')->controller(ReservationContr
         Route::get('/', 'index')->name('index');
         Route::get('/{entreprise}/new/{activite}', 'create')->name('create');
         Route::post('/{entreprise}/new/{activite}', 'store')->name('store');
-
         Route::get('/{reservation}/edit', 'edit')->name('edit');
         Route::put('/{reservation}/edit', 'update')->name('update');
-        // Route::resources
-
         Route::delete('/{reservation}', 'destroy')->name('destroy');
-
-        // Route::resources
-
         Route::get('/{reservation}', 'show')->where([
             'id' => '[0-9]+',
         ])->name('show');
@@ -36,11 +29,7 @@ Route::prefix('/reservation')->name('reservation.')->controller(ReservationContr
 Route::prefix('/parametrage')->name('parametrage.')->controller(ParametrageController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
-
-        /* Route::get('/', 'index')->name('index'); */
-
         Route::post('/invit', 'invit')->name('invit');
-
         Route::prefix('/plage')->name('plage.')->group(function(){
             Route::post('/', 'ajax')->name('ajax');
             Route::get('/{entreprise}', 'indexPlage')->name('idEntreprise');
@@ -119,8 +108,6 @@ Route::prefix('/profile')->name('profile.')->controller(UserController::class)->
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 
 Auth::routes();
-
-
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/clear-session', function () {

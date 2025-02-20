@@ -15,10 +15,10 @@
 
         <!-- Tableau des disponibilités -->
         <div class="availability">
-            <h4 class="text-center mb-4">Disponibilités pour {{ $activite->libelle }}</h4>
+            <h4 class="text-center mb-4">{{__('Available slots for ')}}{{ $activite->libelle }}</h4>
 
             @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
-                <label for="employe" class="form-label mt-3">Veuillez sélectionner un employé</label>
+                <label for="employe" class="form-label mt-3">{{__('Please select an employee')}}</label>
                 <select id="employe" class="form-select">
                     @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
                         <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
@@ -78,7 +78,7 @@
                         </li>
                     @endforeach
                 @else
-                    <p>Aucune plage horaire disponible.</p>
+                    <p>{{__('No available time slot.')}}</p>
                 @endif
             </ul>
         </div>
@@ -91,13 +91,13 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-primary" id="reservationModalLabel">
-                                <i class="bi bi-calendar-check"></i> Réserver une plage horaire
+                                <i class="bi bi-calendar-check"></i> {{__('Book a time slot')}}
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p>
-                                Vous êtes sur le point de réserver pour la plage horaire suivante :
+                                {{__("You're about to book for the following time slot")}} :
                                 <strong id="selectedHoraire" class="text-success"></strong>
                                 le <strong id="selectedDate" class="text-primary"></strong>.
                             </p>
@@ -107,7 +107,7 @@
 
                             @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
                                 <div class="form-group mb-3">
-                                    <label for="employeSelect" class="form-label">Sélectionnez un employé :</label>
+                                    <label for="employeSelect" class="form-label">{{__("Select an employee")}} :</label>
                                     <select name="employe_id" id="employeSelect" class="form-select" required>
                                         @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
                                             <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
@@ -119,36 +119,36 @@
                                     $employe = $entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->first();
                                 @endphp
                                 <input type="hidden" name="employe_id" value="{{ $employe->id }}">
-                                <p>Employé affecté automatiquement : <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong></p>
+                                <p>{{__('Automatically assigned employee')}} : <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong></p>
                             @endif
 
                             @if ($entreprise->typeRdv[0] == 1)
                                 <div class="form-group mb-3">
                                     <label for="nbPersonnes" class="form-label">
-                                        <i class="bi bi-people-fill"></i> Nombre de personnes :
+                                        <i class="bi bi-people-fill"></i> {{__("Amount of people")}} :
                                     </label>
                                     <input
                                         type="number"
                                         name="nbPersonnes"
                                         id="nbPersonnes"
                                         class="form-control"
-                                        placeholder="Entrez le nombre de personnes"
+                                        placeholder="{{('Enter the amount of people')}}"
                                         min="1"
                                         required
                                     >
                                 </div>
                             @endif
 
-                            <h5 class="mt-4">Notifications ajoutées :</h5>
+                            <h5 class="mt-4">{{__("Added notifications")}} :</h5>
                             <ul id="notificationsList" class="list-group"></ul>
 
                             <button type="button" class="btn btn-success w-100 mt-3" id="addNotificationBtn" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                                <i class="bi bi-plus-circle"></i> Ajouter une notification
+                                <i class="bi bi-plus-circle"></i> {{__('Add notification')}}
                             </button>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary w-100">Confirmer la réservation</button>
-                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-primary w-100">{{__("Confirm booking")}}</button>
+                            <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">{{__('Cancel')}}</button>
                         </div>
                     </div>
                 </form>
@@ -161,13 +161,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-primary" id="notificationModalLabel">
-                            <i class="bi bi-bell"></i> Ajouter une notification
+                            <i class="bi bi-bell"></i> {{__('Add notification')}}
                         </h5>
                         <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
-                        <p>Ajouter une notification pour la plage horaire suivante : <strong id="horaireSelection" class="text-success"></strong>.</p>
+                        <p>{{__("Add a notification for the following time slot")}} : <strong id="horaireSelection" class="text-success"></strong>.</p>
 
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="radio" name="typeNotification" id="smsOption" value="SMS" checked>
@@ -176,7 +176,7 @@
                             </label>
                         </div>
                         <div id="smsField" class="mt-2">
-                            <label for="smsInput" class="form-label">Numéro de téléphone :</label>
+                            <label for="smsInput" class="form-label">{{__('Phone number')}} :</label>
                             <input type="tel" id="smsInput" class="form-control" placeholder="+33 6 12 34 56 78" value="{{ Auth::user()->numTel }}">
                         </div>
 
@@ -187,21 +187,21 @@
                             </label>
                         </div>
                         <div id="mailField" class="mt-2" style="display: none;">
-                            <label for="mailInput" class="form-label">Adresse email :</label>
+                            <label for="mailInput" class="form-label">{{__('Email Address')}} :</label>
                             <input type="email" id="mailInput" class="form-control" placeholder="exemple@domaine.com" value="{{ Auth::user()->email }}">
                         </div>
 
-                        <label for="duree" class="form-label mt-3">Durée avant rendez-vous :</label>
+                        <label for="duree" class="form-label mt-3">{{__('Time before appointment')}} :</label>
                         <select id="duree" class="form-select">
-                            <option value="1jour">1 jour</option>
-                            <option value="2jours">2 jours</option>
-                            <option value="1semaine">1 semaine</option>
+                            <option value="1jour">{{__("1 day")}}</option>
+                            <option value="2jours">{{__("2 days")}}</option>
+                            <option value="1semaine">{{__("1 week")}}</option>
                         </select>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="goBackBtn">Précédent</button>
-                        <button type="button" class="btn btn-primary" id="saveNotificationBtn">Valider</button>
+                        <button type="button" class="btn btn-secondary" id="goBackBtn">{{__('Previous')}}</button>
+                        <button type="button" class="btn btn-primary" id="saveNotificationBtn">{{__('Validate')}}</button>
                     </div>
                 </div>
             </div>

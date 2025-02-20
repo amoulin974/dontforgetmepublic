@@ -7,35 +7,35 @@
 
 <div class="container">
     <div class="header-profile">
-        <h1 >Votre profil</h1>
+        <h1 >{{__('Your profile')}}</h1>
         <br/>
     </div>
     <div class="container-entreprise">
     <div class="entreprise" id="profil">
         <h2>{{ $utilisateur->nom }} {{ $utilisateur->prenom }}</h2>
-        <p><strong>Email : </strong>{{ $utilisateur->email }}</p>
-        <p><strong>Numéro de téléphone : </strong>{{ $utilisateur->numTel }}</p>
-        <p><strong>Notification par défaut : </strong>{{ $utilisateur->typeNotif }}</p>
-        <p><strong>Delai avant notification par défaut : </strong>{{ $utilisateur->delaiAvantNotif }}</p>
+        <p><strong>{{__('Email Address')}} : </strong>{{ $utilisateur->email }}</p>
+        <p><strong>{{__('Phone number')}} : </strong>{{ $utilisateur->numTel }}</p>
+        <p><strong>{{__('Default notification')}} : </strong>{{ $utilisateur->typeNotif }}</p>
+        <p><strong>{{__('Default delay until notification')}} : </strong>{{ $utilisateur->delaiAvantNotif }}</p>
         @if ($utilisateur->superadmin)
             <h4><strong>Superadmin</strong></h4>
         @endif
-        <a href="{{ route('profile.edit') }}" class="btn btn-primary">Modifier mon profil</a>
+        <a href="{{ route('profile.edit') }}" class="btn btn-primary">{{__('Edit profile')}}</a>
     </div>
-    <a class="btn btn-primary" href="{{ route('entreprise.create') }}" style="margin:auto;"><i class="fa fa-plus"></i> Créer une entreprise</a>
+    <a class="btn btn-primary" href="{{ route('entreprise.create') }}" style="margin:auto;"><i class="fa fa-plus"></i> {{__('Create a business')}}</a>
     @if($entreprises->count() > 0)
-    <h3 style="margin-top: 2%;">Vos entreprises :</h3>
+    <h3 style="margin-top: 2%;">{{__('Your businesses')}} :</h3>
     <div style="overflow: auto; width:100%; max-height: 50%;">
         @foreach ($entreprises as $entreprise)
         <div class="entreprise">
             <h4>{{ $entreprise->libelle }}</h4>
             <div class="d-flex flex-wrap">
                 <div class="col-md-8">
-                    <p><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
-                    <p><strong>Description :</strong> {{ $entreprise->description }}</p>
+                    <p><strong>{{__('Address')}} : </strong>{{ $entreprise->adresse }}</p>
+                    <p><strong>{{__('Description')}} :</strong> {{ $entreprise->description }}</p>
                 </div>
                 <div class="col-md-4 activity-button">
-                    <a class="btn btn-primary" href="{{ route('entreprise.show', $entreprise->id) }}"><i class="fa fa-eye"></i> Voir plus</a>
+                    <a class="btn btn-primary" href="{{ route('entreprise.show', $entreprise->id) }}"><i class="fa fa-eye"></i> {{__('More')}}</a>
                 </div>
             </div>
         </div>

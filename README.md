@@ -1,1 +1,0 @@
-Pour le tuto full calendar : [Lien vers le tuto](https://www.itsolutionstuff.com/post/laravel-fullcalendar-example-tutorialexample.html?utm_content=cmp-true)

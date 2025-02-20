@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Réserver une activité')
+@section('title_base', __('Book activity'))
 @section('reserver_active', 'active')
 
 @section('content')
@@ -9,7 +9,7 @@
         <!-- Barre de recherche centrée -->
 
         <div class="searchbar-home">
-            <input class="form-control mr-sm-2 d-block" id="search-input" type="search" placeholder="Rechercher une entreprise par libellé..." aria-label="Search">
+            <input class="form-control mr-sm-2 d-block" id="search-input" type="search" placeholder="{{__('Search business by label...')}}" aria-label="Search">
             <button class="btn btn-secondary my-2 my-sm-0 d-block" id="rechercher"><i class="bi bi-search"></i></button>
         </div>
         <div class="container">
@@ -52,11 +52,11 @@
                             <div style="margin-bottom:15px;overflow:auto; max-height:14vh;">
                             <p style="margin-bottom: 0">{{ $entreprise->description }}</p>
                             </div>
-                            <p style="margin-bottom: 0"><strong>Email :</strong> {{ $entreprise->email }}</p>
-                            <p style="margin-bottom: 0"><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                    </div>
+                            <p style="margin-bottom: 0px"><strong>{{__('Email Address')}} :</strong> {{ $entreprise->email }}</p>
+                            <p style="margin-bottom: 0px"><strong>{{__('Phone number')}} :</strong> {{ $entreprise->numTel }}</p>
+                    </div> 
                     <div class="col-md-4 text-center" style="margin-block: auto">
-                        <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">Réserver une activité</a>
+                        <a class="secondary-button" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" id="reserver">{{__('Book activity')}}</a>
                     </div>
                 </div>
             @endif

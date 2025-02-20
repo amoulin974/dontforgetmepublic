@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
+@section('title_base', __('Slot settings for business #') . $entreprise -> id)
 @section('parametrage_active', 'active')
 
 @section('content')
@@ -44,15 +44,15 @@
 <div class="container-calendar">
     <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" style="left:20%; margin: 0; color:black;"><i class="fa fa-arrow-left"></i></a>
     <div class="header-profile mb-3">
-        <h1>Calendrier des plages de {{ $entreprise->libelle }}</h1>
+        <h1>{{__("Calendar with slots of")}} {{ $entreprise->libelle }}</h1>
         <br/>
     </div>
     <h4>Vous ({{ Auth::user()->nom }} {{ Auth::user()->prenom }})</h4><br>
     <div id='calendar'></div>
 
     <!-- Popup Dialog Suppression -->
-    <div id="dialog-confirm" title="Voulez-vous signaler votre indisponibilité ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cet évènement sera définitivement supprimé. Voulez-vous continuer ?</p>
+    <div id="dialog-confirm" title="{{__("Do you want to report your unavailability ?")}}" style="display:none;">
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This event will be permanently deleted. Continue?")}}</p>
     </div>
 </div>
    
@@ -117,7 +117,7 @@ var calendar = $('#calendar').fullCalendar({
                 callback(events);
             },
             error: function() {
-                displayError("Erreur lors de la récupération des évènements");
+                displayError("{{__('Event recovery error')}}");
             }
         });
     },
@@ -163,10 +163,10 @@ var calendar = $('#calendar').fullCalendar({
                         },
                         success: function (response) {
                             calendar.fullCalendar('removeEvents', eventAct.id);
-                            displayMessage("Évènement supprimé avec succès");
+                            displayMessage("{{__('Event successfully deleted'}}");
                         },
                         error: function() {
-                            displayError("Erreur lors de la suppression de la disponibilité");
+                            displayError("{{__('Availability deleting error'}}");
                         }
                     });
                     $( this ).dialog( "close" );
@@ -227,7 +227,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succès !');
+    toastr.success(message, '{{__("Success!")}}');
 }
 
 function displayError(message) {
@@ -236,7 +236,7 @@ function displayError(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !');
+    toastr.error(message, '! {{__("Error")}} !');
 }
 
 function displayMessage(message) {
@@ -263,7 +263,7 @@ function displayErrorWithButton(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !', {
+    toastr.error(message, '! {{__("Error")}} !', {
         timeOut: 0,
         extendedTimeOut: 0
     });

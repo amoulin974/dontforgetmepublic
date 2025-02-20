@@ -2,14 +2,14 @@
 
 @include('base')
 
-@section('title', 'Activité de ' . $entreprise->libelle)
+@section('title', __('Activity for ') . $entreprise->libelle)
 
 @section('content')
     <div class="container">
         @if($services->isEmpty())
-            <h1 style="text-align:center;">Créez votre premier service</h1>
+            <h1 style="text-align:center;">{{ __('Create your first service') }}</h1>
         @endif
-        <h2 class="mb-4">Mes Services</h2>
+        <h2 class="mb-4">{{ __('My Services') }}</h2>
 
         @php
             // Vérifie si l'utilisateur actuel est administrateur de l'entreprise
@@ -17,17 +17,17 @@
         @endphp
 
         @if($services->isEmpty())
-            <p>Aucun service n'a été créé pour {{ $entreprise->libelle }}.</p>
-            <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">Créer un service</a>
+            <p>{{ __('No service was created for') }} {{ $entreprise->libelle }}.</p>
+            <a href="{{ route('entreprise.services.create', ['entreprise' => $entreprise->id]) }}" class="btn btn-dark">{{ __('Create service') }}</a>
         @else
             <!-- Tableau listant les services -->
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Durée</th>
+                    <th>{{ __('Name') }}</th>
+                    <th>{{ __('Duration') }}</th>
                     <th>Nombre de places</th>
-                    <th>Actions</th>
+                    <th>{{ __('Actions') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,13 +43,13 @@
                     <td>
                         @if($isAdmin)
                         <a href="{{ route('entreprise.services.edit', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" class="btn btn-link">
-                            <i class="fa fa-pencil-alt"></i> Modifier
+                            <i class="fa fa-pencil-alt"></i> {{ __('To edit') }}
                         </a>
                         <form action="{{ route('entreprise.services.destroy', ['entreprise' => $entreprise->id, 'id' => $service->id]) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-link text-danger">
-                                <i class="fa fa-trash"></i> Supprimer
+                                <i class="fa fa-trash"></i> {{ __('Delete') }}
                             </button>
                         </form>
                         @endif

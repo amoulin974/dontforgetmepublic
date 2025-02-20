@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Détail de ' . $entreprise -> libelle)
+@section('title_base', __('Details of ') . $entreprise -> libelle)
 
 @section('content')
 
@@ -21,22 +21,22 @@
         </a>
         <div class="header-profile" style="margin-top: 1rem;">
             @if ($isAdmin)
-            <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Modifier</a>
+            <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">{{__('Edit2')}}</a>
             @endif
-            <div class="containerEntreprise">
-                <h1>Entreprise : {{ $entreprise->libelle }}</h1>
+            <div class="containerEntreprise"> 
+                <h1>{{__('Business')}} : {{ $entreprise->libelle }}</h1> 
                 <br/>
             </div>
         </div>
         <div class="entreprise">
             <div class="row res-details-info" style="display: inline-flex; width: 100%;">
                 <div class="col-sm-7 col-md-8 col-lg-9" style="display: block; margin:auto; margin-left: 0px;">
-                <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
-                <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
-                <p><strong>Métier :</strong> {{ $entreprise->metier }}</p>
-                <p><strong>Description :</strong> {{ $entreprise->description }}</p>
-                <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                <p><strong>Email :</strong> {{ $entreprise->email }}</p>
+                <p><strong>{{__('SIREN')}} :</strong> {{ $entreprise->siren }}</p>
+                <p><strong>{{__('Address')}}</strong> {{ $entreprise->adresse }}</p>
+                <p><strong>{{__('Job')}} :</strong> {{ $entreprise->metier }}</p>
+                <p><strong>{{__('Description')}} :</strong> {{ $entreprise->description }}</p>
+                <p><strong>{{__('Phone number')}} :</strong> {{ $entreprise->numTel }}</p>
+                <p><strong>{{__('Email Address')}} :</strong> {{ $entreprise->email }}</p>
                 </div>
                 <div class="col-sm-5 col-md-4 col-lg-3" style="display: block; margin:auto;">
                 @if ($entreprise->cheminImg)
@@ -47,31 +47,32 @@
                 </div>
             </div>
             @if($entreprise->publier)
-                <p><strong>Publié !</strong></p>
+                <p><strong>{{__('Published!')}}</strong></p>
                 <div style="display: inline-flex; width: 100%;">
-                <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:1%;margin-right:10px;"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
+                <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:1%;margin-right:10px;"><i class="bi bi-calendar-plus"></i> {{ __('Book activity') }}</a>
                 @if ($isAdmin)
+                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="bi bi-tools"></i> {{__('Manage activities')}}</a>
                 <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:10px;"><i class="bi bi-tools"></i> Gérer les activités</a>
                 <a class="btn btn-primary light" href="{{ route('entreprise.week.indexWeek', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="bi bi-calendar-range"></i> Paramétrer les journées/semaines types</a>
                 @elseif(!$isInvite)
-                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="fa fa-eye"></i> Visualiser vos plages</a>
+                <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="fa fa-eye"></i> {{__('View your time slots')}}</a>
                 @endif
             </div>
             @else
-                <p><strong>Non publié (en attente de création de votre première activité)</strong></p>
-                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">Créer votre première activité</a>
+                <p><strong>{{__('Not published (No activity created yet)')}}</strong></p>
+                <a class="btn btn-primary" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block;margin-left:auto;margin-right:auto;">{{__("Create your first activity")}}</a>
             @endif
             @if($isInvite)
             <div id="invitation" style="display: inline-flex;  width: 100%;">
-                <p style="margin: auto; margin-right: 1%;"><i>Vous êtes invité dans cette entreprise :</i></p>
-                <a style="margin:auto; margin-left:1%; margin-right: 1%;" onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
-                <a style="margin:auto; margin-left:0px;" onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
+                <p style="margin: auto; margin-right: 1%;"><i>{{__("You got invited in this business")}} :</i></p>
+                <a style="margin:auto; margin-left:1%; margin-right: 1%;" onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">{{__('Accept invite')}}</a>
+                <a style="margin:auto; margin-left:0px;" onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">{{__('Refuse invite')}}</a>
             </div>
             @endif
             <div style="display: inline-flex; width: 100%;margin-top: 15px;">
-            <h3>Liste des employés</h3>
+            <h3>{{__('Employees list')}}</h3>
             @if ($isAdmin)
-            <a class="btn btn-primary" id="addEmploye" style="display:block; margin: auto 20% auto auto;"><i class="fa fa-user-plus"></i> Ajouter un(e) employé(e)</a>
+            <a class="btn btn-primary" id="addEmploye" style="display:block; margin:auto; margin margin-left:auto;margin-right:20%;"><i class="fa fa-user-plus"></i> {{__('Add employee')}}</a>
             @endif
             </div>
             <div style="overflow:auto; max-height:400px;">
@@ -81,14 +82,25 @@
                 @endphp
                 @foreach ($entreprise->travailler_users->unique() as $user)
                     @if($user->id == Auth::user()->id)
+                    <div class="container-entreprise" id="user{{$user->id}}" style="width:100%;"> 
+                        <p><strong>{{__('User')}} :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
+                        <p><strong>{{__('Status')}} :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
+                        <div style="display: inline-flex; width: 100%;">
+                        <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>{{__('You')}}</i></strong>
+                        @if ($user->id == $entreprise->idCreateur)
+                            <strong>({{__('Creator')}})</strong></p>
+                        @else
+                        </p>
+                        @if(!$isInvite)
+                        <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">{{('Leave business')}}</a>
                     <div class="container-entreprise" id="user{{$user->id}}" style="width:100%; display:flex;">
                         <div style="flex-basis: 60%">
-                        <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
-                        <p><strong>Statut :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
+                        <p><strong>{{__('User')}} :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
+                        <p><strong>{{__('Status')}} :</strong> {{ Auth::user()->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                         <div style="display: inline-flex; width: 100%;">
                         <p style="margin:auto; margin-left:0%; margin-bottom: 0%; margin-right: 50px;"><strong><i>Vous</i></strong>
                         @if ($user->id == $entreprise->idCreateur)
-                            <strong>(Créateur)</strong></p>
+                            <strong>{{__('Creator')}}</strong></p>
                             @if($isAdmin)
                                 <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => Auth::user()->id]) }}" class="btn btn-link">
                                     <i class="fa fa-calendar"></i> Gérer les plages
@@ -124,25 +136,25 @@
                     @else
                         <div class="container-entreprise" id="user{{$user->id}}" style="display: flex;">
                             <div style="flex-basis: 60%">
-                            <p><strong>Utilisateur :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
-                            <p><strong>Statut :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
+                            <p><strong>{{__('User')}} :</strong> {{ $user->nom }} {{ $user->prenom }}</p>
+                            <p><strong>{{__('Status')}} :</strong> {{ $user->travailler_entreprises()->wherePivot('idUser',$user->id)->wherePivot('idEntreprise',$entreprise->id)->pluck('statut')[0] }}</p>
                             @if ($user->id == $entreprise->idCreateur)
-                            <p><strong>Créateur</strong></p>
+                            <p><strong>{{__('Creator')}}</strong></p>
                             @elseif($isAdmin)
                                 @if ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {{-- isAdmin --}}
-                                        <a onclick="retrograder({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Rétrograder</a>
-                                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
+                                        <a onclick="retrograder({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">{{__('Downgrade')}}</a>
+                                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">{{__('Delete')}}</a>
                                         <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => $user->id]) }}" class="btn btn-link">
                                             <i class="fa fa-calendar"></i> Gérer les plages
                                         </a>
                                     @elseif ($user->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé') {{-- isEmploye --}}
-                                        <a onclick="promouvoir({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary accept">Promouvoir</a>
-                                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Supprimer</a>
+                                        <a onclick="promouvoir({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary accept">{{__('Upgrade')}}</a>
+                                        <a onclick="supprimer({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">{{__('Delete')}}</a>
                                         <a href="{{ route('entreprise.services.createPlage', ['entreprise' => $entreprise->id, 'employe' => $user->id]) }}" class="btn btn-link">
                                             <i class="fa fa-calendar"></i> Gérer les plages
                                         </a>
                                     @else {{-- isInvite --}}
-                                        <a onclick="annulerInvit({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">Annuler l'invitation</a>
+                                        <a onclick="annulerInvit({{$user->id}},'{{$user->nom}}','{{$user->prenom}}')" class="btn btn-primary reject">{{__('Cancel invite')}}</a>
                                 @endif
                             @endif
                             </div>
@@ -163,13 +175,13 @@
 
 
     <!-- Popup -->
-    <div id="dialog" title="Ajouter un(e) employé(e)" style="display:none;">
+    <div id="dialog" title="{{__('Add employee')}}" style="display:none;">
         <form>
-            <label for="employe">Saisissez l'email de l'employé(e)</label>
+            <label for="employe">{{__("Enter the employee's email")}}</label>
             <input type="email" id="employe" name="employe" required>
-            <label for="activites">Sélectionnez les activités de l'employé(e)</label>
+            <label for="activites">{{__("Select the employee's activities")}}</label>
             <div style="width: 100%;">
-            <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
+            <button type="button" id="all" onclick="checkAll()" style="display:block; margin:auto; margin-bottom:1%;">{{__("Select All")}}</button>
             </div>
             <div id="activites" name="activites" style="overflow: auto; display:block; max-height:50%;">
                 @foreach ($entreprise->activites as $activite)
@@ -204,12 +216,12 @@
                 success: function (data) {
                     // Transformer la possibilité d'accepter en la possibilité de visualiser
                     $("#user" + uId + " a").remove();
-                    $("#user" + uId).append('<a onclick="retrograder('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">Rétrograder</a>');
-                    $("#user" + uId).append('<a onclick="supprimer('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">Supprimer</a>');
-                    displaySuccess('Vous avez promu ' +  uName +' ' + uPrenom + '. Il est maintenant administrateur.');
+                    $("#user" + uId).append('<a onclick="retrograder('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">{{__("Downgrade")}}</a>');
+                    $("#user" + uId).append('<a onclick="supprimer('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">{{__("Delete")}}</a>');
+                    displaySuccess('{{__("You upgraded ")}}' +  uName +' ' + uPrenom + '{{__(". Now hes an administrator")}}');
                 },
                 error: function (data) {
-                    displayError('Erreur lors de la promotion. Réessayez...');
+                    displayError('{{__("Upgrade error. Try again..."}}');
                 }
             });
         }
@@ -226,12 +238,12 @@
                 success: function (data) {
                     // Transformer la possibilité d'accepter en la possibilité de visualiser
                     $("#user" + uId + " a").remove();
-                    $("#user" + uId).append('<a onclick="promouvoir('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary accept">Promouvoir</a>');
-                    $("#user" + uId).append('<a onclick="supprimer('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">Supprimer</a>');
-                    displayMessage('Vous avez rétrogrdé ' +  uName +' ' + uPrenom + '. Il est maintenant employé.');
+                    $("#user" + uId).append('<a onclick="promouvoir('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary accept">{{__("Upgrade")}}</a>');
+                    $("#user" + uId).append('<a onclick="supprimer('+uId+',\''+uName+'\',\''+uPrenom+'\')" class="btn btn-primary reject">{{__("Delete")}}</a>');
+                    displayMessage('{{__("You downgraded ")}}' +  uName +' ' + uPrenom + '{{__(". Now hes an employee")}}');
                 },
                 error: function (data) {
-                    displayError('Erreur lors du rétrogradage. Réessayez...');
+                    displayError('{{__("Downgrade error. Try again..."}}');
                 }
             });
         }
@@ -251,7 +263,7 @@
                     displayMessage('Vous avez supprimé ' +  uName +' ' + uPrenom + '. Il ne peut plus accéder à votre entreprise.');
                 },
                 error: function (data) {
-                    displayError('Erreur lors de la suppression. Réessayez...');
+                    displayError('{{__("Deletion error. Try again..."}}');
                 }
             });
         }
@@ -268,15 +280,15 @@
                 success: function (data) {
                     // Transformer la possibilité d'accepter en la possibilité de visualiser
                     $("#user" + uId).remove();
-                    /* displayMessage('Vous (' +  uName +' ' + uPrenom + ') avez quitté l\'entreprise.'); */
+                    /* displayMessage('{{__("You")}} (' +  uName +' ' + uPrenom + ') avez quitté l\'entreprise.'); */
                     // Redirection après 2 secondes
                     /* setTimeout(function(){ */
-                        localStorage.setItem('success', 'Vous (' +  uName +' ' + uPrenom + ') avez quitté l\'entreprise.');
+                        localStorage.setItem('success', '{{__("You")}} (' +  uName +' ' + uPrenom + ') avez quitté l\'entreprise.');
                         window.location.href = "{{ route('entreprise.indexUser') }}";
                     /* }, 2000); */
                 },
                 error: function (data) {
-                    displayError('Erreur lors de la suppression. Réessayez...');
+                    displayError('{{__("Deletion error. Try again..."}}');
                 }
             });
         }
@@ -296,7 +308,7 @@
                     displayMessage('Vous avez annuler l\'invitation pour ' +  uName +' ' + uPrenom + '. Il ne peut plus rejoindre votre entreprise.');
                 },
                 error: function (data) {
-                    displayError('Erreur lors de l\'annulation. Réessayez...');
+                    displayError('{{__("Cancellation error. Try again..."}}');
                 }
             });
         }
@@ -335,7 +347,7 @@
                             // Vérifier que l'employé n'est pas déjà dans l'entreprise
                             @foreach ($entreprise->refresh()->travailler_users->unique() as $user)
                                 if ("{{ $user->email }}" == email){
-                                    displayError('Cet employé est déjà dans votre entreprise.');
+                                    displayError('{{__("This employee already works for your business"}}');
                                     $('#dialog').dialog('close');
                                     $("#employe").val('');
                                     uncheckAll();
@@ -349,13 +361,13 @@
                                 }
                             @endforeach
                             if(email == ""){
-                                displayWarning('Veuillez saisir un email.');
+                                displayWarning('{{__("Please enter an email")}}');
                             }
                             else if(boolExist == false){
-                                displayError('Cet email ne correspond à aucun compte.');
+                                displayError('{{__("This email doesnt match to any account")}}');
                             }
                             if (checked.length == 0){
-                                displayWarning('Veuillez sélectionner au moins une activité.');
+                                displayWarning('{{__("Please select one or more activities")}}');
                             }
                             if (checked.length != 0 && boolExist){
                                 $.ajax({
@@ -368,15 +380,15 @@
                                         activites: checked,
                                     },
                                     success: function (data) {
-                                        displaySuccess('Vous avez invité ' + email + ' (' + data.nom + ' ' + data.prenom + ') à rejoindre votre entreprise.');
-                                        $(".container-entreprise").last().after('<div class="container-entreprise" id="user'+data.id+'"> <p><strong>Utilisateur :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>Statut :</strong> Invité</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">Annuler l\'invitation</a> </div>');
+                                        displaySuccess('{{("You invited")}} ' + email + ' (' + data.nom + ' ' + data.prenom + ') {{("to join your business.")}}');
+                                        $(".container-entreprise").last().after('<div class="container-entreprise" id="user'+data.id+'"> <p><strong>{{__("User")}} :</strong> '+data.nom+' '+data.prenom+'</p> <p><strong>{{__("Status")}} :</strong> {{__("Guest")}}</p> <a onclick="annulerInvit('+data.id+',\''+data.nom+'\',\''+data.prenom+'\')" class="btn btn-primary reject">{{__("Cancel invite")}}</a> </div>');
 
                                         $('#dialog').dialog('close');
                                         $("#employe").val('');
                                         uncheckAll();
                                     },
                                     error: function (data) {
-                                        displayError('Erreur lors de l\'ajout. Réessayez...');
+                                        displayError('{{__("Adding error. Try again..."}}');
                                     }
                                 });
                             }
@@ -425,16 +437,16 @@ function accepterInvit(eId, eLib) {
             idEntreprise: eId,
         },
         success: function (data) {
-            displaySuccess('Vous avez accepté l\'invitation.\nVous travaillez maintenant pour ' + eLib);
+            displaySuccess('{{__("You accepted the invite. Now, you work for ")}}' + eLib);
             // Retirer l'invitation
             $("#invitation").remove();
             // Retirer l'employé correspondant
             $("#user{{ Auth::user()->id }}").remove();
             // Ajouter à la liste des employés
-            $(".entreprise").append('<div class="container-entreprise" id="user{{ Auth::user()->id }}"> <p><strong>Utilisateur :</strong> {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</p> <p><strong>Statut :</strong> Employé</p> <div style="display: inline-flex; width: 100%;"> <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>Vous</i></strong></p> <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{ Auth::user()->id }},\'{{ Auth::user()->nom }}\',\'{{ Auth::user()->prenom }}\')" class="btn btn-primary reject">Quitter l\'entreprise</a> </div> </div>');
+            $(".entreprise").append('<div class="container-entreprise" id="user{{ Auth::user()->id }}"> <p><strong>{{__("User")}} :</strong> {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</p> <p><strong>{{__("Status")}} :</strong> Employé</p> <div style="display: inline-flex; width: 100%;"> <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>{{__("You")}}</i></strong></p> <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{ Auth::user()->id }},\'{{ Auth::user()->nom }}\',\'{{ Auth::user()->prenom }}\')" class="btn btn-primary reject">Quitter l\'entreprise</a> </div> </div>');
        },
         error: function (data) {
-            displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');
+            displayError('{{__("Accepting invite error. Try again..."}}');
         }
     });
 }
@@ -461,7 +473,7 @@ function refuserInvit(eId, eLib) {
             /* }, 2000); */
         },
         error: function (data) {
-            displayError('Erreur lors du refus de l\'invitation. Réessayez...');
+            displayError('{{__("Refusing invite error. Try again..."}}');
         }
     });
 }
