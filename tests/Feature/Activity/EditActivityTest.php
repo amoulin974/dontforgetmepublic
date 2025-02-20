@@ -36,6 +36,7 @@ class EditActivityTest extends TestCase
         $this->actingAs($user); 
 
         $entreprise = Entreprise::factory()->create([
+            'capaciteMax' => 10,
             'idCreateur' => $user->id, 
         ]); 
 
