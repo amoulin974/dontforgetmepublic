@@ -221,7 +221,7 @@
                     displaySuccess('{{__("You upgraded ")}}' +  uName +' ' + uPrenom + '{{__(". Now hes an administrator")}}');
                 },
                 error: function (data) {
-                    displayError('Erreur lors de la promotion. Réessayez...');
+                    displayError('{{__("Upgrade error. Try again..."}}');
                 }
             });
         }
@@ -243,7 +243,7 @@
                     displayMessage('{{__("You downgraded ")}}' +  uName +' ' + uPrenom + '{{__(". Now hes an employee")}}');
                 },
                 error: function (data) {
-                    displayError('Erreur lors du rétrogradage. Réessayez...');
+                    displayError('{{__("Downgrade error. Try again..."}}');
                 }
             });
         }
@@ -263,7 +263,7 @@
                     displayMessage('Vous avez supprimé ' +  uName +' ' + uPrenom + '. Il ne peut plus accéder à votre entreprise.');
                 },
                 error: function (data) {
-                    displayError('Erreur lors de la suppression. Réessayez...');
+                    displayError('{{__("Deletion error. Try again..."}}');
                 }
             });
         }
@@ -288,7 +288,7 @@
                     /* }, 2000); */
                 },
                 error: function (data) {
-                    displayError('Erreur lors de la suppression. Réessayez...');
+                    displayError('{{__("Deletion error. Try again..."}}');
                 }
             });
         }
@@ -308,7 +308,7 @@
                     displayMessage('Vous avez annuler l\'invitation pour ' +  uName +' ' + uPrenom + '. Il ne peut plus rejoindre votre entreprise.');
                 },
                 error: function (data) {
-                    displayError('Erreur lors de l\'annulation. Réessayez...');
+                    displayError('{{__("Cancellation error. Try again..."}}');
                 }
             });
         }
@@ -347,7 +347,7 @@
                             // Vérifier que l'employé n'est pas déjà dans l'entreprise
                             @foreach ($entreprise->refresh()->travailler_users->unique() as $user)
                                 if ("{{ $user->email }}" == email){
-                                    displayError('Cet employé est déjà dans votre entreprise.');
+                                    displayError('{{__("This employee already works for your business"}}');
                                     $('#dialog').dialog('close');
                                     $("#employe").val('');
                                     uncheckAll();
@@ -364,7 +364,7 @@
                                 displayWarning('{{__("Please enter an email")}}');
                             }
                             else if(boolExist == false){
-                                displayError('Cet email ne correspond à aucun compte.');
+                                displayError('{{__("This email doesnt match to any account")}}');
                             }
                             if (checked.length == 0){
                                 displayWarning('{{__("Please select one or more activities")}}');
@@ -388,7 +388,7 @@
                                         uncheckAll();
                                     },
                                     error: function (data) {
-                                        displayError('Erreur lors de l\'ajout. Réessayez...');
+                                        displayError('{{__("Adding error. Try again..."}}');
                                     }
                                 });
                             }
@@ -446,7 +446,7 @@ function accepterInvit(eId, eLib) {
             $(".entreprise").append('<div class="container-entreprise" id="user{{ Auth::user()->id }}"> <p><strong>{{__("User")}} :</strong> {{ Auth::user()->nom }} {{ Auth::user()->prenom }}</p> <p><strong>{{__("Status")}} :</strong> Employé</p> <div style="display: inline-flex; width: 100%;"> <p style="margin:auto; margin-left:0%; margin-bottom: 0%;"><strong><i>{{__("You")}}</i></strong></p> <a style="margin:auto; margin-right:5%;" onclick="quitterEntreprise({{ Auth::user()->id }},\'{{ Auth::user()->nom }}\',\'{{ Auth::user()->prenom }}\')" class="btn btn-primary reject">Quitter l\'entreprise</a> </div> </div>');
        },
         error: function (data) {
-            displayError('Erreur lors de l\'acceptation de l\'invitation. Réessayez...');
+            displayError('{{__("Accepting invite error. Try again..."}}');
         }
     });
 }
@@ -473,7 +473,7 @@ function refuserInvit(eId, eLib) {
             /* }, 2000); */
         },
         error: function (data) {
-            displayError('Erreur lors du refus de l\'invitation. Réessayez...');
+            displayError('{{__("Refusing invite error. Try again..."}}');
         }
     });
 }

@@ -1,7 +1,7 @@
 @extends('base')
 
-@section('title_base', __('Slot settings for business #') . $entreprise -> id)
-@section('parametrage_active', 'active')
+@section('title_base', __('Slot settings2'))
+@section('creneau_active', 'active')
 
 @section('content')
 <head>
@@ -43,62 +43,45 @@
 <body>
   
 <div class="container-calendar">
-    <div class="header-profile mb-3">
-        <h1>{{__("Calendar with slots of")}} {{ $entreprise->libelle }}</h1>
-        <br/>
-    </div>
+    <h1>{{__('Time slots calendar')}}</h1>
     <div id='calendar'></div>
 
+    <!-- Popup Dialog Select -->
+    <div id="dialogSelect" title="{{__('Add event')}}" style="display:none;">
+        <form>
+            <label for="eventTitleSelect">{{__("Event title")}} :</label>
+            <input type="text" id="eventTitleSelect" name="eventTitleSelect" class="text ui-widget-content ui-corner-all" placeholder="Titre"><br><br>
+            <label for="startDateSelect">{{__("Start time")}} :</label>
+            <input type="time" id="startDateSelect" name="startDateSelect" class="text ui-widget-content ui-corner-all" placeholder="08:00:00"><br><br>
+            <label for="endDateSelect">{{__("End time")}} :</label>
+            <input type="time" id="endDateSelect" name="endDateSelect" class="text ui-widget-content ui-corner-all" placeholder="20:00:00"><br><br>
+            <label for="nbPersSelect">{{__("Amount of people")}} :</label>
+            <input type="number" id="nbPersSelect" name="nbPersSelect" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
+        </form>
+    </div>
+
     <!-- Popup Dialog Titre -->
-    <div id="dialogTitre" title="Ajout d'un évènement" style="display:none;">
+    <div id="dialogTitre" title="{{__('Add event')}}" style="display:none;">
         <form>
             <label for="eventTitle">{{__("Event title")}} :</label>
             <input type="text" id="eventTitle" name="eventTitle" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="interv">{{__("Interval between activity starts")}} :</label>
-            {{-- <input type="time" id="interv" name="interv" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
-            <select name="interv" id="interv" class="text ui-widget-content ui-corner-all">
-                <option value="00:05:00">5 min</option>
-                <option value="00:10:00">10 min</option>
-                <option value="00:15:00">15 min</option>
-                <option value="00:20:00">20 min</option>
-                <option value="00:25:00">25 min</option>
-                <option value="00:30:00">30 min</option>
-                <option value="00:35:00">35 min</option>
-                <option value="00:40:00">40 min</option>
-                <option value="00:45:00">45 min</option>
-                <option value="00:50:00">50 min</option>
-                <option value="00:55:00">55 min</option>
-                <option value="01:00:00">1 h</option>
-              </select>
+            <label for="nbPers">{{__("Amount of people")}} :</label>
+            <input type="number" id="nbPers" name="nbPers" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
         </form>
     </div>
 
     <!-- Popup Dialog Modif -->
-    <div id="dialogModif" title="Ajout d'un évènement" style="display:none;">
+    <div id="dialogModif" title="{{__('Add event')}}" style="display:none;">
         <form>
             <label for="eventTitleModif">{{__("Event title")}} :</label>
             <input type="text" id="eventTitleModif" name="eventTitleModif" class="text ui-widget-content ui-corner-all"><br><br>
-            <label for="intervModif">{{__("Interval between activity starts")}} :</label>
-            {{-- <input type="time" id="intervModif" name="intervModif" class="text ui-widget-content ui-corner-all" placeholder="00:05:00" value="00:05:00" min="00:05:00" max="00:45:00" step="300"> --}}
-            <select name="intervModif" id="intervModif" class="text ui-widget-content ui-corner-all">
-                <option value="00:05:00">5 min</option>
-                <option value="00:10:00">10 min</option>
-                <option value="00:15:00">15 min</option>
-                <option value="00:20:00">20 min</option>
-                <option value="00:25:00">25 min</option>
-                <option value="00:30:00">30 min</option>
-                <option value="00:35:00">35 min</option>
-                <option value="00:40:00">40 min</option>
-                <option value="00:45:00">45 min</option>
-                <option value="00:50:00">50 min</option>
-                <option value="00:55:00">55 min</option>
-                <option value="01:00:00">1 h</option>
-              </select>
+            <label for="nbPersModif">{{__("Amount of people")}} :</label>
+            <input type="number" id="nbPersModif" name="nbPersModif" class="text ui-widget-content ui-corner-all" placeholder="1" value="1" min="1">
         </form>
     </div>
 
     <!-- Popup Dialog Suppression -->
-    <div id="dialog-confirm" title="{{__('Are you sure you would like to delete it?')}}" style="display:none;">
+    <div id="dialog-confirm" title="{{__("Are you sure you would like to delete it?")}}" style="display:none;">
         <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>{{__("This event will be permanently deleted. Continue?")}}</p>
     </div>
 </div>
@@ -108,7 +91,7 @@ $(document).ready(function () {
 
 // VARIABLES GLOBALES
 // URL dans le site
-var SITEURL = "{{ url('/parametrage/plage/') }}";
+var SITEURL = "{{ url('/calendrier/') }}";
 var couleurPasses = 'red';
 var couleurAjd = 'green';
 
@@ -124,43 +107,72 @@ var calendar = $('#calendar').fullCalendar({
     header: {
       left: 'prev,next today',
       center: 'title',
-      right: 'agendaWeek,agendaDay,listMonth'
+      right: 'month,agendaWeek,agendaDay,listMonth'
     },
+    /* views: {
+        multiMonthYear: {
+            type: 'multiMonth',
+            duration: { months: 12 },
+            buttonText: 'Year'
+        }
+    }, */
     buttonIcons: false, // show the prev/next text
     locale: 'fr',
-    /* initialView: 'agendaWeek', */
     editable: true,
     events: function(start, end, timezone, callback) {
         $.ajax({
-            url: SITEURL + "/" + {{ $entreprise->id }},
+            url: SITEURL + "/",
             type: 'GET',
             success: function(data) {
                 var events = [];
                 var start_datetime;
                 var end_datetime;
                 $(data).each(function() {
-                    start_datetime = this.datePlage.split('T')[0] + 'T' + this.heureDeb + '.000000Z';
-                    end_datetime = this.datePlage.split('T')[0] + 'T' + this.heureFin + '.000000Z';
+                    start_datetime = this.dateRdv.split('T')[0] + 'T' + this.heureDeb + '.000000Z';
+                    end_datetime = this.dateRdv.split('T')[0] + 'T' + this.heureFin + '.000000Z';
                     if (this.heureFin == '00:00:00') {
-                        end_datetime = this.datePlage.split('T')[0] + 'T' + '23:59:59' + '.000000Z';
+                        end_datetime = this.dateRdv.split('T')[0] + 'T' + '23:59:59' + '.000000Z';
                     }
                     events.push({
                         id: this.id,
                         title: this.id,
                         start: start_datetime,
                         end: end_datetime,
-                        interval: this.interval,
+                        nbPersonnes: this.nbPersonnes,
                     });
                 });
                 callback(events);
             },
             error: function() {
-                displayError("{{__('Adding event error. Try again...')}}");
+                displayError("{{__('Event recovery error')}}");
             }
         });
     },
     displayEventTime: true, // false -> don't show the time column in list view
     weekNumbers: true,
+    /* themeSystem: 'bootstrap', */
+    /* weekText : "S",
+    weekNumberFormat: { week: 'narrow' }, */
+    /* buttonText: {
+        prev
+        today:    'today',
+        month:    'month',
+        week:     'week',
+        day:      'day',
+        list:     'list'
+    }, */
+    /* businessHours: [ // specify an array instead
+        {
+            daysOfWeek: [ 1, 2, 4, 5 ],
+            startTime: '08:00',
+            endTime: '17:00'
+        },
+        {
+            daysOfWeek: [ 3 ],
+            startTime: '08:30',
+            endTime: '12:00'
+        }
+    ], */
     eventRender: function(event, element) {
         if (moment(event.end).isBefore(moment())) {
             element.css('background-color', couleurPasses); // Couleur pour les événements passés
@@ -169,14 +181,99 @@ var calendar = $('#calendar').fullCalendar({
             element.css('background-color', couleurAjd); // Couleur pour les événements futurs
             element.css('border-color', couleurAjd);
         }
-        if (event.interval) { // Si le nombre de personnes est renseigné
-            element.find('.fc-title').after("<br/><span class=\"intervEvent\">" + event.interval + "</span>");
+        /* if () { // Si c'est toute la journéee
+
+        } */
+        if (event.nbPersonnes) { // Si le nombre de personnes est renseigné
+            element.find('.fc-title').after("<br/><span class=\"nbPersEvent\">" + event.nbPersonnes + "</span>");
         }
         
     },
     selectable: true,
     selectHelper: true,
     select: function (start, end, allDay) {
+        // Cas où le système (je ne sais pour quelle raison) choisis la date du lendemain comme date de fin pourprendre l'entièreté de la journée
+        if($('#calendar').fullCalendar('getView').type == 'month') {
+            end = end.subtract(1, 'days');
+            start = start.add(8, 'hours');
+            end = end.add(20, 'hours');
+        }
+
+        // Cas où month view donc popup pour définir les heures
+        if($('#calendar').fullCalendar('getView').type == 'month') {
+            if (moment(start).isSame(end, 'day')) {
+                var dateStart = $.fullCalendar.formatDate(start, "YYYY-MM-DD");
+                // Afficher la popup avec les inputs
+                $('#dialogSelect').dialog({
+                        modal: true,
+                        closeOnEscape: true,
+                        open: function(event, ui) {
+                            $('.ui-widget-overlay').bind('click', function(){
+                                $('#dialogSelect').dialog('close');
+                            });
+                        },
+                        buttons: {
+                            "Ajouter": function() {
+                                var title = $('#eventTitleSelect').val();
+                                var heureStart = $('#startDateSelect').val();
+                                var heureEnd = $('#endDateSelect').val();
+                                var nbPers = $('#nbPersSelect').val();
+                                console.log(title);
+                                console.log(nbPers);
+                                console.log(typeof nbPers);
+                                if (title && heureStart && heureEnd && nbPers) {
+                                    heureStart = heureStart + ':00';
+                                    heureEnd = heureEnd + ':00';
+                                    $.ajax({
+                                        url: SITEURL + "/ajax",
+                                        data: {
+                                            dateRdv: dateStart,
+                                            heureDeb: heureStart,
+                                            heureFin: heureEnd,
+                                            nbPersonnes: nbPers,
+                                            type: 'add'
+                                        },
+                                        type: "POST",
+                                        success: function (data) {
+                                            $('#dialogSelect').dialog('close');
+                                            displaySuccess("{{__('Event successfully added')}}");
+
+                                            /* calendar.fullCalendar('renderEvent', // eventRender
+                                                {
+                                                    id: data.id,
+                                                    dateRdv: start,
+                                                    heureDeb: start.split(' ')[1],
+                                                    heureFin: end.split(' ')[1],
+                                                },true); */
+
+                                            // Désélectionner après la sélection
+                                            $('#calendar').fullCalendar('unselect');
+
+                                            // Rafraîchir l'affichage du calendrier
+                                            $('#calendar').fullCalendar('refetchEvents');
+                                        },
+                                        error: function() {
+                                            displayError("{{__('Adding event error. Try again...')}}");
+                                        }
+                                    });
+                                }
+                                else {
+                                    displayWarning("{{__('Missing information')}}");
+                                }
+                                //$(this).dialog("close");
+                            },
+                            "Annuler": function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+            } else {
+                displayError("{{__('Unable to create an multi-day event')}}");
+                // Désélectionner après la sélection
+                $('#calendar').fullCalendar('unselect');
+            }
+        }
+        else {
         // Vérifiez si l'événement est sur la même journée
         if (moment(start).isSame(end, 'day')) {
             var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
@@ -187,23 +284,21 @@ var calendar = $('#calendar').fullCalendar({
                 closeOnEscape: true,
                         open: function(event, ui) {
                             $('.ui-widget-overlay').bind('click', function(){
-                                $('#interv').val('00:05:00');
                                 $('#dialogTitre').dialog('close');
                             });
                         },
                 buttons: {
                     "Ajouter": function() {
                         var title = $('#eventTitle').val();
-                        var interv = $('#interv').val();
-                        if (title && interv) {
+                        var nbPers = $('#nbPers').val();
+                        if (title && nbPers) {
                             $.ajax({
-                                url: SITEURL + "/",
+                                url: SITEURL + "/ajax",
                                 data: {
-                                    datePlage: start.split(' ')[0],
+                                    dateRdv: start.split(' ')[0],
                                     heureDeb: start.split(' ')[1],
                                     heureFin: end.split(' ')[1],
-                                    interval: interv,
-                                    entreprise_id: {{ $entreprise->id }},
+                                    nbPersonnes: nbPers,
                                     type: 'add'
                                 },
                                 type: "POST",
@@ -228,7 +323,6 @@ var calendar = $('#calendar').fullCalendar({
                         //$(this).dialog("close");
                     },
                     "Annuler": function() {
-                        $('#interv').val('00:05:00');
                         $(this).dialog("close");
                     }
                 }
@@ -238,6 +332,7 @@ var calendar = $('#calendar').fullCalendar({
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
+    }
     },
     eventDrop: function (event, delta) {
         // Vérifiez si l'événement dépasse une journée
@@ -245,9 +340,9 @@ var calendar = $('#calendar').fullCalendar({
             var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
             var end = event.end ? $.fullCalendar.formatDate(event.end, "YYYY-MM-DD HH:mm:ss") : start;
             $.ajax({
-                url: SITEURL + '/',
+                url: SITEURL + '/ajax',
                 data: {
-                    datePlage: start.split(' ')[0],
+                    dateRdv: start.split(' ')[0],
                     heureDeb: start.split(' ')[1],
                     heureFin: end.split(' ')[1],
                     id: event.id,
@@ -259,7 +354,7 @@ var calendar = $('#calendar').fullCalendar({
                 }
             });
         } else {
-            displayError("{{__('Events cant exceed several days')}}");
+            displayError("{{__('Unable to create an multi-day event')}}");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
@@ -271,7 +366,7 @@ var calendar = $('#calendar').fullCalendar({
             closeOnEscape: true,
                     open: function(event, ui) {
                         $('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'évènement');
-                        $('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
+                        $('#nbPersModif').val(eventAct.nbPersonnes ? eventAct.nbPersonnes : 1);
                         $('.ui-widget-overlay').bind('click', function(){
                             $('#dialogModif').dialog('close');
                         });
@@ -279,14 +374,14 @@ var calendar = $('#calendar').fullCalendar({
             buttons: {
                 "Modifier": function() {
                     var title = $('#eventTitleModif').val();
-                    var interv = $('#intervModif').val();
+                    var nbPers = $('#nbPersModif').val();
                     console.log(eventAct);
-                    if (title && interv) {
+                    if (title && nbPers) {
                         $.ajax({
-                            url: SITEURL + "/",
+                            url: SITEURL + "/ajax",
                             data: {
                                 id: eventAct.id,
-                                interval: interv,
+                                nbPersonnes: nbPers,
                                 type: 'modify'
                             },
                             type: "POST",
@@ -320,7 +415,7 @@ var calendar = $('#calendar').fullCalendar({
                             "Confirmer la suppression": function() {
                                 $.ajax({
                                     type: "POST",
-                                    url: SITEURL + '/',
+                                    url: SITEURL + '/ajax',
                                     data: {
                                             id: eventAct.id,
                                             type: 'delete'
@@ -353,9 +448,9 @@ var calendar = $('#calendar').fullCalendar({
             var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
 
             $.ajax({
-                url: SITEURL + '/',
+                url: SITEURL + '/ajax',
                 data: {
-                    datePlage: start.split(' ')[0],
+                    dateRdv: start.split(' ')[0],
                     heureDeb: start.split(' ')[1],
                     heureFin: end.split(' ')[1],
                     id: event.id,
@@ -372,12 +467,32 @@ var calendar = $('#calendar').fullCalendar({
             });
         } else {
             revertFunc(); // Revert the change if the update fails
-            displayError("{{__('Events cant exceed several days')}}");
+            displayError("{{__('Event edit error')}}");
             // Désélectionner après la sélection
             $('#calendar').fullCalendar('unselect');
         }
     },
 });
+
+/* // Récupération des événements existants
+$.ajax({
+    url: SITEURL + "/ajax",
+    data: {
+        type: 'get'
+    },
+    type: "POST",
+    success: function (response) {
+        var events = [];
+        $.each(response, function (index, value) {
+            events.push({
+                title: value.id,
+                start: value.dateRdv,
+                end: value.dateRdv,
+            });
+        });
+        calendar.fullCalendar('renderEvents', events, true);
+    }
+}); */
 
 var tippyPrev = tippy('.fc-prev-button', {
     content: 'Précédent',
@@ -393,6 +508,12 @@ var tippyNext = tippy('.fc-next-button', {
 
 var tippyToday = tippy('.fc-today-button', {
     content: 'Revenir à aujourd\'hui',
+    placement: 'top',
+    theme: 'light-border',
+});
+
+var tippyMonth = tippy('.fc-month-button', {
+    content: 'Vision Mensuelle',
     placement: 'top',
     theme: 'light-border',
 });
@@ -414,8 +535,6 @@ var tippyList = tippy('.fc-listMonth-button', {
     placement: 'top',
     theme: 'light-border',
 });
-
-$('#calendar').fullCalendar('changeView', 'agendaWeek');
 
 });
 
