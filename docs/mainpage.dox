@@ -1,0 +1,64 @@
+/**
+* @mainpage Don't Forget Me - Documentation
+*
+* @section intro_sec Introduction
+* Bienvenue dans la documentation de Don't Forget Me
+*
+* Ce projet est une application développée en Laravel permettant la gestion de rendez-vous et
+* l'automatisation des rappels. Cette documentation détaille l'architecture des classes et des controllers implémentés.
+*
+* @section structure_sec Structure de Code Documenté
+* Seules les parties essentielles du projet sont incluses dans cette documentation :
+* - **Modèles (Eloquent Models)** : Représentation des entités et interactions avec la base de données.
+* - **Contrôleurs (Controllers)** : Gestion des requêtes et logique applicative.
+*
+* Les routes, migrations, vues et tests ne sont pas documentés ici pour des raisons de sécurité.
+*
+* @section conventions_sec Conventions de Nommage
+* Laravel suit des conventions strictes pour assurer la cohérence du code :
+* - **Modèles** : PascalCase,
+* - **Contrôleurs** : PascalCase suivi de 'Controller',
+* - **Méthodes** : camelCase,
+* - **Variables & Attributs** : snake_case,
+* - **Tables en base de données** : snake_case et pluriel,
+* - **Colonnes en base de données** : snake_case.
+*
+* @section usage_sec Utilisation de la Documentation
+* Cette documentation est générée avec Doxygen et contient :
+* - Une description détaillée des classes et méthodes utilisées
+* - La documentation des contrôleurs et de leurs actions
+* - Les définitions des modèles et leurs actions.
+*
+* @section contribution_sec Contribuer
+* Ce projet est open-source et toute contribution est la bienvenue !
+* Consultez le fichier 'CONTRIBUTING.md' dans le dossier docs du projet pour plus d'informations sur la manière de contribuer.
+*
+*/
+
+\mainpage Don't Forget Me - Documentation
+\tableofcontents 
+À propos,
+Structure
+\section intro_sec Introduction
+Bienvenue dans la documentation de Don't Forget Me
+Cette page contient la présentation de notre projet, \ref a_propos_section et la strucure du projet \ref structure_section.
+
+\subsection a_propos_section À propos de DON'T FORGET ME
+Dans le cadre de leurs activités, de nombreux professionnels recevant des clients ont exprimés leur mécontentement face à des rendez-vous non honorés.
+Ces absences représentent un manque à gagner considérable et nuisent à leur organisation.
+Pour répondre à ce problème, le projet Dont Forget Me vise à développer une solution complète permettant à ces professionnels :
+• Gérer leurs rendez-vous selon leurs besoins spécifiques,
+• Envoyer automatiquement des rappels à leurs clients par mail ou par SMS.
+
+\subsection structure_section Structure du projet
+Le projet se structure en deux volets principaux :
+
+1. Application web : une plateforme en ligne responsive permettant :
+• l’inscription des professionnels,
+• la gestion des rendez-vous et des plannings,
+• la consultation et la gestion des informations clients.
+
+2.Configuration d’un Raspberry Pi :
+Ce dispositif communiquera avec l’application web pour récupérer les données des clients pour leur envoyer des notifications par mail ou par SMS afin de les inciter à honorer leur rendez-vous.
+
+Ce projet vise donc à offrir une solution d’intermédiation simple et efficace entre des professionnels proposant des services et des clients souhaitant y accéder en ayant pour objectif d’améliorer l’organisation des premiers et accompagner les seconds dans leur expérience de prise de rendez-vous pour une prestation.

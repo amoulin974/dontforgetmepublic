@@ -22,22 +22,19 @@ jobs:
         ref: develop
         fetch-depth: 0
 
+    - name: Debug - List project structure
+      run: ls -R
+
     - name: Install Doxygen and Graphviz
       run: sudo apt-get update && sudo apt-get install doxygen graphviz -y
 
-    - name: Ensure DOT_CLEANUP is set to NO
-      run: sed -i 's/^DOT_CLEANUP.*/DOT_CLEANUP = NO/' ./S5DevBack/DevLaravel/docs/Doxyfile
-
     - name: Run Doxygen
-      run: doxygen ./S5DevBack/DevLaravel/docs/Doxyfile
-
-    - name: Verify Generated Files
-      run: ls -l ./S5DevBack/DevLaravel/docs/html/*.dot ./S5DevBack/DevLaravel/docs/html/*.png ./S5DevBack/DevLaravel/docs/html/*.svg || true
+      run: doxygen S5DevBack/DevLaravel/docs/Doxyfile
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./S5DevBack/DevLaravel/docs/html  
+        publish_dir: S5DevBack/DevLaravel/docs/html  
         publish_branch: gh-pages
         force_orphan: true 

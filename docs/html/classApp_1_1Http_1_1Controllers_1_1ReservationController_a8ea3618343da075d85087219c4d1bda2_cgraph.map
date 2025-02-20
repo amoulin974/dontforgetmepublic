@@ -1,0 +1,9 @@
+<map id="destroy" name="destroy">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,70,107"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Models_1_1Reservation.html#a218e188926b14e177c90838265026691" title=" " alt="" coords="118,5,282,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,78,117,58,130,52,132,57,119,62,71,82"/>
+<area shape="rect" id="Node000003" href="$classApp_1_1Models_1_1Reservation.html#ac1a79abdde611f55c2583a98b93460f7" title=" " alt="" coords="118,72,282,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="70,91,102,91,102,96,70,96"/>
+<area shape="rect" id="Node000004" href="$classApp_1_1Models_1_1Reservation.html#aa65a67a965dd532b6961b4100d467e55" title=" " alt="" coords="118,139,282,181"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="71,104,119,124,132,130,130,135,117,129,69,109"/>
+</map>

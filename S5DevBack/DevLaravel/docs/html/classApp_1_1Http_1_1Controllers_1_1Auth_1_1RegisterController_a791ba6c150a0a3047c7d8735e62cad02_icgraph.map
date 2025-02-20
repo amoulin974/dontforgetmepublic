@@ -1,4 +1,0 @@
-<map id="create" name="create">
-<area shape="rect" id="node1" title="Creates a new user instance after successful registration." alt="" coords="132,5,189,33"/>
-<area shape="rect" id="node2" href="$classApp_1_1Http_1_1Controllers_1_1Auth_1_1RegisterController.html#a969f4dbd9d2d1de6298b7273fa3c40ab" title="Stores user data in the database after validation." alt="" coords="5,5,84,33"/>
-</map>
