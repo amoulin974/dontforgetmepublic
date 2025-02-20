@@ -28,17 +28,17 @@ jobs:
     - name: Install Doxygen and Graphviz
       run: sudo apt-get update && sudo apt-get install doxygen graphviz -y
 
+    - name: Clean previous documentation
+      run: rm -rf ./docs/html
+
+    - name: Debug - List files to document
+      run: find ./app -type f
+
     - name: Run Doxygen
       run: doxygen ./docs/Doxyfile
 
     - name: Debug - List generated documentation
       run: ls -R ./docs/html
-
-    - name: Wait before deployment
-      run: sleep 10
-
-    - name: Pull latest changes
-      run: git pull origin gh-pages || true
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
@@ -47,4 +47,4 @@ jobs:
         publish_dir: ./docs/html  
         publish_branch: gh-pages
         force_orphan: true
-        keep_files: false
+        keep_files: true  # Permet de garder les anciens fichiers et éviter de supprimer trop agressivement
