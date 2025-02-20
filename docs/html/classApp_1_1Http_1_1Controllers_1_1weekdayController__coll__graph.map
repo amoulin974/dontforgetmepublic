@@ -1,0 +1,7 @@
+<map id="WeekdayController" name="WeekdayController">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,155,137,181"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1Controller.html" title="Base controller for handling common operations in the Laravel application." alt="" coords="32,80,110,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,122,74,154,68,154,68,122"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="17,5,125,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="74,48,74,80,68,80,68,48"/>
+</map>

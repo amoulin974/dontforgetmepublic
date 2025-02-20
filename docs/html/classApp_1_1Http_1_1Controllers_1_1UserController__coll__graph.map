@@ -1,0 +1,7 @@
+<map id="UserController" name="UserController">
+<area shape="rect" id="Node000001" title="Controller for managing user profile operations." alt="" coords="6,155,112,181"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1Controller.html" title="Base controller for handling common operations in the Laravel application." alt="" coords="20,80,98,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="62,122,62,154,56,154,56,122"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,113,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="62,48,62,80,56,80,56,48"/>
+</map>

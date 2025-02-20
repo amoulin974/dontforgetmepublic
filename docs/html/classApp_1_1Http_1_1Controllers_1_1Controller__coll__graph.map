@@ -1,0 +1,5 @@
+<map id="Controller" name="Controller">
+<area shape="rect" id="Node000001" title="Base controller for handling common operations in the Laravel application." alt="" coords="20,80,98,107"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,113,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="62,48,62,80,56,80,56,48"/>
+</map>
