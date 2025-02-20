@@ -11,8 +11,10 @@ use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\weekdayController;
+use App\Http\Controllers\BugReportController;
 
-Route::prefix('/reservation')->name('reservation.')->controller(ReservationController::class)->group(function(){
+Route::post('/bug-report', [BugReportController::class, 'store'])->name('bug.report');
+Route::prefix('/reservation')->name('reservation.')->controller(reservationController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');

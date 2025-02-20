@@ -99,9 +99,8 @@
       <img src="{{ asset('favicon.ico') }}" alt="Logo">
     </a>
   </div>
-
-
 </header>
+
 <script>
 function displaySuccess(message) {
     toastr.options = {
@@ -167,5 +166,44 @@ $(document).ready(function() {
 </script>
 
     @yield('content')
+
+<button id="bug-report-btn" class="bug-report-button">
+    <i class="fa fa-bug"></i> Signaler un bug
+</button>
+
+<div id="bugReportModal" class="modal fade" tabindex="-1" aria-labelledby="bugReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bugReportModalLabel">Signaler un bug</h5>
+            </div>
+            <div class="modal-body">
+                <form id="bugReportForm" method="POST" action="{{ route('bug.report') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="bugDescription">Description du bug :</label>
+                        <textarea id="bugDescription" name="description" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="button" class="btn btn-secondary me-2" id="cancel-bug-report">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#bug-report-btn").click(function () {
+            $("#bugReportModal").modal("show");
+        });
+
+        $("#cancel-bug-report").click(function () {
+            $("#bugReportModal").modal("hide");
+        });
+    });
+</script>
 </body>
 </html>
