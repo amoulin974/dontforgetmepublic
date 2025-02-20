@@ -31,10 +31,20 @@ jobs:
     - name: Run Doxygen
       run: doxygen ./docs/Doxyfile
 
+    - name: Debug - List generated documentation
+      run: ls -R ./docs/html
+
+    - name: Wait before deployment
+      run: sleep 10
+
+    - name: Pull latest changes
+      run: git pull origin gh-pages || true
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/html  
         publish_branch: gh-pages
-        force_orphan: true 
+        force_orphan: true
+        keep_files: false
