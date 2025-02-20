@@ -23,22 +23,12 @@
                     <h5 style="color:blue;">[ {{__('Creator')}} ]</h5>
                 @endif
                 <div class="info">
-<<<<<<< HEAD:S5DevBack/DevLaravel/resources/views/entreprise/index.blade.php
                     <p><strong>{{__('SIREN')}} :</strong> {{ $entreprise->siren }}</p>
                     <p><strong>{{__('Address')}} :</strong> {{ $entreprise->adresse }}</p>
                     <p><strong>{{__('Job')}} :</strong> {{ $entreprise->metier }}</p>
                     <p><strong>{{__('Description')}} :</strong> {{ $entreprise->description }}</p>
-                    <p><strong>{{__('Type')}} :</strong> {{ $entreprise->type }}</p>
                     <p><strong>{{__('Phone number')}} :</strong> {{ $entreprise->numTel }}</p>
                     <p><strong>{{__('Email Address')}} :</strong> {{ $entreprise->email }}</p>
-=======
-                    <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
-                    <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
-                    <p><strong>Métier :</strong> {{ $entreprise->metier }}</p>
-                    <p><strong>Description :</strong> {{ $entreprise->description }}</p>
-                    <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
-                    <p><strong>Email :</strong> {{ $entreprise->email }}</p>
->>>>>>> dfm-refactor:resources/views/entreprise/index.blade.php
                         @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
                         <div class="carousel">
                         <div class="swiper-container swiper{{ $entreprise->id }}">

@@ -58,7 +58,7 @@
                     {{ __("Don't have an account?") }} <a href="{{ route('register.choose.account.type') }}">{{ __('To Register') }}</a>
                 </p>
                 <p>
-                    {{ __('Forgot Your Password?') }}<a href="{{ route('password.request') }}">{{ __('Click here') }}</a>
+                    {{ __('Forgot Your Password?') }} <a href="{{ route('password.request') }}">{{ __('Click here') }}</a>
                 </p>
             </div>
         </form>

@@ -27,12 +27,7 @@
 
             {{-- Section 2 : Informations générales --}}
             <div class="mb-4">
-<<<<<<< HEAD:S5DevBack/DevLaravel/resources/views/entreprise/edit.blade.php
                 <h3>{{__('General information')}}</h3>
-=======
-                <h3>Informations générales</h3>
-                {{-- Champ pour le nom de l'entreprise --}}
->>>>>>> dfm-refactor:resources/views/entreprise/edit.blade.php
                 <div class="mb-2">
                     <label for="libelle">{{__('Business name')}}</label>
                     <input type="text" name="libelle" id="libelle" value="{{ $entreprise->libelle }}" class="form-control" required>
@@ -43,11 +38,6 @@
                     <input type="text" name="siren" id="siren" value="{{ $entreprise->siren }}" class="form-control" required>
                 </div>
                 <div class="mb-2">
-<<<<<<< HEAD:S5DevBack/DevLaravel/resources/views/entreprise/edit.blade.php
-                    <label for="rue">{{__('Avenue')}}</label>
-                    <input type="text" name="rue" id="rue" 
-                           value="{{ explode(',', $entreprise->adresse)[0] ?? '' }}" 
-=======
                     <label for="metier" class="form-label">Métier</label>
                     <select name="metier" id="metier" class="form-select @error('metier') is-invalid @enderror" required>
                         <option value="">Sélectionnez votre métier</option>
@@ -59,36 +49,23 @@
                     </select>
                 </div>
                 <div class="mb-2">
-                    <label for="rue">Rue</label>
+                    <label for="rue">{{__('Avenue')}}</label>
                     <input type="text" name="rue" id="rue"
                            value="{{ explode(',', $entreprise->adresse)[0] ?? '' }}"
->>>>>>> dfm-refactor:resources/views/entreprise/edit.blade.php
                            class="form-control" required>
                 </div>
                 {{-- Champ pour le code postal --}}
                 <div class="mb-2">
-<<<<<<< HEAD:S5DevBack/DevLaravel/resources/views/entreprise/edit.blade.php
                     <label for="codePostal">{{__('Postal code')}}</label>
                     <input type="text" name="codePostal" id="codePostal" 
                            value="{{ explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? ''))[0] ?? '' }}" 
-=======
-                    <label for="codePostal">Code postal</label>
-                    <input type="text" name="codePostal" id="codePostal"
-                           value="{{ explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? ''))[0] ?? '' }}"
->>>>>>> dfm-refactor:resources/views/entreprise/edit.blade.php
                            class="form-control" required>
                 </div>
                 {{-- Champ pour la ville --}}
                 <div class="mb-2">
-<<<<<<< HEAD:S5DevBack/DevLaravel/resources/views/entreprise/edit.blade.php
                     <label for="ville">{{__('City')}}</label>
                     <input type="text" name="ville" id="ville" 
                            value="{{ implode(' ', array_slice(explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? '')), 1)) }}" 
-=======
-                    <label for="ville">Ville</label>
-                    <input type="text" name="ville" id="ville"
-                           value="{{ implode(' ', array_slice(explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? '')), 1)) }}"
->>>>>>> dfm-refactor:resources/views/entreprise/edit.blade.php
                            class="form-control" required>
                 </div>
                 {{-- Champ pour la description de l'entreprise --}}
@@ -110,13 +87,8 @@
 
             {{-- Section 3 : Paramètres des rendez-vous --}}
             <div class="mb-4">
-<<<<<<< HEAD:S5DevBack/DevLaravel/resources/views/entreprise/edit.blade.php
                 <h3>{{__('Booking settings')}}</h3>
                 {{-- Question 1 --}}
-=======
-                <h3>Paramètres des rendez-vous</h3>
-                {{-- Question 1 : Traitez-vous un ou plusieurs clients par créneau ? --}}
->>>>>>> dfm-refactor:resources/views/entreprise/edit.blade.php
                 <div class="row align-items-center mb-3">
                     <div class="col-md-8">
                         <label for="question_0" class="form-label">{{__('Do you treat one or several clients per schedule?')}}</label>
@@ -202,14 +174,8 @@
 
             {{-- Section 4 : Squelette des notifications --}}
             <div class="mb-4">
-<<<<<<< HEAD:S5DevBack/DevLaravel/resources/views/entreprise/edit.blade.php
                 <h3>{{__('Notifications')}}</h3>
                 <p>{{__('That part will be managed later.')}}</p>
-=======
-                <h3>Notifications</h3>
-                {{-- Notification qui sera ajoutée plus tard --}}
-                <p>Cette partie sera gérée ultérieurement.</p>
->>>>>>> dfm-refactor:resources/views/entreprise/edit.blade.php
             </div>
 
             {{-- Bouton d'envoi --}}

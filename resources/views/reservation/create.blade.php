@@ -23,6 +23,9 @@
                 unset($idOfWorkers[array_search($e->id,$idOfWorkers)]);
             }
         }
+
+        $typeRdvArray = json_decode($entreprise->typeRdv, true);
+
     @endphp
     <script>
         var userWorkingOnAct = @json($userWorkingOnAct);
@@ -41,35 +44,31 @@
         <div class="availability">
 
             <h4 class="text-center mb-4">{{__('Available slots for ')}}{{ $activite->libelle}}</h4>
-            @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
-                <label for="emplye" class="form-label mt-3">{{__('Please select an employee')}}</label>
-                <select id="employe" class="form-select">
-                    <option value="default">Sélectionnez un employé</option>
-                    @foreach ($userWorkingOnAct as $employe)
-                        <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
-                    @endforeach
-                </select>
+            @if($typeRdvArray[2] != "0")
+                @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
+                    <label for="emplye" class="form-label mt-3">{{__('Please select an employee')}}</label>
+                    <select id="employe" class="form-select">
+                        <option value="default">Sélectionnez un employé</option>
+                        @foreach ($userWorkingOnAct as $employe)
+                            <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+                        @endforeach
+                    </select>
+                @endif
             @endif
 
             <ul class="list-unstyled" style="margin-top: 40px;">
                 @if (count($timeSlots) > 0)
                     @foreach (collect($timeSlots)->groupBy('date') as $date => $slots)
-                        <li class="mb-4" id="plageOfSlots">
+                        <li class="mb-4">
                             {{-- Date du créneau --}}
                             <h5 class="text-primary">
                                 {{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}
                             </h5>
-
+                            
                             {{-- Créneaux horaires --}}
-                            <div class="d-flex flex-wrap gap-2" id="plageWithSlots">
+                            <div class="d-flex flex-wrap gap-2">
                                 @foreach ($slots as $slot)
                                     @if ($slot['remaining_places'] > 0)
-                                        @php
-                                            $idToAdd = '';
-                                            foreach($slot['employesPlaces'] as $eId){
-                                                $idToAdd .= 'employes'.$eId.'/';
-                                            }
-                                        @endphp
                                         {{-- Bouton actif --}}
                                         <button
                                             class="btn btn-outline-primary flex-grow-1 horaire-btn"
@@ -78,10 +77,9 @@
                                             data-horaire="{{ $slot['time_range'] }}"
                                             data-date="{{ $slot['date'] }}"
                                             data-places-restantes="{{ $slot['remaining_places'] }}"
-                                            id="{{ $idToAdd }}"
                                         >
                                             {{ $slot['time_range'] }}
-                                            @if ($entreprise->typeRdv[0] == 1)
+                                            @if ($typeRdvArray[0] == "1")
                                                 ({{ $slot['remaining_places'] }} places restantes)
                                             @endif
                                         </button>
@@ -99,7 +97,7 @@
                         </li>
                     @endforeach
                 @else
-                    <p>{{__('No available time slot.')}}</p>
+                    <p class="text-muted">Aucune plage horaire disponible.</p>
                 @endif
             </ul>
             
@@ -120,7 +118,7 @@
                         </div>
                         <div class="modal-body">
                             <p>
-                                {{__("You're about to book for the following time slot")}} :
+                                {{__("You're about to book the following time slot")}} :
                                 <strong id="selectedHoraire" class="text-success"></strong>
                                 le <strong id="selectedDate" class="text-primary"></strong>.
                             </p>
@@ -130,27 +128,29 @@
                             <input type="hidden" name="horaire" id="hiddenHoraire">
 
                             <!-- Sélection de l'employé -->
-                            @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
-                                <div class="form-group mb-3">
-                                    <label for="employeSelect" class="form-label">{{__("Select an employee")}} :</label>
-                                    <select name="employe_id" id="employeSelect" class="form-select" required>
-                                        @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
-                                            <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @elseif ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() === 1)
-                                @php
-                                    $employe = $entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->first();
-                                @endphp
-                                <input type="hidden" name="employe_id" value="{{ $employe->id }}">
-                                <p>
-                                    {{__('Automatically assigned employee')}} : <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong>
-                                </p>
+                            @if($typeRdvArray[2] != "0")
+                                @if ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() > 1)
+                                    <div class="form-group mb-3">
+                                        <label for="employeSelect" class="form-label">{{__("Select an employee")}} :</label>
+                                        <select name="employe_id" id="employeSelect" class="form-select" required>
+                                            @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
+                                                <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @elseif ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->count() === 1)
+                                    @php
+                                        $employe = $entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité')->first();
+                                    @endphp
+                                    <input type="hidden" name="employe_id" value="{{ $employe->id }}">
+                                    <p>
+                                        {{__('Automatically assigned employee')}} : <strong>{{ $employe->nom }} {{ $employe->prenom }}</strong>
+                                    </p>
+                                @endif
                             @endif
-
+                            
                             <!-- Nombre de personnes -->
-                            @if ($entreprise->typeRdv[0] == 1)
+                            @if ($typeRdvArray[0] == "1")
                                 <div class="form-group mb-3">
                                     <label for="nbPersonnes" class="form-label">
                                         <i class="bi bi-people-fill"></i> {{__("Amount of people")}} :
@@ -160,7 +160,7 @@
                                         name="nbPersonnes"
                                         id="nbPersonnes"
                                         class="form-control"
-                                        placeholder="{{('Enter the amount of people')}}"
+                                        placeholder="{{__('Enter the amount of people')}}"
                                         min="1"
                                         required
                                     >

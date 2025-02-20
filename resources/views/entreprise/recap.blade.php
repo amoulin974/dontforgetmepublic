@@ -79,7 +79,7 @@
             </form>
 
             {{-- Bouton pour revenir en arrière et modifier les informations --}}
-            <button class="btn btn-outline-secondary" onclick="window.history.back()">{{__('Edit2')}}</button>
+            <button class="btn btn-outline-secondary" onclick="window.history.back()">{{__('To edit')}}</button>
         </div>
     </div>
 @endsection

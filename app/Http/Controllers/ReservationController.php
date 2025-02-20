@@ -138,7 +138,7 @@ class ReservationController extends Controller
             'notifications.*.typeNotification' => 'sometimes|string|in:SMS,Mail',
             'notifications.*.contenu'          => 'sometimes|string',
             'notifications.*.duree'            => 'sometimes|string|in:1jour,2jours,1semaine',
-            'employe_id'     => 'required|integer|exists:users,id',
+            'employe_id'     => 'sometimes|integer|exists:users,id',
         ]);
 
         // Extract start and end times from the "horaire" field (expected format: "HH:MM - HH:MM").

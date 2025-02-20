@@ -9,6 +9,10 @@
     <link href='https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' rel='stylesheet' />
     <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
 </head>
+@php
+$user = Auth::user();
+    $typeRdvArray = json_decode($entreprise->typeRdv, true);
+@endphp
 <div class="container">
     <h2 class="mb-4">{{__('Available services')}}</h2>
 
@@ -31,7 +35,7 @@
                     <td>{{ $service->duree }}</td>
                     <td>{{ $service->nbrPlaces }}</td>
                     <td>
-                        @if($entreprise->typeRdv[2] == 0)
+                        @if($typeRdvArray[1] == "0" && (!$entreprise->travailler_users->where('pivot.idActivite', $service->id)->contains('id', $user->id))) {
                         <button type="button" id="show-contact" class="btn btn-primary">Contacter l'entreprise</button>
                         @else
                         <a href="{{ route('reservation.create', ['entreprise' => $entreprise->id, 'activite' => $service->id]) }}" class="btn btn-primary">{{ __('Book') }}</a>
@@ -49,7 +53,7 @@
     <p>Contact de l'entreprise {{ $entreprise->libelle }} :</p>
     <ul>
         <li><a href="mailto:{{$entreprise->email}}" style="text-decoration: none;">Email : <i>{{ $entreprise->email }}</i></a></li>
-        <li><a href="tel:{{$entreprise->telephone}}" style="text-decoration: none;"> Téléphone : <i>{{ $entreprise->telephone }}</i></a></li>
+        <li><a href="tel:{{$entreprise->telephone}}" style="text-decoration: none;"> Téléphone : <i>{{ $entreprise->numTel }}</i></a></li>
     </ul>
 </div>
 

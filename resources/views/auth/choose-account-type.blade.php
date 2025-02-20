@@ -11,7 +11,7 @@
 
         <!-- Titre principal -->
         <div class="text-center mb-5">
-            <h2 class="fw-bold">{{ __('Are you a client or do you to create a business?') }}</h2>
+            <h2 class="fw-bold">{{ __('Are you a client or do you want to create a business?') }}</h2>
             <div class="mt-2" style="border-top: 3px solid #FF6F61; width: 80px; margin: 0 auto;"></div>
         </div>
 
