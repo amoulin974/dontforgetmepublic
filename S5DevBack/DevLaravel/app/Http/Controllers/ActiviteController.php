@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Activite;
 use App\Models\Entreprise;
 use App\Models\Plage;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -109,62 +110,56 @@ class ActiviteController extends Controller
 
         if (!$isAllow) {
             return redirect()->route('entreprise.index');
-        } else {
-            // Validate the request inputs.
+        }
+        else{
             $request->validate([
                 'libelle' => 'required|string|max:255',
-                'duree'   => 'required|integer|min:1',
+                'duree' => 'required|date_format:H:i', // Validation pour le format time
+                'nbrPlaces' => 'required|integer|min:1'
             ]);
 
-            // Convert duration from minutes to time format (H:i:s).
-            $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
+            // Conversion de la durée du format time (HH:MM) en minutes
+            list($heures, $minutes) = explode(':', $request->duree);
+            $dureeEnMinutes = ($heures * 60) + $minutes;
 
-            // Create the new activity.
+            // Convert duration from minutes to time format (H:i:s).
+            $dureeInTimeFormat = gmdate('H:i:s', $dureeEnMinutes * 60);
+
             $activite = Activite::create([
-                'libelle'      => $request->libelle,
-                'duree'        => $dureeInTimeFormat,
+                'libelle' => $request->libelle,
+                'duree' => $dureeInTimeFormat,
+                'nbrPlaces' => $request->nbrPlaces,
                 'idEntreprise' => $entreprise->id
             ]);
 
-            // Attach the current user as an Admin for the new activity.
             $activite->travailler_users()->attach(auth()->id(), [
                 'idEntreprise' => $entreprise->id,
                 'statut'       => 'Admin',
             ]);
 
-            // Attach all employees of the company to the activity.
-            $entreprise->travailler_users()
-                ->where('statut', 'Employé')
-                ->get()
-                ->each(function ($user) use ($activite, $entreprise) {
+            // Ajouter les employés de l'entreprise à l'activité
+            $entreprise->travailler_users()->where('statut', 'Employé')->get()->each(function ($user) use ($activite, $entreprise) {
+                $activite->travailler_users()->syncWithoutDetaching([$user->id => [
+                    'idEntreprise' => $entreprise->id,
+                    'statut'       => 'Employé',
+                ]]);
+            });
+            $entreprise->travailler_users()->where('statut', 'Admin')->get()->each(function ($user) use ($activite, $entreprise) {
+                if ($user->id != Auth::user()->id) {
                     $activite->travailler_users()->attach($user->id, [
                         'idEntreprise' => $entreprise->id,
-                        'statut'       => 'Employé',
+                        'statut' => 'Admin',
                     ]);
-                });
+                }
+            });
 
-            // Attach other admins (excluding the current user) to the activity.
-            $entreprise->travailler_users()
-                ->where('statut', 'Admin')
-                ->get()
-                ->each(function ($user) use ($activite, $entreprise) {
-                    if ($user->id != Auth::user()->id) {
-                        $activite->travailler_users()->attach($user->id, [
-                            'idEntreprise' => $entreprise->id,
-                            'statut'       => 'Admin',
-                        ]);
-                    }
-                });
-
-            // If this is the first activity of the company, update its published status.
-            if ($entreprise->activites()->count() === 1) {
-                $entreprise->update(['publier' => 1]);
-            }
-
-            return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])
-                ->with('success', 'Service created successfully.');
+          if ($entreprise->activites()->count() === 1) {
+              $entreprise->update(['publier' => 1]);
+          }
+    
+            return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])->with('success', 'Service créé avec succès.');
         }
-    }
+    } 
 
     /**
      * Show the form for editing the specified activity.
@@ -211,39 +206,43 @@ class ActiviteController extends Controller
      */
     public function update(Request $request, Entreprise $entreprise, $id)
     {
-        // Check if the user is an Admin.
         $isAdmin = Auth::user()->travailler_entreprises()
-                ->wherePivot('statut', 'Admin')
-                ->wherePivot('idEntreprise', $entreprise->id)
-                ->count() > 0;
-
-        // Check if the user is the creator.
+            ->wherePivot('statut', 'Admin')
+            ->wherePivot('idEntreprise', $entreprise->id)
+            ->count() > 0;
         $isCreator = $entreprise->idCreateur == Auth::user()->id;
 
         $isAllow = $isAdmin || $isCreator;
         if (!$isAllow) {
             return redirect()->route('entreprise.index');
         } else {
-            // Validate the request inputs.
             $request->validate([
                 'libelle' => 'required|string|max:255',
-                'duree'   => 'required|integer|min:1', // Duration in minutes.
+                'duree' => 'required|date_format:H:i', // Durée en minutes
+                'nbrPlaces' => [
+                    'required',
+                    'integer',
+                    'min:1',
+                    'max:' . $entreprise->capaciteMax, // Limite le nombre de places à la capacité de l'entreprise
+                ]
             ]);
 
-            // Retrieve the activity.
             $service = Activite::findOrFail($id);
+    
+            // Conversion de la durée du format time (HH:MM) en minutes
+            list($heures, $minutes) = explode(':', $request->duree);
+            $dureeEnMinutes = ($heures * 60) + $minutes;
 
-            // Convert duration from minutes to time format (H:i:s).
-            $dureeInTimeFormat = gmdate('H:i:s', $request->duree * 60);
-
-            // Update the activity with the new values.
+            $dureeInTimeFormat = gmdate('H:i:s', $dureeEnMinutes * 60);
+    
             $service->update([
                 'libelle' => $request->libelle,
-                'duree'   => $dureeInTimeFormat,
+                'duree' => $dureeInTimeFormat,
+                'nbrPlaces' => $request->nbrPlaces
             ]);
 
             return redirect()->route('entreprise.services.index', ['entreprise' => $entreprise->id])
-                ->with('success', 'Service updated successfully.');
+                ->with('success', 'Service mis à jour avec succès.');
         }
     }
 
@@ -302,39 +301,30 @@ class ActiviteController extends Controller
      * @param int $id The ID of the activity.
      * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View Returns a JSON response or a view.
      */
-    public function createPlage(Request $request, Entreprise $entreprise, $id)
+    public function createPlage(Request $request, Entreprise $entreprise, User $employe)
     {
-        // If the request is an AJAX call.
-        if ($request->ajax()) {
-            // For non-guest users.
-            if (Auth::user()->travailler_entreprises
-                    ->where('id', $entreprise->id)
-                    ->first()->pivot->statut != 'Invité') {
-                // Retrieve the specified activity.
-                $activite = Activite::where('id', $id)
-                    ->where('idEntreprise', $entreprise->id)
-                    ->first();
-
-                if ($activite) {
-                    // Get the list of time slot IDs associated with the activity.
-                    $plageIds = $activite->plages()->pluck('idPlage');
-                    // Retrieve the time slots data.
-                    $data = Plage::whereIn('id', $plageIds)
-                        ->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
-                    return response()->json($data);
-                } else {
-                    // Return an error if the activity is not found.
-                    return response()->json(['error' => 'Activite not found'], 404);
+        // Pour récupérer les données
+        if($request->ajax()) {
+        // Cas employé
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
+          // Requête pour récupérer les plages spécifique à l'employé et à l'entreprise choisie
+          $plages = User::where('id', $employe->id)->first()->plages()->where('entreprise_id', $entreprise->id)->get();
+            if ($plages) {
+                // Ajout des activités liées à chacune des plages
+                foreach ($plages as $plage) {
+                    $plage->activites = $plage->activites()->get();
                 }
+                return response()->json($plages);
             } else {
-                // If the user is a guest, return the view for creating a time slot.
-                $service = Activite::findOrFail($id);
-                return view('plage.create', ['entreprise' => $entreprise, 'activite' => $service]);
+                // Handle the case where the activite is not found
+                return response()->json(['error' => 'Plages not found'], 404);
             }
         }
-        // For non-AJAX requests, return the view.
-        $service = Activite::findOrFail($id);
-        return view('plage.create', ['entreprise' => $entreprise, 'activite' => $service]);
+        else {
+            return view('plage.create', ['entreprise' => $entreprise, 'employe' => $employe]);
+        }
+      }
+        return view('plage.create', ['entreprise' => $entreprise, 'employe' => $employe]);
     }
 
     /**
@@ -348,58 +338,54 @@ class ActiviteController extends Controller
      * @param int $id The ID of the activity.
      * @return \Illuminate\Http\JsonResponse Returns a JSON response with the result of the operation.
      */
-    public function ajaxPlage(Request $request, Entreprise $entreprise, $id)
+    public function ajaxPlage(Request $request, Entreprise $entreprise, User $employe)
     {
         switch ($request->type) {
             case 'add':
-                // Create a new time slot with a default interval if none is provided.
-                if (!$request->interval) {
-                    $event = Plage::create([
-                        'heureDeb'      => $request->heureDeb,
-                        'heureFin'      => $request->heureFin,
-                        'datePlage'     => $request->datePlage,
-                        'interval'      => '00:05:00',
-                        'planTables'    => json_encode(['UnTest']),
-                        'entreprise_id' => $request->entreprise_id,
-                    ]);
-                } else {
-                    $event = Plage::create([
-                        'heureDeb'      => $request->heureDeb,
-                        'heureFin'      => $request->heureFin,
-                        'datePlage'     => $request->datePlage,
-                        'interval'      => $request->interval,
-                        'planTables'    => json_encode(['UnPlanDeTables']),
-                        'entreprise_id' => $request->entreprise_id,
-                    ]);
+               if (!$request->interval){
+                 $event = Plage::create([
+                     'heureDeb' => $request->heureDeb,
+                     'heureFin' => $request->heureFin,
+                     'datePlage' => $request->datePlage,
+                     'interval' => '00:05:00',
+                     'planTables' => json_encode(['UnTest']),
+                     'entreprise_id' => $entreprise->id,
+                 ]);
+               }
+               else {
+                 $event = Plage::create([
+                     'heureDeb' => $request->heureDeb,
+                     'heureFin' => $request->heureFin,
+                     'datePlage' => $request->datePlage,
+                     'interval' => $request->interval,
+                     'planTables' => json_encode(['UnPlanDeTables']),
+                     'entreprise_id' => $entreprise->id,
+                 ]);
+               }
+
+               $event->employes()->attach($employe->id);
+
+               foreach($request->activites_affecter as $id){
+                    $event->activites()->attach($id);
                 }
 
-                // Attach the selected employees to the time slot.
-                foreach ($request->employes_affecter as $idEmploye) {
-                    $event->employes()->attach($idEmploye);
-                }
-
-                // Link the time slot to the specified activity.
-                $event->activites()->attach($id);
-
-                return response()->json($event);
-                break;
-
+                $event->activites = $event->activites()->get();
+               
+               return response()->json($event);
+              break;
+   
             case 'update':
-                // Update the time slot's start time, end time, and date.
-                $event = Plage::where($request->id)->first()->update([
-                    'heureDeb'  => $request->heureDeb,
-                    'heureFin'  => $request->heureFin,
-                    'datePlage' => $request->datePlage,
-                ]);
-
-                return response()->json($event);
-                break;
-
+               $event = Plage::where("id",$request->id)->first()->update([
+                 'heureDeb' => $request->heureDeb,
+                 'heureFin' => $request->heureFin,
+                 'datePlage' => $request->datePlage,
+               ]);
+  
+               return response()->json($event);
+              break;
+   
             case 'delete':
-                // Retrieve the activity and the time slot to delete.
-                $activite = Activite::where("id", $id)->first();
-                $plage = Plage::where("id", $request->id)->first();
-                // Detach all associated employees and activities.
+                $plage = Plage::where("id",$request->id)->first();
                 $plage->employes()->detach();
                 $plage->activites()->detach();
                 $event = $plage->delete();
@@ -408,20 +394,17 @@ class ActiviteController extends Controller
                 break;
 
             case 'modify':
-                // Modify the time slot by updating the employee assignments.
-                $event = Plage::where("id", $request->id)->first();
 
-                // Detach current employee assignments.
-                $event->employes()->detach();
-
-                // Attach the newly selected employees.
-                foreach ($request->employes_affecter as $idEmploye) {
-                    $event->employes()->attach($idEmploye);
+               $event = Plage::where("id",$request->id)->first();
+                $event->activites()->detach();
+                foreach($request->activites_affecter as $id){
+                    $event->activites()->attach($id);
                 }
+                $event->activites = $event->activites()->get();
 
-                return response()->json($event);
-                break;
-
+               return response()->json($event);
+              break;
+              
             default:
                 // If the operation type is not recognized, do nothing.
                 break;

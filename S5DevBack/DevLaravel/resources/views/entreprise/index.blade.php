@@ -27,7 +27,6 @@
                     <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
                     <p><strong>Métier :</strong> {{ $entreprise->metier }}</p>
                     <p><strong>Description :</strong> {{ $entreprise->description }}</p>
-                    <p><strong>Type :</strong> {{ $entreprise->type }}</p>
                     <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
                     <p><strong>Email :</strong> {{ $entreprise->email }}</p>
                         @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)

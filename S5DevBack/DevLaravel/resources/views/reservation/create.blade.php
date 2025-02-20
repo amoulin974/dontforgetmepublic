@@ -6,6 +6,28 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    @php
+        $plageOfAct = $activite->plages;
+        $userWorkingOnAct = array();
+        $idOfWorkers = array();
+        foreach ($plageOfAct as $p) {
+            foreach ($p->employes as $e) {
+                if(!in_array($e->id,$idOfWorkers)){
+                    array_push($idOfWorkers,$e->id);
+                }
+            }
+        }
+        foreach($entreprise->travailler_users as $e){
+            if(in_array($e->id,$idOfWorkers)){
+                array_push($userWorkingOnAct,$e);
+                unset($idOfWorkers[array_search($e->id,$idOfWorkers)]);
+            }
+        }
+    @endphp
+    <script>
+        var userWorkingOnAct = @json($userWorkingOnAct);
+    </script>
+
     <div class="container">
         <!-- Navigation de retour -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -23,94 +45,65 @@
                 <label for="employe" class="form-label mt-3">Veuillez Sélectionner un employé</label>
                 <select id="employe" class="form-select">
                     <option value="default">Sélectionnez un employé</option>
-                    @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
+                    @foreach ($userWorkingOnAct as $employe)
                         <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                     @endforeach
                 </select>
             @endif
 
             <ul class="list-unstyled" style="margin-top: 40px;">
-                @if ($activite->plages->count() > 0)
-                    @foreach ($activite->plages->groupBy('datePlage') as $date => $plages)
-                        <li class="mb-4">
-                            <h5 class="text-primary">{{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}</h5>
-                            <div class="d-flex flex-wrap gap-2">
-                                @foreach ($plages as $plage)
-                                {{-- <script>
-                                    @foreach ($plage->employes as $ePlacer)
-                                        document.cookie = "employe{{ $ePlacer->id }}={{ $plage->id }};";
-                                    @endforeach
-                                </script> --}}
-                                    @php
-                                        try {
-                                            $heureDeb = \Carbon\Carbon::parse($plage->heureDeb);
-                                            $heureFin = \Carbon\Carbon::parse($plage->heureFin);
-                                            $interval = \Carbon\Carbon::parse($plage->interval)->minute + \Carbon\Carbon::parse($plage->interval)->hour * 60;
-                                        } catch (\Exception $e) {
-                                            displayWarning('Erreur de formatage des plages horaires.');
-                                            continue;
-                                        }
-                                    @endphp
-                                    @while ($heureDeb->lessThan($heureFin))
+                @if (count($timeSlots) > 0)
+                    @foreach (collect($timeSlots)->groupBy('date') as $date => $slots)
+                        <li class="mb-4" id="plageOfSlots">
+                            {{-- Date du créneau --}}
+                            <h5 class="text-primary">
+                                {{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}
+                            </h5>
+
+                            {{-- Créneaux horaires --}}
+                            <div class="d-flex flex-wrap gap-2" id="plageWithSlots">
+                                @foreach ($slots as $slot)
+                                    @if ($slot['remaining_places'] > 0)
                                         @php
-                                            // On calcule les bornes de l’intervalle courant
-                                            $currentStart = $plage->datePlage->copy()->setTimeFromTimeString($heureDeb->format('H:i:s'));
-                                            //dd($currentStart);
-                                            $currentEnd = $currentStart->copy()->addMinutes($interval);
-
-                                            // On va déterminer si ce créneau est déjà réservé
-                                            $isReserved = $reservations->contains(function($res) use ($date, $currentStart, $currentEnd) {
-                                                // 1. Vérifier la date
-                                                if ($res->dateRdv->format('Y-m-d 00:00:00') !== $date) {
-                                                    return false;
-                                                }
-
-                                                // 2. Vérifier le chevauchement d’horaire
-                                                //    On parse l’heureDeb/heureFin de la réservation
-                                                $resStart = \Carbon\Carbon::createFromFormat(
-                                                    'Y-m-d H:i:s',
-                                                    $res->dateRdv->format('Y-m-d').' '.$res->heureDeb
-                                                );
-                                                $resEnd = \Carbon\Carbon::createFromFormat(
-                                                    'Y-m-d H:i:s',
-                                                    $res->dateRdv->format('Y-m-d').' '.$res->heureFin
-                                                );
-
-                                                // Condition de chevauchement : (start < resEnd) ET (end > resStart)
-                                                return $currentStart->lt($resEnd) && $currentEnd->gt($resStart);
-                                            });
+                                            $idToAdd = '';
+                                            foreach($slot['employesPlaces'] as $eId){
+                                                $idToAdd .= 'employes'.$eId.'/';
+                                            }
                                         @endphp
-
-                                        @if (! $isReserved)
-                                            {{-- Si pas réservé, on affiche le bouton --}}
-                                            <button
-                                                class="btn btn-outline-primary flex-grow-1 horaire-btn"
-                                                id="plage{{ $plage->id }}"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#reservationModal"
-                                                data-horaire="{{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}"
-                                                data-date="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}"
-                                            >
-                                                {{ $currentStart->format('H:i') }} - {{ $currentEnd->format('H:i') }}
-                                            </button>
-                                        @endif
-
-                                        {{-- On passe à l’intervalle suivant --}}
-                                        @php
-                                            $heureDeb->addMinutes($interval);
-                                            //dd($heureDeb);
-                                        @endphp
-                                    @endwhile
+                                        {{-- Bouton actif --}}
+                                        <button
+                                            class="btn btn-outline-primary flex-grow-1 horaire-btn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#reservationModal"
+                                            data-horaire="{{ $slot['time_range'] }}"
+                                            data-date="{{ $slot['date'] }}"
+                                            data-places-restantes="{{ $slot['remaining_places'] }}"
+                                            id="{{ $idToAdd }}"
+                                        >
+                                            {{ $slot['time_range'] }}
+                                            @if ($entreprise->typeRdv[0] == 1)
+                                                ({{ $slot['remaining_places'] }} places restantes)
+                                            @endif
+                                        </button>
+                                    @else
+                                        {{-- Bouton désactivé --}}
+                                        <button
+                                            class="btn btn-secondary flex-grow-1"
+                                            disabled
+                                        >
+                                            {{ $slot['time_range'] }} (Complet)
+                                        </button>
+                                    @endif
                                 @endforeach
-
-
                             </div>
                         </li>
                     @endforeach
                 @else
-                    <p>Aucune plage horaire disponible.</p>
+                    <p class="text-muted">Aucune plage horaire disponible.</p>
                 @endif
             </ul>
+            
+                     
         </div>
 
         <!-- MODAL 1 : Réservation -->
@@ -263,18 +256,46 @@
     </div>
     <script src="{{ asset('js/reservation.js') }}"></script>
     <script>
-        $document.ready(function () {
-            $('#employe').change(function () {
-                if ($(this).val() !== 'default') {
-                    document.cookie = "employe=0";
-                    let cookieToAdd = 'employe=' + $(this).val();
-                    document.cookie = cookieToAdd;
-                    @foreach(App\Models\User::where("id",$_COOKIE['employe'])->first()->plages as $plage)
-                        // Disable all the plage button
-                        $('.horaire-btn').prop('disabled', true);
-                        // Enable the concerned ones
-                        $('#plage{{ $plage->id }}').prop('disabled', false);
-                    @endforeach
+        $(document).ready(function() {
+            $('#employe').change(function() {
+                var employeId = $(this).val();
+                if (employeId !== 'default') {
+                    $('.horaire-btn').each(function() {
+                        var employes = $(this).attr('id').split('/');
+                        if (employes.includes('employes' + employeId)) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                } else {
+                    $('.horaire-btn').show();
+                }
+                // Vérifier que tous les élements de chaque plageOfSlots sont cachés
+                document.querySelectorAll("#plageOfSlots").forEach(function(element) {
+                    var plage = element;
+                    var horaires = plage.querySelectorAll(".horaire-btn");
+                    var allHidden = true;
+                    horaires.forEach(function(horaire) {
+                        if (horaire.style.display !== 'none') {
+                            allHidden = false;
+                        }
+                    });
+                    if (allHidden) {
+                        plage.style.display = 'none';
+                    } else {
+                        plage.style.display = 'block';
+                    }
+                });
+                
+                // Faire que le select de la popup soit verrouillé sur l'employé sélectionné
+                var employeSelect = document.getElementById('employeSelect');
+                if (employeSelect && employeId !== 'default') {
+                    employeSelect.value = employeId;
+                    employeSelect.disabled = true;
+                }
+                else if (employeSelect) {
+                    employeSelect.disabled = false;
                 }
             });
         });

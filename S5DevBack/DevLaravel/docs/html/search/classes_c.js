@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['verificationcontroller_0',['VerificationController',['../class_app_1_1_http_1_1_controllers_1_1_auth_1_1_verification_controller.html',1,'App::Http::Controllers::Auth']]]
+  ['verificationcontroller_0',['VerificationController',['../classApp_1_1Http_1_1Controllers_1_1Auth_1_1VerificationController.html',1,'App::Http::Controllers::Auth']]]
 ];

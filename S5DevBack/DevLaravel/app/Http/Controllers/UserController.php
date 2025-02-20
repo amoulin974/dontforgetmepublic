@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
  *
  * This controller handles displaying the user profile, editing the profile form, and updating the user's information.
  */
-class userController extends Controller
+class UserController extends Controller
 {
     /**
      * Display the user profile index view.
@@ -67,20 +67,20 @@ class userController extends Controller
 
         // Validate the submitted form data.
         $validatedData = $request->validate([
-            'nom'             => ['required', 'string', 'max:255'],
-            'prenom'          => ['required', 'string', 'max:255'],
-            'email'           => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'numTel'          => ['nullable', 'string', 'max:20', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
+            'last_name'       => ['required', 'string', 'max:255'],
+            'first_name'      => ['required', 'string', 'max:255'],
+            'email'           => ['required', 'email','lowercase', 'max:255', 'unique:users,email,' . $user->id],
+            'phone'           => ['nullable', 'string', 'max:20', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
             'typeNotif'       => ['nullable', 'in:SMS,Email'],
             'delaiAvantNotif' => ['nullable', 'in:1 jour,2 jours,1 semaine'],
         ]);
 
         // Update the user's information using the validated data.
         $user->update([
-            'nom'             => $validatedData['nom'],
-            'prenom'          => $validatedData['prenom'],
+            'nom'             => $validatedData['last_name'],
+            'prenom'          => $validatedData['first_name'],
             'email'           => $validatedData['email'],
-            'numTel'          => $validatedData['numTel'],
+            'numTel'          => $validatedData['phone'],
             'typeNotif'       => $validatedData['typeNotif'] ?? null,
             'delaiAvantNotif' => $validatedData['delaiAvantNotif'] ?? null,
         ]);

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['homecontroller_0',['HomeController',['../class_app_1_1_http_1_1_controllers_1_1_home_controller.html',1,'App::Http::Controllers']]]
+  ['getdetails_0',['getDetails',['../classApp_1_1Http_1_1Controllers_1_1NotificationController.html#a67bcdf2ca053bbc348983454239ea980',1,'App::Http::Controllers::NotificationController']]]
 ];

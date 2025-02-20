@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('adresse');
             $table->string('metier')->nullable();
             $table->string('description')->nullable();
-            $table->string('type')->nullable();
             $table->string('numTel');
             $table->string('email');
             $table->json('cheminImg')->nullable(); // ->default(json_encode(['https://static.thenounproject.com/png/1584264-200.png']));
             $table->integer('publier')->default(0);
             $table->json('typeRdv')->nullable();
+            $table->integer('capaciteMax')->default(1);
             $table->unsignedBigInteger('idCreateur');
             $table->timestamps();
             $table->foreign('idCreateur')->references('id')->on('users');

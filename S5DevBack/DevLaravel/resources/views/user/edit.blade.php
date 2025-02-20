@@ -16,15 +16,15 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label for="nom" class="form-label">Nom</label>
-            <input type="text" id="nom" name="nom" class="form-control" value="{{ old('nom', $user->nom) }}" required>
-            @error('nom') <div class="text-danger">{{ $message }}</div> @enderror
+            <label for="last_name" class="form-label">Nom</label>
+            <input type="text" id="last_name" name="last_name" class="form-control" value="{{ old('last_name', $user->nom) }}" required>
+            @error('last_name') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
 
         <div class="mb-3">
-            <label for="prenom" class="form-label">Prénom</label>
-            <input type="text" id="prenom" name="prenom" class="form-control" value="{{ old('prenom', $user->prenom) }}" required>
-            @error('prenom') <div class="text-danger">{{ $message }}</div> @enderror
+            <label for="first_name" class="form-label">Prénom</label>
+            <input type="text" id="first_name" name="first_name" class="form-control" value="{{ old('first_name', $user->prenom) }}" required>
+            @error('first_name') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
 
         <div class="mb-3">
@@ -33,21 +33,10 @@
             @error('email') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
 
-        {{-- <div class="mb-3">
-            <label for="password" class="form-label">Nouveau mot de passe (optionnel)</label>
-            <input type="password" id="password" name="password" class="form-control">
-            @error('password') <div class="text-danger">{{ $message }}</div> @enderror
-        </div>
-
         <div class="mb-3">
-            <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
-        </div> --}}
-
-        <div class="mb-3">
-            <label for="numTel" class="form-label">Numéro de téléphone</label>
-            <input type="text" id="numTel" name="numTel" class="form-control" value="{{ old('numTel', $user->numTel) }}">
-            @error('numTel') <div class="text-danger">{{ $message }}</div> @enderror
+            <label for="phone" class="form-label">Numéro de téléphone</label>
+            <input type="text" id="phone" name="phone" class="form-control" value="{{ old('phone', $user->numTel) }}">
+            @error('phone') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
 
         <div class="mb-3 d-flex align-items-center">

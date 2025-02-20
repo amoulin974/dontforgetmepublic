@@ -184,13 +184,13 @@ class DatabaseSeeder extends Seeder
                 'adresse' => '123 rue de la Tech, Paris',
                 'metier' => 'Développement de logiciels',
                 'description' => 'Entreprise spécialisée dans le développement de solutions logicielles.',
-                'type' => 'Technologie',
                 'numTel' => '0123456789',
                 'email' => 'contact@techcorp.fr',
                 'cheminImg' => json_encode(['https://alliance-sciences-societe.fr/wp-content/uploads/2019/10/lorganisation-entreprise-optimiser-activites-comment.jpg','https://img.freepik.com/vecteurs-libre/illustration-concept-entreprise_114360-2581.jpg']),
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne', 'en personne']),
                 'idCreateur' => 1,
+                'capaciteMax' => 10,
             ],
             [
                 'libelle' => 'Innovative Solutions',
@@ -198,13 +198,13 @@ class DatabaseSeeder extends Seeder
                 'adresse' => '456 avenue de l\'innovation, Lyon',
                 'metier' => 'Conseil en stratégie',
                 'description' => 'Cabinet de conseil spécialisé dans la stratégie d\'innovation.',
-                'type' => 'Consulting',
                 'numTel' => '0987654321',
                 'email' => 'contact@innovativesolutions.fr',
                 'cheminImg' => json_encode(['https://alliance-sciences-societe.fr/wp-content/uploads/2019/10/lorganisation-entreprise-optimiser-activites-comment.jpg']),
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne']),
                 'idCreateur' => 2,
+                'capaciteMax' => 10,
             ],
             [
                 'libelle' => 'HealthCare Pro',
@@ -212,13 +212,13 @@ class DatabaseSeeder extends Seeder
                 'adresse' => '789 boulevard de la santé, Marseille',
                 'metier' => 'Soins de santé',
                 'description' => 'Cliniques et services de soins médicaux.',
-                'type' => 'Santé',
                 'numTel' => '0654321098',
                 'email' => 'contact@healthcarepro.fr',
                 'cheminImg' => json_encode(['https://img.freepik.com/vecteurs-libre/illustration-concept-entreprise_114360-2581.jpg']),
                 'publier' => 1,
                 'typeRdv' => json_encode(['en personne']),
                 'idCreateur' => 3,
+                'capaciteMax' => 10,
             ],
             [
                 'libelle' => 'Green Energy Co.',
@@ -226,13 +226,13 @@ class DatabaseSeeder extends Seeder
                 'adresse' => '321 avenue des énergies renouvelables, Nantes',
                 'metier' => 'Énergie verte',
                 'description' => 'Fournisseur de solutions énergétiques durables.',
-                'type' => 'Énergie',
                 'numTel' => '0246801357',
                 'email' => 'contact@greenenergyco.fr',
                 'cheminImg' => json_encode(['https://img.freepik.com/vecteurs-libre/illustration-concept-entreprise_114360-2581.jpg','https://alliance-sciences-societe.fr/wp-content/uploads/2019/10/lorganisation-entreprise-optimiser-activites-comment.jpg']),
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne', 'en personne']),
                 'idCreateur' => 4,
+                'capaciteMax' => 10,
             ],
             [
                 'libelle' => 'EduTech Solutions',
@@ -240,13 +240,13 @@ class DatabaseSeeder extends Seeder
                 'adresse' => '555 avenue des écoles, Bordeaux',
                 'metier' => 'Technologie éducative',
                 'description' => 'Solutions technologiques pour l\'éducation.',
-                'type' => 'Éducation',
                 'numTel' => '0369123456',
                 'email' => 'contact@edutechsolutions.fr',
                 'cheminImg' => json_encode(['https://wallpaperaccess.com/full/3915891.jpg','https://www.cours-gratuit.com/images/480/11327/id-11327-01.png']),
                 'publier' => 1,
                 'typeRdv' => json_encode(['en ligne']),
                 'idCreateur' => 5,
+                'capaciteMax' => 10,
             ],
         ];
 
@@ -262,51 +262,61 @@ class DatabaseSeeder extends Seeder
                 'libelle' => 'Développement Web Frontend',
                 'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Consultation en Stratégie Digitale',
                 'duree' => '01:30:00',
                 'idEntreprise' => 2, // Innovative Solutions
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Soin Médical (Consultation)',
                 'duree' => '01:30:00',
                 'idEntreprise' => 3, // HealthCare Pro
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Installation de Panneaux Solaires',
                 'duree' => '01:30:00',
                 'idEntreprise' => 4, // Green Energy Co.
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Formation en Programmation Python',
                 'duree' => '01:30:00',
                 'idEntreprise' => 5, // TechCorp
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Réparation Informatique',
                 'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Consultation en Énergie Durable',
                 'duree' => '01:30:00',
                 'idEntreprise' => 4, // Green Energy Co.
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Coaching Professionnel',
                 'duree' => '01:30:00',
                 'idEntreprise' => 2, // Innovative Solutions
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Suivi Préventif Santé',
                 'duree' => '01:30:00',
                 'idEntreprise' => 3, // HealthCare Pro
+                'nbrPlaces' => 10,
             ],
             [
                 'libelle' => 'Développement d\'Applications Mobiles',
                 'duree' => '01:30:00',
                 'idEntreprise' => 1, // TechCorp
+                'nbrPlaces' => 10,
             ],
         ];
 

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
  * This controller provides methods to retrieve detailed notification data and update
  * the state of notifications.
  */
-class notificationController extends Controller
+class NotificationController extends Controller
 {
     /**
      * Retrieve detailed notification information.

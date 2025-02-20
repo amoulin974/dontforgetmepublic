@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['me_20documentation_0',['Don&apos;t Forget Me - Documentation',['../index.html',1,'']]],
-  ['messages_1',['messages',['../class_app_1_1_http_1_1_requests_1_1_form_post_request.html#af2cb60735cac74cfa9da534eea973929',1,'App::Http::Requests::FormPostRequest']]]
+  ['logincontroller_0',['LoginController',['../classApp_1_1Http_1_1Controllers_1_1Auth_1_1LoginController.html',1,'App::Http::Controllers::Auth']]]
 ];

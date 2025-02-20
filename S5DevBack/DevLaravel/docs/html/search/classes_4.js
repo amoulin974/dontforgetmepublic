@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['homecontroller_0',['HomeController',['../class_app_1_1_http_1_1_controllers_1_1_home_controller.html',1,'App::Http::Controllers']]]
+  ['homecontroller_0',['HomeController',['../classApp_1_1Http_1_1Controllers_1_1HomeController.html',1,'App::Http::Controllers']]]
 ];

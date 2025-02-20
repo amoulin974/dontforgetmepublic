@@ -21,14 +21,13 @@
         <form method="POST" action="{{ route('entreprise.typeRdv') }}">
             @csrf
 
+        <div class="row mt-2">
             {{-- Champ Nom Entreprise --}}
-            <div class="row mt-2">
-                <div class="col-lg-6 mb-3">
-                    {{-- Nom de l'entreprise --}}
-                    <label for="nomEntreprise" class="form-label">Nom de l'entreprise</label>
-                    <input id="nomEntreprise" type="text" class="form-control @error('nomEntreprise') is-invalid @enderror"
-                           name="nomEntreprise" value="{{ old('nomEntreprise', session('company.nomEntreprise', '')) }}" placeholder="Entrez le nom de votre entreprise" required>
-                    @error('nom')
+            <div class="col-lg-6 mb-3">
+                <label for="nomEntreprise" class="form-label">Nom de l'entreprise</label>
+                <input id="nomEntreprise" type="text" class="form-control @error('nomEntreprise') is-invalid @enderror" 
+                        name="nomEntreprise" value="{{ old('nomEntreprise', session('company.nomEntreprise', '')) }}" placeholder="Entrez le nom de votre entreprise" required>
+                @error('nom')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -44,9 +43,31 @@
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
-                    @enderror
-                </div>
+                @enderror
             </div>
+        </div>
+
+        {{-- Champ Métier --}}
+        <div class="mb-3">
+            <label for="metier" class="form-label">Métier</label>
+            <select id="metier" name="metier"
+                    class="form-control @error('metier') is-invalid @enderror"
+                    required>
+                <option value="">Sélectionnez votre métier</option>
+                <option value="Restaurant" {{ old('metier', session('company.metier')) == 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
+                <option value="Coiffeur" {{ old('metier', session('company.metier')) == 'Coiffeur' ? 'selected' : '' }}>Coiffeur</option>
+                <option value="Avocat" {{ old('metier', session('company.metier')) == 'Avocat' ? 'selected' : '' }}>Avocat</option>
+                <option value="Auto-école" {{ old('metier', session('company.metier')) == 'Auto-école' ? 'selected' : '' }}>Auto-école</option>
+                <option value="Autres" {{ old('metier', session('company.metier')) == 'Autres' ? 'selected' : '' }}>Autres</option>
+                {{-- Ajoute ici la liste des métiers pertinents --}}
+            </select>
+            @error('metier')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
 
             {{-- Champ Numéro de Téléphone --}}
             <div class="mb-3">
@@ -109,11 +130,27 @@
                 </div>
             </div>
 
-            {{-- Bouton Créer un compte --}}
-            <div class="d-grid mt-3">
-                <button type="submit" class="btn btn-dark">
-                    Créer le profil entreprise
-                </button>
+        {{-- Champ Description --}}
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description"
+                      class="form-control @error('description') is-invalid @enderror"
+                      name="description"
+                      rows="3"
+                      placeholder="Présentez brièvement votre entreprise">{{ old('description', session('company.description', '')) }}</textarea>
+            @error('description')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+
+        {{-- Bouton Créer le profil entreprise --}}
+        <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-dark">
+                Créer le profil entreprise
+            </button>
 
                 <a href="{{ route('clear.session') }}" class="btn btn-link mt-2">
                     Retour à l'accueil

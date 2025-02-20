@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['activite_0',['Activite',['../class_app_1_1_models_1_1_activite.html',1,'App::Models']]],
-  ['activitecontroller_1',['ActiviteController',['../class_app_1_1_http_1_1_controllers_1_1_activite_controller.html',1,'App::Http::Controllers']]],
-  ['appserviceprovider_2',['AppServiceProvider',['../class_app_1_1_providers_1_1_app_service_provider.html',1,'App::Providers']]]
+  ['activite_0',['Activite',['../classApp_1_1Models_1_1Activite.html',1,'App::Models']]],
+  ['activitecontroller_1',['ActiviteController',['../classApp_1_1Http_1_1Controllers_1_1ActiviteController.html',1,'App::Http::Controllers']]],
+  ['appserviceprovider_2',['AppServiceProvider',['../classApp_1_1Providers_1_1AppServiceProvider.html',1,'App::Providers']]]
 ];

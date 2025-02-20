@@ -2,14 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\reservationController;
-use App\Http\Controllers\entrepriseController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\calendrierController;
-use App\Http\Controllers\parametrageController;
+use App\Http\Controllers\CalendrierController;
+use App\Http\Controllers\ParametrageController;
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\ReserverController;
-use App\Http\Controllers\userController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\weekdayController;
 use App\Http\Controllers\BugReportController;
 
@@ -35,7 +35,7 @@ Route::prefix('/reservation')->name('reservation.')->controller(reservationContr
     });
 });
 
-Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageController::class)->group(function(){
+Route::prefix('/parametrage')->name('parametrage.')->controller(ParametrageController::class)->group(function(){
 
     Route::middleware(['auth'])->group(function () {
 
@@ -46,14 +46,14 @@ Route::prefix('/parametrage')->name('parametrage.')->controller(parametrageContr
         Route::prefix('/plage')->name('plage.')->group(function(){
             Route::post('/', 'ajax')->name('ajax');
             Route::get('/{entreprise}', 'indexPlage')->name('idEntreprise');
-            Route::get('/{entreprise}/look/{activite}', 'indexPlageAsEmploye')->name('idEntrepriseAsEmploye');
+            Route::get('/{entreprise}/look/{employe}', 'indexPlageAsEmploye')->name('idEntrepriseAsEmploye');
         });
 
     });
 
 });
 
-Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseController::class)->group(function(){
+Route::prefix('/entreprise')->name('entreprise.')->controller(EntrepriseController::class)->group(function(){
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/create', 'create')->name('create');
@@ -99,8 +99,8 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
-            Route::get('/{id}/plage', 'createPlage')->name('createPlage');
-            Route::post('/{id}/plage', 'ajaxPlage')->name('ajaxPlage');
+            Route::get('/{employe}/plage', 'createPlage')->name('createPlage');
+            Route::post('/{employe}/plage', 'ajaxPlage')->name('ajaxPlage');
         });
     });
 });
@@ -110,7 +110,7 @@ Route::prefix('/reserver')->name('reserver.')->controller(ReserverController::cl
     Route::get('/', 'index')->name('index');
 });
 
-Route::prefix('/profile')->name('profile.')->controller(userController::class)->group(function(){
+Route::prefix('/profile')->name('profile.')->controller(UserController::class)->group(function(){
     Route::middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/edit', 'edit')->name('edit');

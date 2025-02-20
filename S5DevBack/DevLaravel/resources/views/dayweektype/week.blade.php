@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title_base', 'Paramétrage des plages de l\'entreprise n°' . $entreprise -> id)
+@section('title_base', 'Semaines type de ' . $entreprise -> libelle)
 @section('parametrage_active', 'active')
 
 @section('content')
@@ -35,65 +35,96 @@
     <link href='https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' rel='stylesheet' />
     <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
 
-    <!-- Pour les multimonth -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-multimonth/1.0.0/fullcalendar-multimonth.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-multimonth/1.0.0/fullcalendar-multimonth.min.js"></script> -->
-
     <!-- Pour les couleur -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
     <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
-
 </head>
 <body>
   
 <div class="container-calendar">
+    <a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id]) }}" style="left:20%; margin: 0; color:black;"><i class="fa fa-arrow-left"></i></a>
     <div class="header-profile mb-3" style="text-align: center;">
         <h2 style="color: #1167FC;"><a href="{{ route('entreprise.week.indexWeek', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none; font-weight: bold;">Semaine types de {{ $entreprise->libelle }}</a> | <a href="{{ route('entreprise.day.indexDay', ['entreprise' => $entreprise->id]) }}" style="color: black; text-decoration: none;">Journées types de {{ $entreprise->libelle }}</a></h2>
         <br/>
-        
     </div>
     <div style="text-align: center; width: 100%;">
-    <input type="text" id="inputColor" data-coloris value="#3a87ad" /></div>
+    <input type="text" id="inputColor" data-coloris value="#3a87ad" />
+    <button id="loadDayType" class="secondary-button" style="width:auto !important;"><i class="fa fa-location-arrow"></i><i class="fa fa-plus"></i> Select a day type to place</button>
+    <button id="loadWeek" class="secondary-button" style="width:auto !important;"><i class="bi bi-box-arrow-in-down"></i> Select a week</button>
+    <button id="newWeek" class="secondary-button" style="width:auto !important;"><i class="bi bi-calendar2-plus"></i> Create new</button>
+    <button id="saveWeek" class="secondary-button" style="width:auto !important;"><i class="bi bi-save"></i> Save the type week</button>
+    <button id="deleteWeek" class="btn-danger" style="width:auto !important;"><i class="bi bi-trash"></i></button></div>
     <div id='calendar'></div>
     @php
-        $dayType =  0;
+        $semaines = $entreprise->semaineTypes;
+        $journees = $entreprise->journeeTypes;
     @endphp
+    <script>
+        var currentTypeWeek = @json($entreprise->semaineTypes->first() ? $entreprise->semaineTypes->first() : ["id" => 0, "libelle" => "", "planning" => []]);
+        var semaines = @json($semaines);
+    </script>
 
     <!-- Popup Dialog -->
-    <div id="dialogTitre" title="Ajout d'une plage" style="display:none;">
-        <form>
+    <div id="dialogTitre" title="Enregistrer votre semaine type ?" style="display:none;">
             <label for="titre">Libellé de la plage :</label>
             <input type="text" id="titre" name="titre" style="width: 100%;"><br>
-        </form>
     </div>
 
-    <!-- Popup Dialog Modif -->
-    {{-- <div id="dialogModif" title="Ajout d'une plage" style="display:none;">
-        <form>
-            <p>Quel employé chosir ?</p>
-            <div style="width: 100%;">
-                <button type="button" id="all" onclick="checkAllModif()" style="display:block; margin:auto; margin-bottom:1%;">Tout sélectionner</button>
-            </div>
-                <div id="employesModif" name="employesModif" style="overflow: auto; display:block; max-height:50%;">
-                @foreach($userTravaillantSurAct as $employe)
-                    @if($employe->id == Auth::user()->id)
-                    <label for="{{ Auth::user()->id }}Modif"><input type="checkbox" id="{{ Auth::user()->id }}Modif" value="{{ Auth::user()->id }}"> {{ Auth::user()->nom }} {{ Auth::user()->prenom }} (Vous)</label><br>
-                    @else
-                    <label for="{{ $employe->id }}Modif"><input type="checkbox" id="{{ $employe->id }}Modif" value="{{ $employe->id }}"> {{ $employe->nom }} {{ $employe->prenom }}</label><br>
-                    @endif
+    <!-- Popup Dialog -->
+    <div id="dialogNew" title="Créer une nouvelle semaine type ?" style="display:none;">
+            <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Êtes-vous sûr(e) de vouloir créer une nouvelle semaine type ?<br/>Toute progression sera perdue.</p>
+    </div>
+
+    <!-- Popup Dialog Sélection Semaine -->
+    <div id="dialogWeekSelect" title="Charger une semaine type" style="display:none;">
+            <p>Quelle semaine chosir ?</p>
+            <select id="weekSelect" name="weekSelect">
+                @foreach ($semaines as $semaine)
+                    <option value="{{ $semaine->id }}">{{ $semaine->libelle }}</option>
                 @endforeach
-            </div><br>
-              <p><strong>Interval entre chaque début d'activité :</strong> {{ $activite->duree }}</p>
-        </form>
-    </div> --}}
+            </select>
+    </div>
+
+    <!-- Popup Dialog Sélection Journée -->
+    <div id="dialogDaySelect" title="Charger une journée type à placer" style="display:none;">
+            <p>Quelle journée chosir ?</p>
+            <select id="daySelect" name="daySelect">
+                @foreach ($journees as $jour)
+                    <option value="{{ $jour->id }}">{{ $jour->libelle }}</option>
+                @endforeach
+            </select>
+    </div>
+
+    <!-- Popup Dialog Placement Journée -->
+    <div id="dialogDayPlace" title="Charger une journée type à placer" style="display:none;">
+            <p>Quel jour placer la journée chosie ? <i>(Attention cela va écraser les plages existantes)</i></p>
+            <select id="dayPlace" name="dayPlace">
+                <option value="lundi">Lundi</option>
+                <option value="mardi">Mardi</option>
+                <option value="mercredi">Mercredi</option>
+                <option value="jeudi">Jeudi</option>
+                <option value="vendredi">Vendredi</option>
+                <option value="samedi">Samedi</option>
+                <option value="dimanche">Dimanche</option>
+            </select>
+    </div>
 
     <!-- Popup Dialog Suppression -->
     <div id="dialog-confirm" title="Voulez-vous vraiment supprimer ?" style="display:none;">
-        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette plage sera définitivement supprimé. Voulez-vous continuer ?</p>
+        <p><span class="ui-icon ui-icon-alert" style="float:left;"></span>Cette journée sera définitivement supprimé. Voulez-vous continuer ?</p>
     </div>
 </div>
 
 <script>
+var SEMAINIER = {
+    "lundi" : 0,
+    "mardi" : 1,
+    "mercredi" : 2,
+    "jeudi" : 3,
+    "vendredi" : 4,
+    "samedi" : 5,
+    "dimanche" : 6
+};
 $(document).ready(function () {
 
 var currentColor = $('#inputColor').val();
@@ -115,15 +146,6 @@ var currentColor = $('#inputColor').val();
 var SITEURL = "{{ url('/entreprise/') }}";
 SITEURL = SITEURL + "/" + {{ $entreprise->id }} + "/week";
 var DUREE_EN_MS = 1;
-var semainier = {
-    "lundi" : 0,
-    "mardi" : 1,
-    "mercredi" : 2,
-    "jeudi" : 3,
-    "vendredi" : 4,
-    "samedi" : 5,
-    "dimanche" : 6
-};
 
 // Mise en place du setup du ajax avec le token CSRF
 $.ajaxSetup({
@@ -132,11 +154,356 @@ $.ajaxSetup({
     }
 });
 
+
+    $('#loadWeek').click(function() {
+        // Popup pour sélectionner quelle semaine charger
+        $('#dialogWeekSelect').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogWeekSelect').dialog('close');
+                });
+            },
+            buttons: {
+                "Charger": function() {
+                    var day = $('#weekSelect').val();
+                    $.ajax({
+                        url: SITEURL + "/",
+                        data: {
+                            idSemaine: day,
+                            type: 'get'
+                        },
+                        type: 'POST',
+                        success: function(data) {
+                            currentTypeWeek = data[0];
+                            var events = [];
+                            var start_datetime;
+                            var end_datetime;
+                            var planningOfWeek = data[0].planning;
+                            for (var dayFullLetter in planningOfWeek) {
+                                var momentDay =  moment().startOf('week').add(1,'days').add(SEMAINIER[dayFullLetter],'days').format('YYYY-MM-DD');
+                                var dayPlanning = planningOfWeek[dayFullLetter];
+                                for (var indexPlage in planningOfWeek[dayFullLetter]) {
+                                    start_datetime = momentDay + 'T' + dayPlanning[indexPlage]['start'] +':00.000000Z';
+                                    end_datetime = momentDay + 'T' + dayPlanning[indexPlage]['end'] +':00.000000Z';
+                                    events.push({
+                                        start: start_datetime,
+                                        end: end_datetime,
+                                        color: currentColor,
+                                    });
+                                }
+                            }
+                            $('#calendar').fullCalendar('removeEvents');
+                            $('#calendar').fullCalendar('addEventSource', events);
+                            displayMessage("Journée chargée avec succès");
+                        },
+                        error: function() {
+                            displayError("Erreur lors de la récupération des plages");
+                        }
+                    });
+                    $('#dialogWeekSelect').dialog('close');
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+    $('#loadDayType').click(function() {
+        // Popup pour sélectionner quelle journée charger
+        $('#dialogDaySelect').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogDaySelect').dialog('close');
+                });
+            },
+            buttons: {
+                "Suivant": function() {
+                    $('#dialogDayPlace').dialog({
+                        modal: true,
+                        closeOnEscape: true,
+                        open: function(event, ui) {
+                            $('#dialogDaySelect').dialog('close');
+                            $('.ui-widget-overlay').bind('click', function(){
+                                $('#dialogDayPlace').dialog('close');
+                            });
+                        },
+                        buttons: {
+                            "Charger": function() {
+                                var dayType = $('#daySelect').val();
+                                var day = $('#dayPlace').val();
+                                $.ajax({
+                                    url: SITEURL + "/",
+                                    data: {
+                                        idJournee: dayType,
+                                        type: 'getDay'
+                                    },
+                                    type: 'POST',
+                                    success: function(data) {
+                                        var events = [];
+                                        var start_datetime;
+                                        var end_datetime;
+                                        var momentDay = moment().startOf('week').add(1,'days').add(SEMAINIER[day],'days').format('YYYY-MM-DD');
+                                        var minStart_datetime = moment(momentDay + ' ' + '23:59:59', 'YYYY-MM-DD HH:mm:ss');
+                                        var maxEnd_datetime = moment(momentDay + ' ' + '00:00:00', 'YYYY-MM-DD HH:mm:ss');
+                                        var planning = data[0].planning;
+                                        for (var plage in planning) {
+                                            start_datetime = momentDay + 'T' + planning[plage]['start'] +':00.000000Z';
+                                            end_datetime = momentDay + 'T' + planning[plage]['end'] +':00.000000Z';
+                                            minStart_datetime = minStart_datetime < start_datetime ? minStart_datetime : start_datetime;
+                                            maxEnd_datetime = maxEnd_datetime > end_datetime ? maxEnd_datetime : end_datetime;
+                                            events.push({
+                                                start: start_datetime,
+                                                end: end_datetime,
+                                                color: planning[plage]['color'],
+                                            });
+                                        }
+                                        var eventsAct = $('#calendar').fullCalendar('clientEvents');
+                                        eventsAct.forEach(function(eventAct) {
+                                            if (moment(eventAct.end).isAfter(minStart_datetime) && moment(eventAct.start).isBefore(maxEnd_datetime) && eventAct.start.format('dddd') == day) {
+                                                $('#calendar').fullCalendar('removeEvents', eventAct.id);
+                                            }
+                                        });
+                                        $('#calendar').fullCalendar('addEventSource', events);
+                                        displayMessage("Journée chargée avec succès");
+                                    },
+                                    error: function() {
+                                        displayError("Erreur lors de la récupération des plages");
+                                    }
+                                });
+                                $('#dialogDayPlace').dialog('close');
+                                $('#dayPlace').val("lundi");
+                            },
+                            "Retour": function() {
+                                $(this).dialog("close");
+                                $('#dialogDaySelect').dialog('open');
+                            }
+                        }
+                    });
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                    $('#dayPlace').val("lundi");
+                }
+            }
+        });
+    });
+
+    $('#newWeek').click(function () {
+        $('#dialogNew').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogNew').dialog('close');
+                });
+            },
+            buttons: {
+                "Créer": function() {
+                    $('#calendar').fullCalendar('removeEvents');
+                    currentTypeWeek["id"] = 0;
+                    $('#dialogNew').dialog('close');
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+    $('#saveWeek').click(function () {
+        $("#titre").val(currentTypeWeek["id"] == 0 ? "" : currentTypeWeek["libelle"]);
+        if ($('#calendar').fullCalendar('clientEvents').length == 0) {
+            displayWarning("La journée doit contenir au moins une plage");
+        } else {
+        $('#dialogTitre').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogTitre').dialog('close');
+                });
+            },
+            buttons: {
+                "Enregistrer": function() {
+                    var title = $('#titre').val();
+                    if(title == ''){
+                        displayWarning("Le titre de la journée ne peut pas être vide");
+                    }
+                    else {
+                        if(currentTypeWeek["id"] != 0){
+                            // Récupérer tous les évènements et les transformer en json pour les semaines
+                            var events = $('#calendar').fullCalendar('clientEvents');
+                            var planning = {};
+                            for (var i = 0; i < events.length; i++) {
+                                var start = events[i].start.format('HH:mm');
+                                var end = events[i].end.format('HH:mm');
+                                var color = events[i].color;
+                                // Vérifier si le jour n'y est pas encore
+                                if(!(events[i].start.format('dddd') in planning)){
+                                    planning[events[i].start.format('dddd')] = {};
+                                }
+                                planning[events[i].start.format('dddd')][i] = {
+                                    start: start,
+                                    end: end,
+                                    color: color
+                                };
+                            }
+                            $.ajax({
+                                url: SITEURL + "/",
+                                data: {
+                                    idSemaine: currentTypeWeek["id"],
+                                    libelle: title,
+                                    planning: planning,
+                                    type: 'update'
+                                },
+                                type: 'POST',
+                                success: function(data) {
+                                    displaySuccess("Journée modifiée avec succès");
+                                    $('#dialogTitre').dialog('close');
+                                    // Modifier la journée dans la liste semaines
+                                    for (var i = 0; i < semaines.length; i++) {
+                                        if (semaines[i]["id"] == currentTypeWeek["id"]) {
+                                            semaines[i]["libelle"] = title;
+                                            semaines[i]["planning"] = planning;
+                                        }
+                                    }
+                                },
+                                error: function() {
+                                    displayError("Erreur lors de la sauvegarde de la journée");
+                                    $('#dialogTitre').dialog('close');
+                                }
+                            });
+                        } else {
+                            // Récupérer tous les évènements et les transformer en json
+                            var events = $('#calendar').fullCalendar('clientEvents');
+                            var planning = {};
+                            for (var i = 0; i < events.length; i++) {
+                                var start = events[i].start.format('HH:mm');
+                                var end = events[i].end.format('HH:mm');
+                                var color = events[i].color;
+                                // Vérifier si le jour n'y est pas encore
+                                if(!(events[i].start.format('dddd') in planning)){
+                                    planning[events[i].start.format('dddd')] = {};
+                                }
+                                planning[events[i].start.format('dddd')][i] = {
+                                    start: start,
+                                    end: end,
+                                    color: color
+                                };
+                            }
+                            $.ajax({
+                                url: SITEURL + "/",
+                                data: {
+                                    libelle: title,
+                                    planning: planning,
+                                    type: 'add'
+                                },
+                                type: 'POST',
+                                success: function(data) {
+                                    displaySuccess("Journée sauvegardée avec succès");
+                                    $('#dialogTitre').dialog('close');
+                                    currentTypeWeek = data[0];
+                                    // Ajouter la nouvelle journée dans la liste semaines
+                                    semaines.push(currentTypeWeek);
+                                    // Ajouter la nouvelle journée dans le select
+                                    $('#weekSelect').append('<option value"'+ currentTypeWeek["id"] +'">' + currentTypeWeek["libelle"] + '</option>');
+                                },
+                                error: function() {
+                                    displayError("Erreur lors de la sauvegarde de la journée");
+                                    $('#dialogTitre').dialog('close');
+                                }
+                            });
+                        }
+                    }
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        }   
+    });
+
+
+    $('#deleteWeek').click(function () {
+        $( "#dialog-confirm" ).dialog({
+            resizable: false,
+            modal: true,
+            buttons: {
+                "Confirmer la suppression": function() {
+                    if(semaines.length == 0){
+                        $('#calendar').fullCalendar('removeEvents');
+                        $( this ).dialog( "close" );
+                    } else {
+
+                    $.ajax({
+                        type: "POST",
+                        url: SITEURL + '/',
+                        data: {
+                                idSemaine: currentTypeWeek["id"],
+                                type: 'delete'
+                        },
+                        success: function (response) {
+                            $('#calendar').fullCalendar('removeEvents');
+                            displayMessage("Journée supprimée avec succès");
+                            // Supprimer la journée de la liste semaines
+                            for (var i = 0; i < semaines.length; i++) {
+                                if (semaines[i]["id"] == currentTypeWeek["id"]) {
+                                    semaines.splice(i, 1);
+                                }
+                            }
+                            // Supprimer la journée du select
+                            $('#daySelect option[value="' + currentTypeWeek["id"] + '"]').remove();
+                            // Charger la première journée
+                            // Vérfier si semaines n'est pas vide
+                            if(semaines.length != 0) {
+                            currentTypeWeek = semaines[0];
+                            var events = [];
+                            var start_datetime;
+                            var end_datetime;
+                            var planningOfWeek = data[0].planning;
+                            for (var dayFullLetter in planningOfWeek) {
+                                var momentDay =  moment().startOf('week').add(1,'days').add(SEMAINIER[dayFullLetter],'days').format('YYYY-MM-DD');
+                                var dayPlanning = planningOfWeek[dayFullLetter];
+                                for (var indexPlage in planningOfWeek[dayFullLetter]) {
+                                    start_datetime = momentDay + 'T' + dayPlanning[indexPlage]['start'] +':00.000000Z';
+                                    end_datetime = momentDay + 'T' + dayPlanning[indexPlage]['end'] +':00.000000Z';
+                                    events.push({
+                                        start: start_datetime,
+                                        end: end_datetime,
+                                        color: currentColor,
+                                    });
+                                }
+                            }
+                            $('#calendar').fullCalendar('addEventSource', events);
+                            } else {
+                                currentTypeWeek = {
+                                    "id": 0,
+                                    "libelle": "",
+                                    "planning": {}
+                                };
+                            }
+                        }
+                    });
+                    $( this ).dialog( "close" );
+                    }
+                },
+                "Annuler": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
+
 // Mise en place du calendrier
 var calendar = $('#calendar').fullCalendar({
     header: {
         left: 'prev,next',
-        center: 'title',
         right: 'agendaWeek,agendaDay'
     },
     validRange: {
@@ -149,27 +516,35 @@ var calendar = $('#calendar').fullCalendar({
     events: function(start, end, timezone, callback) {
         $.ajax({
             url: SITEURL + "/",
-            type: 'GET',
+            data: {
+                idSemaine: {{ App\Models\SemaineType::where("idEntreprise",$entreprise->id)->first() ? App\Models\SemaineType::where("idEntreprise",$entreprise->id)->first()->id : 0 }},
+                type: 'get'
+            },
+            type: 'POST',
             success: function(data) {
-
-                // Placer les évènements sur toutes les semaines
+                if(data.length != 0){
                 var events = [];
                 var start_datetime;
                 var end_datetime;
-                for (var day in data[1]) {
-                    var momentDay = moment().startOf('week').add(1,'days').add(semainier[day], 'days').format('YYYY-MM-DD');
-                    for (var index in data[1][day]) {
-                        event = data[1][day][index];
-                        start_datetime = momentDay + 'T' + event.start +':00.000000Z';
-                        end_datetime = momentDay + 'T' + event.end +':00.000000Z';
+                var planningOfWeek = data[0].planning;
+                for (var dayFullLetter in planningOfWeek) {
+                    var momentDay =  moment().startOf('week').add(1,'days').add(SEMAINIER[dayFullLetter],'days').format('YYYY-MM-DD');
+                    var dayPlanning = planningOfWeek[dayFullLetter];
+                    for (var indexPlage in planningOfWeek[dayFullLetter]) {
+                        start_datetime = momentDay + 'T' + dayPlanning[indexPlage]['start'] +':00.000000Z';
+                        end_datetime = momentDay + 'T' + dayPlanning[indexPlage]['end'] +':00.000000Z';
                         events.push({
                             start: start_datetime,
                             end: end_datetime,
-                            color: event.color,
+                            color: currentColor,
                         });
                     }
                 }
                 callback(events);
+                } else {
+                    var events = [];
+                    callback(events);
+                }
             },
             error: function() {
                 displayError("Erreur lors de la récupération des plages");
@@ -182,8 +557,9 @@ var calendar = $('#calendar').fullCalendar({
     },
     displayEventTime: true, // false -> don't show the time column in list view
     weekNumbers: false,
-    columnHeader: false,
+    columnHeader: true,
     titleFormat: 'dddd',
+    columnHeaderFormat: 'dddd',
     selectable: true,
     nowIndicator: false,
     selectHelper: true,
@@ -196,63 +572,13 @@ var calendar = $('#calendar').fullCalendar({
                 if (moment(start).isSame(end, 'day')) {
                     var start = $.fullCalendar.formatDate(start, "YYYY-MM-DD HH:mm:ss");
                     var end = $.fullCalendar.formatDate(end, "YYYY-MM-DD HH:mm:ss");
-                    // Afficher la popup avec les inputs
-                    $('#dialogTitre').dialog({
-                        modal: true,
-                        closeOnEscape: true,
-                                open: function(event, ui) {
-                                    $('.ui-widget-overlay').bind('click', function(){
-                                        //$('#interv').val('00:05:00');
-                                        $('#employe').val('{{ Auth::user()->id }}');
-                                        $('#dialogTitre').dialog('close');
-                                    });
-                                },
-                        buttons: {
-                            "Ajouter": function() {
-                                var titre = $('#titre').val();
-                                if(titre == ''){
-                                    displayWarning("Le titre de la plage ne peut pas être vide");
-                                } else {
-                                    console.log({
-                                            libelle: titre,
-                                            jour: moment(start).format('dddd'),
-                                            heureDeb: start.split(' ')[1],
-                                            heureFin: end.split(' ')[1],
-                                            color: currentColor,
-                                            type: 'add'
-                                        });
-                                    $.ajax({
-                                        url: SITEURL + "/",
-                                        data: {
-                                            libelle: titre,
-                                            jour: moment(start).format('dddd'),
-                                            heureDeb: start.split(' ')[1],
-                                            heureFin: end.split(' ')[1],
-                                            color: currentColor,
-                                            type: 'add'
-                                        },
-                                        type: "POST",
-                                        success: function (data) {
-                                            $('#dialogTitre').dialog('close');
-                                            displaySuccess("Plage ajoutée avec succès");
-
-                                            // Désélectionner après la sélection
-                                            $('#calendar').fullCalendar('unselect');
-
-                                            // Rafraîchir l'affichage du calendrier
-                                            $('#calendar').fullCalendar('refetchEvents');
-                                        },
-                                        error: function() {
-                                            displayError("Erreur lors de l'ajout de la plage. Réssayez...");
-                                        }
-                                    });
-                                }
-                            },
-                            "Annuler": function() {
-                                $(this).dialog("close");
-                            }
-                        }
-                    });
+                    // Enregistrer l'évènements dans les events clients
+                    var event = {
+                        start: start,
+                        end: end,
+                        color: currentColor
+                    };
+                    $('#calendar').fullCalendar('renderEvent', event, true); // stick? = true
                 } else {
                     displayError("Impossible de créer une plage sur plusieurs jours");
                     // Désélectionner après la sélection
@@ -265,33 +591,10 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventDrop: function (event, delta, revertFunc) {
-        var originalStart = moment(event.start).subtract(delta);
-        var originalEnd = event.end ? moment(event.end).subtract(delta) : originalStart;
-
-        if (originalStart.isBefore(moment())) {
-            displayWarning("Impossible de déplacer un événement passé ou en cours");
-            $('#calendar').fullCalendar('unselect');
-            revertFunc();
-        }
-        else if(selectable(event.start,event.end,event.id)){
+        if(selectable(event.start,event.end,event.id)){
             // Vérifiez si l'événement dépasse une journée
             if (moment(event.start).isSame(event.end, 'day')) {
-                var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
-                var end = event.end ? $.fullCalendar.formatDate(event.end, "YYYY-MM-DD HH:mm:ss") : start;
-                $.ajax({
-                    url: SITEURL + '/',
-                    data: {
-                        datePlage: start.split(' ')[0],
-                        heureDeb: start.split(' ')[1],
-                        heureFin: end.split(' ')[1],
-                        id: event.id,
-                        type: 'update'
-                    },
-                    type: "POST",
-                    success: function (response) {
-                        displayMessage("Plage modifié avec succès");
-                    }
-                });
+                // ok
             } else {
                 displayError("Les plages ne peuvent pas dépasser plusieurs jours");
                 // Désélectionner après la sélection
@@ -306,115 +609,16 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
     eventClick: function (event) {
-
-        // Vérifiez si la date de début est passée
-        if (moment().isAfter(event.start) || moment().isAfter(event.end)) {
-            displayWarning("Vous ne pouvez pas modifier une plage passée ou en cours");
-        } else {
-            var eventAct = event;
-            $('#dialogModif').dialog({
-                modal: true,
-                closeOnEscape: true,
-                        open: function(event, ui) {
-                            //$('#eventTitleModif').val(eventAct.title ? eventAct.title : 'Titre de l\'plage');
-                            //$('#intervModif').val(eventAct.interval ? eventAct.interval : 1);
-                            $('.ui-widget-overlay').bind('click', function(){
-                                $('#dialogModif').dialog('close');
-                            });
-                        },
-                buttons: {
-                    "Modifier": function() {
-                            $.ajax({
-                                url: SITEURL + "/",
-                                data: {
-                                    id: eventAct.id,
-                                    employes_affecter: 0,
-                                    type: 'modify'
-                                },
-                                type: "POST",
-                                success: function (data) {
-                                    $('#dialogModif').dialog('close');
-
-                                    displaySuccess("Plage modifiée avec succès");
-
-                                    // Désélectionner après la sélection
-                                    $('#calendar').fullCalendar('unselect');
-
-                                    // Rafraîchir l'affichage du calendrier
-                                    $('#calendar').fullCalendar('refetchEvents');
-                                },
-                                error: function() {
-                                    $('#dialogTitre').dialog('close');
-                                    displayErrorWithButton("Erreur lors de la modification de la plage. Réssayez...");
-                                }
-                            });
-                    },
-                    "Supprimer": function() {
-                        $(this).dialog("close");
-                        $( "#dialog-confirm" ).dialog({
-                            resizable: false,
-                            modal: true,
-                            buttons: {
-                                "Confirmer la suppression": function() {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: SITEURL + '/',
-                                        data: {
-                                                id: eventAct.id,
-                                                type: 'delete'
-                                        },
-                                        success: function (response) {
-                                            calendar.fullCalendar('removeEvents', eventAct.id);
-                                            displayMessage("Plage supprimée avec succès");
-                                            // Rafraîchir l'affichage du calendrier
-                                            $('#calendar').fullCalendar('refetchEvents');
-                                        }
-                                    });
-                                    $( this ).dialog( "close" );
-                                    $('#dialogModif').dialog("close");
-                                },
-                                "Annuler": function() {
-                                    $( this ).dialog( "close" );
-                                    $('#dialogModif').dialog("open");
-                                }
-                            }
-                        });
-                    },
-                    "Annuler": function() {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-        }
+        
     },
     eventResize: function(event, delta, revertFunc) {
         if(selectable(event.start,event.end,event.id)){
-                // Vérifiez si l'événement dépasse une journée
-                if (moment(event.start).isSame(event.end, 'day')) {
-                    var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
-                    var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
-
-                    $.ajax({
-                        url: SITEURL + '/',
-                        data: {
-                            datePlage: start.split(' ')[0],
-                            heureDeb: start.split(' ')[1],
-                            heureFin: end.split(' ')[1],
-                            id: event.id,
-                            type: 'update'
-                        },
-                        type: "POST",
-                        success: function(response) {
-                            displayMessage("Plage modifiée avec succès");
-                        },
-                        error: function() {
-                            revertFunc(); // Revert the change if the update fails
-                            displayError("Erreur lors de la modification de la plage");
-                        }
-                    });
+                // Vérifiez si l'événement dépasse une journée ou s'il ne chevauche pas un autre event
+                if (moment(event.start).isSame(event.end, 'day') && checkChevauche(event.start, event.end, event.id)) {
+                    // ok
                 } else {
                     revertFunc(); // Revert the change if the update fails
-                    displayError("Les plages ne peuvent pas dépasser plusieurs jours");
+                    displayError("Les plages ne peuvent pas se chevaucher");
                     // Désélectionner après la sélection
                     $('#calendar').fullCalendar('unselect');
                 }
@@ -425,6 +629,17 @@ var calendar = $('#calendar').fullCalendar({
         }
     },
 });
+
+function checkChevauche(start, end, idEvent) {
+    var events = $('#calendar').fullCalendar('clientEvents');
+    for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+        if (start.isBefore(event.end) && end.isAfter(event.start) && event.id != idEvent) {
+            return false;
+        }
+    }
+    return true;
+}
 
 function selectable(start, end, idEvent) {
     // Vérifiez que la plage est un multiple de la durée de l'activité
@@ -442,9 +657,6 @@ const callback = (mutationList, observer) => {
     if (mutation.type === "childList") {
         if ($('.fc-center').children().text() == 'dimanche – samedi') {
             $('.fc-center').children().text('dimanche');
-        }
-        if ($('.fc-center').children().text() == 'lundi – samedi') {
-            $('.fc-center').children().text('lundi - dimanche');
         }
     } else if (mutation.type === "attributes") {
     }

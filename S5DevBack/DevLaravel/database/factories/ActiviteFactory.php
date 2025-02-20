@@ -32,6 +32,7 @@ class ActiviteFactory extends Factory
         return [
             'libelle' => fake()->sentence(3, true), ///< Generates a random activity label.
             'duree' => fake()->time('H:i:s'), ///< Generates a random duration in HH:MM:SS format.
+            'nbrPlaces' => fake()->numberBetween(1, 100),
             'idEntreprise' => fake()->numberBetween(1, 3), ///< Assigns a random company ID between 1 and 3.
         ];
     }

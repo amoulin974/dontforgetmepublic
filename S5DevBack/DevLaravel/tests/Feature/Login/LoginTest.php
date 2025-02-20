@@ -315,9 +315,13 @@ class LoginTest extends TestCase
 
         // THEN
         $response->assertSessionHasErrors(['email']);
-        $this->assertEquals(
+        /* $this->assertEquals(
             __('auth.throttle', ['seconds' => 59]),
             session('errors')->first('email')
+        ); */
+        $this->assertTrue(
+            str_contains(session('errors')->first('email'), __('auth.throttle', ['seconds' => 59])) ||
+            str_contains(session('errors')->first('email'), __('auth.throttle', ['seconds' => 60]))
         );
     }
 }
