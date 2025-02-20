@@ -15,7 +15,6 @@ use App\Models\Plage;
 class BookTest extends TestCase
 {
     use RefreshDatabase;
-    use RefreshDatabase;
 
     /**
      * CASE 1 - Booking valid with notification.
