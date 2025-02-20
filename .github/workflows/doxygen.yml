@@ -45,9 +45,6 @@ jobs:
     - name: Run Doxygen
       run: doxygen ./docs/Doxyfile
 
-    - name: Debug - List generated documentation
-      run: ls -R ./docs/html
-
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
