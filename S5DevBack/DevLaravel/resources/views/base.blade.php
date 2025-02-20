@@ -197,10 +197,12 @@ $(document).ready(function() {
 <script>
     $(document).ready(function () {
         $("#bug-report-btn").click(function () {
+            $("#bugDescription").val('');
             $("#bugReportModal").modal("show");
         });
 
         $("#cancel-bug-report").click(function () {
+            $("#bugDescription").val('');
             $("#bugReportModal").modal("hide");
         });
     });
