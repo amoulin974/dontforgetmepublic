@@ -912,6 +912,10 @@ var tippyList = tippy('.fc-listMonth-button', {
 
 $('#calendar').fullCalendar('changeView', 'agendaWeek');
 
+// Pour que la date de getDate soit correcte
+$('#calendar').fullCalendar('next');
+$('#calendar').fullCalendar('prev');
+
 });
 
 /* https://codeseven.github.io/toastr/demo.html */
