@@ -211,7 +211,7 @@ class EntrepriseController extends Controller
             $validated = $request->validate([
                 'nomEntreprise' => ['required', 'string', 'max:255'],
                 'siren'         => ['required', 'string', 'max:14', 'unique:entreprises,siren', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'],
-                'metier'        => ['required', 'string', 'in:Restaurant,Coiffeur,Avocat'],
+                'metier'        => ['required', 'string', 'in:Restaurant,Coiffeur,Avocat,Auto-école,Autres'],
                 'numTel'        => ['required', 'string', 'max:15', 'regex:/^(\d{2} \d{2} \d{2} \d{2} \d{2}|\d{10})$/'],
                 'email'         => ['required', 'email', 'unique:entreprises,email', 'max:255'],
                 'rue'           => ['required', 'string', 'max:255'],
@@ -353,7 +353,7 @@ class EntrepriseController extends Controller
         $validated = $request->validate([
             'libelle'     => ['required', 'string', 'max:255'],
             'siren'       => ['required', 'string', 'max:14', 'regex:/^(\d{9}|\d{3} \d{3} \d{3})$/'],
-            'metier' => ['required', 'string', 'in:Restaurant,Coiffeur,Avocat'],
+            'metier' => ['required', 'string', 'in:Restaurant,Coiffeur,Avocat,Autres,Auto-école'],
             'rue'         => ['required', 'string', 'max:255'],
             'codePostal'  => ['required', 'string', 'max:6', 'regex:/^\d{5}|\d{2} \d{3}$/'],
             'ville'       => ['required', 'string', 'max:255'],

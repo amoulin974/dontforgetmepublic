@@ -6,6 +6,28 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    @php
+        $plageOfAct = $activite->plages;
+        $userWorkingOnAct = array();
+        $idOfWorkers = array();
+        foreach ($plageOfAct as $p) {
+            foreach ($p->employes as $e) {
+                if(!in_array($e->id,$idOfWorkers)){
+                    array_push($idOfWorkers,$e->id);
+                }
+            }
+        }
+        foreach($entreprise->travailler_users as $e){
+            if(in_array($e->id,$idOfWorkers)){
+                array_push($userWorkingOnAct,$e);
+                unset($idOfWorkers[array_search($e->id,$idOfWorkers)]);
+            }
+        }
+    @endphp
+    <script>
+        var userWorkingOnAct = @json($userWorkingOnAct);
+    </script>
+
     <div class="container">
         <!-- Navigation de retour -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -23,7 +45,7 @@
                 <label for="emplye" class="form-label mt-3">{{__('Please select an employee')}}</label>
                 <select id="employe" class="form-select">
                     <option value="default">Sélectionnez un employé</option>
-                    @foreach ($entreprise->travailler_users->where('pivot.idActivite', $activite->id)->where('pivot.statut', '!=', 'Invité') as $employe)
+                    @foreach ($userWorkingOnAct as $employe)
                         <option value="{{ $employe->id }}">{{ $employe->nom }} {{ $employe->prenom }}</option>
                     @endforeach
                 </select>
@@ -32,16 +54,22 @@
             <ul class="list-unstyled" style="margin-top: 40px;">
                 @if (count($timeSlots) > 0)
                     @foreach (collect($timeSlots)->groupBy('date') as $date => $slots)
-                        <li class="mb-4">
+                        <li class="mb-4" id="plageOfSlots">
                             {{-- Date du créneau --}}
                             <h5 class="text-primary">
                                 {{ \Carbon\Carbon::parse($date)->isoFormat('dddd D MMMM YYYY') }}
                             </h5>
-                            
+
                             {{-- Créneaux horaires --}}
-                            <div class="d-flex flex-wrap gap-2">
+                            <div class="d-flex flex-wrap gap-2" id="plageWithSlots">
                                 @foreach ($slots as $slot)
                                     @if ($slot['remaining_places'] > 0)
+                                        @php
+                                            $idToAdd = '';
+                                            foreach($slot['employesPlaces'] as $eId){
+                                                $idToAdd .= 'employes'.$eId.'/';
+                                            }
+                                        @endphp
                                         {{-- Bouton actif --}}
                                         <button
                                             class="btn btn-outline-primary flex-grow-1 horaire-btn"
@@ -50,6 +78,7 @@
                                             data-horaire="{{ $slot['time_range'] }}"
                                             data-date="{{ $slot['date'] }}"
                                             data-places-restantes="{{ $slot['remaining_places'] }}"
+                                            id="{{ $idToAdd }}"
                                         >
                                             {{ $slot['time_range'] }}
                                             @if ($entreprise->typeRdv[0] == 1)
@@ -226,21 +255,49 @@
         </div>
     </div>
     <script src="{{ asset('js/reservation.js') }}"></script>
-    {{-- <script>
-        $document.ready(function () {
-            $('#employe').change(function () {
-                if ($(this).val() !== 'default') {
-                    document.cookie = "employe=0";
-                    let cookieToAdd = 'employe=' + $(this).val();
-                    document.cookie = cookieToAdd;
-                    @foreach(App\Models\User::where("id",$_COOKIE['employe'])->first()->plages as $plage)
-                        // Disable all the plage button
-                        $('.horaire-btn').prop('disabled', true);
-                        // Enable the concerned ones
-                        $('#plage{{ $plage->id }}').prop('disabled', false);
-                    @endforeach
+    <script>
+        $(document).ready(function() {
+            $('#employe').change(function() {
+                var employeId = $(this).val();
+                if (employeId !== 'default') {
+                    $('.horaire-btn').each(function() {
+                        var employes = $(this).attr('id').split('/');
+                        if (employes.includes('employes' + employeId)) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                } else {
+                    $('.horaire-btn').show();
+                }
+                // Vérifier que tous les élements de chaque plageOfSlots sont cachés
+                document.querySelectorAll("#plageOfSlots").forEach(function(element) {
+                    var plage = element;
+                    var horaires = plage.querySelectorAll(".horaire-btn");
+                    var allHidden = true;
+                    horaires.forEach(function(horaire) {
+                        if (horaire.style.display !== 'none') {
+                            allHidden = false;
+                        }
+                    });
+                    if (allHidden) {
+                        plage.style.display = 'none';
+                    } else {
+                        plage.style.display = 'block';
+                    }
+                });
+                
+                // Faire que le select de la popup soit verrouillé sur l'employé sélectionné
+                var employeSelect = document.getElementById('employeSelect');
+                if (employeSelect && employeId !== 'default') {
+                    employeSelect.value = employeId;
+                    employeSelect.disabled = true;
+                }
+                else if (employeSelect) {
+                    employeSelect.disabled = false;
                 }
             });
         });
-    </script> --}}
+    </script>
 @endsection

@@ -173,6 +173,310 @@ $.ajaxSetup({
     }
 });
 
+var couleurPasses = 'red';
+var couleurAjd = 'green';
+var curseurUnclickable = 'not-allowed';
+var DUREE = "00:30:00";
+var DUREE_EN_MS = moment.duration(DUREE).asMilliseconds();
+var semainier = {
+    "lundi" : 0,
+    "mardi" : 1,
+    "mercredi" : 2,
+    "jeudi" : 3,
+    "vendredi" : 4,
+    "samedi" : 5,
+    "dimanche" : 6
+};
+
+$('#loadWeekType').click(function() {
+        // Popup pour sélectionner quelle semaine charger
+        $('#dialogWeekSelect').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogWeekSelect').dialog('close');
+                });
+            },
+            buttons: {
+                "Charger": function() {
+                    var day = $('#weekSelect').val();
+                    var momentDay = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
+                    if (moment().isAfter(momentDay)) {
+                        displayWarning("Impossible de placer une journée dans le passé");
+                    }
+                    else {
+                        $(this).dialog("close");
+                        $('#dialogTitre').dialog({
+                            modal: true,
+                            closeOnEscape: true,
+                                open: function(event, ui) {
+                                    $('.ui-widget-overlay').bind('click', function(){
+                                        $('#dialogTitre').dialog('close');
+                                        uncheckAll();
+                                    });
+                                },
+                            buttons: {
+                                "Ajouter": function() {
+                                    if (checked.length == 0){
+                                    displayWarning('Veuillez sélectionner au moins une activité.');
+                                    }
+                                    else {
+                                        var eventsToSave = [];
+                                        $.ajax({
+                                            url: "{{ url('/entreprise/') }}" + "/" + {{ $entreprise->id }} + "/week" + "/",
+                                            data: {
+                                                idSemaine: day,
+                                                type: 'get'
+                                            },
+                                            type: 'POST',
+                                            success: function(data) {
+                                                var events = [];
+                                                var start_datetime;
+                                                var end_datetime;
+                                                var minStart_datetime = moment(momentDay + ' ' + '23:59:59', 'YYYY-MM-DD HH:mm:ss').add(6,'days');
+                                                var maxEnd_datetime = moment(momentDay + ' ' + '00:00:00', 'YYYY-MM-DD HH:mm:ss');
+                                                var planningOfWeek = data[0].planning;
+                                                for (var dayFullLetter in planningOfWeek) {
+                                                    var momentDay =  $('#calendar').fullCalendar('getDate').add(semainier[dayFullLetter],'days').format('YYYY-MM-DD');
+                                                    var dayPlanning = planningOfWeek[dayFullLetter];
+                                                    for (var indexPlage in planningOfWeek[dayFullLetter]) {
+                                                        start_datetime = momentDay + 'T' + dayPlanning[indexPlage]['start'] +':00.000000Z';
+                                                        end_datetime = momentDay + 'T' + dayPlanning[indexPlage]['end'] +':00.000000Z';
+                                                        minStart_datetime = minStart_datetime < start_datetime ? minStart_datetime : start_datetime;
+                                                        maxEnd_datetime = maxEnd_datetime > end_datetime ? maxEnd_datetime : end_datetime;
+                                                        events.push({
+                                                            start: start_datetime,
+                                                            end: end_datetime,
+                                                        });
+                                                        eventsToSave.push({
+                                                            start: start_datetime,
+                                                            end: end_datetime,
+                                                        });
+                                                    }
+                                                }
+                                                var eventsAct = $('#calendar').fullCalendar('clientEvents');
+                                                eventsAct.forEach(function(eventAct) {
+                                                    if (moment(eventAct.end).isAfter(minStart_datetime) && moment(eventAct.start).isBefore(maxEnd_datetime)) {
+                                                        $('#calendar').fullCalendar('removeEvents', eventAct.id);
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: SITEURL + '/',
+                                                            data: {
+                                                                    id: eventAct.id,
+                                                                    type: 'delete'
+                                                            },
+                                                            success: function (response) {
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                                displayMessage("Semaine chargée avec succès et plages remplacées");
+                                                eventsToSave.forEach(event => {
+                                                    var start = moment(event.start).subtract(1,'hours').format("YYYY-MM-DD HH:mm:ss");
+                                                    var end = moment(event.end).subtract(1,'hours').format("YYYY-MM-DD HH:mm:ss");
+                                                    $.ajax({
+                                                        url: SITEURL + "/",
+                                                        data: {
+                                                            datePlage: start.split(' ')[0],
+                                                            heureDeb: start.split(' ')[1],
+                                                            heureFin: end.split(' ')[1],
+                                                            interval: DUREE,
+                                                            activites_affecter: checked,
+                                                            type: 'add'
+                                                        },
+                                                        type: "POST",
+                                                        success: function (data) {
+                                                        },
+                                                        error: function() {
+                                                            displayError("Erreur lors de l'ajout de la plage. Réssayez...");
+                                                        }
+                                                    });
+                                                });
+                                                $('#dialogTitre').dialog('close');
+                                                uncheckAll();
+                                                // Désélectionner après la sélection
+                                                $('#calendar').fullCalendar('unselect');
+                                                // Rafraîchir l'affichage du calendrier
+                                                $('#calendar').fullCalendar('refetchEvents');
+                                            },
+                                            error: function() {
+                                                displayError("Erreur lors de la récupération des plages");
+                                            }
+                                        });
+                                        $('#dialogWeekSelect').dialog('close');
+                                    }
+                                },
+                                "Annuler": function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+                }
+            },
+            "Annuler": function() {
+                $(this).dialog("close");
+            }
+        });
+    });
+
+    $('#loadDayType').click(function() {
+        // Popup pour sélectionner quelle journée charger
+        $('#dialogDaySelect').dialog({
+            modal: true,
+            closeOnEscape: true,
+            open: function(event, ui) {
+                $('.ui-widget-overlay').bind('click', function(){
+                    $('#dialogDaySelect').dialog('close');
+                });
+            },
+            buttons: {
+                "Suivant": function() {
+                    $(this).dialog("close");
+                    $('#dialogDayPlace').dialog({
+                        modal: true,
+                        closeOnEscape: true,
+                        open: function(event, ui) {
+                            $('.ui-widget-overlay').bind('click', function(){
+                                $('#dialogDayPlace').dialog('close');
+                            });
+                        },
+                        buttons: {
+                            "Charger": function() {
+                                var dayType = $('#daySelect').val();
+                                var day = $('#dayPlace').val();
+                                var momentDay = $('#calendar').fullCalendar('getDate').add(semainier[day],'days').format('YYYY-MM-DD');
+                                if (moment().isAfter(momentDay)) {
+                                    displayWarning("Impossible de placer une journée dans le passé");
+                                }
+                                else {
+                                    $(this).dialog("close");
+                                    $('#dialogTitre').dialog({
+                                        modal: true,
+                                        closeOnEscape: true,
+                                                open: function(event, ui) {
+                                                    $('.ui-widget-overlay').bind('click', function(){
+                                                        $('#dialogTitre').dialog('close');
+                                                        uncheckAll();
+                                                    });
+                                                },
+                                        buttons: {
+                                            "Ajouter": function() {
+                                                if (checked.length == 0){
+                                                displayWarning('Veuillez sélectionner au moins une activité.');
+                                                }
+                                                else {
+                                                    var eventsToSave = [];
+                                                    $.ajax({
+                                                        url: "{{ url('/entreprise/') }}" + "/" + {{ $entreprise->id }} + "/week" + "/",
+                                                        data: {
+                                                            idJournee: dayType,
+                                                            type: 'getDay'
+                                                        },
+                                                        type: 'POST',
+                                                        success: function(data) {
+                                                            var events = [];
+                                                            var start_datetime;
+                                                            var end_datetime;
+                                                            var minStart_datetime = moment(momentDay + ' ' + '23:59:59', 'YYYY-MM-DD HH:mm:ss');
+                                                            var maxEnd_datetime = moment(momentDay + ' ' + '00:00:00', 'YYYY-MM-DD HH:mm:ss');
+                                                            var planning = data[0].planning;
+                                                            for (var plage in planning) {
+                                                                start_datetime = momentDay + 'T' + planning[plage]['start'] +':00.000000Z';
+                                                                end_datetime = momentDay + 'T' + planning[plage]['end'] +':00.000000Z';
+                                                                minStart_datetime = minStart_datetime < start_datetime ? minStart_datetime : start_datetime;
+                                                                maxEnd_datetime = maxEnd_datetime > end_datetime ? maxEnd_datetime : end_datetime;
+                                                                events.push({
+                                                                    start: start_datetime,
+                                                                    end: end_datetime,
+                                                                });
+                                                                eventsToSave.push({
+                                                                    start: start_datetime,
+                                                                    end: end_datetime,
+                                                                });
+                                                            }
+                                                            // Retirer les plages déjà présentes sur le jour concerné
+                                                            /* $('#calendar').fullCalendar('removeEvents', function(event) {
+                                                                return event.start.format('YYYY-MM-DD') == momentDay;
+                                                            }); */
+                                                            var eventsAct = $('#calendar').fullCalendar('clientEvents');
+                                                            eventsAct.forEach(function(eventAct) {
+                                                                if (moment(eventAct.end).isAfter(minStart_datetime) && moment(eventAct.start).isBefore(maxEnd_datetime) && eventAct.start.format('dddd') == day) {
+                                                                    $('#calendar').fullCalendar('removeEvents', eventAct.id);
+                                                                    $.ajax({
+                                                                        type: "POST",
+                                                                        url: SITEURL + '/',
+                                                                        data: {
+                                                                                id: eventAct.id,
+                                                                                type: 'delete'
+                                                                        },
+                                                                    });
+                                                                    
+                                                                }
+                                                            });
+                                                            displayMessage("Journée chargée avec succès et plages remplacées");
+
+                                                            //$('#dialogDayPlace').dialog('close');
+                                                            $('#dayPlace').val("lundi");
+                                                            eventsToSave.forEach(event => {
+                                                                var start = moment(event.start).subtract(1,'hours').format("YYYY-MM-DD HH:mm:ss");
+                                                                var end = moment(event.end).subtract(1,'hours').format("YYYY-MM-DD HH:mm:ss");
+                                                                $.ajax({
+                                                                    url: SITEURL + "/",
+                                                                    data: {
+                                                                        datePlage: start.split(' ')[0],
+                                                                        heureDeb: start.split(' ')[1],
+                                                                        heureFin: end.split(' ')[1],
+                                                                        interval: DUREE,
+                                                                        activites_affecter: checked,
+                                                                        type: 'add'
+                                                                    },
+                                                                    type: "POST",
+                                                                    success: function (data) {
+                                                                    },
+                                                                    error: function() {
+                                                                        displayError("Erreur lors de l'ajout de la plage. Réssayez...");
+                                                                    }
+                                                                });
+                                                            });
+                                                            $('#dialogTitre').dialog('close');
+                                                            uncheckAll();
+                                                            // Désélectionner après la sélection
+                                                            $('#calendar').fullCalendar('unselect');
+                                                            // Rafraîchir l'affichage du calendrier
+                                                            $('#calendar').fullCalendar('refetchEvents');
+                                                        },
+                                                        error: function() {
+                                                            displayError("Erreur lors de la récupération des plages");
+                                                        }
+                                                    });
+                                                }
+                                            },
+                                            "Annuler": function() {
+                                                uncheckAll();
+                                                $(this).dialog("close");
+                                                $('#dialogDayPlace').dialog('open');
+                                            }
+                                        }
+                                    });
+                                }
+                            },
+                            "Retour": function() {
+                                $(this).dialog("close");
+                                $('#dialogDaySelect').dialog('open');
+                            }
+                        }
+                    });
+                },
+                "Annuler": function() {
+                    $(this).dialog("close");
+                    $('#dayPlace').val("lundi");
+                }
+            }
+        });
+    });
+
 // Mise en place du calendrier
 var calendar = $('#calendar').fullCalendar({
     header: {
@@ -582,6 +886,10 @@ var tippyList = tippy('.fc-listMonth-button', {
 });
 
 $('#calendar').fullCalendar('changeView', 'agendaWeek');
+
+// Pour que la date de getDate soit correcte
+$('#calendar').fullCalendar('next');
+$('#calendar').fullCalendar('prev');
 
 });
 

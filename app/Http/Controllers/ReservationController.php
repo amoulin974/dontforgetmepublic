@@ -386,6 +386,7 @@ class ReservationController extends Controller
                     'remaining_places' => max(0, $remainingPlaces),
                     'start' => $currentStart->format('H:i'),
                     'end' => $currentEnd->format('H:i'),
+                    'employesPlaces' => $slot->employes->pluck("id"),
                 ];
     
                 $startTime->addMinutes($interval);

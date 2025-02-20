@@ -4,6 +4,27 @@ body, h1, h2, h3, p, ul, li {
   padding: 0;
 }
 
+.bug-report-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.bug-report-button:hover {
+    background-color: #c82333;
+}
+
+
 .active {
   color: #1c1b19;
   font-weight: bold;
@@ -253,7 +274,7 @@ margin-right: auto;
 }
 
 .res-header {
-  display: inline-flex; 
+  display: inline-flex;
   width: 100%;
   margin-bottom: 10px;
 }
@@ -282,7 +303,7 @@ margin-right: auto;
 
 .primary-button:hover,
 .primary-button:focus { /* Ajout de :focus pour assurer la cohérence des styles au focus */
-  text-decoration: none; 
+  text-decoration: none;
   filter: brightness(1.1);
   scale: 1.1;
   transition: scale 0.3s; /* color: #1c1b19;
@@ -548,15 +569,15 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* Styles pour la page d'accueil */
 .logo-home {
-  max-width: 32vh; 
-  max-height: 32vh; 
-  display: block; 
-  margin-top: 0px; 
+  max-width: 32vh;
+  max-height: 32vh;
+  display: block;
+  margin-top: 0px;
   margin-inline: auto;
 }
 
 .searchbar-home {
-  display: inline-flex; 
+  display: inline-flex;
   width: 100%;
   margin-block: 30px;
 }
@@ -581,7 +602,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* Activités sur la liste des entreprises de l'utilisateur */
 .activity {
-  max-height: 150px; 
+  max-height: 150px;
   padding-block: 5px;
   border-bottom: 1px solid #c0c0c0;
 }
@@ -864,7 +885,7 @@ footer{
   top:90%;
   left:50%;
   transform:translate(-50%,-50%);
-  
+
 }
 footer a{
 color:gray;

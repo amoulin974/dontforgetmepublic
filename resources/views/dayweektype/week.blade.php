@@ -66,10 +66,8 @@
 
     <!-- Popup Dialog -->
     <div id="dialogTitre" title="Enregistrer votre semaine type ?" style="display:none;">
-        <form>
             <label for="titre">Libellé de la plage :</label>
             <input type="text" id="titre" name="titre" style="width: 100%;"><br>
-        </form>
     </div>
 
     <!-- Popup Dialog -->
@@ -79,32 +77,27 @@
 
     <!-- Popup Dialog Sélection Semaine -->
     <div id="dialogWeekSelect" title="Charger une semaine type" style="display:none;">
-        <form>
             <p>Quelle semaine chosir ?</p>
             <select id="weekSelect" name="weekSelect">
                 @foreach ($semaines as $semaine)
                     <option value="{{ $semaine->id }}">{{ $semaine->libelle }}</option>
                 @endforeach
             </select>
-        </form>
     </div>
 
     <!-- Popup Dialog Sélection Journée -->
     <div id="dialogDaySelect" title="Charger une journée type à placer" style="display:none;">
-        <form>
             <p>Quelle journée chosir ?</p>
             <select id="daySelect" name="daySelect">
                 @foreach ($journees as $jour)
                     <option value="{{ $jour->id }}">{{ $jour->libelle }}</option>
                 @endforeach
             </select>
-        </form>
     </div>
 
     <!-- Popup Dialog Placement Journée -->
     <div id="dialogDayPlace" title="Charger une journée type à placer" style="display:none;">
-        <form>
-            <p>Quel placer la journée chosie ?</p>
+            <p>Quel jour placer la journée chosie ? <i>(Attention cela va écraser les plages existantes)</i></p>
             <select id="dayPlace" name="dayPlace">
                 <option value="lundi">Lundi</option>
                 <option value="mardi">Mardi</option>
@@ -114,7 +107,6 @@
                 <option value="samedi">Samedi</option>
                 <option value="dimanche">Dimanche</option>
             </select>
-        </form>
     </div>
 
     <!-- Popup Dialog Suppression -->
@@ -256,16 +248,26 @@ $.ajaxSetup({
                                         var start_datetime;
                                         var end_datetime;
                                         var momentDay = moment().startOf('week').add(1,'days').add(SEMAINIER[day],'days').format('YYYY-MM-DD');
+                                        var minStart_datetime = moment(momentDay + ' ' + '23:59:59', 'YYYY-MM-DD HH:mm:ss');
+                                        var maxEnd_datetime = moment(momentDay + ' ' + '00:00:00', 'YYYY-MM-DD HH:mm:ss');
                                         var planning = data[0].planning;
                                         for (var plage in planning) {
                                             start_datetime = momentDay + 'T' + planning[plage]['start'] +':00.000000Z';
                                             end_datetime = momentDay + 'T' + planning[plage]['end'] +':00.000000Z';
+                                            minStart_datetime = minStart_datetime < start_datetime ? minStart_datetime : start_datetime;
+                                            maxEnd_datetime = maxEnd_datetime > end_datetime ? maxEnd_datetime : end_datetime;
                                             events.push({
                                                 start: start_datetime,
                                                 end: end_datetime,
                                                 color: planning[plage]['color'],
                                             });
                                         }
+                                        var eventsAct = $('#calendar').fullCalendar('clientEvents');
+                                        eventsAct.forEach(function(eventAct) {
+                                            if (moment(eventAct.end).isAfter(minStart_datetime) && moment(eventAct.start).isBefore(maxEnd_datetime) && eventAct.start.format('dddd') == day) {
+                                                $('#calendar').fullCalendar('removeEvents', eventAct.id);
+                                            }
+                                        });
                                         $('#calendar').fullCalendar('addEventSource', events);
                                         displayMessage("Journée chargée avec succès");
                                     },

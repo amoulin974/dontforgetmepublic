@@ -48,6 +48,28 @@
 
         {{-- Champ Numéro de Téléphone --}}
         <div class="mb-3">
+            <label for="metier" class="form-label">Métier</label>
+            <select id="metier" name="metier"
+                    class="form-control @error('metier') is-invalid @enderror"
+                    required>
+                <option value="">Sélectionnez votre métier</option>
+                <option value="Restaurant" {{ old('metier', session('company.metier')) == 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
+                <option value="Coiffeur" {{ old('metier', session('company.metier')) == 'Coiffeur' ? 'selected' : '' }}>Coiffeur</option>
+                <option value="Avocat" {{ old('metier', session('company.metier')) == 'Avocat' ? 'selected' : '' }}>Avocat</option>
+                <option value="Auto-école" {{ old('metier', session('company.metier')) == 'Auto-école' ? 'selected' : '' }}>Auto-école</option>
+                <option value="Autres" {{ old('metier', session('company.metier')) == 'Autres' ? 'selected' : '' }}>Autres</option>
+                {{-- Ajoute ici la liste des métiers pertinents --}}
+            </select>
+            @error('metier')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+
+        {{-- Champ Numéro de Téléphone --}}
+        <div class="mb-3">
             <label for="numTel" class="form-label">{{__('Phone number')}}</label>
             <input id="numTel" type="text" class="form-control @error('numTel') is-invalid @enderror" 
                     name="numTel" value="{{ old('numTel', session('company.numTel', '')) }}" placeholder="{{__('Phone number')}} (** ** ** ** **)">
