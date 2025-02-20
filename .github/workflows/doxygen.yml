@@ -22,19 +22,20 @@ jobs:
         ref: develop
         fetch-depth: 0
 
-    - name: Debug - List project structure
-      run: ls -R
-
     - name: Install Doxygen and Graphviz
       run: sudo apt-get update && sudo apt-get install doxygen graphviz -y
 
+    - name: Clean previous documentation
+      run: rm -rf ./docs/html
+
     - name: Run Doxygen
-      run: doxygen ./docs/Doxyfile
+      run: cd docs && doxygen Doxyfile
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/html  
+        publish_dir: ./docs/html
         publish_branch: gh-pages
-        force_orphan: true 
+        force_orphan: true
+        keep_files: true
