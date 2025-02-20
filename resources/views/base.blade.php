@@ -13,7 +13,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- JQuery -->
 
-    <!-- Pour les carousels -->
+    <!-- Pour les carousel -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
@@ -41,13 +41,13 @@
         </button>
         <div class="collapse navbar-collapse full-page-menu" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a href="/" class="@yield('home_active') nav-link"><i class="fa fa-home"></i> Accueil</a></li>
+                <li class="nav-item"><a href="/" class="@yield('home_active') nav-link"><i class="fa fa-home"></i> {{ __('Home') }}</a></li>
                 @guest
                 @else
-                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> Mes Réservations</a></li>
-                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
+                <li class="nav-item"><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active') nav-link"><i class="fa fa-book"></i> {{__('My bookings')}}</a></li>
+                <li class="nav-item"><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active') nav-link"><i class="fa fa-industry"></i> {{__('My businesses')}}</a></li>
                 @endguest
-                <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
+                <li class="nav-item"><a href="{{ route('reserver.index') }}" class="@yield('reserver_active') nav-link"><i class="fa fa-calendar-plus"></i> {{ __('Book') }}</a></li>
             </ul>
         </div>
     </nav>
@@ -73,12 +73,12 @@
   <div class="profile-info">
     @guest
             @if (Route::has('login'))
-
+                    
                     <a href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right"></i> {{ __('Login') }}</a>
             @endif
 
             @if (Route::has('register'))
-
+                    
                     <a class="nav-link" href="{{ route('register.choose.account.type') }}"><i class="fa fa-user-plus"></i> {{ __('Register') }}</a>
             @endif
         @else
@@ -99,9 +99,8 @@
       <img src="{{ asset('favicon.ico') }}" alt="Logo">
     </a>
   </div>
-
-
 </header>
+
 <script>
 function displaySuccess(message) {
     toastr.options = {
@@ -109,7 +108,7 @@ function displaySuccess(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.success(message, 'Succès !');
+    toastr.success(message, '{{__("Success!")}}');
 }
 
 function displayError(message) {
@@ -118,7 +117,7 @@ function displayError(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !');
+    toastr.error(message, '! {{__("Error")}} !');
 }
 
 function displayMessage(message) {
@@ -145,7 +144,7 @@ function displayErrorWithButton(message) {
         "newestOnTop": true,
         "progressBar": true
     }
-    toastr.error(message, '! Erreur !', {
+    toastr.error(message, '! {{__("Error")}} !', {
         timeOut: 0,
         extendedTimeOut: 0
     });
@@ -167,5 +166,47 @@ $(document).ready(function() {
 </script>
 
     @yield('content')
+
+<button id="bug-report-btn" class="bug-report-button">
+    <i class="fa fa-bug"></i> Signaler un bug
+</button>
+
+<div id="bugReportModal" class="modal fade" tabindex="-1" aria-labelledby="bugReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bugReportModalLabel">Signaler un bug</h5>
+            </div>
+            <div class="modal-body">
+                <form id="bugReportForm" method="POST" action="{{ route('bug.report') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="bugDescription">Description du bug :</label>
+                        <textarea id="bugDescription" name="description" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="button" class="btn btn-secondary me-2" id="cancel-bug-report">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#bug-report-btn").click(function () {
+            $("#bugDescription").val('');
+            $("#bugReportModal").modal("show");
+        });
+
+        $("#cancel-bug-report").click(function () {
+            $("#bugDescription").val('');
+            $("#bugReportModal").modal("hide");
+        });
+    });
+</script>
 </body>
 </html>
+
