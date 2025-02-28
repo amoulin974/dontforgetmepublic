@@ -1,0 +1,7 @@
+<map id="NotificationController" name="NotificationController">
+<area shape="rect" id="Node000001" title="Controller for handling notification operations." alt="" coords="5,152,167,177"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1Controller.html" title="Base controller for handling common operations in the Laravel application." alt="" coords="43,79,129,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,118,89,152,83,152,83,118"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="27,5,145,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,44,89,79,83,79,83,44"/>
+</map>

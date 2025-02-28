@@ -1,0 +1,7 @@
+<map id="ReserverController" name="ReserverController">
+<area shape="rect" id="Node000001" title="Controller for handling enterprise reservation functionalities." alt="" coords="5,152,149,177"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1Controller.html" title="Base controller for handling common operations in the Laravel application." alt="" coords="34,79,121,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,118,80,152,75,152,75,118"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="18,5,137,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="80,44,80,79,75,79,75,44"/>
+</map>

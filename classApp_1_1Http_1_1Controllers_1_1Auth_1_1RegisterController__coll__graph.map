@@ -1,0 +1,7 @@
+<map id="RegisterController" name="RegisterController">
+<area shape="rect" id="Node000001" title="Controller for handling user registration in the Laravel application." alt="" coords="5,152,145,177"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1Controller.html" title="Base controller for handling common operations in the Laravel application." alt="" coords="32,79,119,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,118,78,152,73,152,73,118"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="16,5,135,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="78,44,78,79,73,79,73,44"/>
+</map>

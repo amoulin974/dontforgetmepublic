@@ -1,0 +1,7 @@
+<map id="HomeController" name="HomeController">
+<area shape="rect" id="Node000001" title="Controller responsible for handling the application&#39;s home page." alt="" coords="5,152,131,177"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1Controller.html" title="Base controller for handling common operations in the Laravel application." alt="" coords="25,79,111,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,118,71,152,65,152,65,118"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="9,5,127,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="71,44,71,79,65,79,65,44"/>
+</map>

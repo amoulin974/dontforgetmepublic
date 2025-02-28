@@ -1,0 +1,13 @@
+digraph "create"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="create",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="calculateTimeSlots",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a03b7afbc3437b4cebaec10d8729b1672",tooltip="Calculates available time slots for reservations."];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="App\\Models\\Activite\l\\plages",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classApp_1_1Models_1_1Activite.html#a5ea4810559506325f00a77548b0c5a87",tooltip=" "];
+}

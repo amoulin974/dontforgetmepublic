@@ -1,0 +1,7 @@
+<map id="create" name="create">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,68,60"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a03b7afbc3437b4cebaec10d8729b1672" title="Calculates available time slots for reservations." alt="" coords="119,5,265,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,39,111,31,112,36,69,44"/>
+<area shape="rect" id="Node000003" href="$classApp_1_1Models_1_1Activite.html#a5ea4810559506325f00a77548b0c5a87" title=" " alt="" coords="116,55,268,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="69,50,103,56,102,62,68,55"/>
+</map>

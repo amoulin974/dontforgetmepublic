@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Don&#39;t Forget Me:  Fichier source de /home/runner/work/dontforgetmepublic/dontforgetmepublic/app/Models/Activite.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">Don&#39;t Forget Me<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Outil de prise de rendez-vous</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d422163b96683743ed3963d4aac17747.html">app</a></li><li class="navelem"><a class="el" href="dir_fc6199fba97859a095e1d9a5aa5fae23.html">Models</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">Activite.php</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="Activite_8php.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>&lt;?php</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span>App\Models;</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>use Illuminate\Database\Eloquent\Model;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>use Illuminate\Database\Eloquent\Factories\HasFactory;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>use Illuminate\Database\Eloquent\Relations\BelongsToMany;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>use Illuminate\Database\Eloquent\Relations\BelongsTo;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html">   19</a></span><span class="keyword">class </span><a class="code hl_class" href="classApp_1_1Models_1_1Activite.html">Activite</a> <span class="keyword">extends</span> Model</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>{</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    use HasFactory;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="comment">// VARIABLES</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html#a3778a1d8a064a89429be46ae78c2101a">   29</a></span>    <span class="keyword">protected</span> <a class="code hl_variable" href="classApp_1_1Models_1_1Activite.html#a3778a1d8a064a89429be46ae78c2101a">$fillable</a> = [</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="stringliteral">&#39;libelle&#39;</span>,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="stringliteral">&#39;duree&#39;</span>,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="stringliteral">&#39;nbrPlaces&#39;</span>,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="stringliteral">&#39;idEntreprise&#39;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    ];</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">protected</span> $casts = [</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="stringliteral">&#39;duree&#39;</span> =&gt; <span class="stringliteral">&#39;string&#39;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    ];</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="comment">// METHODS </span></div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html#ad51130e7e8195d53e3670bb41642cb14">   54</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classApp_1_1Models_1_1Activite.html#ad51130e7e8195d53e3670bb41642cb14">entreprise</a>(): BelongsTo</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">return</span> $this-&gt;belongsTo(Entreprise::class, <span class="stringliteral">&#39;idEntreprise&#39;</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html#a5ea4810559506325f00a77548b0c5a87">   64</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classApp_1_1Models_1_1Activite.html#a5ea4810559506325f00a77548b0c5a87">plages</a>(): BelongsToMany</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">return</span> $this-&gt;belongsToMany(Plage::class, <span class="stringliteral">&#39;composer&#39;</span>, <span class="stringliteral">&#39;idActivite&#39;</span>, <span class="stringliteral">&#39;idPlage&#39;</span>)-&gt;withTimestamps();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
+</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="foldopen" id="foldopen00074" data-start="{" data-end="}">
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html#a97f71357c465e659df5a161e8136ba35">   74</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classApp_1_1Models_1_1Activite.html#a97f71357c465e659df5a161e8136ba35">travailler_entreprises</a>(): BelongsToMany</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordflow">return</span> $this-&gt;belongsToMany(Entreprise::class, <span class="stringliteral">&#39;travailler&#39;</span>, <span class="stringliteral">&#39;idActivite&#39;</span>, <span class="stringliteral">&#39;idEntreprise&#39;</span>)-&gt;withPivot(<span class="stringliteral">&#39;idUser&#39;</span>, <span class="stringliteral">&#39;statut&#39;</span>)-&gt;withTimestamps();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    }</div>
+</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html#a560726b9d08a4cedde5bf2bc1dabbb62">   84</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classApp_1_1Models_1_1Activite.html#a560726b9d08a4cedde5bf2bc1dabbb62">travailler_users</a>(): BelongsToMany</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">return</span> $this-&gt;belongsToMany(User::class, <span class="stringliteral">&#39;travailler&#39;</span>, <span class="stringliteral">&#39;idActivite&#39;</span>, <span class="stringliteral">&#39;idUser&#39;</span>)-&gt;withPivot(<span class="stringliteral">&#39;idEntreprise&#39;</span>, <span class="stringliteral">&#39;statut&#39;</span>)-&gt;withTimestamps();</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
+</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="foldopen" id="foldopen00094" data-start="{" data-end="}">
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html#acf4a4cf49bb95713bcf69d8028f21157">   94</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classApp_1_1Models_1_1Activite.html#acf4a4cf49bb95713bcf69d8028f21157">effectuer_users</a>(): BelongsToMany</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">return</span> $this-&gt;belongsToMany(User::class, <span class="stringliteral">&#39;effectuer&#39;</span>, <span class="stringliteral">&#39;idActivite&#39;</span>, <span class="stringliteral">&#39;idUser&#39;</span>)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    -&gt;withPivot(<span class="stringliteral">&#39;idReservation&#39;</span>, <span class="stringliteral">&#39;dateReservation&#39;</span>, <span class="stringliteral">&#39;typeNotif&#39;</span>, <span class="stringliteral">&#39;numTel&#39;</span>)</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                    -&gt;withTimestamps();</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
+</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="foldopen" id="foldopen00106" data-start="{" data-end="}">
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html#ad86d48787afc8cf8a63a0d58e248a3a7">  106</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classApp_1_1Models_1_1Activite.html#ad86d48787afc8cf8a63a0d58e248a3a7">effectuer_reservations</a>(): BelongsToMany</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    {</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keywordflow">return</span> $this-&gt;belongsToMany(Reservation::class, <span class="stringliteral">&#39;effectuer&#39;</span>, <span class="stringliteral">&#39;idActivite&#39;</span>, <span class="stringliteral">&#39;idReservation&#39;</span>)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                    -&gt;withPivot(<span class="stringliteral">&#39;idUser&#39;</span>, <span class="stringliteral">&#39;dateReservation&#39;</span>, <span class="stringliteral">&#39;typeNotif&#39;</span>, <span class="stringliteral">&#39;numTel&#39;</span>)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                    -&gt;withTimestamps();</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    }</div>
+</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classApp_1_1Models_1_1Activite.html#a6ba95f66dc36987b19448ec6180ed239">  118</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classApp_1_1Models_1_1Activite.html#a6ba95f66dc36987b19448ec6180ed239">getFormattedDureeAttribute</a>()</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        $timeParts = explode(<span class="charliteral">&#39;:&#39;</span>, $this-&gt;duree);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        $hours = intval($timeParts[0]);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        $minutes = intval($timeParts[1]);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">if</span> ($hours &gt; 0 &amp;&amp; $minutes &gt; 0) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;{$hours} heure&quot;</span> . ($hours &gt; 1 ? <span class="charliteral">&#39;s&#39;</span> : <span class="stringliteral">&#39;&#39;</span>) . <span class="stringliteral">&quot; {$minutes} minutes&quot;</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        } elseif ($hours &gt; 0) {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;{$hours} heure&quot;</span> . ($hours &gt; 1 ? <span class="charliteral">&#39;s&#39;</span> : <span class="stringliteral">&#39;&#39;</span>);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;{$minutes} minutes&quot;</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        }</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
+</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}</div>
+</div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html">App\Models\Activite</a></div><div class="ttdoc">Represents an activity entity in the system.</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00019">Activite.php:20</a></div></div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html_a3778a1d8a064a89429be46ae78c2101a"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html#a3778a1d8a064a89429be46ae78c2101a">App\Models\Activite\$fillable</a></div><div class="ttdeci">$fillable</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00029">Activite.php:29</a></div></div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html_a560726b9d08a4cedde5bf2bc1dabbb62"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html#a560726b9d08a4cedde5bf2bc1dabbb62">App\Models\Activite\travailler_users</a></div><div class="ttdeci">travailler_users()</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00084">Activite.php:84</a></div></div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html_a5ea4810559506325f00a77548b0c5a87"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html#a5ea4810559506325f00a77548b0c5a87">App\Models\Activite\plages</a></div><div class="ttdeci">plages()</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00064">Activite.php:64</a></div></div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html_a6ba95f66dc36987b19448ec6180ed239"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html#a6ba95f66dc36987b19448ec6180ed239">App\Models\Activite\getFormattedDureeAttribute</a></div><div class="ttdeci">getFormattedDureeAttribute()</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00118">Activite.php:118</a></div></div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html_a97f71357c465e659df5a161e8136ba35"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html#a97f71357c465e659df5a161e8136ba35">App\Models\Activite\travailler_entreprises</a></div><div class="ttdeci">travailler_entreprises()</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00074">Activite.php:74</a></div></div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html_acf4a4cf49bb95713bcf69d8028f21157"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html#acf4a4cf49bb95713bcf69d8028f21157">App\Models\Activite\effectuer_users</a></div><div class="ttdeci">effectuer_users()</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00094">Activite.php:94</a></div></div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html_ad51130e7e8195d53e3670bb41642cb14"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html#ad51130e7e8195d53e3670bb41642cb14">App\Models\Activite\entreprise</a></div><div class="ttdeci">entreprise()</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00054">Activite.php:54</a></div></div>
+<div class="ttc" id="aclassApp_1_1Models_1_1Activite_html_ad86d48787afc8cf8a63a0d58e248a3a7"><div class="ttname"><a href="classApp_1_1Models_1_1Activite.html#ad86d48787afc8cf8a63a0d58e248a3a7">App\Models\Activite\effectuer_reservations</a></div><div class="ttdeci">effectuer_reservations()</div><div class="ttdef"><b>Definition</b> <a href="Activite_8php_source.html#l00106">Activite.php:106</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

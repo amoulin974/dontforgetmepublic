@@ -1,0 +1,11 @@
+digraph "calculateTimeSlots"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="calculateTimeSlots",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Calculates available time slots for reservations."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="create",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classApp_1_1Http_1_1Controllers_1_1ReservationController.html#a8f1aaef8b3c7a9f2fd711052e409af26",tooltip=" "];
+}

@@ -1,0 +1,7 @@
+<map id="activites" name="activites">
+<area shape="rect" id="Node000001" title=" " alt="" coords="247,45,325,70"/>
+<area shape="rect" id="Node000002" href="$classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a4dd2020b0e9f2c9893136cdcede3c53f" title=" " alt="" coords="5,5,199,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,51,198,45,199,40,234,46"/>
+<area shape="rect" id="Node000003" href="$classApp_1_1Http_1_1Controllers_1_1ActiviteController.html#a44c6dacaefc845b60cd3d25dee705e78" title=" " alt="" coords="13,69,191,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="234,69,191,76,191,71,233,64"/>
+</map>
