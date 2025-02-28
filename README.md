@@ -109,7 +109,7 @@ Installer et Clonez le dépôt Git :
 
 ```
 sudo apt install git -y  
-git clone https://github.com/JohanRouyer/DontForgetMe.git 
+git clone https://github.com/amoulin974/dontforgetmepublic
 ```
 Naviguez dans le dossier du projet backend : 
 
